@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grego — Youth Development Guide, Lovrencsics Academy | PitchPro Pathways</title>
+<meta name="description" content="Meet Grego of Lovrencsics Academy in Split, Croatia — Youth Development Guide on the PitchPro Pathways network. European football culture for young players.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Lovrencsics Academy palette — gathered from the academy's own assets */
+    --adriatic:#14522c; --deep:#0e120f; --card:#152b1c; --sea:#3fae5a; --gold:#cfe8d6;
+    --turf:#1e7d3c; --badge:#0e0f0d;
+    --white:#fff; --muted:#9dbfa9; --line:rgba(255,255,255,.09);
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+    --pitch:#0b120e; --grass:#2ee08a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--body);background:var(--deep);color:var(--white);line-height:1.65;font-size:16.5px;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.08;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+  section{padding:72px 0;}
+  .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--sea);margin-bottom:14px;}
+  .btn{display:inline-block;font-weight:700;font-size:15px;text-decoration:none;padding:15px 32px;border-radius:999px;transition:all .2s;}
+  .btn-sea{background:var(--sea);color:#071309;}
+  .btn-sea:hover{background:#54c46e;}
+
+  .topbar{background:var(--pitch);font-size:13px;padding:10px 0;}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .topbar a{color:var(--grass);text-decoration:none;font-weight:700;}
+  .topbar .net{letter-spacing:.14em;text-transform:uppercase;font-weight:700;font-size:11px;}
+
+  .hero{padding:90px 0 70px;background:linear-gradient(180deg,var(--adriatic),var(--deep));}
+  .hero .wrap{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+  @media(max-width:720px){.hero .wrap{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(38px,6vw,64px);font-weight:900;}
+  .hero h1 span{color:var(--sea);}
+  .hero .cred{color:var(--gold);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-top:12px;}
+  .hero p.intro{color:var(--muted);max-width:52ch;margin-top:22px;font-size:17.5px;}
+  /* Portrait echoes the academy's black circular badge with green mark */
+  .portrait{width:180px;height:180px;border-radius:50%;background:var(--badge);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:56px;font-weight:900;color:var(--sea);border:3px solid rgba(63,174,90,.55);}
+
+  /* Quote band styled after the academy's cover: white caps on turf green */
+  .quote{background:var(--turf);background-image:repeating-linear-gradient(63deg,rgba(255,255,255,.03) 0 3px,transparent 3px 11px),repeating-linear-gradient(-49deg,rgba(0,0,0,.05) 0 2px,transparent 2px 9px);text-align:center;padding:56px 0;}
+  .quote blockquote{font-family:var(--head);text-transform:uppercase;font-size:clamp(20px,3vw,30px);max-width:24ch;margin:0 auto;font-weight:900;color:var(--white);}
+  .quote blockquote em{color:var(--white);font-style:normal;text-decoration:underline;text-decoration-color:rgba(255,255,255,.45);text-underline-offset:6px;}
+  .quote cite{display:block;margin-top:14px;font-style:normal;font-size:12px;color:rgba(255,255,255,.75);letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+
+  h2{font-size:clamp(24px,3.4vw,34px);font-weight:900;margin-bottom:18px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+  p.body{color:var(--muted);}
+  .stepr{display:flex;gap:18px;padding:20px 0;border-top:1px solid var(--line);}
+  .stepr .n{font-family:var(--head);color:var(--sea);font-size:22px;font-weight:900;min-width:34px;}
+  .stepr h3{font-size:16px;letter-spacing:.05em;margin-bottom:6px;}
+  .stepr p{font-size:14.5px;color:var(--muted);}
+
+  .expect{background:var(--card);}
+  .expect ul{list-style:none;margin-top:26px;}
+  .expect li{background:var(--deep);border-left:3px solid var(--sea);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:12px;font-size:15px;color:var(--muted);}
+  .expect li b{display:block;color:var(--white);font-size:15.5px;margin-bottom:3px;}
+
+  .details{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:30px;}
+  .dcard{border:1px solid var(--line);border-radius:12px;padding:22px;font-size:14.5px;color:var(--muted);}
+  .dcard b{display:block;color:var(--gold);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;}
+
+  .bridge{background:linear-gradient(135deg,rgba(63,174,90,.12),transparent 60%);border:1px solid rgba(63,174,90,.35);border-radius:16px;padding:36px;margin-top:44px;}
+  .bridge h3{font-size:18px;letter-spacing:.05em;margin-bottom:10px;color:var(--sea);}
+  .bridge p{font-size:15px;color:var(--muted);}
+
+  .book{text-align:center;padding:80px 0;background:linear-gradient(180deg,var(--deep),var(--adriatic));}
+  .book h2{font-size:clamp(26px,4vw,40px);}
+  .book p{color:var(--muted);max-width:54ch;margin:20px auto 32px;}
+  .book .assure{margin-top:28px;font-size:13px;color:var(--muted);}
+  .book .assure b{color:var(--sea);}
+
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;padding:28px 0;text-align:center;background:var(--pitch);}
+  footer a{color:var(--grass);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="net">🏆 PitchPro Pathways · Guide Network</span>
+    <span>Booking &amp; payments handled securely by <a href="pitchpro-pathways-website.html">PitchPro Pathways</a></span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Your Youth Development Guide · Lovrencsics Academy</div>
+      <h1>Grego</h1>
+      <div class="cred">Hungarian Professional Background · Split, Croatia 🇭🇷</div>
+      <p class="intro">Football raised me — through Hungarian academies and a professional career, and now on the pitches of Split, where I coach the next generation. Children here grow up with the ball. What I teach isn't just technique; it's a football culture where every child belongs on the pitch.</p>
+    </div>
+    <div class="portrait">G</div>
+  </div>
+</header>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>"Every child is <em>a champion.</em>"</blockquote>
+    <cite>Lovrencsics Academy · Split, Dračevac</cite>
+  </div>
+</section>
+
+<section>
+  <div class="wrap grid2">
+    <div>
+      <div class="kicker">The Academy Way</div>
+      <h2>Joy first. Everything grows from there.</h2>
+      <p class="body">At Lovrencsics Academy we train young players the European way: lots of touches, small-sided games, and an environment where mistakes are how you learn, not something to fear. Sessions run in Croatian and English — and the language of the game needs no translation.</p>
+      <p class="body" style="margin-top:14px;">For families connected through PitchPro Pathways, this is a genuine bridge into European football — the culture, the standards, and the pathway.</p>
+    </div>
+    <div>
+      <div class="stepr"><div class="n">1</div><div><h3>Welcome to the pitch</h3><p>Your child joins a session and simply plays. We meet the family, and everyone gets a feel for how we work.</p></div></div>
+      <div class="stepr"><div class="n">2</div><div><h3>Grow with the group</h3><p>Technical foundations built through games — first touch, awareness, courage on the ball. Age groups from the 2016–2019 generations.</p></div></div>
+      <div class="stepr"><div class="n">3</div><div><h3>The pathway opens</h3><p>For players ready for more, the professional route: structured development, and through PitchPro, connection to assessment and guides in Canada.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="expect">
+  <div class="wrap">
+    <div class="kicker">For Parents</div>
+    <h2>What you can expect from us.</h2>
+    <ul>
+      <li><b>A family environment.</b> The academy is small on purpose. We know every child's name, and every parent knows us.</li>
+      <li><b>Patience with every player.</b> Children develop at their own speed. Our job is to keep them loving the game while they grow.</li>
+      <li><b>Clear communication.</b> Croatian and English spoken. You'll always know how your child is doing and what comes next.</li>
+      <li><b>One secure system.</b> For international families, all booking and payment runs through PitchPro Pathways — one trusted place, wherever you are.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">The Details</div>
+    <h2>Training with Grego</h2>
+    <div class="details">
+      <div class="dcard"><b>Location</b>Lovrencsics Academy<br>Split (Dračevac), Croatia</div>
+      <div class="dcard"><b>Ages</b>2016–2019 generations, with pathway options for older players</div>
+      <div class="dcard"><b>Languages</b>Croatian · English · Hungarian</div>
+      <div class="dcard"><b>Sessions</b>Academy group training · holiday programs · PitchPro international camps</div>
+    </div>
+    <div class="bridge">
+      <h3>🌍 The Europe Bridge</h3>
+      <p>Through PitchPro Pathways, Canadian families can train with Grego during European summer camps in Split — real European football immersion, organized and protected end-to-end by PitchPro. Ask about the next camp when you register.</p>
+    </div>
+  </div>
+</section>
+
+<section class="book">
+  <div class="wrap">
+    <h2>Your child belongs on the pitch.</h2>
+    <p>Whether you're in Split or planning a summer in Europe, start with a conversation. Book through PitchPro Pathways and we'll take care of the rest — first session is about your child feeling at home.</p>
+    <a class="btn btn-sea" href="pitchpro-pathways-website.html#register">Book Through PitchPro Pathways</a>
+    <div class="assure"><b>✓</b> Secure international booking &amp; payment &nbsp;&nbsp;<b>✓</b> Croatian &amp; English spoken &nbsp;&nbsp;<b>✓</b> Family-first academy</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Grego and Lovrencsics Academy are guides on the <a href="pitchpro-pathways-website.html">PitchPro Pathways</a> network. All bookings, scheduling, and payments are managed by PitchPro Pathways. · © 2026</div>
+</footer>
+
+</body>
+</html>

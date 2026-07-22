@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — PitchPro Pathways (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0b120e; --panel:#101a14; --card:#15211a; --grass:#2ee08a; --grass-deep:#17b06a;
+    --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09); --warn:#ffb84d; --blue:#4d9fff;
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--body);background:var(--pitch);color:var(--white);font-size:15px;line-height:1.55;padding-top:30px;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.1;}
+  .demo-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--warn);color:#231602;font-size:12px;font-weight:700;text-align:center;padding:6px;letter-spacing:.08em;text-transform:uppercase;}
+  .wrap{max-width:1080px;margin:0 auto;padding:34px 24px;}
+  .head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:28px;}
+  .head h1{font-size:24px;}
+  .head .sub{color:var(--muted);font-size:13.5px;}
+  .crest{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:inline-flex;align-items:center;justify-content:center;font-size:20px;margin-right:12px;vertical-align:middle;}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(4,1fr);margin-bottom:16px;}
+  @media(max-width:820px){.grid{grid-template-columns:1fr 1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card h3{font-size:12px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;}
+  .big{font-family:var(--head);font-size:26px;font-weight:900;}
+  .big small{font-size:13px;color:var(--muted);font-family:var(--body);font-weight:500;}
+  .full{margin-bottom:16px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
+  td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+  .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);}
+  .tag.amber{background:rgba(255,184,77,.14);color:var(--warn);}
+  .tag.blue{background:rgba(77,159,255,.14);color:var(--blue);}
+  .note{font-size:12.5px;color:var(--muted);margin-top:12px;}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">Demo — static preview with sample data only. Admin access: David only.</div>
+
+<div class="wrap">
+  <div class="head">
+    <div><h1><span class="crest">🏆</span>PitchPro Admin</h1><div class="sub">Platform overview · week of Jul 20, 2026</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h3>Active Players</h3><div class="big">14</div></div>
+    <div class="card"><h3>Sessions This Week</h3><div class="big">31</div></div>
+    <div class="card"><h3>Gross Bookings (July)</h3><div class="big">$6,240 <small>CAD</small></div></div>
+    <div class="card"><h3>Platform Net (July)</h3><div class="big">$1,514 <small>CAD</small></div></div>
+  </div>
+
+  <div class="card full">
+    <h3>Guide Earnings &amp; Revenue Splits — admin only</h3>
+    <table>
+      <tr><th>Guide</th><th>Model</th><th>Split (guide / platform)</th><th>July Sessions</th><th>Gross</th><th>Guide Payout</th><th>Platform</th><th>Status</th></tr>
+      <tr><td><b>Sandro Rajic</b><br><span style="color:var(--muted);font-size:12px;">Established practice · Featured Partner</span></td><td>Referral partner</td><td>85 / 15</td><td>9 screenings</td><td>$2,241</td><td>$1,905</td><td>$336</td><td><span class="tag">Agreement draft</span></td></tr>
+      <tr><td><b>Coach Nick</b><br><span style="color:var(--muted);font-size:12px;">Building book via platform</span></td><td>Platform-first</td><td>70 / 30</td><td>22 sessions</td><td>$2,420</td><td>$1,694</td><td>$726</td><td><span class="tag amber">Terms pending</span></td></tr>
+      <tr><td><b>Grego</b><br><span style="color:var(--muted);font-size:12px;">Lovrencsics Academy · EU payouts</span></td><td>Academy hybrid</td><td>75 / 25</td><td>16 sessions</td><td>$1,520</td><td>$1,140</td><td>$380</td><td><span class="tag amber">Terms pending</span></td></tr>
+      <tr><td><b>Camp add-ons</b><br><span style="color:var(--muted);font-size:12px;">Split summer camp deposits</span></td><td>Platform product</td><td>— / 100</td><td>2 deposits</td><td>$1,000</td><td>—</td><td>$1,000</td><td><span class="tag blue">Escrowed</span></td></tr>
+    </table>
+    <div class="note">Splits vary by guide establishment — DoorDash-style tiering: established guides keep more (they bring their book and brand); platform-built guides trade margin for demand generation. All figures are sample data. Payouts via Stripe Connect in the build phase; EU payout (Grego) needs cross-border setup.</div>
+  </div>
+
+  <div class="card full">
+    <h3>Bookings Pipeline</h3>
+    <table>
+      <tr><th>Family</th><th>Player</th><th>Stage</th><th>Program</th><th>Next Step</th></tr>
+      <tr><td>Torres</td><td>Leo (U12)</td><td><span class="tag">Active</span></td><td>Total Athlete wk 5</td><td>Reassessment Aug 14</td></tr>
+      <tr><td>Chen</td><td>Ava (U14)</td><td><span class="tag blue">Onboarding</span></td><td>First session Jul 21</td><td>Post-session parent check-in</td></tr>
+      <tr><td>Adams</td><td>Sofia (U12)</td><td><span class="tag amber">Applied</span></td><td>—</td><td>Consult call to book</td></tr>
+      <tr><td>Kovač 🇭🇷</td><td>Ivan (U9)</td><td><span class="tag amber">Applied</span></td><td>Lovrencsics group</td><td>Grego intake · HR docs</td></tr>
+    </table>
+  </div>
+
+  <div class="card full">
+    <h3>Compliance Watch</h3>
+    <table>
+      <tr><th>Item</th><th>Scope</th><th>Status</th></tr>
+      <tr><td>Guide agreements (rev-share, IP, conduct)</td><td>All guides</td><td><span class="tag amber">Lawyer review needed</span></td></tr>
+      <tr><td>Safeguarding policy + background checks</td><td>All guides, before launch</td><td><span class="tag amber">Policy drafted, checks pending</span></td></tr>
+      <tr><td>Parent consents (photo/marketing/data)</td><td>All families</td><td><span class="tag">In portal design</span></td></tr>
+      <tr><td>GDPR readiness (EU families via Grego)</td><td>Croatia arm</td><td><span class="tag amber">Open</span></td></tr>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

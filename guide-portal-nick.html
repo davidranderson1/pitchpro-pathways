@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Nick — Soccer Agility Guide | PitchPro Pathways</title>
+<meta name="description" content="Meet Coach Nick, Soccer Agility Guide on the PitchPro Pathways network. Speed, agility, and first-step confidence for young players in Calgary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0b120e; --card:#15211a; --grass:#2ee08a; --fire:#ffb84d;
+    --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09);
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--body);background:var(--pitch);color:var(--white);line-height:1.65;font-size:16.5px;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.08;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+  section{padding:72px 0;}
+  .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--fire);margin-bottom:14px;}
+  .btn{display:inline-block;font-weight:700;font-size:15px;text-decoration:none;padding:15px 32px;border-radius:999px;transition:all .2s;}
+  .btn-grass{background:var(--grass);color:#06130c;}
+  .btn-grass:hover{background:#4ff0a0;}
+
+  .topbar{background:#07110b;font-size:13px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+  .topbar a{color:var(--grass);text-decoration:none;font-weight:700;}
+  .topbar .net{letter-spacing:.14em;text-transform:uppercase;font-weight:700;font-size:11px;}
+
+  .hero{padding:90px 0 70px;background:linear-gradient(180deg,#0e1811,var(--pitch));}
+  .hero .wrap{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+  @media(max-width:720px){.hero .wrap{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(38px,6vw,64px);font-weight:900;}
+  .hero h1 span{color:var(--fire);}
+  .hero .cred{color:var(--grass);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-top:12px;}
+  .hero p.intro{color:var(--muted);max-width:52ch;margin-top:22px;font-size:17.5px;}
+  .portrait{width:180px;height:180px;border-radius:50%;background:linear-gradient(135deg,var(--fire),#e07b2e);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:52px;font-weight:900;color:#1c1105;border:3px solid rgba(255,255,255,.2);}
+
+  .quote{background:var(--card);text-align:center;padding:52px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .quote blockquote{font-family:var(--head);text-transform:uppercase;font-size:clamp(20px,3vw,30px);max-width:26ch;margin:0 auto;font-weight:900;}
+  .quote blockquote em{color:var(--fire);font-style:normal;}
+  .quote cite{display:block;margin-top:14px;font-style:normal;font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+
+  h2{font-size:clamp(24px,3.4vw,34px);font-weight:900;margin-bottom:18px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+  p.body{color:var(--muted);}
+  .stepr{display:flex;gap:18px;padding:20px 0;border-top:1px solid var(--line);}
+  .stepr .n{font-family:var(--head);color:var(--fire);font-size:22px;font-weight:900;min-width:34px;}
+  .stepr h3{font-size:16px;letter-spacing:.05em;margin-bottom:6px;}
+  .stepr p{font-size:14.5px;color:var(--muted);}
+
+  .expect{background:var(--card);}
+  .expect ul{list-style:none;margin-top:26px;}
+  .expect li{background:var(--pitch);border-left:3px solid var(--fire);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:12px;font-size:15px;color:var(--muted);}
+  .expect li b{display:block;color:var(--white);font-size:15.5px;margin-bottom:3px;}
+
+  .details{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:30px;}
+  .dcard{border:1px solid var(--line);border-radius:12px;padding:22px;font-size:14.5px;color:var(--muted);}
+  .dcard b{display:block;color:var(--fire);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;}
+
+  .book{text-align:center;padding:80px 0;background:linear-gradient(180deg,var(--pitch),#0e1811);}
+  .book h2{font-size:clamp(26px,4vw,40px);}
+  .book p{color:var(--muted);max-width:54ch;margin:20px auto 32px;}
+  .book .assure{margin-top:28px;font-size:13px;color:var(--muted);}
+  .book .assure b{color:var(--grass);}
+
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;padding:28px 0;text-align:center;}
+  footer a{color:var(--grass);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="net">🏆 PitchPro Pathways · Guide Network</span>
+    <span>Booking &amp; payments handled securely by <a href="pitchpro-pathways-website.html">PitchPro Pathways</a></span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Your Soccer Agility Guide</div>
+      <h1>Coach <span>Nick</span></h1>
+      <div class="cred">Bulgarian Professional Background · Calgary, AB</div>
+      <p class="intro">I grew up in Bulgarian football, where quick feet weren't optional — they were how you survived on the pitch. Now I teach young players in Calgary the same thing I learned there: speed can be trained, and confidence comes with it.</p>
+    </div>
+    <div class="portrait">CN</div>
+  </div>
+</header>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>"Fast feet are taught. <em>Confidence is built.</em>"</blockquote>
+    <cite>Coach Nick · Agility &amp; Speed</cite>
+  </div>
+</section>
+
+<section>
+  <div class="wrap grid2">
+    <div>
+      <div class="kicker">The Work</div>
+      <h2>Small wins, every session.</h2>
+      <p class="body">Agility isn't about cones for the sake of cones. It's first-step quickness, change of direction, balance under pressure — the things that decide 1v1 moments in a real game. Every session your child leaves with something they can feel: a sharper cut, a faster first step, a move that worked.</p>
+      <p class="body" style="margin-top:14px;">Kids don't fall in love with drills. They fall in love with getting better. My job is to make sure they notice it happening.</p>
+    </div>
+    <div>
+      <div class="stepr"><div class="n">1</div><div><h3>Meet &amp; move</h3><p>First session is light — we play, I watch how your child moves, and they get comfortable with me. Parents welcome pitchside.</p></div></div>
+      <div class="stepr"><div class="n">2</div><div><h3>Build the base</h3><p>Footwork patterns, acceleration mechanics, and body control — built up in games and challenges, not lectures.</p></div></div>
+      <div class="stepr"><div class="n">3</div><div><h3>Take it to the game</h3><p>Everything we train shows up on match day. I'll tell you what to watch for so you can see the progress yourself.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="expect">
+  <div class="wrap">
+    <div class="kicker">For Parents</div>
+    <h2>What you can expect from me.</h2>
+    <ul>
+      <li><b>Your child will want to come back.</b> Effort is high, pressure is low. Kids work hardest when they're enjoying it — that's not a trick, it's just true.</li>
+      <li><b>You'll hear from me after sessions.</b> A quick word or message about what we worked on and what's next. No mystery about what you're paying for.</li>
+      <li><b>Honest about the timeline.</b> Speed develops over weeks, not days. I'll tell you what's realistic before we start.</li>
+      <li><b>One secure system.</b> Booking, payment, and scheduling all run through PitchPro Pathways — simple for you, protected for your family.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">The Details</div>
+    <h2>Working with Coach Nick</h2>
+    <div class="details">
+      <div class="dcard"><b>Location</b>Calgary, AB</div>
+      <div class="dcard"><b>Specialty</b>Agility, acceleration, change of direction, 1v1 quickness</div>
+      <div class="dcard"><b>Sessions</b>1-on-1 and small group (max 4) · outdoor and indoor</div>
+      <div class="dcard"><b>Works well with</b>The Movement Intelligence Screening — Nick trains to your child's assessment results</div>
+    </div>
+  </div>
+</section>
+
+<section class="book">
+  <div class="wrap">
+    <h2>Come try a session.</h2>
+    <p>Book through PitchPro Pathways and start with a single session — no packages, no pressure. If your child enjoys it, we build from there.</p>
+    <a class="btn btn-grass" href="pitchpro-pathways-website.html#register">Book Through PitchPro Pathways</a>
+    <div class="assure"><b>✓</b> Secure booking &amp; payment &nbsp;&nbsp;<b>✓</b> Single-session start &nbsp;&nbsp;<b>✓</b> Parents always welcome</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Coach Nick is a guide on the <a href="pitchpro-pathways-website.html">PitchPro Pathways</a> network. All bookings, scheduling, and payments are managed by PitchPro Pathways. · © 2026</div>
+</footer>
+
+</body>
+</html>

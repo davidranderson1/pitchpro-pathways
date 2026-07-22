@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Portal — PitchPro Pathways (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0b120e; --panel:#101a14; --card:#15211a; --grass:#2ee08a; --grass-deep:#17b06a;
+    --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09); --warn:#ffb84d; --blue:#4d9fff;
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--body);background:var(--pitch);color:var(--white);font-size:15px;line-height:1.55;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.1;}
+  .demo-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--warn);color:#231602;font-size:12px;font-weight:700;text-align:center;padding:6px;letter-spacing:.08em;text-transform:uppercase;}
+  a{color:var(--grass);}
+
+  /* LOGIN */
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+  .login-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:44px 40px;max-width:420px;width:100%;text-align:center;}
+  .crest{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;}
+  .login-card h1{font-size:20px;letter-spacing:.06em;}
+  .login-card .sub{color:var(--muted);font-size:13.5px;margin:10px 0 26px;}
+  .field{text-align:left;margin-bottom:14px;}
+  .field label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .field input{width:100%;margin-top:6px;background:var(--pitch);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--white);font-family:var(--body);font-size:14px;}
+  .btn{display:inline-block;border:none;cursor:pointer;font-family:var(--body);font-weight:700;font-size:14.5px;text-decoration:none;padding:13px 26px;border-radius:999px;transition:all .2s;}
+  .btn-grass{background:var(--grass);color:#06130c;width:100%;}
+  .btn-grass:hover{background:#4ff0a0;}
+  .login-note{font-size:12px;color:var(--muted);margin-top:18px;}
+
+  /* APP SHELL */
+  #app{display:none;}
+  .shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh;padding-top:30px;}
+  @media(max-width:820px){.shell{grid-template-columns:1fr;}}
+  aside{background:var(--panel);border-right:1px solid var(--line);padding:24px 0;}
+  .side-brand{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:900;font-size:14px;padding:0 20px 20px;border-bottom:1px solid var(--line);}
+  .side-brand .crest{width:32px;height:32px;margin:0;font-size:16px;border-radius:9px;}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;color:var(--muted);cursor:pointer;font-weight:600;font-size:14px;border-left:3px solid transparent;}
+  .nav-item:hover{color:var(--white);}
+  .nav-item.active{color:var(--grass);border-left-color:var(--grass);background:rgba(46,224,138,.06);}
+  .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
+  main{padding:34px 38px;max-width:1050px;}
+  .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:30px;}
+  .child-switch{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 8px;}
+  .child-chip{padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);}
+  .child-chip.on{background:var(--grass);color:#06130c;}
+  .lang{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;}
+  .lang button{border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;}
+  .lang button.on{background:var(--grass);color:#06130c;}
+
+  .screen{display:none;}
+  .screen.on{display:block;}
+  .screen h2{font-size:22px;margin-bottom:6px;}
+  .screen .sub{color:var(--muted);font-size:13.5px;margin-bottom:26px;}
+  .grid{display:grid;gap:16px;}
+  .g2{grid-template-columns:1fr 1fr;} .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card h3{font-size:13px;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;}
+  .big{font-family:var(--head);font-size:28px;font-weight:900;}
+  .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);}
+  .tag.amber{background:rgba(255,184,77,.14);color:var(--warn);}
+  .tag.blue{background:rgba(77,159,255,.14);color:var(--blue);}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .row:last-child{border-bottom:none;}
+  .row .who{font-weight:600;}
+  .row .meta{color:var(--muted);font-size:12.5px;}
+  .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px;}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--grass-deep),var(--grass));}
+  .note-strip{background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.25);border-radius:12px;padding:14px 18px;font-size:13px;color:#cfe2f8;margin-bottom:22px;}
+  .note-strip b{color:var(--blue);}
+  .msg{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:14px;}
+  .msg .from{font-weight:700;font-size:13px;}
+  .msg .from span{color:var(--muted);font-weight:500;font-size:12px;margin-left:8px;}
+  .msg.me{border-color:rgba(46,224,138,.3);background:rgba(46,224,138,.05);}
+  .report-sec{border-left:3px solid var(--grass);padding:14px 18px;background:var(--panel);border-radius:0 12px 12px 0;margin-bottom:12px;}
+  .report-sec h4{font-size:13px;letter-spacing:.06em;text-transform:uppercase;}
+  .report-sec .by{font-size:11.5px;color:var(--muted);margin-bottom:8px;}
+  .report-sec p{font-size:13.5px;color:#cfe0d6;}
+  .score{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12.5px;color:var(--muted);}
+  .score b{color:var(--white);font-family:var(--head);}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);}
+  td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+  .doc-row .btn-sm{font-size:12px;padding:7px 16px;background:transparent;border:1px solid var(--grass);color:var(--grass);border-radius:999px;cursor:pointer;font-weight:700;}
+  .consent{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .pilldot{width:42px;height:24px;border-radius:99px;background:var(--grass);position:relative;}
+  .pilldot::after{content:'';position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#06130c;}
+  .pilldot.off{background:rgba(255,255,255,.15);}
+  .pilldot.off::after{left:3px;right:auto;background:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">Demo — static preview with sample data only. Not a live product.</div>
+
+<!-- MOCK LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <div class="crest">🏆</div>
+    <h1 data-i18n="portalTitle">Family Portal</h1>
+    <div class="sub" data-i18n="portalSub">Sign in to follow your child's pathway. All sessions, reports, messages, and payments in one secure place.</div>
+    <div class="field"><label data-i18n="email">Email</label><input type="email" placeholder="maria.torres@example.com" disabled></div>
+    <div class="field"><label data-i18n="password">Password</label><input type="password" placeholder="••••••••" disabled></div>
+    <button class="btn btn-grass" onclick="enter()" data-i18n="enterDemo">Enter Demo Portal</button>
+    <div class="login-note" data-i18n="loginNote">Authentication is not active in this preview. Real sign-in with two-factor security ships with the platform build.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<div class="shell">
+  <aside>
+    <div class="side-brand"><span class="crest">🏆</span> PITCHPRO<br>PATHWAYS</div>
+    <div class="nav-item active" data-s="dash" data-i18n="navDash">Dashboard</div>
+    <div class="nav-item" data-s="player" data-i18n="navPlayer">Player Profile</div>
+    <div class="nav-item" data-s="path" data-i18n="navPath">Pathway</div>
+    <div class="nav-item" data-s="book" data-i18n="navBook">Bookings</div>
+    <div class="nav-item" data-s="pay" data-i18n="navPay">Payments</div>
+    <div class="nav-item" data-s="msg" data-i18n="navMsg">Messages &amp; Docs <span class="badge-dot">2</span></div>
+  </aside>
+  <main>
+    <div class="topline">
+      <div class="child-switch">
+        <span class="child-chip on" onclick="switchChild(this,'Leo')">Leo (U12)</span>
+        <span class="child-chip" onclick="switchChild(this,'Mia')">Mia (U9)</span>
+      </div>
+      <div class="lang">
+        <button class="on" onclick="setLang('en',this)">EN</button>
+        <button onclick="setLang('hr',this)">HR</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="screen on" id="s-dash">
+      <h2 data-i18n="dashTitle">Welcome back, Maria</h2>
+      <div class="sub" data-i18n="dashSub">Here's where Leo's pathway stands this week.</div>
+      <div class="grid g3">
+        <div class="card"><h3 data-i18n="nextSession">Next Session</h3><div class="big">Tue 4:30</div><div class="meta" style="color:var(--muted);font-size:13px;">Agility · Coach Nick · Calgary NW Dome</div></div>
+        <div class="card"><h3 data-i18n="program">Current Program</h3><div class="big">Week 5<span style="font-size:15px;color:var(--muted);">/8</span></div><div class="meta" style="color:var(--muted);font-size:13px;">Total Athlete</div><div class="bar"><i style="width:62%"></i></div></div>
+        <div class="card"><h3 data-i18n="nextReassess">Next Reassessment</h3><div class="big">Aug 14</div><div class="meta" style="color:var(--muted);font-size:13px;" data-i18n="withSandro">Movement screening · with Sandro</div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px;">
+        <div class="card">
+          <h3 data-i18n="latestNote">Latest Guide Note</h3>
+          <div class="msg"><div class="from">Coach Nick <span>Yesterday</span></div><div style="font-size:13.5px;color:#cfe0d6;margin-top:4px;">Leo's first step off the left foot is noticeably quicker this week. We'll test it under pressure next session — watch for it in Saturday's game.</div></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="quickActions">Quick Actions</h3>
+          <div class="row"><span class="who" data-i18n="qaBook">Book a session</span><span class="tag" data-i18n="go">Go</span></div>
+          <div class="row"><span class="who" data-i18n="qaReport">View latest Player Report</span><span class="tag" data-i18n="go">Go</span></div>
+          <div class="row"><span class="who" data-i18n="qaMsg">Message a guide</span><span class="tag" data-i18n="go">Go</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYER PROFILE -->
+    <div class="screen" id="s-player">
+      <h2><span id="childName">Leo</span> Torres · U12</h2>
+      <div class="sub">Position: Midfield · Preferred foot: Right · Joined March 2026</div>
+      <div class="note-strip"><b data-i18n="reportStd">The PitchPro Player Report.</b> <span data-i18n="reportStdSub">One standardized report across every guide. Each guide contributes their discipline — your child gets one complete picture.</span></div>
+      <div class="report-sec">
+        <h4>Movement Intelligence</h4><div class="by">Contributed by Sandro Rajic · DARI screening · Jun 12, 2026</div>
+        <p>Motion Age tracking two years ahead of chronological age. Mild left-hip asymmetry flagged — addressed in current training block. Vulnerability: low.</p>
+        <div class="score"><span>Motion Age <b>10.1</b></span><span>Asymmetry <b>7%</b></span><span>Athleticism <b>82</b></span></div>
+      </div>
+      <div class="report-sec">
+        <h4>Agility &amp; Speed</h4><div class="by">Contributed by Coach Nick · Field testing · Jul 02, 2026</div>
+        <p>5-10-5 shuttle improved 0.3s since baseline. First-step quickness now above age-group average. Focus: change of direction under pressure.</p>
+        <div class="score"><span>5-10-5 <b>5.9s</b></span><span>10m sprint <b>2.1s</b></span></div>
+      </div>
+      <div class="report-sec">
+        <h4>Technical Development</h4><div class="by">Contributed by Grego · Lovrencsics Academy standards · Jul 09, 2026</div>
+        <p>Strong first touch under pressure for age group. Weak-foot passing developing. Recommended for the Split summer camp technical group.</p>
+        <div class="score"><span>First touch <b>B+</b></span><span>Weak foot <b>C+</b></span><span>Awareness <b>B</b></span></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 data-i18n="goals">Development Goals (set with family)</h3>
+        <div class="row"><span class="who">Confident left foot in matches</span><span class="tag amber" data-i18n="inProgress">In progress</span></div>
+        <div class="row"><span class="who">Academy tryout readiness by spring 2027</span><span class="tag blue" data-i18n="onTrack">On track</span></div>
+      </div>
+    </div>
+
+    <!-- PATHWAY -->
+    <div class="screen" id="s-path">
+      <h2 data-i18n="pathTitle">Leo's Pathway</h2>
+      <div class="sub" data-i18n="pathSub">The roadmap — where he's been, where he's going.</div>
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="meterTitle">Pathway to Pro — development stage</h3>
+        <div style="display:flex;gap:4px;margin:14px 0 6px;">
+          <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font-size:11px;color:var(--muted);">FUNdamentals<br><span style="font-size:10px;">6–9</span></div>
+          <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:rgba(46,224,138,.12);border:1px solid var(--grass);font-size:11px;color:var(--grass);font-weight:800;">Learn to Train<br><span style="font-size:10px;">9–12 · LEO</span></div>
+          <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font-size:11px;color:var(--muted);">Train to Train<br><span style="font-size:10px;">12–16</span></div>
+          <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font-size:11px;color:var(--muted);">Train to Compete<br><span style="font-size:10px;">16–23</span></div>
+          <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font-size:11px;color:var(--muted);">Pro<br><span style="font-size:10px;">→</span></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;" data-i18n="meterExplain"><b style="color:var(--white);">Learn to Train (9–12):</b> the golden age of skill learning. The focus is technical foundations, coordination, and love of the game — measured through Leo's Player Report milestones: first touch (B+ ✓), asymmetry under 10% (✓), weak-foot competence (in progress).</p>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;">
+          <span class="tag blue" data-i18n="streamTag">Stream: Competitive</span>
+          <span style="font-size:12px;color:var(--muted);" data-i18n="streamNote">High-performance stream entry is typically assessed in the Train to Train stage — reassessments build that case.</span>
+        </div>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:12px;" data-i18n="meterAlign">Aligned with Canada Soccer Long-Term Player Development (LTPD) · European academy phase mapping via Lovrencsics Academy</p>
+      </div>
+      <div class="card">
+        <div class="row"><div><div class="who">✅ Movement Intelligence Screening</div><div class="meta">Jun 2026 · Baseline established · Sandro Rajic</div></div></div>
+        <div class="row"><div><div class="who">✅ Foundation Training</div><div class="meta">Apr–May 2026 · Completed · Skills assessment B+</div></div></div>
+        <div class="row"><div><div class="who">🟢 Total Athlete — Week 5 of 8</div><div class="meta">Current · Coach Nick · fitness block built on screening results</div></div></div>
+        <div class="row"><div><div class="who">◻ Reassessment</div><div class="meta">Aug 2026 · progress measured against June baseline</div></div></div>
+        <div class="row"><div><div class="who">◻ Scout Ready Program</div><div class="meta">Fall 2026 · recommended if reassessment confirms readiness</div></div></div>
+        <div class="row"><div><div class="who">◻ Split Summer Camp 🇭🇷</div><div class="meta">Summer 2027 · Lovrencsics Academy · European immersion</div></div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px;">
+        <div class="card"><h3 data-i18n="progressSince">Progress since baseline</h3>
+          <div style="font-size:13.5px;">Asymmetry <b style="color:var(--grass)">12% → 7%</b></div><div class="bar"><i style="width:58%"></i></div>
+          <div style="font-size:13.5px;margin-top:12px;">5-10-5 shuttle <b style="color:var(--grass)">6.2s → 5.9s</b></div><div class="bar"><i style="width:48%"></i></div>
+        </div>
+        <div class="card"><h3 data-i18n="famMeeting">Family Progress Meeting</h3><p style="font-size:13.5px;color:var(--muted);">Quarterly review with your guides. Next: <b style="color:var(--white)">Aug 20, 7:00 PM</b> (video call). We walk through the report together — questions welcome.</p></div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div class="screen" id="s-book">
+      <h2 data-i18n="bookTitle">Bookings</h2>
+      <div class="sub" data-i18n="bookSub">All scheduling runs through PitchPro — one calendar, one place.</div>
+      <div class="note-strip" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;"><span><b data-i18n="calFeed">Family calendar feed connected.</b> <span data-i18n="calFeedSub">All confirmed sessions appear automatically in your Google / Apple / Outlook calendar.</span></span><span class="tag" style="white-space:nowrap;">✓ Subscribed</span></div>
+      <div class="card">
+        <h3 data-i18n="upcoming">Upcoming</h3>
+        <div class="row"><div><div class="who">Agility · Coach Nick</div><div class="meta">Tue Jul 21 · 4:30 PM MT · Calgary NW Dome</div></div><div style="display:flex;gap:8px;align-items:center;"><button class="btn-sm" style="font-size:11px;padding:5px 12px;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:999px;cursor:pointer;">📅 <span data-i18n="addCal">Add to calendar</span></button><span class="tag" data-i18n="confirmed">Confirmed</span></div></div>
+        <div class="row"><div><div class="who">Agility · Coach Nick</div><div class="meta">Thu Jul 23 · 4:30 PM MT · Calgary NW Dome</div></div><div style="display:flex;gap:8px;align-items:center;"><button class="btn-sm" style="font-size:11px;padding:5px 12px;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:999px;cursor:pointer;">📅 <span data-i18n="addCal">Add to calendar</span></button><span class="tag" data-i18n="confirmed">Confirmed</span></div></div>
+        <div class="row"><div><div class="who">Strength block · Coach Nick</div><div class="meta">Sat Jul 25 · 10:00 AM MT · Calgary NW Dome</div></div><span class="tag amber" data-i18n="pending">Pending</span></div>
+        <div class="row"><div><div class="who">Family camp call · Grego 🇭🇷</div><div class="meta">Wed Jul 29 · 11:00 AM MT / 7:00 PM CEST · video call</div></div><span class="tag" data-i18n="confirmed">Confirmed</span></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 data-i18n="past">Recent</h3>
+        <div class="row"><div><div class="who">Agility · Coach Nick</div><div class="meta">Thu Jul 16 · attended · note posted</div></div><span class="tag blue" data-i18n="done">Done</span></div>
+        <div class="row"><div><div class="who">Agility · Coach Nick</div><div class="meta">Tue Jul 14 · attended · note posted</div></div><span class="tag blue" data-i18n="done">Done</span></div>
+      </div>
+      <p style="margin-top:16px;font-size:13px;color:var(--muted);" data-i18n="cancelNote">Cancellations up to 24h before a session are free. Late cancellations follow the policy in your service agreement.</p>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div class="screen" id="s-pay">
+      <h2 data-i18n="payTitle">Payments</h2>
+      <div class="sub" data-i18n="paySub">Every charge in one place — receipts included. Guides never handle payment directly.</div>
+      <div class="grid g2">
+        <div class="card"><h3 data-i18n="enrollment">Current Enrollment</h3><div class="big">Total Athlete</div><div style="color:var(--muted);font-size:13px;">$349 · 8 weeks · paid in full</div><div class="bar"><i style="width:62%"></i></div></div>
+        <div class="card"><h3 data-i18n="payMethod">Payment Method</h3><div style="font-size:15px;">Visa •••• 4242</div><div style="color:var(--muted);font-size:13px;" data-i18n="payMethodNote">Securely stored with our payment provider. PitchPro staff never see your card number.</div></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 data-i18n="receipts">Receipts</h3>
+        <table>
+          <tr><th data-i18n="thDate">Date</th><th data-i18n="thItem">Item</th><th data-i18n="thAmount">Amount</th><th></th></tr>
+          <tr class="doc-row"><td>Jun 28</td><td>Total Athlete (8 weeks)</td><td>$349.00</td><td><button class="btn-sm" data-i18n="receipt">Receipt</button></td></tr>
+          <tr class="doc-row"><td>Jun 10</td><td>Movement Intelligence Screening</td><td>$249.00</td><td><button class="btn-sm" data-i18n="receipt">Receipt</button></td></tr>
+          <tr class="doc-row"><td>Apr 02</td><td>Foundation Training (4 weeks)</td><td>$149.00</td><td><button class="btn-sm" data-i18n="receipt">Receipt</button></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- MESSAGES & DOCS -->
+    <div class="screen" id="s-msg">
+      <h2 data-i18n="msgTitle">Messages &amp; Documents</h2>
+      <div class="sub" data-i18n="msgSub">All communication stays on the platform.</div>
+      <div class="note-strip"><b data-i18n="safety">Child safety, by design.</b> <span data-i18n="safetySub">Guides communicate with parents only — never directly with players. All messages are visible to PitchPro's safeguarding team.</span></div>
+      <div class="card">
+        <h3>Coach Nick</h3>
+        <div class="msg"><div class="from">Coach Nick <span>Yesterday 6:12 PM</span></div><div style="font-size:13.5px;margin-top:4px;">Leo's first step off the left foot is noticeably quicker. We'll test it under pressure Thursday.</div></div>
+        <div class="msg me"><div class="from">You <span>Yesterday 6:40 PM</span></div><div style="font-size:13.5px;margin-top:4px;">He was so proud after Tuesday. Thanks for the note!</div></div>
+        <div class="msg"><div class="from">Sandro Rajic <span>Jul 12</span></div><div style="font-size:13.5px;margin-top:4px;">Reassessment booked for Aug 14. The June report is in Leo's profile — bring questions to the family meeting.</div></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 data-i18n="docs">Documents &amp; Consents</h3>
+        <table>
+          <tr class="doc-row"><td>Service Agreement</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
+          <tr class="doc-row"><td>Liability Waiver</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
+          <tr class="doc-row"><td>Health &amp; Assessment Consent</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
+        </table>
+        <div class="consent"><span data-i18n="photoConsent">Photo &amp; video permission (training clips, progress analysis)</span><div class="pilldot"></div></div>
+        <div class="consent"><span data-i18n="marketingConsent">Marketing use of imagery</span><div class="pilldot off"></div></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="dataRights">Your data rights: request a copy or deletion of your family's data at any time — privacy@pitchpropathways.com. We follow PIPEDA (Canada) and GDPR (EU families).</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+
+<script>
+function enter(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';}
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>{
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+n.dataset.s).classList.add('on');
+}));
+function switchChild(el,name){document.querySelectorAll('.child-chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');document.getElementById('childName').textContent=name;}
+const i18n={
+ en:{},
+ hr:{portalTitle:'Obiteljski portal',portalSub:'Prijavite se i pratite put svog djeteta. Termini, izvještaji, poruke i plaćanja na jednom sigurnom mjestu.',email:'E-mail',password:'Lozinka',enterDemo:'Uđi u demo portal',loginNote:'Prijava nije aktivna u ovom pregledu. Prava prijava s dvofaktorskom zaštitom stiže s platformom.',
+ navDash:'Početna',navPlayer:'Profil igrača',navPath:'Put razvoja',navBook:'Termini',navPay:'Plaćanja',navMsg:'Poruke i dokumenti',
+ dashTitle:'Dobrodošli natrag, Maria',dashSub:'Evo gdje je Leov put ovog tjedna.',nextSession:'Sljedeći trening',program:'Trenutni program',nextReassess:'Sljedeća procjena',withSandro:'Procjena pokreta · sa Sandrom',latestNote:'Zadnja bilješka vodiča',quickActions:'Brze radnje',qaBook:'Rezerviraj termin',qaReport:'Pogledaj zadnji izvještaj',qaMsg:'Pošalji poruku vodiču',go:'Idi',
+ reportStd:'PitchPro izvještaj igrača.',reportStdSub:'Jedan standardizirani izvještaj za sve vodiče. Svaki vodič doprinosi svojom disciplinom — vaše dijete dobiva potpunu sliku.',goals:'Razvojni ciljevi (dogovoreni s obitelji)',inProgress:'U tijeku',onTrack:'Po planu',
+ pathTitle:'Leov put',pathSub:'Plan puta — gdje je bio, kamo ide.',progressSince:'Napredak od početka',famMeeting:'Obiteljski sastanak',
+ meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz Leove ciljeve u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokoučinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
+ calFeed:'Obiteljski kalendar povezan.',calFeedSub:'Svi potvrđeni termini automatski se pojavljuju u vašem Google / Apple / Outlook kalendaru.',addCal:'Dodaj u kalendar',
+ bookTitle:'Termini',bookSub:'Sve rezervacije idu kroz PitchPro — jedan kalendar, jedno mjesto.',upcoming:'Nadolazeći',past:'Nedavni',confirmed:'Potvrđeno',pending:'Na čekanju',done:'Odrađeno',cancelNote:'Otkazivanje do 24h prije termina je besplatno. Kasnija otkazivanja slijede pravila iz ugovora.',
+ payTitle:'Plaćanja',paySub:'Sva plaćanja na jednom mjestu — s računima. Vodiči nikada ne primaju plaćanja izravno.',enrollment:'Trenutni upis',payMethod:'Način plaćanja',payMethodNote:'Sigurno pohranjeno kod pružatelja plaćanja. PitchPro osoblje nikada ne vidi broj kartice.',receipts:'Računi',thDate:'Datum',thItem:'Stavka',thAmount:'Iznos',receipt:'Račun',
+ msgTitle:'Poruke i dokumenti',msgSub:'Sva komunikacija ostaje na platformi.',safety:'Sigurnost djece, po dizajnu.',safetySub:'Vodiči komuniciraju samo s roditeljima — nikada izravno s igračima. Sve poruke vidljive su PitchPro timu za zaštitu.',docs:'Dokumenti i privole',signed:'Potpisano',view:'Otvori',photoConsent:'Dozvola za foto i video (snimke treninga, analiza napretka)',marketingConsent:'Korištenje snimaka u marketingu',dataRights:'Vaša prava: zatražite kopiju ili brisanje podataka vaše obitelji u bilo kojem trenutku — privacy@pitchpropathways.com. Slijedimo PIPEDA (Kanada) i GDPR (EU obitelji).'}
+};
+let base={};
+document.querySelectorAll('[data-i18n]').forEach(el=>{base[el.dataset.i18n]=el.innerHTML;});
+function setLang(l,btn){
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    el.innerHTML = (l==='en')?base[k]:(i18n.hr[k]||base[k]);
+  });
+}
+</script>
+</body>
+</html>
