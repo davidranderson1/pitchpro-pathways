@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion Intelligence Platform — The Brain · PitchPro × Rajic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch-black:#0b120e; --pitch-dark:#101a14; --pitch-card:#15211a;
+    --grass:#2ee08a; --grass-deep:#17b06a; --white:#ffffff; --muted:#9db3a6;
+    --amber:#ffbe46; --red:#ff7a6b; --blue:#5fb4ff; --line:rgba(255,255,255,.08);
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--body);background:var(--pitch-black);color:var(--white);line-height:1.55;font-size:15.5px;
+    background-image:radial-gradient(rgba(46,224,138,.05) 1px,transparent 1px);background-size:34px 34px;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.1;}
+  a{color:var(--grass);}
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(11,18,14,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:18px;}
+  .brand{font-family:var(--head);font-weight:900;font-size:16px;letter-spacing:.06em;display:flex;align-items:center;gap:10px;white-space:nowrap;}
+  .brand .dot{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;color:#06130c;font-size:15px;}
+  .brand small{display:block;font-family:var(--body);font-weight:600;font-size:10px;letter-spacing:.18em;color:var(--muted);}
+  .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+  .tab{background:none;border:1px solid transparent;color:var(--muted);font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:999px;cursor:pointer;}
+  .tab:hover{color:var(--grass);}
+  .tab.on{background:rgba(46,224,138,.13);color:var(--grass);border-color:rgba(46,224,138,.4);}
+  .view{display:none;max-width:1180px;margin:0 auto;padding:44px 20px 90px;}
+  .view.on{display:block;}
+  .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--grass);margin-bottom:12px;}
+  h1{font-size:clamp(30px,4.6vw,52px);font-weight:900;}
+  h1 span,h2 span{color:var(--grass);}
+  h2{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:8px;}
+  .lead{color:var(--muted);font-size:16.5px;max-width:820px;margin-top:12px;}
+  .mock{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(255,190,70,.15);color:var(--amber);margin-left:10px;vertical-align:middle;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px;margin-top:30px;}
+  .card{background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;}
+  .card.hot{border-color:rgba(46,224,138,.5);}
+  .card h3{font-size:14px;letter-spacing:.06em;margin-bottom:8px;}
+  .card p{font-size:13.5px;color:var(--muted);}
+  .card .cnt{font-family:var(--head);font-size:26px;font-weight:900;color:var(--grass);display:block;margin-bottom:4px;}
+  .stat-row{display:flex;gap:0;margin-top:36px;border-top:1px solid var(--line);padding-top:22px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:150px;padding-right:18px;}
+  .stat b{font-family:var(--head);font-size:30px;font-weight:900;display:block;}
+  .stat span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .pillrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .pill{border:1px solid rgba(46,224,138,.35);color:var(--grass);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px;}
+  .status{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:999px;float:right;}
+  .status.ok{background:rgba(46,224,138,.15);color:var(--grass);}
+  .status.todo{background:rgba(255,190,70,.15);color:var(--amber);}
+  /* athlete profile */
+  .profile{display:grid;grid-template-columns:300px 1fr;gap:18px;margin-top:30px;}
+  @media(max-width:880px){.profile{grid-template-columns:1fr;}}
+  .avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:24px;color:#06130c;margin-bottom:14px;}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+  .kv span{color:var(--muted);}
+  .gaugewrap{text-align:center;padding:8px 0 4px;}
+  .gauge-num{font-family:var(--head);font-size:44px;font-weight:900;color:var(--grass);line-height:1;}
+  .gauge-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px;}
+  .bars{margin-top:12px;}
+  .bar-row{margin-bottom:12px;}
+  .bar-row .lbl{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;}
+  .bar-row .lbl span{color:var(--muted);}
+  .track{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;}
+  .fill{height:100%;border-radius:999px;background:var(--grass);}
+  .fill.warn{background:var(--amber);}
+  .fill.risk{background:var(--red);}
+  .flag{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:var(--pitch-dark);border:1px solid var(--line);margin-top:10px;font-size:13px;}
+  .flag b{color:var(--white);}
+  .flag.warn{border-color:rgba(255,190,70,.4);}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:8px;}
+  /* academy */
+  .tier-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:26px;}
+  .tier-card{background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .tier-card.on{border-color:var(--grass);}
+  .tier-card .lvl{font-family:var(--head);font-weight:900;color:var(--grass);font-size:13px;letter-spacing:.1em;}
+  .tier-card h3{font-size:16px;margin:6px 0 8px;}
+  .tier-card ul{list-style:none;margin-top:8px;}
+  .tier-card li{font-size:13px;color:#cfe0d6;padding:5px 0 5px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);}
+  .tier-card li::before{content:'✓';position:absolute;left:0;color:var(--grass);font-weight:700;}
+  .chat{background:var(--pitch-card);border:1px solid rgba(46,224,138,.4);border-radius:16px;padding:22px;margin-top:26px;}
+  .msg{max-width:640px;padding:11px 15px;border-radius:14px;font-size:13.5px;margin-top:12px;}
+  .msg.q{background:rgba(46,224,138,.13);color:var(--white);margin-left:auto;border:1px solid rgba(46,224,138,.3);}
+  .msg.a{background:var(--pitch-dark);border:1px solid var(--line);color:#d7e4dc;}
+  .msg .who{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--grass);display:block;margin-bottom:4px;}
+  /* flow map */
+  .flow{display:grid;grid-template-columns:1fr;gap:0;margin-top:30px;max-width:760px;}
+  .fnode{background:var(--pitch-card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative;}
+  .fnode.hub{border-color:var(--grass);background:rgba(46,224,138,.07);}
+  .fnode h3{font-size:14px;letter-spacing:.05em;}
+  .fnode p{font-size:13px;color:var(--muted);margin-top:4px;}
+  .fnode .sys{float:right;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);}
+  .farrow{text-align:center;color:var(--grass);font-size:18px;padding:4px 0;}
+  /* build plan */
+  .phase{background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:16px;}
+  .phase.hot{border-color:rgba(46,224,138,.5);}
+  .phase .ph{font-family:var(--head);font-weight:900;color:var(--grass);font-size:13px;letter-spacing:.12em;}
+  .phase h3{font-size:17px;margin:6px 0 4px;}
+  .phase .dur{font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+  .phase ul{list-style:none;margin-top:10px;}
+  .phase li{font-size:13.5px;color:#cfe0d6;padding:6px 0 6px 22px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);}
+  .phase li::before{content:'▸';position:absolute;left:0;color:var(--grass);}
+  .own{background:rgba(46,224,138,.07);border:1px solid rgba(46,224,138,.4);border-radius:16px;padding:24px;margin-top:30px;}
+  .own h3{color:var(--grass);font-size:15px;margin-bottom:8px;}
+  .own p{font-size:14px;color:#d7e4dc;}
+  .qbox{background:var(--pitch-dark);border:1px solid rgba(255,190,70,.4);border-radius:16px;padding:24px;margin-top:26px;}
+  .qbox h3{color:var(--amber);font-size:14px;margin-bottom:10px;}
+  .qbox li{font-size:13.5px;color:#d7e4dc;list-style:none;padding:6px 0 6px 26px;position:relative;}
+  .qbox li b{color:var(--amber);position:absolute;left:0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot">🧬</span><span>MOTION INTELLIGENCE<small>PitchPro × Rajic · The Brain</small></span></div>
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-v="v1">The Brain</button>
+      <button class="tab" data-v="v2">Knowledge Base</button>
+      <button class="tab" data-v="v3">Athlete Profile</button>
+      <button class="tab" data-v="v4">Guide Academy</button>
+      <button class="tab" data-v="v5">Integration Map</button>
+      <button class="tab" data-v="v6">Build Plan</button>
+    </nav>
+  </div>
+</div>
+
+<!-- VIEW 1 — THE BRAIN -->
+<section class="view on" id="v1">
+  <div class="kicker">Concept · Jointly Owned</div>
+  <h1>One Brain.<br><span>Every Surface Learns From It.</span></h1>
+  <p class="lead">The Motion Intelligence Platform is the structured version of Sandro's expertise — assessment protocols, movement benchmarks, the Motion Age model, corrective methodology — turned into a system that scores athletes, trains Guides, and powers every product PitchPro and the practice ship together. The two businesses stay distinct; the Brain is the thing owned together.</p>
+  <div class="grid">
+    <div class="card hot"><h3>🧠 It Knows</h3><p>Sandro's structured knowledge: capture standards, benchmarks by age and position, vulnerability markers, corrective exercise logic, training methodology.</p></div>
+    <div class="card hot"><h3>📏 It Scores</h3><p>Every DARI capture runs against the benchmarks: Motion Age, athleticism score, asymmetry, injury vulnerability — consistent for a 10-year-old winger or a 55-year-old executive.</p></div>
+    <div class="card hot"><h3>🎓 It Teaches</h3><p>The same knowledge becomes the Guide Academy curriculum and an "Ask the Brain" assistant — every Guide trained and certified on Sandro's method, at scale.</p></div>
+    <div class="card hot"><h3>🔌 It Powers</h3><p>Parent portal results, guide training plans, reassessment triggers, CRM follow-ups, executive reports — one source of truth behind every surface already built.</p></div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><b>1</b><span>Method · Sandro's</span></div>
+    <div class="stat"><b>2</b><span>Markets · Youth + Executive</span></div>
+    <div class="stat"><b>4</b><span>Surfaces already built</span></div>
+    <div class="stat"><b>50/50</b><span>Ownership · to confirm</span></div>
+  </div>
+  <div class="pillrow"><span class="pill">Science-led. Human-first.</span><span class="pill">DARI Motion Capture</span><span class="pill">Motion Age™</span><span class="pill">Guide Academy</span></div>
+</section>
+
+<!-- VIEW 2 — KNOWLEDGE BASE -->
+<section class="view" id="v2">
+  <div class="kicker">The Asset</div>
+  <h2>Knowledge <span>Base</span><span class="mock">Mockup · illustrative counts</span></h2>
+  <p class="lead">Sandro's information, structured into domains. "Captured" means it exists in his current files and head; "To digitize" is the Phase 1 work — getting it into the Brain in structured, queryable form.</p>
+  <div class="grid">
+    <div class="card"><span class="status ok">Captured</span><span class="cnt">14</span><h3>Assessment Protocols</h3><p>DARI capture standards, screening sequences, retest rules, quality checks.</p></div>
+    <div class="card"><span class="status ok">Captured</span><span class="cnt">220+</span><h3>Movement Benchmarks</h3><p>Reference ranges by age band, sex, sport, and position — the norm tables behind Motion Age.</p></div>
+    <div class="card"><span class="status todo">To digitize</span><span class="cnt">1</span><h3>Motion Age Model</h3><p>The scoring logic that turns raw capture data into one parent-friendly number.</p></div>
+    <div class="card"><span class="status todo">To digitize</span><span class="cnt">35</span><h3>Vulnerability Markers</h3><p>Asymmetry and load patterns that flag injury risk before it happens.</p></div>
+    <div class="card"><span class="status todo">To digitize</span><span class="cnt">180</span><h3>Corrective Exercise Library</h3><p>Interventions mapped to findings — what a Guide prescribes for each flag.</p></div>
+    <div class="card"><span class="status todo">To digitize</span><span class="cnt">6</span><h3>Training Methodology</h3><p>Sandro's programming principles — progression, load, recovery — as rulesets.</p></div>
+    <div class="card"><span class="status todo">To digitize</span><span class="cnt">3</span><h3>Guide Playbooks</h3><p>How to run a session, debrief a parent, interpret a report — the human layer.</p></div>
+    <div class="card"><span class="status todo">To digitize</span><span class="cnt">2</span><h3>Executive Adaptations</h3><p>The same models re-normed for adult movement, longevity, and desk-career load.</p></div>
+  </div>
+</section>
+
+<!-- VIEW 3 — ATHLETE PROFILE -->
+<section class="view" id="v3">
+  <div class="kicker">Product Mock · What a Family Sees</div>
+  <h2>Athlete <span>Profile</span><span class="mock">Sample data</span></h2>
+  <div class="profile">
+    <div class="card">
+      <div class="avatar">LK</div>
+      <h3 style="font-size:17px;">Luka K.</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">U14 · Winger · Calgary Blizzard SC</p>
+      <div class="kv"><span>Chronological age</span><b>13.6</b></div>
+      <div class="kv"><span>Assessments</span><b>3</b></div>
+      <div class="kv"><span>Program</span><b style="color:var(--grass);">Academy Fast Track</b></div>
+      <div class="kv"><span>Guide</span><b>Sandro Rajic</b></div>
+      <div class="kv"><span>Next reassessment</span><b style="color:var(--amber);">Sep 14, 2026</b></div>
+      <div class="gaugewrap" style="margin-top:18px;">
+        <div class="gauge-num">12.1</div>
+        <div class="gauge-sub">Motion Age · 1.5 yrs ahead of peers</div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Progress · Motion Age vs Chronological<span class="mock">Mock</span></h3>
+        <svg viewBox="0 0 560 170" width="100%" height="170" role="img" aria-label="Line chart: Motion Age improving across three assessments versus chronological age">
+          <line x1="40" y1="20" x2="40" y2="140" stroke="rgba(255,255,255,.15)"/>
+          <line x1="40" y1="140" x2="540" y2="140" stroke="rgba(255,255,255,.15)"/>
+          <text x="8" y="26" fill="#9db3a6" font-size="10">14.0</text>
+          <text x="8" y="86" fill="#9db3a6" font-size="10">13.0</text>
+          <text x="8" y="143" fill="#9db3a6" font-size="10">12.0</text>
+          <polyline points="80,52 300,60 520,68" fill="none" stroke="#9db3a6" stroke-width="2" stroke-dasharray="5 5"/>
+          <polyline points="80,36 300,84 520,128" fill="none" stroke="#2ee08a" stroke-width="3"/>
+          <circle cx="80" cy="36" r="4" fill="#2ee08a"/><circle cx="300" cy="84" r="4" fill="#2ee08a"/><circle cx="520" cy="128" r="4" fill="#2ee08a"/>
+          <text x="66" y="162" fill="#9db3a6" font-size="10">Jan 2026</text>
+          <text x="284" y="162" fill="#9db3a6" font-size="10">Apr 2026</text>
+          <text x="500" y="162" fill="#9db3a6" font-size="10">Jul 2026</text>
+          <text x="440" y="115" fill="#2ee08a" font-size="10" font-weight="700">Motion Age ↓ better</text>
+          <text x="440" y="58" fill="#9db3a6" font-size="10">Chronological</text>
+        </svg>
+        <p class="chart-note">Motion Age dropping below chronological age = moving younger, more resilient than peers. This one chart is what sells the reassessment.</p>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3>Asymmetry & Capacity</h3>
+        <div class="bars">
+          <div class="bar-row"><div class="lbl"><b>Lower-body symmetry</b><span>92% · balanced</span></div><div class="track"><div class="fill" style="width:92%;"></div></div></div>
+          <div class="bar-row"><div class="lbl"><b>Trunk stability</b><span>78% · developing</span></div><div class="track"><div class="fill" style="width:78%;"></div></div></div>
+          <div class="bar-row"><div class="lbl"><b>Landing mechanics — left</b><span>61% · flagged</span></div><div class="track"><div class="fill warn" style="width:61%;"></div></div></div>
+        </div>
+        <div class="flag warn">⚠️ <div><b>Vulnerability flag:</b> left-side landing asymmetry above threshold for age band. Brain prescribes corrective block C-17; Guide notified; recheck at next reassessment.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIEW 4 — GUIDE ACADEMY -->
+<section class="view" id="v4">
+  <div class="kicker">The Multiplier</div>
+  <h2>Guide <span>Academy</span><span class="mock">Mockup</span></h2>
+  <p class="lead">The Brain doesn't just score athletes — it trains the people. Every Guide certifies on Sandro's method through structured levels, and gets an assistant that answers from the knowledge base, not from the internet. This is how one expert becomes fifty consistent Guides.</p>
+  <div class="tier-grid">
+    <div class="tier-card on"><div class="lvl">LEVEL 1</div><h3>Certified Screener</h3><ul><li>DARI capture protocol</li><li>Session setup & quality checks</li><li>Consent & youth safeguards</li><li>When to escalate to Sandro</li></ul></div>
+    <div class="tier-card"><div class="lvl">LEVEL 2</div><h3>Certified Interpreter</h3><ul><li>Reading Motion Age & asymmetry</li><li>Parent debrief playbook</li><li>Pathway recommendations</li><li>Report walkthroughs</li></ul></div>
+    <div class="tier-card"><div class="lvl">LEVEL 3</div><h3>Movement Coach</h3><ul><li>Corrective exercise prescription</li><li>Program design from findings</li><li>Reassessment analysis</li><li>Executive adaptations</li></ul></div>
+  </div>
+  <div class="chat">
+    <h3 style="font-size:14px;">💬 Ask the Brain — Guide assistant<span class="mock">Mock conversation</span></h3>
+    <div class="msg q"><span class="who">Coach Nick · Level 1</span>U12 player shows 65% landing symmetry on the left after capture. What do I tell the parents, and what's next?</div>
+    <div class="msg a"><span class="who">The Brain</span>65% is below the U12 threshold (70%). Per debrief playbook: frame it as an opportunity found early, not an injury. Recommend corrective block C-17 (2×/week, 4 weeks) inside their current program, and book the 8-week reassessment before they leave. Flag routed to Sandro for review — do not prescribe beyond C-17 at Level 1.</div>
+  </div>
+</section>
+
+<!-- VIEW 5 — INTEGRATION MAP -->
+<section class="view" id="v5">
+  <div class="kicker">How It Connects</div>
+  <h2>The Brain in the <span>Middle of Everything Built</span></h2>
+  <p class="lead">Every piece already live — the site, the portals, the screening product, the CRM plan — either feeds the Brain or is fed by it.</p>
+  <div class="flow">
+    <div class="fnode"><span class="sys">pitchpro site</span><h3>1 · Family books a screening</h3><p>PitchPro Pathways site → Movement Intelligence Screening ($249) → booking + payment + digital intake & consent.</p></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><span class="sys">practice</span><h3>2 · Capture at Sandro's practice</h3><p>DARI markerless capture, run to the Brain's protocol standards by a certified Guide.</p></div>
+    <div class="farrow">↓</div>
+    <div class="fnode hub"><span class="sys" style="color:var(--grass);">THE BRAIN</span><h3>3 · Motion Intelligence Platform scores it</h3><p>Raw capture → benchmarks → Motion Age, asymmetry, vulnerability flags, corrective prescription, recommended pathway. Jointly owned IP.</p></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><span class="sys">parent portal</span><h3>4 · Family sees results</h3><p>Parent portal shows the Motion Age story and progress chart — and the recommended program (the upsell writes itself).</p></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><span class="sys">guide portal</span><h3>5 · Guides act on it</h3><p>Training plans and corrective blocks generated from findings; Guide Academy keeps every Guide certified on the method.</p></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><span class="sys">dynamics crm</span><h3>6 · The back office runs itself</h3><p>David's Dynamics CRM layer: reassessment due dates, follow-up pipelines, win-backs, corporate accounts — every screening becomes recurring revenue.</p></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><span class="sys">executive line</span><h3>7 · Same Brain, second market</h3><p>PitchPro Executive sells the identical loop to companies — adult norms, longevity focus, corporate reporting.</p></div>
+  </div>
+</section>
+
+<!-- VIEW 6 — BUILD PLAN -->
+<section class="view" id="v6">
+  <div class="kicker">Scope</div>
+  <h2>Build <span>Plan</span></h2>
+  <div class="own">
+    <h3>🤝 The Ownership Thesis (from today's meeting)</h3>
+    <p>Sandro and David are aligned; the merge point is the Brain. Sandro contributes the methodology and structured knowledge; David contributes the architecture, build, and operations. Everything created around this Brain — the platform, the Guide Academy, the scoring models, the technology — is owned together. PitchPro Pathways and the practice each remain their own businesses that license/use the Brain. Exact structure (50/50 entity vs. IP agreement) to be confirmed with advice.</p>
+  </div>
+  <div class="phase hot">
+    <div class="ph">PHASE 1 · NOW</div><h3>Capture the Knowledge</h3><div class="dur">~2–4 weeks · mostly Sandro's time + Claude</div>
+    <ul>
+      <li>Inventory Sandro's existing structured information (files, norms, protocols) — it's the seed of the Brain</li>
+      <li>Digitize into structured domains (the Knowledge Base tab of this mockup)</li>
+      <li>Define the Motion Age scoring spec precisely enough to compute</li>
+      <li>Agree the ownership structure and put it in writing</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="ph">PHASE 2</div><h3>Platform MVP</h3><div class="dur">~4–8 weeks</div>
+    <ul>
+      <li>Athlete records + assessment history (single database behind parent/guide/admin portals)</li>
+      <li>Scoring engine v1: capture data in → Motion Age, asymmetry, flags out</li>
+      <li>Wire the live portals to real data; booking + payment for the $249 screening</li>
+      <li>Dynamics CRM back end: reassessment triggers and follow-up pipelines</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="ph">PHASE 3</div><h3>The Teaching Layer</h3><div class="dur">~8–12 weeks</div>
+    <ul>
+      <li>Guide Academy: certification levels, modules, assessments</li>
+      <li>"Ask the Brain" assistant trained on the knowledge base</li>
+      <li>Auto-generated parent reports and executive reports</li>
+      <li>Executive re-norming — open the corporate market on the same engine</li>
+    </ul>
+  </div>
+  <div class="qbox">
+    <h3>Open Questions for Sandro & David</h3>
+    <ul>
+      <li><b>Q1</b> What form is Sandro's existing structured information in (spreadsheets, documents, software exports), and can Claude get a sample to design the Brain's data model around?</li>
+      <li><b>Q2</b> Ownership vehicle — new 50/50 entity holding the IP, or a co-ownership agreement between the two existing businesses?</li>
+      <li><b>Q3</b> Merge/launch point — launch the Brain first inside the $249 PitchPro screening (fastest revenue), or stand it up as its own platform brand from day one?</li>
+      <li><b>Q4</b> What does Sandro consider protectable — the norms, the scoring model, the corrective mappings — and what stays his practice's alone?</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  const tabs=document.querySelectorAll('.tab'),views=document.querySelectorAll('.view');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('on'));views.forEach(v=>v.classList.remove('on'));
+    t.classList.add('on');document.getElementById(t.dataset.v).classList.add('on');window.scrollTo(0,0);
+  }));
+</script>
+
+</body>
+</html>
