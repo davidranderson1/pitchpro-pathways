@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Pages — PitchPro × Rajic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch-black:#0b120e; --pitch-dark:#101a14; --pitch-card:#15211a;
+    --grass:#2ee08a; --grass-deep:#17b06a; --white:#ffffff; --muted:#9db3a6;
+    --amber:#ffbe46; --blue:#5fb4ff; --violet:#b79bff; --line:rgba(255,255,255,.08);
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--body);background:var(--pitch-black);color:var(--white);line-height:1.55;font-size:15.5px;
+    background-image:radial-gradient(rgba(46,224,138,.05) 1px,transparent 1px);background-size:34px 34px;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.1;}
+  a{color:var(--grass);}
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(11,18,14,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .topbar-inner{max-width:1000px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:18px;}
+  .brand{font-family:var(--head);font-weight:900;font-size:16px;letter-spacing:.06em;display:flex;align-items:center;gap:10px;white-space:nowrap;}
+  .brand .dot{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;color:#06130c;font-size:15px;}
+  .brand small{display:block;font-family:var(--body);font-weight:600;font-size:10px;letter-spacing:.18em;color:var(--muted);}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 20px 90px;}
+  .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--grass);margin-bottom:12px;}
+  h1{font-size:clamp(28px,4.4vw,46px);font-weight:900;}
+  h1 span{color:var(--grass);}
+  .lead{color:var(--muted);font-size:16px;max-width:760px;margin-top:12px;}
+  .sec{font-family:var(--head);font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:38px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;}
+  .item{display:block;text-decoration:none;background:var(--pitch-card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--white);}
+  .item:hover{border-color:rgba(46,224,138,.5);background:rgba(46,224,138,.06);}
+  .item b{font-family:var(--head);font-size:14px;letter-spacing:.05em;text-transform:uppercase;display:block;}
+  .item p{font-size:13px;color:var(--muted);margin-top:5px;}
+  .item code{font-size:11px;color:var(--muted);opacity:.7;display:block;margin-top:7px;}
+  .item.hot{border-color:rgba(46,224,138,.45);}
+  .tagline{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 9px;border-radius:999px;margin-left:8px;vertical-align:middle;}
+  .tagline.mock{background:rgba(255,190,70,.15);color:var(--amber);}
+  .tagline.live{background:rgba(46,224,138,.15);color:var(--grass);}
+  .tagline.new{background:rgba(183,155,255,.16);color:var(--violet);}
+  .note{background:var(--pitch-dark);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:12px;padding:14px 16px;margin-top:30px;font-size:13.5px;color:#cfe0d6;}
+  .note b{color:var(--amber);}
+  .foot{color:var(--muted);font-size:12px;margin-top:34px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot">◈</span><span>ALL PAGES<small>PitchPro × Rajic</small></span></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="kicker">Site index</div>
+  <h1>Everything <span>Built So Far</span></h1>
+  <p class="lead">Every page in the pitchpro-pathways repository, in one place. The floating “All pages” button in the bottom-right corner of each page opens this same index without leaving the page you are on, so nothing is ever more than one click from anything else.</p>
+
+  <div class="sec">Public site</div>
+  <div class="list">
+    <a class="item" href="index.html"><b>PitchPro Pathways — home<span class="tagline live">Public</span></b><p>The public marketing site. Links out to the three guide pages.</p><code>index.html</code></a>
+    <a class="item" href="pro-pathways.html"><b>Pro Pathways<span class="tagline live">Public</span></b><p>Programme site.</p><code>pro-pathways.html</code></a>
+    <a class="item" href="sandro-rajic-website.html"><b>Sandro Rajic — practice site<span class="tagline live">Public</span></b><p>The movement assessment practice. The one page without the floating button.</p><code>sandro-rajic-website.html</code></a>
+  </div>
+
+  <div class="sec">Motion Intelligence — the Brain</div>
+  <div class="list">
+    <a class="item hot" href="motion-intelligence.html"><b>The Brain<span class="tagline mock">Mockup</span></b><p>Platform concept, knowledge base, athlete profile, guide academy, integration map, build plan.</p><code>motion-intelligence.html</code></a>
+    <a class="item hot" href="device-intelligence.html"><b>Device Radars<span class="tagline new">Newest</span></b><p>Playermaker, Ōura and Plantiga translated into age-group percentile radar charts, with the premium subscription gate.</p><code>device-intelligence.html</code></a>
+    <a class="item" href="deck.html"><b>Meeting deck<span class="tagline mock">Mockup</span></b><p>Thirteen slides — options A and B, questions one to ten for Sandro.</p><code>deck.html</code></a>
+  </div>
+
+  <div class="sec">Player moments feature</div>
+  <div class="list">
+    <a class="item hot" href="player-moments-flow.html"><b>Feature map and flow<span class="tagline mock">Start here</span></b><p>How the moments feature works end to end, the build order, and the launch blockers.</p><code>player-moments-flow.html</code></a>
+    <a class="item" href="portal-player.html"><b>Player portal<span class="tagline mock">Mockup</span></b><p>Timeline, composer, profile, goals, who sees what.</p><code>portal-player.html</code></a>
+    <a class="item" href="portal-parent.html"><b>Parent portal<span class="tagline mock">Mockup</span></b><p>Approvals queue, safety and permissions, promotion links.</p><code>portal-parent.html</code></a>
+    <a class="item" href="portal-guide.html"><b>Guide portal<span class="tagline mock">Mockup</span></b><p>Player moments feed, comments copied to the parent, my record.</p><code>portal-guide.html</code></a>
+    <a class="item" href="portal-admin.html"><b>Admin portal<span class="tagline mock">Mockup</span></b><p>Safeguarding queue, guide conduct, audit log, compliance rows.</p><code>portal-admin.html</code></a>
+  </div>
+
+  <div class="sec">Guide pages</div>
+  <div class="list">
+    <a class="item" href="guide-portal-sandro.html"><b>Guide — Sandro Rajic</b><p>Guide profile page.</p><code>guide-portal-sandro.html</code></a>
+    <a class="item" href="guide-portal-nick.html"><b>Guide — Coach Nick</b><p>Guide profile page.</p><code>guide-portal-nick.html</code></a>
+    <a class="item" href="guide-portal-grego.html"><b>Guide — Grego</b><p>Guide profile page, Lovrencsics Academy.</p><code>guide-portal-grego.html</code></a>
+    <a class="item" href="grego-brand-guidelines.html"><b>Grego brand guidelines</b><p>Colours, type and usage.</p><code>grego-brand-guidelines.html</code></a>
+  </div>
+
+  <div class="note"><b>These pages are public.</b> The repository is public, so every page above is reachable by anyone with the address, whether or not it is linked. Placeholder statistics and testimonials are still present on several of them — worth replacing before the site is circulated widely.</div>
+
+  <p class="foot">PitchPro × Rajic · site index · 21 August 2026</p>
+</div>
+
+<script src="site-nav.js" defer></script>
+</body>
+</html>
