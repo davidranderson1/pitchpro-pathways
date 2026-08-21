@@ -9,6 +9,7 @@
   :root{
     --pitch:#0b120e; --panel:#101a14; --card:#15211a; --grass:#2ee08a; --grass-deep:#17b06a;
     --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09); --warn:#ffb84d; --blue:#4d9fff;
+    --lock:#b79bff;
     --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -23,6 +24,8 @@
   .btn{display:inline-block;border:none;cursor:pointer;font-family:var(--body);font-weight:700;font-size:14.5px;padding:13px 26px;border-radius:999px;}
   .btn-grass{background:var(--grass);color:#06130c;width:100%;}
   .btn-grass:hover{background:#4ff0a0;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--muted);}
+  .btn-sm2{padding:8px 16px;font-size:12.5px;width:auto;}
   #app{display:none;}
   .shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh;padding-top:30px;}
   @media(max-width:820px){.shell{grid-template-columns:1fr;}}
@@ -34,6 +37,8 @@
   .nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;color:var(--muted);cursor:pointer;font-weight:600;font-size:14px;border-left:3px solid transparent;}
   .nav-item:hover{color:var(--white);}
   .nav-item.active{color:var(--grass);border-left-color:var(--grass);background:rgba(46,224,138,.06);}
+  .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
+  .side-foot{padding:18px 20px;margin-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.5;}
   main{padding:34px 38px;max-width:1000px;}
   .screen{display:none;} .screen.on{display:block;}
   .screen h2{font-size:22px;margin-bottom:6px;}
@@ -46,14 +51,41 @@
   .row .meta{color:var(--muted);font-size:12.5px;}
   .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);}
   .tag.amber{background:rgba(255,184,77,.14);color:var(--warn);}
+  .tag.blue{background:rgba(77,159,255,.14);color:var(--blue);}
+  .tag.lock{background:rgba(183,155,255,.14);color:var(--lock);}
+  .tag.grey{background:rgba(255,255,255,.07);color:var(--muted);}
   .note-strip{background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.25);border-radius:12px;padding:14px 18px;font-size:13px;color:#cfe2f8;margin-bottom:22px;}
   .note-strip b{color:var(--blue);}
+  .note-strip.lock{background:rgba(183,155,255,.07);border-color:rgba(183,155,255,.28);color:#e0d6ff;}
+  .note-strip.lock b{color:var(--lock);}
   textarea{width:100%;background:var(--pitch);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--white);font-family:var(--body);font-size:14px;min-height:80px;resize:vertical;}
   .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px;}
   .cal .d{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px;text-align:center;font-size:12px;color:var(--muted);}
   .cal .d.on{border-color:var(--grass);color:var(--grass);font-weight:700;}
   .cal .d.busy{border-color:var(--warn);color:var(--warn);}
   .cal .hd{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:4px 0;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
+  td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
+  /* moments */
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2f6b4a,#17b06a);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:13px;flex-shrink:0;}
+  .moment{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+  .m-head{display:flex;align-items:center;gap:11px;padding:14px 18px;}
+  .m-head .who{font-weight:700;font-size:14px;}
+  .m-head .when{color:var(--muted);font-size:12px;}
+  .m-head .right{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+  .m-media{height:190px;background:repeating-linear-gradient(90deg,#12281c 0 46px,#0f2318 46px 92px);display:flex;align-items:center;justify-content:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;}
+  .m-media span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(157,179,166,.65);font-weight:700;}
+  .m-media .play{position:absolute;width:50px;height:50px;border-radius:50%;background:rgba(11,18,14,.72);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:19px;}
+  .m-body{padding:15px 18px;}
+  .m-body p{font-size:14px;color:#dfeae4;}
+  .m-foot{display:flex;gap:8px;align-items:center;padding:13px 18px;border-top:1px solid var(--line);flex-wrap:wrap;}
+  .m-comment{padding:13px 18px;border-top:1px solid var(--line);background:rgba(255,255,255,.015);}
+  .m-comment .cm{font-size:13.5px;color:#dfeae4;margin-bottom:9px;}
+  .m-comment .cm b{color:var(--grass);}
+  .m-comment .cm .stamp{color:var(--muted);font-size:11.5px;margin-left:6px;}
+  .warnbox{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.28);border-radius:12px;padding:14px 18px;font-size:13px;color:#ffe0ad;margin-bottom:16px;}
+  .warnbox b{color:var(--warn);}
 </style>
 </head>
 <body>
@@ -76,15 +108,18 @@
     <div class="side-brand"><span class="crest">🏆</span> PITCHPRO<br>GUIDE</div>
     <div class="side-me"><b>Coach Nick</b>Soccer Agility Guide · Calgary</div>
     <div class="nav-item active" data-s="today">Today</div>
+    <div class="nav-item" data-s="moments">Player Moments <span class="badge-dot">2</span></div>
     <div class="nav-item" data-s="players">Player Notes</div>
     <div class="nav-item" data-s="avail">Availability</div>
+    <div class="nav-item" data-s="record">My Record</div>
+    <div class="side-foot"><b style="color:var(--lock);">Everything you write is on the record.</b><br>Comments, reactions and notes are copied to the parent and stored in the safeguarding log.</div>
   </aside>
   <main>
 
     <div class="screen on" id="s-today">
       <h2>Tuesday, July 21</h2>
       <div class="sub">3 sessions · Calgary NW Dome</div>
-      <div class="note-strip"><b>Reminder:</b> message parents, never players. All communication stays on-platform and is visible to the PitchPro safeguarding team.</div>
+      <div class="note-strip"><b>Reminder:</b> there is no private channel to a player anywhere on PitchPro. Direct messages go to parents. If a player shares a moment with you, you can react and comment on that moment — and every word is copied to the parent as you write it and kept in the safeguarding log.</div>
       <div class="card">
         <h3>Today's Sessions</h3>
         <div class="row"><div><div class="who">4:30 PM · Leo Torres (U12)</div><div class="meta">Agility · Total Athlete wk 5 · focus: COD under pressure · note: mild left-hip asymmetry (see report)</div></div><span class="tag">Confirmed</span></div>
@@ -93,8 +128,67 @@
       </div>
       <div class="card">
         <h3>Needs Your Attention</h3>
+        <div class="row"><div><div class="who">2 new moments from your players</div><div class="meta">Leo Torres ×1 · Ava Chen ×1 · shared with you by the player</div></div><span class="tag" style="cursor:pointer;" onclick="go('moments')">Open</span></div>
         <div class="row"><div><div class="who">Post-session note due — Leo Torres (Jul 16)</div><div class="meta">Parents see notes within 24h of session</div></div><span class="tag amber">Due</span></div>
         <div class="row"><div><div class="who">Reassessment input — Leo Torres</div><div class="meta">Add your agility section to the Player Report before Aug 14 (Sandro's screening same day)</div></div><span class="tag amber">Aug 10</span></div>
+      </div>
+    </div>
+
+    <!-- PLAYER MOMENTS -->
+    <div class="screen" id="s-moments">
+      <h2>Player Moments</h2>
+      <div class="sub">What your players choose to show you between sessions.</div>
+
+      <div class="note-strip lock"><b>You are a guest here.</b> A moment reaches you only when three things are true: you have completed a real session with that player, their parent has approved you, and the player has chosen to include you on that particular post. You cannot request access, search for players, or follow anyone. Players can remove you at any time and are never told to explain why.</div>
+
+      <div class="warnbox"><b>How to comment.</b> Write about the football, not the child. Coaching, encouragement, one thing to try next. Never arrange contact, never suggest moving off-platform, never comment on appearance. The parent reads every word you write, as you write it — that is the deal that makes this possible.</div>
+
+      <div class="moment">
+        <div class="m-head">
+          <span class="avatar">LT</span>
+          <span><span class="who">Leo Torres · U12</span><br><span class="when">Sat 19 Jul, 11:20 AM · tagged: match day</span></span>
+          <span class="right"><span class="tag">Your player · 14 sessions</span></span>
+        </div>
+        <div class="m-media"><span>Photo</span></div>
+        <div class="m-body">
+          <p>First start in midfield. We lost 2–1 but I completed my first proper switch of play.</p>
+        </div>
+        <div class="m-comment">
+          <div class="cm"><b>You</b><span class="stamp">Sat 2:10 PM · copied to Maria Torres · logged</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div>
+        </div>
+        <div class="m-foot">
+          <button class="btn btn-ghost btn-sm2">👏 Applaud</button>
+          <button class="btn btn-ghost btn-sm2">💬 Comment</button>
+          <button class="btn btn-ghost btn-sm2">📎 Attach to Leo's report</button>
+          <span style="margin-left:auto;font-size:12px;color:var(--muted);">Parent: Maria Torres · sees everything here</span>
+        </div>
+      </div>
+
+      <div class="moment">
+        <div class="m-head">
+          <span class="avatar">AC</span>
+          <span><span class="who">Ava Chen · U14</span><br><span class="when">Sun 20 Jul, 4:02 PM</span></span>
+          <span class="right"><span class="tag amber">New player · 0 sessions yet</span></span>
+        </div>
+        <div class="m-media"><span>Video · 0:22</span><div class="play">▶</div></div>
+        <div class="m-body">
+          <p>Practising the step-over before my first session on Tuesday. Is this right?</p>
+        </div>
+        <div class="m-foot">
+          <span class="tag grey">💬 Commenting locked until your first completed session</span>
+          <button class="btn btn-ghost btn-sm2">Reply to the parent instead</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Your comment history</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Every comment you have ever written to a player, oldest retained for 7 years. You cannot edit or delete these — neither can we, without a logged safeguarding action.</p>
+        <table>
+          <tr><th>When</th><th>Player</th><th>Moment</th><th>Parent copy</th><th>Status</th></tr>
+          <tr><td>Sat 2:10 PM</td><td>Leo Torres</td><td>First start in midfield</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+          <tr><td>Jul 12</td><td>Leo Torres</td><td>Shuttle PB</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+          <tr><td>Jul 04</td><td>Sofia Adams</td><td>Weak-foot drill</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+        </table>
       </div>
     </div>
 
@@ -105,6 +199,7 @@
         <h3>Leo Torres · U12 · Total Athlete wk 5</h3>
         <div class="row"><div><div class="who">Jul 16 — Session note</div><div class="meta">"First step off the left foot noticeably quicker. Testing under pressure next session."</div></div><span class="tag">Posted</span></div>
         <div class="row"><div><div class="who">Jul 14 — Session note</div><div class="meta">"Great energy. 5-10-5 at 5.9s — best yet. Left-foot work continues."</div></div><span class="tag">Posted</span></div>
+        <div class="row"><div><div class="who">Jul 19 — Attached from a player moment</div><div class="meta">"First start in midfield" · switch of play · evidence for the agility section</div></div><span class="tag blue">Attached</span></div>
         <h3 style="margin-top:18px;">New note</h3>
         <textarea placeholder="Write for the parent: what you worked on, what you saw, what's next…"></textarea>
         <div style="margin-top:10px;"><button class="btn btn-grass" style="width:auto;">Post Note (demo)</button></div>
@@ -129,16 +224,38 @@
       </div>
     </div>
 
+    <div class="screen" id="s-record">
+      <h2>My Record</h2>
+      <div class="sub">What PitchPro holds about you, and what families see before they book.</div>
+      <div class="card">
+        <h3>Safeguarding standing</h3>
+        <div class="row"><div><div class="who">Background check</div><div class="meta">Vulnerable sector check · renewed 12 Feb 2026 · next due Feb 2029</div></div><span class="tag">Valid</span></div>
+        <div class="row"><div><div class="who">Safeguarding training</div><div class="meta">Completed 3 Mar 2026 · annual refresh</div></div><span class="tag">Valid</span></div>
+        <div class="row"><div><div class="who">Code of conduct</div><div class="meta">Signed 3 Mar 2026 · includes the player-moments rules</div></div><span class="tag">Signed</span></div>
+        <div class="row"><div><div class="who">Concerns raised about you</div><div class="meta">None on record</div></div><span class="tag">Clear</span></div>
+      </div>
+      <div class="card">
+        <h3>Players who include you</h3>
+        <div class="row"><div><div class="who">Leo Torres · U12</div><div class="meta">Parent approved 14 Apr · player has you on by default</div></div><span class="tag">Comment + react</span></div>
+        <div class="row"><div><div class="who">Sofia Adams · U12</div><div class="meta">Parent approved 2 Jul · react only</div></div><span class="tag blue">React only</span></div>
+        <div class="row"><div><div class="who">Ava Chen · U14</div><div class="meta">Pending first completed session</div></div><span class="tag grey">View only</span></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You cannot change anything on this list. Parents grant it and players narrow it.</p>
+      </div>
+    </div>
+
   </main>
 </div>
 </div>
 
 <script>
-document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>{
-  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.getElementById('s-'+n.dataset.s).classList.add('on');
-}));
+function go(s){
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  var n=document.querySelector('.nav-item[data-s="'+s+'"]'); if(n) n.classList.add('active');
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+  document.getElementById('s-'+s).classList.add('on');
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>go(n.dataset.s)));
 </script>
 </body>
 </html>
