@@ -133,6 +133,32 @@
   .seg button{flex:1;min-width:140px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
   .seg button.on{background:var(--grass);color:#06130c;}
   .seg-note{font-size:12.5px;color:var(--muted);margin-top:10px;}
+  /* WHO VIEWED */
+  .vw{display:flex;gap:13px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+  .vw:last-child{border-bottom:none;}
+  .vw .av2{width:38px;height:38px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:14px;flex-shrink:0;}
+  .vw .txt{flex:1;min-width:0;}
+  .vw .txt b{display:block;font-size:14px;}
+  .vw .txt span{display:block;color:var(--muted);font-size:12.5px;}
+  .vw .end{margin-left:auto;text-align:right;flex-shrink:0;}
+  .vw .end .n{font-family:var(--head);font-size:17px;font-weight:900;}
+  .vw .end .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .vw.blur .txt b,.vw.blur .txt span{filter:blur(4.5px);user-select:none;}
+  .vw.blur .av2{filter:blur(3px);}
+  .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+  @media(max-width:700px){.stat3{grid-template-columns:1fr;}}
+  .stat3 .s{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .stat3 .s b{display:block;font-family:var(--head);font-size:26px;font-weight:900;}
+  .stat3 .s span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .plus{background:linear-gradient(135deg,rgba(183,155,255,.10),rgba(77,159,255,.06));border:1px solid rgba(183,155,255,.32);border-radius:16px;padding:22px;}
+  .plus h3{color:var(--lock);}
+  .plus ul{margin:10px 0 0 18px;font-size:13.5px;color:#e0d6ff;}
+  .plus li{margin-bottom:6px;}
+  .free-bar{display:flex;align-items:center;gap:10px;background:rgba(46,224,138,.07);border:1px solid rgba(46,224,138,.3);border-radius:12px;padding:13px 17px;font-size:13px;color:#c9f3de;margin-bottom:18px;}
+  .free-bar b{color:var(--grass);}
+  .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
+  .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
+  .seg2 button.on{background:var(--lock);color:#170f2b;}
 </style>
 </head>
 <body>
@@ -145,7 +171,7 @@
     <div class="crest">🏆</div>
     <h1 data-i18n="portalTitle">Family Portal</h1>
     <div class="sub" data-i18n="portalSub">Sign in to follow your child's pathway. All sessions, reports, messages, and payments in one secure place.</div>
-    <div class="field"><label data-i18n="email">Email</label><input type="email" placeholder="marta@example.com" disabled></div>
+    <div class="field"><label data-i18n="email">Email</label><input type="email" placeholder="alma@example.com" disabled></div>
     <div class="field"><label data-i18n="password">Password</label><input type="password" placeholder="••••••••" disabled></div>
     <button class="btn btn-grass" onclick="enter()" data-i18n="enterDemo">Enter Demo Portal</button>
     <div class="login-note" data-i18n="loginNote">Authentication is not active in this preview. Real sign-in with two-factor security ships with the platform build.</div>
@@ -163,15 +189,16 @@
     <div class="nav-item" data-s="book" data-i18n="navBook">Bookings</div>
     <div class="nav-item" data-s="pay" data-i18n="navPay">Payments</div>
     <div class="nav-item" data-s="msg" data-i18n="navMsg">Messages &amp; Docs <span class="badge-dot">2</span></div>
-    <div class="nav-sec" data-i18n="navSecPlayer">Player accounts · Nora</div>
+    <div class="nav-sec" data-i18n="navSecPlayer">Player accounts · Elle</div>
     <div class="nav-item" data-s="moments" data-i18n="navMoments">Moments &amp; Approvals <span class="badge-dot amber">1</span></div>
+    <div class="nav-item" data-s="views" data-i18n="navViews">Who's Been Looking</div>
     <div class="nav-item" data-s="safety" data-i18n="navSafety">Safety &amp; Permissions</div>
   </aside>
   <main>
     <div class="topline">
       <div class="child-switch">
-        <span class="child-chip on" onclick="switchChild(this,'Nora')">Nora (U12)</span>
-        <span class="child-chip" onclick="switchChild(this,'Ivan')">Ivan (U10)</span>
+        <span class="child-chip on" onclick="switchChild(this,'Elle')">Elle (U12)</span>
+        <span class="child-chip" onclick="switchChild(this,'Adin')">Adin (U10)</span>
       </div>
       <div class="lang">
         <button class="on" onclick="setLang('en',this)">EN</button>
@@ -181,8 +208,8 @@
 
     <!-- DASHBOARD -->
     <div class="screen on" id="s-dash">
-      <h2 data-i18n="dashTitle">Welcome back, Marta</h2>
-      <div class="sub" data-i18n="dashSub">Here's where Nora's pathway stands this week.</div>
+      <h2 data-i18n="dashTitle">Welcome back, Alma</h2>
+      <div class="sub" data-i18n="dashSub">Here's where Elle's pathway stands this week.</div>
       <div class="grid g3">
         <div class="card"><h3 data-i18n="nextSession">Next Session</h3><div class="big">Tue 4:30</div><div class="meta" style="color:var(--muted);font-size:13px;">Agility · Coach Nick · Calgary NW Dome</div></div>
         <div class="card"><h3 data-i18n="program">Current Program</h3><div class="big">Week 5<span style="font-size:15px;color:var(--muted);">/8</span></div><div class="meta" style="color:var(--muted);font-size:13px;">Total Athlete</div><div class="bar"><i style="width:62%"></i></div></div>
@@ -190,14 +217,14 @@
       </div>
       <div class="grid g2" style="margin-top:16px;">
         <div class="card">
-          <h3 data-i18n="momentsCard">Nora's Moments</h3>
+          <h3 data-i18n="momentsCard">Elle's Moments</h3>
           <div class="row"><div><div class="who" data-i18n="mPending">1 moment waiting for you</div><div class="meta" data-i18n="mPendingSub">"Weak-foot volley" · posted 6:42 PM today</div></div><span class="tag amber" style="cursor:pointer;" onclick="go('moments')" data-i18n="review">Review</span></div>
           <div class="row"><div><div class="who" data-i18n="mComment">Coach Nick commented on a moment</div><div class="meta" data-i18n="mCommentSub">Copy saved to your inbox · Sat 2:10 PM</div></div><span class="tag" data-i18n="read">Read</span></div>
-          <div class="row"><div><div class="who" data-i18n="mStreak">Nora is on an 11-week posting streak</div><div class="meta" data-i18n="mStreakSub">24 moments since March</div></div><span class="tag blue">🔥</span></div>
+          <div class="row"><div><div class="who" data-i18n="mStreak">Elle is on an 11-week posting streak</div><div class="meta" data-i18n="mStreakSub">24 moments since March</div></div><span class="tag blue">🔥</span></div>
         </div>
         <div class="card">
           <h3 data-i18n="latestNote">Latest Guide Note</h3>
-          <div class="msg"><div class="from">Coach Nick <span>Yesterday</span></div><div style="font-size:13.5px;color:#cfe0d6;margin-top:4px;">Nora's first step off the left foot is noticeably quicker this week. We'll test it under pressure next session — watch for it in Saturday's game.</div></div>
+          <div class="msg"><div class="from">Coach Nick <span>Yesterday</span></div><div style="font-size:13.5px;color:#cfe0d6;margin-top:4px;">Elle's first step off the left foot is noticeably quicker this week. We'll test it under pressure next session — watch for it in Saturday's game.</div></div>
         </div>
       </div>
       <div class="grid g2" style="margin-top:16px;">
@@ -209,16 +236,16 @@
         </div>
         <div class="card">
           <h3 data-i18n="accountsCard">Player accounts</h3>
-          <div class="row"><div><div class="who">Nora · U12</div><div class="meta" data-i18n="elleMode">Active · post first, you review after · 3 guides approved</div></div><span class="tag">Active</span></div>
-          <div class="row"><div><div class="who">Ivan · U10 · age 9</div><div class="meta" data-i18n="adinMode">Account granted by you as an under-10 exception · locked to family only until his 10th birthday · no guides, no links</div></div><span class="tag lock" data-i18n="exception">Exception</span></div>
-          <p style="font-size:12.5px;color:var(--muted);margin-top:12px;" data-i18n="accountsNote">The screens below always show the child selected at the top of the page. Nora and Ivan have completely separate settings — nothing you change for one touches the other.</p>
+          <div class="row"><div><div class="who">Elle · U12</div><div class="meta" data-i18n="elleMode">Active · post first, you review after · 3 guides approved</div></div><span class="tag">Active</span></div>
+          <div class="row"><div><div class="who">Adin · U10 · age 9</div><div class="meta" data-i18n="adinMode">Account granted by you as an under-10 exception · locked to family only until his 10th birthday · no guides, no links</div></div><span class="tag lock" data-i18n="exception">Exception</span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:12px;" data-i18n="accountsNote">The screens below always show the child selected at the top of the page. Elle and Adin have completely separate settings — nothing you change for one touches the other.</p>
         </div>
       </div>
     </div>
 
     <!-- PLAYER PROFILE -->
     <div class="screen" id="s-player">
-      <h2><span id="childName">Nora</span> · U12 · age 11</h2>
+      <h2><span id="childName">Elle</span> · U12 · age 11</h2>
       <div class="sub">Position: Midfield · Preferred foot: Right · Joined March 2026</div>
       <div class="note-strip"><b data-i18n="reportStd">The PitchPro Player Report.</b> <span data-i18n="reportStdSub">One standardized report across every guide. Each guide contributes their discipline — your child gets one complete picture.</span></div>
       <div class="report-sec">
@@ -242,10 +269,10 @@
         <div class="row"><span class="who">Academy tryout readiness by spring 2027</span><span class="tag blue" data-i18n="onTrack">On track</span></div>
       </div>
       <div class="card" style="margin-top:16px;">
-        <h3 data-i18n="elleSide">Nora's own side of the profile</h3>
-        <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;" data-i18n="elleSideSub">The report above is written by guides. This part Nora writes herself — her moments, her goals, her streak. You see all of it.</p>
+        <h3 data-i18n="elleSide">Elle's own side of the profile</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;" data-i18n="elleSideSub">The report above is written by guides. This part Elle writes herself — her moments, her goals, her streak. You see all of it.</p>
         <div class="row"><div><div class="who">24 moments · 11-week streak</div><div class="meta">Latest: "Weak-foot volley" — waiting for you</div></div><span class="tag amber" style="cursor:pointer;" onclick="go('moments')" data-i18n="openTimeline">Open timeline</span></div>
-        <div class="row"><div><div class="who">2 goals Nora set herself</div><div class="meta">200 weak-foot touches 5×/week · start every game</div></div><span class="tag blue">On track</span></div>
+        <div class="row"><div><div class="who">2 goals Elle set herself</div><div class="meta">200 weak-foot touches 5×/week · start every game</div></div><span class="tag blue">On track</span></div>
         <div class="row"><div><div class="who">Play promotion links</div><div class="meta">1 live (Grego, expires 30 Aug) · 1 expired · no public page exists</div></div><span class="tag lock" style="cursor:pointer;" onclick="go('safety')" data-i18n="manage">Manage</span></div>
       </div>
     </div>
@@ -253,9 +280,9 @@
     <!-- MOMENTS & APPROVALS -->
     <div class="screen" id="s-moments">
       <h2 data-i18n="momTitle">Moments &amp; Approvals</h2>
-      <div class="sub" data-i18n="momSub">Everything Nora posts lands here — whether or not it needs your approval first.</div>
+      <div class="sub" data-i18n="momSub">Everything Elle posts lands here — whether or not it needs your approval first.</div>
 
-      <div class="note-strip lock"><b data-i18n="momMode">Nora's review mode: post first, you review after.</b> <span data-i18n="momModeSub">Her moments go straight to the guides you've approved, and you can take any of them down. Switch to approve-first in Safety &amp; Permissions if you'd rather see each one before her guides do.</span> <span class="tag lock" style="cursor:pointer;margin-left:6px;" onclick="go('safety')" data-i18n="change">Change</span></div>
+      <div class="note-strip lock"><b data-i18n="momMode">Elle's review mode: post first, you review after.</b> <span data-i18n="momModeSub">Her moments go straight to the guides you've approved, and you can take any of them down. Switch to approve-first in Safety &amp; Permissions if you'd rather see each one before her guides do.</span> <span class="tag lock" style="cursor:pointer;margin-left:6px;" onclick="go('safety')" data-i18n="change">Change</span></div>
 
       <div class="card" style="margin-bottom:22px;">
         <h3 data-i18n="momFlag">Held for you — flagged automatically</h3>
@@ -266,7 +293,7 @@
       <div class="moment pend">
         <div class="m-head">
           <span class="avatar">E</span>
-          <span><span class="who">Nora</span><br><span class="when">Today, 6:42 PM · tagged: Agility session, Coach Nick</span></span>
+          <span><span class="who">Elle</span><br><span class="when">Today, 6:42 PM · tagged: Agility session, Coach Nick</span></span>
           <span class="right"><span class="tag amber" data-i18n="held">⏳ Held for review</span></span>
         </div>
         <div class="m-media"><span>Video · 0:18</span><div class="play">▶</div></div>
@@ -274,7 +301,7 @@
         <div class="m-body">
           <p>Hit the weak-foot volley 4 times in a row today. Coach Nick said my left foot is finally catching up 🔥</p>
           <div class="m-aud">
-            <span class="lbl" data-i18n="elleChose">Nora chose</span>
+            <span class="lbl" data-i18n="elleChose">Elle chose</span>
             <span class="tag lock">🔒 You — always</span>
             <span class="tag">Coach Nick</span>
             <span class="tag">Sandro</span>
@@ -282,23 +309,23 @@
           </div>
         </div>
         <div class="m-foot">
-          <button class="btn btn-grass btn-sm2" data-i18n="approveShare">Approve &amp; share with Nora's guides</button>
+          <button class="btn btn-grass btn-sm2" data-i18n="approveShare">Approve &amp; share with Elle's guides</button>
           <button class="btn btn-ghost btn-sm2" data-i18n="approveFam">Keep it between us</button>
           <button class="btn btn-ghost btn-sm2" data-i18n="blurFace">Blur the other face, then share</button>
-          <button class="btn btn-ghost btn-sm2" data-i18n="sendBack">Send back to Nora with a note</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="sendBack">Send back to Elle with a note</button>
           <button class="btn btn-red btn-sm2" data-i18n="removeIt">Remove</button>
         </div>
       </div>
 
       <div class="card" style="margin:26px 0 16px;">
         <h3 data-i18n="momLive">Already shared</h3>
-        <p style="font-size:13px;color:var(--muted);" data-i18n="momLiveSub">You can take any of these down at any time. Taking one down removes it from every guide immediately and tells Nora you did it — we never remove something behind her back.</p>
+        <p style="font-size:13px;color:var(--muted);" data-i18n="momLiveSub">You can take any of these down at any time. Taking one down removes it from every guide immediately and tells Elle you did it — we never remove something behind her back.</p>
       </div>
 
       <div class="moment">
         <div class="m-head">
           <span class="avatar">E</span>
-          <span><span class="who">Nora</span><br><span class="when">Sat 19 Jul, 11:20 AM</span></span>
+          <span><span class="who">Elle</span><br><span class="when">Sat 19 Jul, 11:20 AM</span></span>
           <span class="right"><span class="tag" data-i18n="shared">✓ Shared</span><span class="tag blue">💬 2</span></span>
         </div>
         <div class="m-media"><span>Photo</span></div>
@@ -321,42 +348,117 @@
       <div class="moment">
         <div class="m-head">
           <span class="avatar">E</span>
-          <span><span class="who">Nora</span><br><span class="when">Thu 17 Jul, 8:05 PM</span></span>
-          <span class="right"><span class="tag lock" data-i18n="famOnly">🔒 Family only — Nora's choice</span></span>
+          <span><span class="who">Elle</span><br><span class="when">Thu 17 Jul, 8:05 PM</span></span>
+          <span class="right"><span class="tag lock" data-i18n="famOnly">🔒 Family only — Elle's choice</span></span>
         </div>
         <div class="m-body">
           <p>Rough session. Couldn't get the turn right and got frustrated. Writing it down so I remember it got better.</p>
           <div class="m-aud"><span class="lbl" data-i18n="seenBy">Seen by</span><span class="tag lock">🔒 You only</span></div>
         </div>
-        <div class="m-foot"><span style="font-size:12.5px;color:var(--muted);" data-i18n="famOnlyNote">Nora turned her guides off for this one. She can do that for any moment — she can never turn you off.</span></div>
+        <div class="m-foot"><span style="font-size:12.5px;color:var(--muted);" data-i18n="famOnlyNote">Elle turned her guides off for this one. She can do that for any moment — she can never turn you off.</span></div>
+      </div>
+    </div>
+
+
+    <!-- WHO'S BEEN LOOKING -->
+    <div class="screen" id="s-views">
+      <h2 data-i18n="vTitle">Who's Been Looking</h2>
+      <div class="sub" data-i18n="vSub">Every person who has seen anything of Elle's or Adin's, what they looked at, and when. Both children, one screen.</div>
+
+      <div class="free-bar"><b data-i18n="vFree">Never behind the paywall.</b> <span data-i18n="vFreeSub">The identity of anyone who has looked at your child is safety information, not a feature. You will always see every name, every time and every reason for free, whether or not you subscribe to anything.</span></div>
+
+      <div class="stat3">
+        <div class="s"><b>14</b><span data-i18n="vViews">Views this week</span></div>
+        <div class="s"><b>5</b><span data-i18n="vPeople">People, all named</span></div>
+        <div class="s"><b>0</b><span data-i18n="vUnknown">Unknown viewers</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="vElle">Elle · U12</h3>
+        <div class="vw">
+          <span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">CN</span>
+          <span class="txt"><b>Coach Nick</b><span data-i18n="vNick">Approved guide · 14 sessions · watched "Weak-foot volley" twice, "First start in midfield" once</span></span>
+          <span class="end"><span class="n">3</span><span class="l">Tue, Thu</span></span>
+        </div>
+        <div class="vw">
+          <span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">SR</span>
+          <span class="txt"><b>Sandro Rajic</b><span data-i18n="vSandro">Approved guide · opened her profile and the June report before booking the reassessment</span></span>
+          <span class="end"><span class="n">1</span><span class="l">Mon</span></span>
+        </div>
+        <div class="vw">
+          <span class="av2" style="background:rgba(183,155,255,.18);color:var(--lock);">G</span>
+          <span class="txt"><b>Grego</b><span data-i18n="vGrego">Promotion link #EL-0812 you created for the Split camp trial · 4 moments, no report · expires 30 Aug</span></span>
+          <span class="end"><span class="n">3</span><span class="l">Wed 8–9 PM</span></span>
+        </div>
+        <div class="vw">
+          <span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">D</span>
+          <span class="txt"><b>David</b><span data-i18n="vDavid">Second parent on the family account</span></span>
+          <span class="end"><span class="n">6</span><span class="l">This week</span></span>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="vAdin">Adin · U10 · under-10 exception</h3>
+        <div class="vw">
+          <span class="av2" style="background:rgba(183,155,255,.18);color:var(--lock);">Y</span>
+          <span class="txt"><b data-i18n="vYouOnly">You, and only you</b><span data-i18n="vAdinSub">His account is locked to family only, so there is nothing for this screen to report and there never will be while he is nine.</span></span>
+          <span class="end"><span class="n">9</span><span class="l">This week</span></span>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="vWatch">Worth a look</h3>
+        <div class="row"><div><div class="who" data-i18n="vW1">Grego opened Elle's link three times on Wednesday evening</div><div class="meta" data-i18n="vW1s">Normal for someone reviewing a trial candidate properly. Surfaced because you should see it, not because anything is wrong.</div></div><span class="tag" data-i18n="vNormal">Normal</span></div>
+        <div class="row"><div><div class="who" data-i18n="vW2">No views at all from Coach Nick for 9 days in July</div><div class="meta" data-i18n="vW2s">He was away. Shown because a guide who stops looking is worth noticing.</div></div><span class="tag grey" data-i18n="vClosed">Closed</span></div>
+        <div class="row"><div><div class="who" data-i18n="vW3">An expired link was opened</div><div class="meta" data-i18n="vW3s">Calgary Foothills tried link #EL-0611 on 3 Aug. It had expired on 12 Jul, so nothing was shown. Logged so you know they came back.</div></div><span class="tag amber" data-i18n="vBlocked">Blocked</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="vYou">How you appear when you browse guides</h3>
+        <div class="consent"><span class="cs"><b data-i18n="vAnon">Browse guides semi-privately</b><span data-i18n="vAnonSub">A guide whose page you look at sees "a parent of a U12 player, Calgary" — not your name. You can look at ten guides without ten guides knowing who you are.</span></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="vReveal">Reveal my name when I send an enquiry</b><span data-i18n="vRevealSub">The moment you make contact, the guide sees who you are. That is the trade: browsing is private, contact is not.</span></span><div class="pilldot"></div></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;" data-i18n="vAnonNote">A guide who subscribes to PitchPro Plus still cannot see your name while this is on. A paid tier never overrides another person's privacy choice — that rule runs in both directions.</p>
+      </div>
+
+      <div class="plus">
+        <h3 data-i18n="vPlus">PitchPro Plus — what a subscription adds here</h3>
+        <p style="font-size:13.5px;color:#e0d6ff;" data-i18n="vPlusSub">Names, times and reasons stay free forever. Plus adds the analysis:</p>
+        <ul>
+          <li data-i18n="vP1">Views over time, per child — is interest building ahead of a trial, or falling away?</li>
+          <li data-i18n="vP2">History beyond 30 days</li>
+          <li data-i18n="vP3">A weekly email summary instead of checking</li>
+          <li data-i18n="vP4">Alerts: an unusual burst of link opens, or an expired link being tried</li>
+          <li data-i18n="vP5">Export the whole record as one file</li>
+        </ul>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;" data-i18n="vPlusNote">Pricing not set. Whatever it becomes, the free tier keeps every name.</p>
       </div>
     </div>
 
     <!-- SAFETY & PERMISSIONS -->
     <div class="screen" id="s-safety">
       <h2 data-i18n="safeTitle">Safety &amp; Permissions</h2>
-      <div class="sub" data-i18n="safeSub">Nora's guardrails. You set the boundary; inside it, Nora decides.</div>
+      <div class="sub" data-i18n="safeSub">Elle's guardrails. You set the boundary; inside it, Elle decides.</div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3 data-i18n="modeTitle">1 · How much freedom does Nora get?</h3>
+        <h3 data-i18n="modeTitle">1 · How much freedom does Elle get?</h3>
         <div class="seg">
           <button data-i18n="modeA">Approve first<br><span style="font-weight:500;font-size:11.5px;">nothing leaves the family until you say so</span></button>
           <button class="on" data-i18n="modeB">Post first, review after<br><span style="font-weight:500;font-size:11.5px;">goes to approved guides straight away</span></button>
           <button data-i18n="modeC">Family only<br><span style="font-weight:500;font-size:11.5px;">journal — nobody outside the family, ever</span></button>
         </div>
-        <p class="seg-note" data-i18n="modeNote">You set this per child, not by age — Nora is on post-first. Change it whenever you like; changing it never affects moments already posted. Flagged moments are held for you in every mode.</p>
-        <div style="background:rgba(183,155,255,.07);border:1px solid rgba(183,155,255,.28);border-radius:12px;padding:14px 18px;font-size:13px;color:#e0d6ff;margin-top:14px;"><b style="color:var(--lock);" data-i18n="u10Title">Ivan is 9 — his account is an exception you asked for.</b> <span data-i18n="u10Sub">Under-10 accounts are not offered as standard. Where a parent asks for one, it is created locked to <b>family only</b>: a private timeline shared with you and nobody else. No guides, no comments, no promotion links, and the three buttons above are greyed out on his account. It unlocks on his 10th birthday and you choose the mode then.</span></div>
+        <p class="seg-note" data-i18n="modeNote">You set this per child, not by age — Elle is on post-first. Change it whenever you like; changing it never affects moments already posted. Flagged moments are held for you in every mode.</p>
+        <div style="background:rgba(183,155,255,.07);border:1px solid rgba(183,155,255,.28);border-radius:12px;padding:14px 18px;font-size:13px;color:#e0d6ff;margin-top:14px;"><b style="color:var(--lock);" data-i18n="u10Title">Adin is 9 — his account is an exception you asked for.</b> <span data-i18n="u10Sub">Under-10 accounts are not offered as standard. Where a parent asks for one, it is created locked to <b>family only</b>: a private timeline shared with you and nobody else. No guides, no comments, no promotion links, and the three buttons above are greyed out on his account. It unlocks on his 10th birthday and you choose the mode then.</span></div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3 data-i18n="circleTitle">2 · Who is allowed in Nora's circle</h3>
+        <h3 data-i18n="circleTitle">2 · Who is allowed in Elle's circle</h3>
         <table>
           <tr><th data-i18n="thWho">Who</th><th data-i18n="thBasis">Why they qualify</th><th data-i18n="thSee">Can see moments</th><th data-i18n="thReact">Can react 👏</th><th data-i18n="thComment">Can comment</th><th></th></tr>
           <tr><td><b>You &amp; David</b></td><td data-i18n="basisParent">Parent account</td><td><span class="tag lock">Always</span></td><td>—</td><td>Yes</td><td><span class="tag lock">🔒</span></td></tr>
           <tr><td><b>Coach Nick</b></td><td data-i18n="basisNick">14 sessions since April · background check ✓</td><td>Yes</td><td>Yes</td><td>Yes</td><td><div class="pilldot"></div></td></tr>
           <tr><td><b>Sandro Rajic</b></td><td data-i18n="basisSandro">Screening Jun 2026 · background check ✓</td><td>Yes</td><td>Yes</td><td>Yes</td><td><div class="pilldot"></div></td></tr>
           <tr><td><b>Grego</b></td><td data-i18n="basisGrego">Camp intake call · background check ✓</td><td>Yes</td><td>Yes</td><td><span class="tag grey" data-i18n="reactOnly">Off — react only</span></td><td><div class="pilldot"></div></td></tr>
-          <tr style="opacity:.55;"><td><b data-i18n="futureGuide">Any future guide</b></td><td data-i18n="basisFuture">Appears here only after a first completed session</td><td colspan="3" data-i18n="basisFutureNote">You approve each one before Nora can share with them</td><td><span class="tag amber" data-i18n="askMe">Ask me</span></td></tr>
+          <tr style="opacity:.55;"><td><b data-i18n="futureGuide">Any future guide</b></td><td data-i18n="basisFuture">Appears here only after a first completed session</td><td colspan="3" data-i18n="basisFutureNote">You approve each one before Elle can share with them</td><td><span class="tag amber" data-i18n="askMe">Ask me</span></td></tr>
         </table>
         <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="circleNote">A guide can never request access to a child. The only route in is a real completed session, then your approval. Every guide comment is copied to your inbox and stored in the safeguarding log — there are no private guide-to-player messages anywhere on the platform.</p>
       </div>
@@ -370,12 +472,12 @@
 
       <div class="card" style="margin-bottom:16px;">
         <h3 data-i18n="pubTitle">4 · Play promotion links — the only way anything leaves the circle</h3>
-        <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;" data-i18n="pubIntro">One link, one named person, one expiry date. Used when a scout or a club asks to see a player, and equally when a guide — including one who no longer trains Nora — wants to follow how she is getting on. You create it, you see every time it is opened, and you can kill it in one tap.</p>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;" data-i18n="pubIntro">One link, one named person, one expiry date. Used when a scout or a club asks to see a player, and equally when a guide — including one who no longer trains Elle — wants to follow how she is getting on. You create it, you see every time it is opened, and you can kill it in one tap.</p>
 
         <div class="card" style="background:var(--panel);margin-bottom:16px;">
           <h3 data-i18n="builder">Create a link</h3>
           <div class="consent"><span class="cs"><b data-i18n="lkWho">Who is it for</b><span data-i18n="lkWhoSub">A name and a role, typed by you. The name is printed across every page of the link, so a forwarded link is obvious.</span></span><span class="tag grey">Grego · guide</span></div>
-          <div class="consent"><span class="cs"><b data-i18n="lkWhy">Why</b><span data-i18n="lkWhySub">Recorded for your own file and shown to Nora.</span></span><span class="tag grey">Split camp trial</span></div>
+          <div class="consent"><span class="cs"><b data-i18n="lkWhy">Why</b><span data-i18n="lkWhySub">Recorded for your own file and shown to Elle.</span></span><span class="tag grey">Split camp trial</span></div>
           <div class="consent"><span class="cs"><b data-i18n="lkExpiry">Expires</b><span data-i18n="lkExpirySub">7, 30 or 90 days. There is no "never".</span></span><span class="tag">30 days</span></div>
           <div class="consent"><span class="cs"><b data-i18n="lkPass">Passcode</b><span data-i18n="lkPassSub">Six digits, sent separately. Recommended for anyone you have not met.</span></span><div class="pilldot"></div></div>
           <div class="consent"><span class="cs"><b data-i18n="lkDl">Allow download of the clips</b><span data-i18n="lkDlSub">Off means watch-only, in the browser, watermarked.</span></span><div class="pilldot off"></div></div>
@@ -383,13 +485,13 @@
 
         <div class="card" style="background:var(--panel);margin-bottom:16px;">
           <h3 data-i18n="lkShows">What the link holder sees</h3>
-          <div class="consent"><span class="cs"><b data-i18n="pfFirst">First name and initial only — "Nora A."</b><span data-i18n="pfFirstSub">Full surname is never shown, on any link.</span></span><div class="pilldot fixed"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfFirst">First name and initial only — "Elle A."</b><span data-i18n="pfFirstSub">Full surname is never shown, on any link.</span></span><div class="pilldot fixed"></div></div>
           <div class="consent"><span class="cs"><b data-i18n="pfAge">Age group (U12) and position</b></span><div class="pilldot"></div></div>
-          <div class="consent"><span class="cs"><b data-i18n="pfMoments">Up to 6 moments — Nora proposes, you approve each one</b></span><div class="pilldot"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfMoments">Up to 6 moments — Elle proposes, you approve each one</b></span><div class="pilldot"></div></div>
           <div class="consent"><span class="cs"><b data-i18n="pfBadges">Badges and streak</b></span><div class="pilldot"></div></div>
           <div class="consent"><span class="cs"><b data-i18n="pfReport">Player Report summary (Motion Age, shuttle time, guide sections)</b><span data-i18n="pfReportSub">Off by default. Sensible for a scout you have chosen to approach; not for someone who approached you.</span></span><div class="pilldot off"></div></div>
           <div class="consent"><span class="cs"><b data-i18n="pfContact">Your contact details</b><span data-i18n="pfContactSub">Off means enquiries come back through PitchPro, not to your phone.</span></span><div class="pilldot off"></div></div>
-          <div class="consent"><span class="cs"><b data-i18n="pfNever">Never shown, no setting available</b><span data-i18n="pfNeverSub">Surname · school · club · home city · training venue and times · any photo with another child in it · anything from a family-only moment · anything Nora has not put forward</span></span><span class="tag lock">🔒 Never</span></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfNever">Never shown, no setting available</b><span data-i18n="pfNeverSub">Surname · school · club · home city · training venue and times · any photo with another child in it · anything from a family-only moment · anything Elle has not put forward</span></span><span class="tag lock">🔒 Never</span></div>
         </div>
 
         <div class="card" style="background:var(--panel);">
@@ -400,7 +502,7 @@
             <tr><td><b>Calgary Foothills</b><br><span style="color:var(--muted);font-size:12px;" data-i18n="roleScout">Club scout</span></td><td data-i18n="rsnTrial">U13 trial enquiry</td><td data-i18n="expired">Expired 12 Jul</td><td>1 time</td><td data-i18n="shows6">6 moments · report on</td><td><span class="tag grey" data-i18n="closed2">Closed</span></td></tr>
             <tr><td><b>Coach Ramirez</b><br><span style="color:var(--muted);font-size:12px;" data-i18n="roleFormer">Former guide · 2025 season</span></td><td data-i18n="rsnCatch">Wanted to see how she is getting on</td><td data-i18n="expired2">Expired 4 Jun</td><td>2 times</td><td data-i18n="shows3">3 moments · no report</td><td><span class="tag grey" data-i18n="closed2">Closed</span></td></tr>
           </table>
-          <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="pubNote">Revoking kills a link instantly, mid-session. Every open is logged with a date and shown to you and to Nora — she always knows who has looked at her football. Links are never indexed by search engines and cannot be guessed.</p>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="pubNote">Revoking kills a link instantly, mid-session. Every open is logged with a date and shown to you and to Elle — she always knows who has looked at her football. Links are never indexed by search engines and cannot be guessed.</p>
         </div>
       </div>
 
@@ -408,15 +510,15 @@
         <h3 data-i18n="mediaTitle">5 · Media rules</h3>
         <div class="consent"><span class="cs"><b data-i18n="mrStrip">Strip location data from every upload</b><span data-i18n="mrStripSub">Recommended. Cannot be switched off for players under 13.</span></span><div class="pilldot fixed"></div></div>
         <div class="consent"><span class="cs"><b data-i18n="mrFaces">Hold any moment with an unrecognised face</b></span><div class="pilldot"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="mrTone">Flag captions that sound distressed</b><span data-i18n="mrToneSub">Held for you, and the safeguarding team is told. Nora is not told it was flagged for tone.</span></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="mrTone">Flag captions that sound distressed</b><span data-i18n="mrToneSub">Held for you, and the safeguarding team is told. Elle is not told it was flagged for tone.</span></span><div class="pilldot"></div></div>
         <div class="consent"><span class="cs"><b data-i18n="mrLength">Video length limit</b></span><span class="tag">60 seconds</span></div>
-        <div class="consent"><span class="cs"><b data-i18n="mrPitch">PitchPro may use Nora's moments in marketing</b><span data-i18n="mrPitchSub">Separate from your existing photo consent, and off unless you say otherwise.</span></span><div class="pilldot off"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="mrPitch">PitchPro may use Elle's moments in marketing</b><span data-i18n="mrPitchSub">Separate from your existing photo consent, and off unless you say otherwise.</span></span><div class="pilldot off"></div></div>
       </div>
 
       <div class="card">
         <h3 data-i18n="controlTitle">6 · Your controls</h3>
-        <div class="row"><div><div class="who" data-i18n="ctlExport">Download everything Nora has posted</div><div class="meta" data-i18n="ctlExportSub">Media, captions, comments, and the full audit log — one file</div></div><span class="tag" data-i18n="download">Download</span></div>
-        <div class="row"><div><div class="who" data-i18n="ctlPause">Pause Nora's account</div><div class="meta" data-i18n="ctlPauseSub">She keeps her timeline but cannot post or receive comments</div></div><span class="tag amber" data-i18n="pause">Pause</span></div>
+        <div class="row"><div><div class="who" data-i18n="ctlExport">Download everything Elle has posted</div><div class="meta" data-i18n="ctlExportSub">Media, captions, comments, and the full audit log — one file</div></div><span class="tag" data-i18n="download">Download</span></div>
+        <div class="row"><div><div class="who" data-i18n="ctlPause">Pause Elle's account</div><div class="meta" data-i18n="ctlPauseSub">She keeps her timeline but cannot post or receive comments</div></div><span class="tag amber" data-i18n="pause">Pause</span></div>
         <div class="row"><div><div class="who" data-i18n="ctlClose">Close the account and delete all moments</div><div class="meta" data-i18n="ctlCloseSub">Permanent, 30-day grace period, guides lose access immediately</div></div><span class="tag red" data-i18n="close">Close</span></div>
         <div class="row"><div><div class="who" data-i18n="ctlReport">Report a concern to the safeguarding team</div><div class="meta" data-i18n="ctlReportSub">A person, not a form — response within one working day</div></div><span class="tag blue" data-i18n="report">Report</span></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="dataRights2">Data rights: PIPEDA (Canada) and GDPR (EU families). For a child's account we also apply the GDPR Article 8 rule — a parent holds consent until 16 in Croatia. privacy@pitchpropathways.com</p>
@@ -425,7 +527,7 @@
 
     <!-- PATHWAY -->
     <div class="screen" id="s-path">
-      <h2 data-i18n="pathTitle">Nora's Pathway</h2>
+      <h2 data-i18n="pathTitle">Elle's Pathway</h2>
       <div class="sub" data-i18n="pathSub">The roadmap — where she's been, where she's going.</div>
       <div class="card" style="margin-bottom:16px;">
         <h3 data-i18n="meterTitle">Pathway to Pro — development stage</h3>
@@ -436,7 +538,7 @@
           <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font-size:11px;color:var(--muted);">Train to Compete<br><span style="font-size:10px;">16–23</span></div>
           <div style="flex:1;text-align:center;padding:10px 4px;border-radius:8px;background:var(--panel);border:1px solid var(--line);font-size:11px;color:var(--muted);">Pro<br><span style="font-size:10px;">→</span></div>
         </div>
-        <p style="font-size:13px;color:var(--muted);margin-top:10px;" data-i18n="meterExplain"><b style="color:var(--white);">Learn to Train (9–12):</b> the golden age of skill learning. The focus is technical foundations, coordination, and love of the game — measured through Nora's Player Report milestones: first touch (B+ ✓), asymmetry under 10% (✓), weak-foot competence (in progress).</p>
+        <p style="font-size:13px;color:var(--muted);margin-top:10px;" data-i18n="meterExplain"><b style="color:var(--white);">Learn to Train (9–12):</b> the golden age of skill learning. The focus is technical foundations, coordination, and love of the game — measured through Elle's Player Report milestones: first touch (B+ ✓), asymmetry under 10% (✓), weak-foot competence (in progress).</p>
         <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap;">
           <span class="tag blue" data-i18n="streamTag">Stream: Competitive</span>
           <span style="font-size:12px;color:var(--muted);" data-i18n="streamNote">High-performance stream entry is typically assessed in the Train to Train stage — reassessments build that case.</span>
@@ -503,16 +605,16 @@
     <div class="screen" id="s-msg">
       <h2 data-i18n="msgTitle">Messages &amp; Documents</h2>
       <div class="sub" data-i18n="msgSub">All communication stays on the platform.</div>
-      <div class="note-strip"><b data-i18n="safety">Child safety, by design.</b> <span data-i18n="safetySub">There are no private channels to a child anywhere on PitchPro. Guides message parents here. Where a guide comments on one of Nora's moments, that comment is public to her circle, copied to you the moment it is written, and kept in the safeguarding log — a guide can never send a child something you don't see.</span></div>
+      <div class="note-strip"><b data-i18n="safety">Child safety, by design.</b> <span data-i18n="safetySub">There are no private channels to a child anywhere on PitchPro. Guides message parents here. Where a guide comments on one of Elle's moments, that comment is public to her circle, copied to you the moment it is written, and kept in the safeguarding log — a guide can never send a child something you don't see.</span></div>
       <div class="card">
         <h3>Coach Nick</h3>
-        <div class="msg"><div class="from">Coach Nick <span>Yesterday 6:12 PM</span></div><div style="font-size:13.5px;margin-top:4px;">Nora's first step off the left foot is noticeably quicker. We'll test it under pressure Thursday.</div></div>
+        <div class="msg"><div class="from">Coach Nick <span>Yesterday 6:12 PM</span></div><div style="font-size:13.5px;margin-top:4px;">Elle's first step off the left foot is noticeably quicker. We'll test it under pressure Thursday.</div></div>
         <div class="msg me"><div class="from">You <span>Yesterday 6:40 PM</span></div><div style="font-size:13.5px;margin-top:4px;">He was so proud after Tuesday. Thanks for the note!</div></div>
-        <div class="msg"><div class="from">Sandro Rajic <span>Jul 12</span></div><div style="font-size:13.5px;margin-top:4px;">Reassessment booked for Aug 14. The June report is in Nora's profile — bring questions to the family meeting.</div></div>
+        <div class="msg"><div class="from">Sandro Rajic <span>Jul 12</span></div><div style="font-size:13.5px;margin-top:4px;">Reassessment booked for Aug 14. The June report is in Elle's profile — bring questions to the family meeting.</div></div>
       </div>
       <div class="card" style="margin-top:16px;">
-        <h3 data-i18n="copies">Copies of guide comments on Nora's moments</h3>
-        <div class="msg"><div class="from">Coach Nick → Nora's moment "First start in midfield" <span>Sat 2:10 PM</span></div><div style="font-size:13.5px;margin-top:4px;">That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div></div>
+        <h3 data-i18n="copies">Copies of guide comments on Elle's moments</h3>
+        <div class="msg"><div class="from">Coach Nick → Elle's moment "First start in midfield" <span>Sat 2:10 PM</span></div><div style="font-size:13.5px;margin-top:4px;">That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div></div>
         <p style="font-size:12.5px;color:var(--muted);" data-i18n="copiesNote">Every one of these arrives here automatically. You don't have to go looking.</p>
       </div>
       <div class="card" style="margin-top:16px;">
@@ -521,7 +623,7 @@
           <tr class="doc-row"><td>Service Agreement</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
           <tr class="doc-row"><td>Liability Waiver</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
           <tr class="doc-row"><td>Health &amp; Assessment Consent</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
-          <tr class="doc-row"><td>Player Account Agreement — Nora</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
+          <tr class="doc-row"><td>Player Account Agreement — Elle</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
         </table>
         <div class="consent"><span data-i18n="photoConsent">Photo &amp; video permission (training clips, progress analysis)</span><div class="pilldot"></div></div>
         <div class="consent"><span data-i18n="marketingConsent">Marketing use of imagery</span><div class="pilldot off"></div></div>
@@ -552,64 +654,85 @@ const i18n={
  en:{},
  hr:{portalTitle:'Obiteljski portal',portalSub:'Prijavite se i pratite put svog djeteta. Termini, izvještaji, poruke i plaćanja na jednom sigurnom mjestu.',email:'E-mail',password:'Lozinka',enterDemo:'Uđi u demo portal',loginNote:'Prijava nije aktivna u ovom pregledu. Prava prijava s dvofaktorskom zaštitom stiže s platformom.',
  navDash:'Početna',navPlayer:'Profil igrača',navPath:'Put razvoja',navBook:'Termini',navPay:'Plaćanja',navMsg:'Poruke i dokumenti',
- navSecPlayer:'Računi igrača · Nora',navMoments:'Trenuci i odobrenja',navSafety:'Sigurnost i dopuštenja',
- dashTitle:'Dobrodošli natrag, Marta',dashSub:'Evo dokle je Nora stigla ovog tjedna.',nextSession:'Sljedeći trening',program:'Trenutni program',nextReassess:'Sljedeća procjena',withSandro:'Procjena pokreta · sa Sandrom',latestNote:'Zadnja bilješka vodiča',quickActions:'Brze radnje',qaBook:'Rezerviraj termin',qaReport:'Pogledaj zadnji izvještaj',qaMsg:'Pošalji poruku vodiču',go:'Idi',
- momentsCard:'Trenuci — Nora',mPending:'1 trenutak čeka vas',mPendingSub:'"Volej slabijom nogom" · objavljeno danas u 18:42',review:'Pregledaj',mComment:'Coach Nick je komentirao trenutak',mCommentSub:'Kopija je u vašem sandučiću · sub 14:10',read:'Pročitaj',mStreak:'Nora ima niz od 11 tjedana',mStreakSub:'24 trenutka od ožujka',
- accountsCard:'Računi igrača',elleMode:'Aktivan · objavljuje odmah, vi pregledavate poslije · 3 odobrena vodiča',adinMode:'Račun ste odobrili kao iznimku ispod 10 godina · zaključan samo na obitelj do njegova 10. rođendana · bez vodiča, bez poveznica',exception:'Iznimka',accountsNote:'Zasloni ispod uvijek prikazuju dijete odabrano na vrhu stranice. Nora i Ivan imaju potpuno odvojene postavke — ništa što promijenite za jedno ne dira drugo.',
+ navSecPlayer:'Računi igrača · Elle',navMoments:'Trenuci i odobrenja',navViews:'Tko je gledao',navSafety:'Sigurnost i dopuštenja',
+ vTitle:'Tko je gledao',vSub:'Svaka osoba koja je vidjela išta od Elle ili Adina, što je pogledala i kada. Oboje djece, jedan zaslon.',
+ vFree:'Nikada iza plaćanja.',vFreeSub:'Identitet svakoga tko je gledao vaše dijete sigurnosna je informacija, a ne značajka. Uvijek ćete besplatno vidjeti svako ime, svaki put i svaki razlog, bez obzira pretplaćujete li se na išta.',
+ vViews:'Pregleda ovog tjedna',vPeople:'Osoba, sve imenovane',vUnknown:'Nepoznatih gledatelja',
+ vElle:'Elle · U12',vNick:'Odobreni vodič · 14 treninga · dvaput pogledao "Volej slabijom nogom", jednom "Prvi start u sredini"',
+ vSandro:'Odobreni vodič · otvorio njezin profil i lipanjski izvještaj prije rezervacije ponovne procjene',
+ vGrego:'Poveznica za promociju #EL-0812 koju ste izradili za probu za kamp u Splitu · 4 trenutka, bez izvještaja · istječe 30. kolovoza',
+ vDavid:'Drugi roditelj na obiteljskom računu',
+ vAdin:'Adin · U10 · iznimka ispod 10 godina',vYouOnly:'Vi, i samo vi',vAdinSub:'Njegov je račun zaključan samo na obitelj, pa ovaj zaslon nema što prijaviti i neće imati dok ima devet godina.',
+ vWatch:'Vrijedno pogleda',
+ vW1:'Grego je u srijedu navečer triput otvorio poveznicu za Elle',vW1s:'Uobičajeno za nekoga tko ozbiljno razmatra kandidata za probu. Prikazano jer to trebate vidjeti, ne zato što nešto nije u redu.',vNormal:'Uobičajeno',
+ vW2:'Coach Nick devet dana u srpnju nije ništa pogledao',vW2s:'Bio je odsutan. Prikazano jer vodič koji prestane gledati vrijedi primijetiti.',vClosed:'Zatvoreno',
+ vW3:'Otvorena je istekla poveznica',vW3s:'Calgary Foothills pokušao je poveznicu #EL-0611 3. kolovoza. Istekla je 12. srpnja, pa ništa nije prikazano. Zabilježeno da znate da su se vratili.',vBlocked:'Blokirano',
+ vYou:'Kako izgledate kada pregledavate vodiče',
+ vAnon:'Pregledavaj vodiče poluprivatno',vAnonSub:'Vodič čiju stranicu pogledate vidi "roditelj igračice U12, Calgary" — ne vaše ime. Možete pogledati deset vodiča bez da deset vodiča zna tko ste.',
+ vReveal:'Otkrij moje ime kada pošaljem upit',vRevealSub:'Čim uspostavite kontakt, vodič vidi tko ste. To je pogodba: pregledavanje je privatno, kontakt nije.',
+ vAnonNote:'Vodič pretplaćen na PitchPro Plus i dalje ne može vidjeti vaše ime dok je ovo uključeno. Plaćena razina nikada ne nadjačava tuđi izbor privatnosti — to pravilo vrijedi u oba smjera.',
+ vPlus:'PitchPro Plus — što pretplata ovdje dodaje',vPlusSub:'Imena, vremena i razlozi zauvijek ostaju besplatni. Plus dodaje analizu:',
+ vP1:'Pregledi kroz vrijeme, po djetetu — raste li zanimanje pred probu ili opada?',vP2:'Povijest dulja od 30 dana',vP3:'Tjedni sažetak e-poštom umjesto provjeravanja',
+ vP4:'Upozorenja: neuobičajen niz otvaranja poveznice ili pokušaj otvaranja istekle poveznice',vP5:'Izvoz cijelog zapisa u jednu datoteku',
+ vPlusNote:'Cijena nije određena. Kakva god bila, besplatna razina zadržava svako ime.',
+
+ dashTitle:'Dobrodošli natrag, Alma',dashSub:'Evo dokle je Elle stigla ovog tjedna.',nextSession:'Sljedeći trening',program:'Trenutni program',nextReassess:'Sljedeća procjena',withSandro:'Procjena pokreta · sa Sandrom',latestNote:'Zadnja bilješka vodiča',quickActions:'Brze radnje',qaBook:'Rezerviraj termin',qaReport:'Pogledaj zadnji izvještaj',qaMsg:'Pošalji poruku vodiču',go:'Idi',
+ momentsCard:'Trenuci — Elle',mPending:'1 trenutak čeka vas',mPendingSub:'"Volej slabijom nogom" · objavljeno danas u 18:42',review:'Pregledaj',mComment:'Coach Nick je komentirao trenutak',mCommentSub:'Kopija je u vašem sandučiću · sub 14:10',read:'Pročitaj',mStreak:'Elle ima niz od 11 tjedana',mStreakSub:'24 trenutka od ožujka',
+ accountsCard:'Računi igrača',elleMode:'Aktivan · objavljuje odmah, vi pregledavate poslije · 3 odobrena vodiča',adinMode:'Račun ste odobrili kao iznimku ispod 10 godina · zaključan samo na obitelj do njegova 10. rođendana · bez vodiča, bez poveznica',exception:'Iznimka',accountsNote:'Zasloni ispod uvijek prikazuju dijete odabrano na vrhu stranice. Elle i Adin imaju potpuno odvojene postavke — ništa što promijenite za jedno ne dira drugo.',
  reportStd:'PitchPro izvještaj igrača.',reportStdSub:'Jedan standardizirani izvještaj za sve vodiče. Svaki vodič doprinosi svojom disciplinom — vaše dijete dobiva potpunu sliku.',goals:'Razvojni ciljevi (dogovoreni s obitelji)',inProgress:'U tijeku',onTrack:'Po planu',
- elleSide:'Dio profila koji piše Nora',elleSideSub:'Izvještaj iznad pišu vodiči. Ovaj dio Nora piše sama — njezini trenuci, ciljevi, niz. Vi vidite sve.',openTimeline:'Otvori vremensku crtu',
- momTitle:'Trenuci i odobrenja',momSub:'Sve što Nora objavi dolazi ovdje — bez obzira treba li vaše odobrenje.',momMode:'Način pregleda za Nora: objavljuje odmah, vi pregledavate poslije.',momModeSub:'Njezini trenuci idu izravno vodičima koje ste odobrili, a vi ih možete ukloniti. Prebacite na odobrenje-prvo u Sigurnosti i dopuštenjima ako želite vidjeti svaki prije vodiča.',change:'Promijeni',
+ elleSide:'Dio profila koji piše Elle',elleSideSub:'Izvještaj iznad pišu vodiči. Ovaj dio Elle piše sama — njezini trenuci, ciljevi, niz. Vi vidite sve.',openTimeline:'Otvori vremensku crtu',
+ momTitle:'Trenuci i odobrenja',momSub:'Sve što Elle objavi dolazi ovdje — bez obzira treba li vaše odobrenje.',momMode:'Način pregleda za Elle: objavljuje odmah, vi pregledavate poslije.',momModeSub:'Njezini trenuci idu izravno vodičima koje ste odobrili, a vi ih možete ukloniti. Prebacite na odobrenje-prvo u Sigurnosti i dopuštenjima ako želite vidjeti svaki prije vodiča.',change:'Promijeni',
  momFlag:'Zadržano za vas — automatski označeno',momFlagSub:'I u načinu objavi-prvo trenutak se zadržava ako sigurnosna provjera nešto uoči: nepoznato lice, trag lokacije, školski grb ili opis koji model ocijeni kao uznemiren. Vi odlučujete što dalje.',
- held:'⏳ Zadržano na pregled',flagWhy:'⚠ Zadržano jer: u 0:11 vidljivo je lice drugog djeteta, a opis spominje naziv dvorane. Ništa još nije podijeljeno.',elleChose:'Nora je odabrala',
- approveShare:'Odobri i podijeli s vodičima koje ima Nora',approveFam:'Neka ostane među nama',blurFace:'Zamuti drugo lice pa podijeli',sendBack:'Vrati Nora uz poruku',removeIt:'Ukloni',
- momLive:'Već podijeljeno',momLiveSub:'Bilo koji od ovih možete ukloniti u svakom trenutku. Uklanjanje ga odmah miče svim vodičima i javlja Nora da ste to učinili — nikada ne uklanjamo nešto iza njegovih leđa.',
+ held:'⏳ Zadržano na pregled',flagWhy:'⚠ Zadržano jer: u 0:11 vidljivo je lice drugog djeteta, a opis spominje naziv dvorane. Ništa još nije podijeljeno.',elleChose:'Elle je odabrala',
+ approveShare:'Odobri i podijeli s vodičima koje ima Elle',approveFam:'Neka ostane među nama',blurFace:'Zamuti drugo lice pa podijeli',sendBack:'Vrati Elle uz poruku',removeIt:'Ukloni',
+ momLive:'Već podijeljeno',momLiveSub:'Bilo koji od ovih možete ukloniti u svakom trenutku. Uklanjanje ga odmah miče svim vodičima i javlja Elle da ste to učinili — nikada ne uklanjamo nešto iza njegovih leđa.',
  shared:'✓ Podijeljeno',seenBy:'Vide',addComment:'Dodaj komentar',restrict:'Suzi tko vidi',takeDown:'Ukloni',reportGuide:'Prijavi komentar vodiča',
- famOnly:'🔒 Samo obitelj — tako je odlučila Nora',famOnlyNote:'Nora je za ovaj trenutak isključila vodiče. To može za bilo koji trenutak — vas nikada ne može isključiti.',
- safeTitle:'Sigurnost i dopuštenja',safeSub:'Zaštitne ograde za Nora. Vi postavljate granicu; unutar nje Nora odlučuje.',
- modeTitle:'1 · Koliko slobode Nora dobiva?',modeA:'Odobrenje prvo<br><span style="font-weight:500;font-size:11.5px;">ništa ne izlazi iz obitelji dok ne kažete</span>',modeB:'Objavi prvo, pregled poslije<br><span style="font-weight:500;font-size:11.5px;">ide odobrenim vodičima odmah</span>',modeC:'Samo obitelj<br><span style="font-weight:500;font-size:11.5px;">dnevnik — nitko izvan obitelji, nikada</span>',
- modeNote:'Ovo postavljate po djetetu, ne po dobi — Nora je na objavi-prvo. Mijenjajte kad želite; promjena nikada ne utječe na već objavljene trenutke. Označeni trenuci zadržavaju se u svakom načinu.',u10Title:'Ivan ima 9 godina — njegov je račun iznimka koju ste sami zatražili.',u10Sub:'Računi za djecu ispod 10 godina ne nude se standardno. Kad roditelj zatraži takav račun, izrađuje se zaključan <b>samo na obitelj</b>: privatna vremenska crta koju dijelite samo vi i on. Bez vodiča, bez komentara, bez poveznica za promociju, a tri gumba iznad na njegovu su računu zasivljena. Otključava se na njegov 10. rođendan i tada birate način.',
- circleTitle:'2 · Tko smije biti u krugu koji pripada Nora',thWho:'Tko',thBasis:'Zašto ispunjava uvjete',thSee:'Vidi trenutke',thReact:'Može reagirati 👏',thComment:'Može komentirati',
+ famOnly:'🔒 Samo obitelj — tako je odlučila Elle',famOnlyNote:'Elle je za ovaj trenutak isključila vodiče. To može za bilo koji trenutak — vas nikada ne može isključiti.',
+ safeTitle:'Sigurnost i dopuštenja',safeSub:'Zaštitne ograde za Elle. Vi postavljate granicu; unutar nje Elle odlučuje.',
+ modeTitle:'1 · Koliko slobode Elle dobiva?',modeA:'Odobrenje prvo<br><span style="font-weight:500;font-size:11.5px;">ništa ne izlazi iz obitelji dok ne kažete</span>',modeB:'Objavi prvo, pregled poslije<br><span style="font-weight:500;font-size:11.5px;">ide odobrenim vodičima odmah</span>',modeC:'Samo obitelj<br><span style="font-weight:500;font-size:11.5px;">dnevnik — nitko izvan obitelji, nikada</span>',
+ modeNote:'Ovo postavljate po djetetu, ne po dobi — Elle je na objavi-prvo. Mijenjajte kad želite; promjena nikada ne utječe na već objavljene trenutke. Označeni trenuci zadržavaju se u svakom načinu.',u10Title:'Adin ima 9 godina — njegov je račun iznimka koju ste sami zatražili.',u10Sub:'Računi za djecu ispod 10 godina ne nude se standardno. Kad roditelj zatraži takav račun, izrađuje se zaključan <b>samo na obitelj</b>: privatna vremenska crta koju dijelite samo vi i on. Bez vodiča, bez komentara, bez poveznica za promociju, a tri gumba iznad na njegovu su računu zasivljena. Otključava se na njegov 10. rođendan i tada birate način.',
+ circleTitle:'2 · Tko smije biti u krugu koji pripada Elle',thWho:'Tko',thBasis:'Zašto ispunjava uvjete',thSee:'Vidi trenutke',thReact:'Može reagirati 👏',thComment:'Može komentirati',
  basisParent:'Roditeljski račun',basisNick:'14 treninga od travnja · provjera ✓',basisSandro:'Procjena lipanj 2026 · provjera ✓',basisGrego:'Uvodni poziv za kamp · provjera ✓',reactOnly:'Isključeno — samo reakcije',
- futureGuide:'Bilo koji budući vodič',basisFuture:'Pojavljuje se tek nakon prvog odrađenog treninga',basisFutureNote:'Svakoga odobravate prije nego Nora može dijeliti s njim',askMe:'Pitaj me',
+ futureGuide:'Bilo koji budući vodič',basisFuture:'Pojavljuje se tek nakon prvog odrađenog treninga',basisFutureNote:'Svakoga odobravate prije nego Elle može dijeliti s njim',askMe:'Pitaj me',
  circleNote:'Vodič nikada ne može zatražiti pristup djetetu. Jedini put unutra je stvarno odrađen trening, pa vaše odobrenje. Svaki komentar vodiča kopira se u vaš sandučić i pohranjuje u sigurnosni zapisnik — privatnih poruka vodič–igrač nema nigdje na platformi.',
  beyondTitle:'3 · Izvan kruga',teamMates:'Suigrači i prijatelji na PitchProu',teamMatesSub:'Povezivanje igrača, samo unutar platforme. Oba roditelja moraju odobriti svaku vezu.',
  manage:'Upravljaj',
  promoLink:'Poveznica za promociju igrača',promoLinkSub:'Privatna poveznica s rokom trajanja koju izrađujete za jednu imenovanu osobu — skauta, klub ili vodiča koji želi pratiti sadašnjeg ili bivšeg igrača. Zamjenjuje javni profil; stranice koju bilo tko može pronaći nema.',createLink:'Izradi poveznicu',
  noPublic:'Javni profil',noPublicSub:'Ne nudi se. Stranica koju se može pronaći, s imenom, dobi, pozicijom i fotografijama djeteta, jedino je što ovaj dizajn neće raditi.',notOffered:'🔒 Ne nudi se',
  pubTitle:'4 · Poveznice za promociju igrača — jedini način da išta izađe iz kruga',
- pubIntro:'Jedna poveznica, jedna imenovana osoba, jedan datum isteka. Koristi se kad skaut ili klub zatraži uvid u igrača, a jednako tako i kad vodič — uključujući onoga koji Nora više ne trenira — želi vidjeti kako napreduje. Vi je izrađujete, vidite svako otvaranje i možete je ugasiti jednim dodirom.',
+ pubIntro:'Jedna poveznica, jedna imenovana osoba, jedan datum isteka. Koristi se kad skaut ili klub zatraži uvid u igrača, a jednako tako i kad vodič — uključujući onoga koji Elle više ne trenira — želi vidjeti kako napreduje. Vi je izrađujete, vidite svako otvaranje i možete je ugasiti jednim dodirom.',
  builder:'Izradi poveznicu',
  lkWho:'Za koga je',lkWhoSub:'Ime i uloga, koje upisujete vi. Ime je ispisano preko svake stranice poveznice, pa je proslijeđena poveznica odmah očita.',
- lkWhy:'Razlog',lkWhySub:'Bilježi se za vašu evidenciju i prikazuje se Nora.',
+ lkWhy:'Razlog',lkWhySub:'Bilježi se za vašu evidenciju i prikazuje se Elle.',
  lkExpiry:'Istječe',lkExpirySub:'7, 30 ili 90 dana. Opcije "nikad" nema.',
  lkPass:'Pristupni kod',lkPassSub:'Šest znamenki, šalje se odvojeno. Preporučeno za svakoga koga niste upoznali.',
  lkDl:'Dopusti preuzimanje snimaka',lkDlSub:'Isključeno znači samo gledanje, u pregledniku, s vodenim žigom.',
  lkShows:'Što nositelj poveznice vidi',
- pfFirst:'Samo ime i inicijal — "Nora A."',pfFirstSub:'Prezime se ne prikazuje ni na jednoj poveznici.',pfAge:'Dobna skupina (U12) i pozicija',
- pfMoments:'Do 6 trenutaka — Nora predlaže, vi odobravate svaki',pfBadges:'Bedževi i niz',
+ pfFirst:'Samo ime i inicijal — "Elle A."',pfFirstSub:'Prezime se ne prikazuje ni na jednoj poveznici.',pfAge:'Dobna skupina (U12) i pozicija',
+ pfMoments:'Do 6 trenutaka — Elle predlaže, vi odobravate svaki',pfBadges:'Bedževi i niz',
  pfReport:'Sažetak izvještaja igrača (Motion Age, vrijeme šatla, dijelovi vodiča)',pfReportSub:'Isključeno kao zadano. Razumno za skauta kojemu ste se sami obratili; ne i za nekoga tko se obratio vama.',
  pfContact:'Vaši kontaktni podaci',pfContactSub:'Isključeno znači da upiti dolaze preko PitchProa, a ne na vaš telefon.',
- pfNever:'Nikada se ne prikazuje, nema postavke',pfNeverSub:'Prezime · škola · klub · grad stanovanja · dvorana i termini · svaka fotografija s drugim djetetom · bilo što iz trenutka označenog samo za obitelj · bilo što što Nora nije sama predložila',
+ pfNever:'Nikada se ne prikazuje, nema postavke',pfNeverSub:'Prezime · škola · klub · grad stanovanja · dvorana i termini · svaka fotografija s drugim djetetom · bilo što iz trenutka označenog samo za obitelj · bilo što što Elle nije sama predložila',
  lkActive:'Postojeće poveznice',thFor:'Za koga',thReason:'Razlog',thExpires:'Istječe',thOpens:'Otvoreno',thContent:'Prikazuje',
  roleGuide:'Vodič · Lovrencsics Academy',rsnCamp:'Proba za kamp u Splitu',shows4:'4 trenutka · bez izvještaja',revoke:'Opozovi',
  roleScout:'Klupski skaut',rsnTrial:'Upit za probu U13',expired:'Isteklo 12. srpnja',shows6:'6 trenutaka · izvještaj uključen',closed2:'Zatvoreno',
  roleFormer:'Bivši vodič · sezona 2025.',rsnCatch:'Želio je vidjeti kako napreduje',expired2:'Isteklo 4. lipnja',shows3:'3 trenutka · bez izvještaja',
- pubNote:'Opoziv gasi poveznicu istog trena, usred pregledavanja. Svako otvaranje bilježi se s datumom i prikazuje vama i Nora — ona uvijek zna tko je gledao njezin nogomet. Poveznice tražilice nikada ne indeksiraju i ne mogu se pogoditi.',
+ pubNote:'Opoziv gasi poveznicu istog trena, usred pregledavanja. Svako otvaranje bilježi se s datumom i prikazuje vama i Elle — ona uvijek zna tko je gledao njezin nogomet. Poveznice tražilice nikada ne indeksiraju i ne mogu se pogoditi.',
  mediaTitle:'5 · Pravila za snimke',mrStrip:'Ukloni podatke o lokaciji sa svake objave',mrStripSub:'Preporučeno. Ne može se isključiti za igrače mlađe od 13.',mrFaces:'Zadrži svaki trenutak s nepoznatim licem',
- mrTone:'Označi opise koji zvuče uznemireno',mrToneSub:'Zadržava se za vas i obavještava se sigurnosni tim. Nora se ne govori da je označeno zbog tona.',mrLength:'Ograničenje trajanja videa',
- mrPitch:'PitchPro smije koristiti trenutke koje objavljuje Nora u marketingu',mrPitchSub:'Odvojeno od vaše postojeće privole za fotografije, isključeno osim ako ne kažete drukčije.',
- controlTitle:'6 · Vaše kontrole',ctlExport:'Preuzmi sve što je Nora objavila',ctlExportSub:'Snimke, opisi, komentari i cijeli zapisnik — jedna datoteka',download:'Preuzmi',
- ctlPause:'Pauziraj račun koji pripada Nora',ctlPauseSub:'Zadržava vremensku crtu, ali ne može objavljivati ni primati komentare',pause:'Pauziraj',
+ mrTone:'Označi opise koji zvuče uznemireno',mrToneSub:'Zadržava se za vas i obavještava se sigurnosni tim. Elle se ne govori da je označeno zbog tona.',mrLength:'Ograničenje trajanja videa',
+ mrPitch:'PitchPro smije koristiti trenutke koje objavljuje Elle u marketingu',mrPitchSub:'Odvojeno od vaše postojeće privole za fotografije, isključeno osim ako ne kažete drukčije.',
+ controlTitle:'6 · Vaše kontrole',ctlExport:'Preuzmi sve što je Elle objavila',ctlExportSub:'Snimke, opisi, komentari i cijeli zapisnik — jedna datoteka',download:'Preuzmi',
+ ctlPause:'Pauziraj račun koji pripada Elle',ctlPauseSub:'Zadržava vremensku crtu, ali ne može objavljivati ni primati komentare',pause:'Pauziraj',
  ctlClose:'Zatvori račun i obriši sve trenutke',ctlCloseSub:'Trajno, uz 30 dana počeka, vodiči gube pristup odmah',close:'Zatvori',
  ctlReport:'Prijavi zabrinutost sigurnosnom timu',ctlReportSub:'Osoba, ne obrazac — odgovor u jednom radnom danu',report:'Prijavi',
  dataRights2:'Prava na podatke: PIPEDA (Kanada) i GDPR (EU obitelji). Za dječji račun primjenjujemo i pravilo iz čl. 8 GDPR-a — u Hrvatskoj privolu drži roditelj do 16. godine. privacy@pitchpropathways.com',
- pathTitle:'Put razvoja — Nora',pathSub:'Plan puta — gdje je bila, kamo ide.',progressSince:'Napredak od početka',famMeeting:'Obiteljski sastanak',
- meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz ciljeve koje Nora ima u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokoučinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
+ pathTitle:'Put razvoja — Elle',pathSub:'Plan puta — gdje je bila, kamo ide.',progressSince:'Napredak od početka',famMeeting:'Obiteljski sastanak',
+ meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz ciljeve koje Elle ima u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokoučinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
  calFeed:'Obiteljski kalendar povezan.',calFeedSub:'Svi potvrđeni termini automatski se pojavljuju u vašem Google / Apple / Outlook kalendaru.',addCal:'Dodaj u kalendar',
  bookTitle:'Termini',bookSub:'Sve rezervacije idu kroz PitchPro — jedan kalendar, jedno mjesto.',upcoming:'Nadolazeći',past:'Nedavni',confirmed:'Potvrđeno',pending:'Na čekanju',done:'Odrađeno',cancelNote:'Otkazivanje do 24h prije termina je besplatno. Kasnija otkazivanja slijede pravila iz ugovora.',
  payTitle:'Plaćanja',paySub:'Sva plaćanja na jednom mjestu — s računima. Vodiči nikada ne primaju plaćanja izravno.',enrollment:'Trenutni upis',payMethod:'Način plaćanja',payMethodNote:'Sigurno pohranjeno kod pružatelja plaćanja. PitchPro osoblje nikada ne vidi broj kartice.',receipts:'Računi',thDate:'Datum',thItem:'Stavka',thAmount:'Iznos',receipt:'Račun',
- msgTitle:'Poruke i dokumenti',msgSub:'Sva komunikacija ostaje na platformi.',safety:'Sigurnost djece, po dizajnu.',safetySub:'Na PitchProu ne postoji nijedan privatni kanal prema djetetu. Vodiči poruke šalju roditeljima ovdje. Kad vodič komentira trenutak koji je objavila Nora, taj je komentar vidljiv njezinu krugu, kopira se vama istog trenutka i čuva u sigurnosnom zapisniku — vodič djetetu nikada ne može poslati nešto što vi ne vidite.',
- copies:'Kopije komentara vodiča na trenucima koje objavljuje Nora',copiesNote:'Svaki od njih stiže ovdje automatski. Ne morate ih tražiti.',
+ msgTitle:'Poruke i dokumenti',msgSub:'Sva komunikacija ostaje na platformi.',safety:'Sigurnost djece, po dizajnu.',safetySub:'Na PitchProu ne postoji nijedan privatni kanal prema djetetu. Vodiči poruke šalju roditeljima ovdje. Kad vodič komentira trenutak koji je objavila Elle, taj je komentar vidljiv njezinu krugu, kopira se vama istog trenutka i čuva u sigurnosnom zapisniku — vodič djetetu nikada ne može poslati nešto što vi ne vidite.',
+ copies:'Kopije komentara vodiča na trenucima koje objavljuje Elle',copiesNote:'Svaki od njih stiže ovdje automatski. Ne morate ih tražiti.',
  docs:'Dokumenti i privole',signed:'Potpisano',view:'Otvori',photoConsent:'Dozvola za foto i video (snimke treninga, analiza napretka)',marketingConsent:'Korištenje snimaka u marketingu',dataRights:'Vaša prava: zatražite kopiju ili brisanje podataka vaše obitelji u bilo kojem trenutku — privacy@pitchpropathways.com. Slijedimo PIPEDA (Kanada) i GDPR (EU obitelji).'}
 };
 let base={};
