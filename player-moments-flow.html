@@ -127,7 +127,7 @@
     <div class="pg chg"><b>Dashboard</b><span>New card: pending moments, guide comments, streak.</span></div>
     <div class="pg chg"><b>Player Profile</b><span>New block: the child's own side of the profile.</span></div>
     <div class="pg new"><b>Moments &amp; Approvals</b><span>Held queue, shared feed, take-down, comment copies.</span></div>
-    <div class="pg new"><b>Safety &amp; Permissions</b><span>Six sections. The real control surface.</span></div>
+    <div class="pg new"><b>Safety &amp; Permissions</b><span>Six sections, including the promotion-link builder. The real control surface.</span></div>
     <div class="pg chg"><b>Messages &amp; Docs</b><span>Guide-comment copies; safeguarding wording rewritten.</span></div>
   </div>
   <div class="col guide">
@@ -212,7 +212,7 @@
   <div class="st"><div class="nm" style="color:var(--blue);">Returned</div><div class="ds">Sent back by the parent with a note. Editable.</div><div class="who">Visible to <b>player, parent</b></div></div>
   <div class="st"><div class="nm" style="color:var(--red);">Taken down</div><div class="ds">Pulled by the parent after sharing. Player is told.</div><div class="who">Visible to <b>player, parent, admin</b></div></div>
   <div class="st"><div class="nm" style="color:var(--red);">Escalated</div><div class="ds">With the safeguarding team. A person is handling it.</div><div class="who">Visible to <b>admin</b> — parent contacted by phone</div></div>
-  <div class="st"><div class="nm" style="color:var(--grass);">Published</div><div class="ds">On the public profile. Parent approved this one individually.</div><div class="who">Visible to <b>anyone with the link</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--grass);">On a link</div><div class="ds">Included in a play promotion link. Parent approved this one individually.</div><div class="who">Visible to <b>one named link holder, until the expiry date</b></div></div>
 </div>
 <div class="note">Nine states. Every one needs its own copy for the player, its own notification, and its own row in the audit log. This is the part that always gets underestimated.</div>
 </div>
@@ -220,7 +220,7 @@
 <div class="sect">5 · Who can do what</div>
 <div class="card">
   <table>
-    <tr><th>Capability</th><th>Player</th><th>Parent</th><th>Approved guide</th><th>Admin</th><th>Public</th></tr>
+    <tr><th>Capability</th><th>Player</th><th>Parent</th><th>Approved guide</th><th>Admin</th><th>Promotion-link holder</th></tr>
     <tr><td>Post a moment</td><td><span class="tag">Yes</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
     <tr><td>See every moment the player posts</td><td><span class="tag">Yes</span></td><td><span class="tag lock">Always — cannot be turned off</span></td><td>Only those included</td><td>Only held or reported</td><td>—</td></tr>
     <tr><td>Choose the audience for one moment</td><td><span class="tag">Yes, within the approved circle</span></td><td>Can narrow after the fact</td><td>—</td><td>—</td><td>—</td></tr>
@@ -229,8 +229,8 @@
     <tr><td>Comment</td><td>On their own moment</td><td>Yes</td><td><span class="tag amber">If the parent allows · copied to the parent · logged</span></td><td>—</td><td>—</td></tr>
     <tr><td>Message the child privately</td><td>—</td><td>Yes</td><td><span class="tag red">Never — no such channel exists</span></td><td><span class="tag red">Never</span></td><td>—</td></tr>
     <tr><td>Delete a moment</td><td>Yes, own</td><td>Yes, any</td><td>—</td><td>Only via a logged safeguarding action</td><td>—</td></tr>
-    <tr><td>Turn on the public profile</td><td>Can ask</td><td><span class="tag lock">Only the parent</span></td><td>—</td><td>—</td><td>—</td></tr>
-    <tr><td>Choose which moments go public</td><td>Proposes up to six</td><td>Approves each one</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Create an outward-facing link</td><td>Can ask</td><td><span class="tag lock">Only the parent · named recipient, fixed expiry</span></td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Choose which moments go on a link</td><td>Proposes up to six</td><td>Approves each one</td><td>—</td><td>—</td><td>Sees only those six</td></tr>
     <tr><td>Export everything</td><td>—</td><td><span class="tag">One click</span></td><td>—</td><td>Yes</td><td>—</td></tr>
     <tr><td>Close the account</td><td>Can ask</td><td><span class="tag lock">Only the parent</span></td><td>—</td><td>Yes, for cause</td><td>—</td></tr>
   </table>
@@ -248,15 +248,32 @@
   <div class="note">The default follows the age; the setting does not. A parent can put a ten-year-old on post-first or a fifteen-year-old on family-only. That is what you asked for, and it is also the honest position — parents know their own child and a birthday is a poor proxy for judgement.</div>
 </div>
 
-<div class="sect">7 · The public profile, and why it is last</div>
+<div class="sect">7 · Play promotion links — the only outward-facing route</div>
+<div class="sect-sub">Decided 21 August 2026: <b>there is no public profile.</b> Nothing on this platform produces a findable page carrying a child's name, age, position and photographs. When someone outside the circle needs to see a player, a parent sends one private, expiring link.</div>
 <div class="card">
-  <p>A public page for a named child is a different product from a private journal, and it carries the risk that everything else in this design is built to avoid. Three positions, in the order they should ship:</p>
-  <ol>
-    <li><b>Private circle only</b> — parent, approved guides. Ship this first and live with it for a season.</li>
-    <li><b>Private scouting link</b> — one expiring link, generated by the parent, for one named club. Solves the actual need (a coach wants to see the kid play) without a page anyone can find. This is very likely where you should stop.</li>
-    <li><b>Public profile</b> — first name and initial, age group, position, badges, and up to six parent-approved moments. Never a surname, school, club, city, venue, training time, another child's face, or anything from a family-only moment. Report numbers off by default.</li>
-  </ol>
-  <div class="warn" style="margin-top:18px;"><b>Say this out loud before building the third one.</b><p>A public page with a child's first name, age, position, photos, and a training streak is enough for a stranger to start a conversation that sounds informed. The private scouting link gets a family ninety per cent of the value at a fraction of the risk. If the public profile ships anyway, the FIFA Article 18bis and 18ter exposure in the partnership file also applies here — a public shop window for young players is exactly the surface a regulator looks at.</p></div>
+  <h3>What a link is</h3>
+  <p>A parent types a name and a reason, picks an expiry of 7, 30 or 90 days, and gets a link. The recipient's name is printed across every page of it, so a forwarded link is obvious. Every open is logged with a date and shown to the parent <b>and to the player</b> — the child always knows who has looked at their football. Revoking kills it instantly, mid-session. Search engines never index it and it cannot be guessed.</p>
+
+  <table style="margin-top:20px;">
+    <tr><th>Who it is for</th><th>The situation</th><th>Typical settings</th></tr>
+    <tr><td><b>A scout or a club</b></td><td>A trial enquiry, or a club a family has chosen to approach.</td><td>30 days · passcode on · report summary on if the family made the approach, off if the club did</td></tr>
+    <tr><td><b>A current guide outside the circle</b></td><td>A guide brought in for one camp or one assessment who has not yet completed a session, so the moments feed is not open to them.</td><td>30 days · no report · watch-only</td></tr>
+    <tr><td><b>A former guide</b></td><td>Someone who trained the player last season and wants to see how they are getting on. Feed access ends when the working relationship does; a link is how the door stays politely open.</td><td>7 or 30 days · no report · a handful of moments</td></tr>
+    <tr><td><b>Family</b></td><td>Grandparents abroad, a parent who is not on the account.</td><td>90 days · no report · renewable</td></tr>
+  </table>
+
+  <h3 style="margin-top:26px;">What the holder sees</h3>
+  <ul>
+    <li>First name and initial only — <b>never a surname</b>, on any link, with no setting to change it.</li>
+    <li>Age group and position · badges and streak · up to six moments the player proposes and the parent approves one by one.</li>
+    <li>Player Report summary — <b>off by default</b>. Sensible for a scout the family approached; not for one who approached the family.</li>
+    <li>Parent contact details — off by default, so enquiries come back through the platform rather than to a personal phone.</li>
+    <li>Never shown, with no setting available: school · club · home city · training venue and times · any photo containing another child · anything from a family-only moment · anything the player did not put forward themselves.</li>
+  </ul>
+
+  <div class="rule" style="margin-top:20px;"><b>Why this is better than a public page, not just safer.</b><p>A public profile is a shop window that anyone can walk past. A promotion link is a document a parent hands to a named person for a stated reason, with a clock on it. It gets a family the whole of the actual benefit — a coach who wanted to see the kid play can now see the kid play — while removing every part of the risk. It is also the honest answer to a parent who asks "who can see my child?": a list of names, with dates.</p></div>
+
+  <div class="warn" style="margin-top:14px;"><b>One thing to watch.</b><p>A link is a copy of a child's football life leaving your control. Watermarking and expiry raise the cost of misuse; they do not make it impossible. Keep the default moment count low, keep the report off by default, and treat a request to remove the expiry as a signal rather than a feature request.</p></div>
 </div>
 
 <div class="sect">8 · What makes them come back</div>
@@ -277,7 +294,7 @@
   <div class="warn"><b>The screens are the cheap part.</b><p>Everything below is a real obligation the moment a ten-year-old uploads a video, and none of it is optional.</p></div>
   <table>
     <tr><th>#</th><th>Decision</th><th>Why it blocks</th></tr>
-    <tr><td>1</td><td><b>Legal review of a social feature for children</b>, Canada and Croatia together</td><td>Different rules, different mandatory reporting routes, one product.</td></tr>
+    <tr><td>1</td><td><b>Legal review of a social feature for children</b>, Canada and Croatia together</td><td>Different rules, different mandatory reporting routes, one product. Promotion links are lighter than a public page but still put a child's image outside the platform.</td></tr>
     <tr><td>2</td><td><b>Age assurance and how parental consent is captured</b></td><td>GDPR Article 8 — Croatia sets the age at 16, Canada differs. Determines the whole tier model.</td></tr>
     <tr><td>3</td><td><b>Who moderates, and how fast</b> — vendor or in-house</td><td>A tone flag at 9:48 PM needs a named person, not a queue nobody reads.</td></tr>
     <tr><td>4</td><td><b>Where children's video is stored, and for how long</b></td><td>Data residency, retention, and the cost of video hosting at scale.</td></tr>
@@ -297,8 +314,8 @@
     <tr><td><span class="tag">2</span></td><td>Parent approval queue, review modes, automatic media check.</td><td>Build the controls before the audience exists, not after.</td></tr>
     <tr><td><span class="tag">3</span></td><td>Guide visibility — <b>read and react only</b>. No free text.</td><td>Proves the circle model with the lowest-stakes interaction available.</td></tr>
     <tr><td><span class="tag amber">4</span></td><td>Guide comments, with the parent copy and the audit log.</td><td>Only after items 1, 2, 3 and 8 in the previous table are closed.</td></tr>
-    <tr><td><span class="tag blue">5</span></td><td>Private scouting link.</td><td>Delivers the real scouting need without a public page.</td></tr>
-    <tr><td><span class="tag red">6</span></td><td>Public profile — only if stage 5 proves insufficient.</td><td>It probably will not be.</td></tr>
+    <tr><td><span class="tag blue">5</span></td><td>Play promotion links — named recipient, fixed expiry, open log, revoke.</td><td>Delivers the scouting need, the former-guide case and the grandparents case, with no findable page anywhere.</td></tr>
+    <tr><td><span class="tag grey">—</span></td><td><b>Public profile: not planned.</b></td><td>Decided 21 August 2026. If it is ever revisited, it re-opens every compliance row in the table above.</td></tr>
   </table>
 </div>
 
@@ -311,6 +328,8 @@
     <li><b>Q4 · Siblings.</b> Mia is nine. Does she get a read-only view of her brother's timeline, or nothing at all until ten?</li>
     <li><b>Q5 · Two parents, one child.</b> Which parent approves? Both, either, or a nominated one? Separated families make this a real question rather than a detail.</li>
     <li><b>Q6 · Croatia versus Canada launch.</b> Croatian families arrive through Grego. If the age of consent differs, does the feature launch in one country first?</li>
+    <li><b>Q7 · Who may be sent a promotion link?</b> Anyone the parent names, or only from a list the platform recognises — a registered guide, a verified club? Free-typing a name is simpler and puts the judgement with the parent; a verified list is safer and much more work.</li>
+    <li><b>Q8 · Does a former guide keep anything at all?</b> The design says feed access ends with the working relationship and a link is the polite door. Confirm that is what you want, because guides may expect otherwise.</li>
   </ul>
 </div>
 
