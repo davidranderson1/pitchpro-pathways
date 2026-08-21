@@ -25,6 +25,7 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:16px;}
   .card h3{font-size:13px;letter-spacing:.1em;color:var(--muted);margin-bottom:14px;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
   td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top;}
   .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);white-space:nowrap;}
@@ -219,7 +220,7 @@
 
 <div class="sect">5 · Who can do what</div>
 <div class="card">
-  <table>
+  <div class="tw"><table>
     <tr><th>Capability</th><th>Player</th><th>Parent</th><th>Approved guide</th><th>Admin</th><th>Promotion-link holder</th></tr>
     <tr><td>Post a moment</td><td><span class="tag">Yes</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
     <tr><td>See every moment the player posts</td><td><span class="tag">Yes</span></td><td><span class="tag lock">Always — cannot be turned off</span></td><td>Only those included</td><td>Only held or reported</td><td>—</td></tr>
@@ -233,18 +234,18 @@
     <tr><td>Choose which moments go on a link</td><td>Proposes up to six</td><td>Approves each one</td><td>—</td><td>—</td><td>Sees only those six</td></tr>
     <tr><td>Export everything</td><td>—</td><td><span class="tag">One click</span></td><td>—</td><td>Yes</td><td>—</td></tr>
     <tr><td>Close the account</td><td>Can ask</td><td><span class="tag lock">Only the parent</span></td><td>—</td><td>Yes, for cause</td><td>—</td></tr>
-  </table>
+  </table></div>
 </div>
 
 <div class="sect">6 · Age and freedom — set per child, not per birthday</div>
 <div class="card">
-  <table>
+  <div class="tw"><table>
     <tr><th>Age</th><th>What exists</th><th>Default mode</th><th>Who can change it</th></tr>
     <tr><td><b>Under 10</b></td><td><b>Not offered as standard.</b> Where a parent asks for one, the account is created <b>locked to family only</b> — a private timeline shared with the parent and nobody else. No guides, no comments, no promotion links, and the mode buttons are disabled. It unlocks on the tenth birthday.</td><td><span class="tag lock">Family only · locked</span></td><td>Nobody, until the child turns 10</td></tr>
     <tr><td><b>10–12</b></td><td>Full player account.</td><td><span class="tag amber">Approve first</span></td><td>Parent can move to post-first at any time</td></tr>
     <tr><td><b>13–15</b></td><td>Full player account.</td><td><span class="tag">Post first, review after</span></td><td>Parent can move back to approve-first at any time</td></tr>
     <tr><td><b>16+</b></td><td>Full player account. Under GDPR in Croatia the parent still holds consent to 16, so the boundary genuinely moves here rather than at 13.</td><td><span class="tag">Post first</span></td><td>Parent still holds the account until 16; review the model again before you build for older teens</td></tr>
-  </table>
+  </table></div>
   <div class="note">The default follows the age; the setting does not. A parent can put a ten-year-old on post-first or a fifteen-year-old on family-only. That is what you asked for, and it is also the honest position — parents know their own child and a birthday is a poor proxy for judgement.</div>
 
   <div class="warn" style="margin-top:18px;"><b>The under-10 exception is a real cost, and it was added on request on 21 August 2026.</b><p>A locked, family-only timeline for a nine-year-old is about as safe as a child account can be — the child cannot reach anyone and nobody can reach the child. But it still puts a person below every common platform minimum onto the system, and three consequences follow whether or not the account is locked: an app-store age rating that assumes under-13 users, a parental-consent record that must stand up under GDPR Article 8 and its Canadian equivalent, and a moderation obligation for uploaded images of a nine-year-old. <b>Write the position down before launch rather than after the first support ticket.</b> The alternative — no account until ten, sibling shown in the parent portal only — costs nothing and was the original design.</p></div>
@@ -256,13 +257,13 @@
   <h3>What a link is</h3>
   <p>A parent types a name and a reason, picks an expiry of 7, 30 or 90 days, and gets a link. The recipient's name is printed across every page of it, so a forwarded link is obvious. Every open is logged with a date and shown to the parent <b>and to the player</b> — the child always knows who has looked at their football. Revoking kills it instantly, mid-session. Search engines never index it and it cannot be guessed.</p>
 
-  <table style="margin-top:20px;">
+  <div class="tw"><table style="margin-top:20px;">
     <tr><th>Who it is for</th><th>The situation</th><th>Typical settings</th></tr>
     <tr><td><b>A scout or a club</b></td><td>A trial enquiry, or a club a family has chosen to approach.</td><td>30 days · passcode on · report summary on if the family made the approach, off if the club did</td></tr>
     <tr><td><b>A current guide outside the circle</b></td><td>A guide brought in for one camp or one assessment who has not yet completed a session, so the moments feed is not open to them.</td><td>30 days · no report · watch-only</td></tr>
     <tr><td><b>A former guide</b></td><td>Someone who trained the player last season and wants to see how they are getting on. Feed access ends when the working relationship does; a link is how the door stays politely open.</td><td>7 or 30 days · no report · a handful of moments</td></tr>
     <tr><td><b>Family</b></td><td>Grandparents abroad, a parent who is not on the account.</td><td>90 days · no report · renewable</td></tr>
-  </table>
+  </table></div>
 
   <h3 style="margin-top:26px;">What the holder sees</h3>
   <ul>
@@ -280,7 +281,7 @@
 
 <div class="sect">8 · What makes them come back</div>
 <div class="card">
-  <table>
+  <div class="tw"><table>
     <tr><th>Hook</th><th>Who it is for</th><th>Why it works</th><th>Risk</th></tr>
     <tr><td>A guide answered your moment</td><td>Player</td><td>The strongest one by far. A real adult who knows their football replied to something they made.</td><td>Guide response time becomes a service expectation. Set one.</td></tr>
     <tr><td>Streak</td><td>Player</td><td>Cheap, effective, already in the mockup.</td><td>Streaks punish injury and holidays. Make them pausable, and never rank children against each other.</td></tr>
@@ -288,13 +289,13 @@
     <tr><td>Your moment became evidence in your report</td><td>Player</td><td>The single most on-brand mechanic available to you — the child's own footage feeding the Player Report.</td><td>Needs the guide to actually do it.</td></tr>
     <tr><td>Something is waiting for you</td><td>Parent</td><td>The approval queue is a daily reason to open the portal.</td><td>Approval fatigue. Post-first mode exists for exactly this.</td></tr>
     <tr><td>See what your child said about training</td><td>Parent</td><td>Answers "how was practice" better than the child ever will.</td><td>None, and this may be the feature parents actually pay for.</td></tr>
-  </table>
+  </table></div>
 </div>
 
 <div class="sect">9 · What this costs — decide before any code</div>
 <div class="card">
   <div class="warn"><b>The screens are the cheap part.</b><p>Everything below is a real obligation the moment a ten-year-old uploads a video, and none of it is optional.</p></div>
-  <table>
+  <div class="tw"><table>
     <tr><th>#</th><th>Decision</th><th>Why it blocks</th></tr>
     <tr><td>1</td><td><b>Legal review of a social feature for children</b>, Canada and Croatia together</td><td>Different rules, different mandatory reporting routes, one product. Promotion links are lighter than a public page but still put a child's image outside the platform.</td></tr>
     <tr><td>2</td><td><b>Age assurance and how parental consent is captured</b></td><td>GDPR Article 8 — Croatia sets the age at 16, Canada differs. Determines the whole tier model.</td></tr>
@@ -304,13 +305,13 @@
     <tr><td>6</td><td><b>Insurance</b> — does the current policy cover a platform hosting children's content?</td><td>Ask before launch, not after.</td></tr>
     <tr><td>7</td><td><b>Background checks completed for every guide who can comment</b></td><td>Currently marked pending in the admin portal.</td></tr>
     <tr><td>8</td><td><b>The safeguarding response protocol, written down</b></td><td>Who calls the parent, within what time, and what is said to the child. Write it before you need it.</td></tr>
-  </table>
+  </table></div>
   <div class="note">Items 1, 2, 3 and 8 are launch blockers. Items 4 to 7 can run in parallel with the build.</div>
 </div>
 
 <div class="sect">10 · A build order that de-risks it</div>
 <div class="card">
-  <table>
+  <div class="tw"><table>
     <tr><th>Stage</th><th>What ships</th><th>Why this order</th></tr>
     <tr><td><span class="tag">1</span></td><td>Player account, timeline, composer, <b>family-only</b>. No guides, no comments, no public.</td><td>A private journal shared with a parent carries almost none of the risk and tests whether children actually use it. If they do not, everything after this is moot.</td></tr>
     <tr><td><span class="tag">2</span></td><td>Parent approval queue, review modes, automatic media check.</td><td>Build the controls before the audience exists, not after.</td></tr>
@@ -318,7 +319,7 @@
     <tr><td><span class="tag amber">4</span></td><td>Guide comments, with the parent copy and the audit log.</td><td>Only after items 1, 2, 3 and 8 in the previous table are closed.</td></tr>
     <tr><td><span class="tag blue">5</span></td><td>Play promotion links — named recipient, fixed expiry, open log, revoke.</td><td>Delivers the scouting need, the former-guide case and the grandparents case, with no findable page anywhere.</td></tr>
     <tr><td><span class="tag grey">—</span></td><td><b>Public profile: not planned.</b></td><td>Decided 21 August 2026. If it is ever revisited, it re-opens every compliance row in the table above.</td></tr>
-  </table>
+  </table></div>
 </div>
 
 <div class="sect">11 · Still open — for David</div>
@@ -341,7 +342,7 @@
   <a href="portal-parent.html">Parent portal</a>
   <a href="portal-guide.html">Guide portal</a>
   <a href="portal-admin.html">Admin</a>
-  <a href="index.html">Back to the hub</a>
+  <a href="hub.html">All pages</a>
 </div>
 
 </div>
