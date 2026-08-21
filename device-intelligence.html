@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Device Intelligence — Radar Layer · PitchPro × Rajic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch-black:#0b120e; --pitch-dark:#101a14; --pitch-card:#15211a;
+    --grass:#2ee08a; --grass-deep:#17b06a; --white:#ffffff; --muted:#9db3a6;
+    --amber:#ffbe46; --red:#ff7a6b; --blue:#5fb4ff; --violet:#b79bff; --line:rgba(255,255,255,.08);
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--body);background:var(--pitch-black);color:var(--white);line-height:1.55;font-size:15.5px;
+    background-image:radial-gradient(rgba(46,224,138,.05) 1px,transparent 1px);background-size:34px 34px;}
+  h1,h2,h3{font-family:var(--head);text-transform:uppercase;line-height:1.1;}
+  a{color:var(--grass);}
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(11,18,14,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:18px;}
+  .brand{font-family:var(--head);font-weight:900;font-size:16px;letter-spacing:.06em;display:flex;align-items:center;gap:10px;white-space:nowrap;}
+  .brand .dot{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;color:#06130c;font-size:15px;}
+  .brand small{display:block;font-family:var(--body);font-weight:600;font-size:10px;letter-spacing:.18em;color:var(--muted);}
+  .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+  .tab{background:none;border:1px solid transparent;color:var(--muted);font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border-radius:999px;cursor:pointer;}
+  .tab:hover{color:var(--grass);}
+  .tab.on{background:rgba(46,224,138,.13);color:var(--grass);border-color:rgba(46,224,138,.4);}
+  /* role bar */
+  .rolebar{position:sticky;top:62px;z-index:55;background:rgba(16,26,20,.96);border-bottom:1px solid var(--line);}
+  .rolebar-inner{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .rolebar .lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--muted);}
+  .roles{display:flex;gap:6px;flex-wrap:wrap;}
+  .role{background:none;border:1px solid var(--line);color:var(--muted);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 13px;border-radius:999px;cursor:pointer;}
+  .role.on{background:rgba(95,180,255,.14);color:var(--blue);border-color:rgba(95,180,255,.45);}
+  .plan-toggle{margin-left:auto;display:flex;align-items:center;gap:9px;font-size:11.5px;color:var(--muted);font-weight:600;}
+  .switch{width:44px;height:24px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid var(--line);position:relative;cursor:pointer;transition:.18s;}
+  .switch::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--muted);transition:.18s;}
+  .switch.on{background:rgba(46,224,138,.28);border-color:rgba(46,224,138,.5);}
+  .switch.on::after{left:22px;background:var(--grass);}
+  .view{display:none;max-width:1180px;margin:0 auto;padding:38px 20px 90px;}
+  .view.on{display:block;}
+  .kicker{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--grass);margin-bottom:12px;}
+  h1{font-size:clamp(28px,4.4vw,48px);font-weight:900;}
+  h1 span,h2 span{color:var(--grass);}
+  h2{font-size:clamp(21px,3vw,30px);font-weight:900;margin-bottom:8px;}
+  .lead{color:var(--muted);font-size:16px;max-width:850px;margin-top:12px;}
+  .mock{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(255,190,70,.15);color:var(--amber);margin-left:10px;vertical-align:middle;}
+  .card{background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;}
+  .card h3{font-size:14px;letter-spacing:.06em;margin-bottom:8px;}
+  .card p{font-size:13.5px;color:var(--muted);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px;margin-top:26px;}
+  .status{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:999px;float:right;}
+  .status.ok{background:rgba(46,224,138,.15);color:var(--grass);}
+  .status.todo{background:rgba(255,190,70,.15);color:var(--amber);}
+  .status.no{background:rgba(255,122,107,.15);color:var(--red);}
+  .pillrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .pill{border:1px solid rgba(46,224,138,.35);color:var(--grass);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px;}
+  .pill.blue{border-color:rgba(95,180,255,.35);color:var(--blue);}
+  .pill.amber{border-color:rgba(255,190,70,.35);color:var(--amber);}
+  /* athlete strip */
+  .strip{display:flex;align-items:center;gap:16px;background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-top:26px;flex-wrap:wrap;}
+  .avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:18px;color:#06130c;}
+  .strip .who b{font-family:var(--head);font-size:16px;letter-spacing:.04em;}
+  .strip .who p{font-size:12.5px;color:var(--muted);}
+  .strip .mini{margin-left:auto;display:flex;gap:22px;flex-wrap:wrap;}
+  .strip .mini div{text-align:right;}
+  .strip .mini b{font-family:var(--head);font-size:18px;font-weight:900;display:block;color:var(--grass);}
+  .strip .mini span{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  /* radar grid */
+  .radars{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;margin-top:20px;}
+  .radar-card{background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;position:relative;overflow:hidden;}
+  .radar-card.wide{grid-column:1/-1;}
+  .radar-card.wide .radar-body{max-width:560px;margin:0 auto;}
+  .radar-card .src{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);}
+  .radar-card h3{font-size:15px;margin:5px 0 3px;}
+  .radar-card .sub{font-size:12.5px;color:var(--muted);}
+  .radar-body{margin-top:6px;transition:filter .2s;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:4px;}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle;}
+  .readout{border-top:1px solid var(--line);margin-top:12px;padding-top:12px;font-size:13px;color:#cfe0d6;}
+  .readout b{color:var(--white);}
+  /* premium lock */
+  .prem.locked .radar-body,.prem.locked .readout{filter:blur(7px);opacity:.5;pointer-events:none;user-select:none;}
+  .lockwrap{display:none;position:absolute;inset:0;z-index:5;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;
+    background:linear-gradient(180deg,rgba(11,18,14,.35),rgba(11,18,14,.85));}
+  .prem.locked .lockwrap{display:flex;}
+  .lockwrap .ico{font-size:26px;margin-bottom:8px;}
+  .lockwrap b{font-family:var(--head);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);}
+  .lockwrap p{font-size:12.5px;color:#cfe0d6;max-width:280px;margin:6px 0 12px;}
+  .btn{font-family:var(--head);font-weight:900;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;border-radius:999px;border:0;cursor:pointer;
+    background:linear-gradient(135deg,var(--violet),#8a6dff);color:#120a2a;}
+  .btn.ghost{background:none;border:1px solid var(--line);color:var(--muted);}
+  .badge-free{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(46,224,138,.15);color:var(--grass);margin-left:8px;}
+  .badge-prem{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(183,155,255,.16);color:var(--violet);margin-left:8px;}
+  .rolenote{background:var(--pitch-dark);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:12px;padding:13px 16px;margin-top:18px;font-size:13.5px;color:#cfe0d6;}
+  .rolenote b{color:var(--blue);}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;}
+  th{text-align:left;font-family:var(--head);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
+  td{padding:10px;border-bottom:1px solid rgba(255,255,255,.05);color:#cfe0d6;vertical-align:top;}
+  td b{color:var(--white);}
+  .tag{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;white-space:nowrap;}
+  .tag.pm{background:rgba(46,224,138,.14);color:var(--grass);}
+  .tag.ou{background:rgba(95,180,255,.14);color:var(--blue);}
+  .tag.pl{background:rgba(183,155,255,.16);color:var(--violet);}
+  .tag.br{background:rgba(255,190,70,.14);color:var(--amber);}
+  .scroll{overflow-x:auto;}
+  /* plans */
+  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px;}
+  .plan{background:var(--pitch-card);border:1px solid var(--line);border-radius:16px;padding:24px 20px;}
+  .plan.hot{border-color:rgba(183,155,255,.55);background:rgba(183,155,255,.05);}
+  .plan .tier{font-family:var(--head);font-weight:900;font-size:12px;letter-spacing:.13em;color:var(--muted);}
+  .plan.hot .tier{color:var(--violet);}
+  .plan .price{font-family:var(--head);font-size:32px;font-weight:900;margin:8px 0 2px;}
+  .plan .per{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .plan ul{list-style:none;margin-top:14px;}
+  .plan li{font-size:13px;color:#cfe0d6;padding:6px 0 6px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,.04);}
+  .plan li::before{content:'✓';position:absolute;left:0;color:var(--grass);font-weight:700;}
+  .plan li.no{color:var(--muted);}
+  .plan li.no::before{content:'✕';color:var(--red);}
+  .qbox{background:var(--pitch-dark);border:1px solid rgba(255,190,70,.4);border-radius:16px;padding:24px;margin-top:26px;}
+  .qbox h3{color:var(--amber);font-size:14px;margin-bottom:10px;}
+  .qbox li{font-size:13.5px;color:#d7e4dc;list-style:none;padding:6px 0 6px 30px;position:relative;}
+  .qbox li b{color:var(--amber);position:absolute;left:0;}
+  .warnbox{background:rgba(255,122,107,.07);border:1px solid rgba(255,122,107,.45);border-radius:16px;padding:22px;margin-top:22px;}
+  .warnbox h3{color:var(--red);font-size:14px;margin-bottom:8px;}
+  .warnbox p{font-size:13.5px;color:#e8d5d2;}
+  /* modal */
+  .modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(6,10,8,.82);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+  .modal.on{display:flex;}
+  .modal-box{background:var(--pitch-card);border:1px solid rgba(183,155,255,.5);border-radius:20px;max-width:460px;width:100%;padding:30px 26px;}
+  .modal-box .ico{font-size:30px;}
+  .modal-box h3{font-size:18px;margin:10px 0 6px;color:var(--violet);}
+  .modal-box p{font-size:13.5px;color:#cfe0d6;}
+  .modal-box ul{list-style:none;margin:14px 0;}
+  .modal-box li{font-size:13px;color:#cfe0d6;padding:5px 0 5px 20px;position:relative;}
+  .modal-box li::before{content:'✓';position:absolute;left:0;color:var(--violet);font-weight:700;}
+  .modal-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .foot{max-width:1180px;margin:0 auto;padding:0 20px 60px;color:var(--muted);font-size:12px;}
+</style>
+</head>
+<body class="role-guide plan-off">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="dot">📡</span><span>DEVICE INTELLIGENCE<small>PitchPro × Rajic · Wearable Layer</small></span></div>
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-v="v1">Radar Room</button>
+      <button class="tab" data-v="v2">Devices &amp; APIs</button>
+      <button class="tab" data-v="v3">Translation</button>
+      <button class="tab" data-v="v4">Access &amp; Plans</button>
+      <button class="tab" data-v="v5">Before We Build</button>
+    </nav>
+  </div>
+</div>
+
+<div class="rolebar">
+  <div class="rolebar-inner">
+    <span class="lbl">Viewing as</span>
+    <div class="roles" id="roles">
+      <button class="role on" data-r="guide">Guide / Coach</button>
+      <button class="role" data-r="parent">Parent</button>
+      <button class="role" data-r="player">Player</button>
+      <button class="role" data-r="scout">Scout / Club</button>
+    </div>
+    <div class="plan-toggle">
+      <span id="planlabel">Family premium plan: OFF</span>
+      <div class="switch" id="planswitch" role="button" aria-label="Toggle family premium plan"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 1 — RADAR ROOM ============ -->
+<section class="view on" id="v1">
+  <div class="kicker">The chart you asked about · Radar chart (spider / star / web / Kiviat)</div>
+  <h1>Three devices.<br><span>One shape you can read in two seconds.</span></h1>
+  <p class="lead">Each device manufacturer measures a different slice of the same child. Playermaker sees the ball and the feet. Oura sees the night. Plantiga sees the mechanics of every step. The Brain converts each raw metric into a percentile against the athlete's own age band and position, so every axis runs on one honest scale of 0–100 — and the shape, not the number, is what a parent remembers.</p>
+
+  <div class="strip">
+    <div class="avatar">LK</div>
+    <div class="who"><b>Luka K.</b><p>U14 · Winger · Calgary Blizzard SC · Guide: Sandro Rajic</p></div>
+    <div class="mini">
+      <div><b>12.1</b><span>Motion Age</span></div>
+      <div><b>3</b><span>Devices linked</span></div>
+      <div><b>2h</b><span>Last sync</span></div>
+      <div><b>U14 M</b><span>Norm set</span></div>
+    </div>
+  </div>
+
+  <div class="rolenote" id="rolenote"><b>Guide / Coach view.</b> Every radar is unlocked. Guides never pay — they are the ones developing the player, and the platform is worth nothing to a family if the coach cannot see the data.</div>
+
+  <div class="radars">
+
+    <div class="radar-card prem" data-gate="free">
+      <span class="src">Playermaker · boot sensor</span>
+      <h3>Technical &amp; Ball<span class="badge-free">Free tier</span></h3>
+      <p class="sub">Touch-level and step-level data from training and matches.</p>
+      <div class="radar-body"><svg id="r-pm" viewBox="0 0 400 330" width="100%" height="300" role="img" aria-label="Radar chart of Playermaker technical metrics"></svg></div>
+      <div class="legend"><span><i style="background:#2ee08a"></i>This month</span><span><i style="background:#9db3a6"></i>90 days ago</span></div>
+      <div class="readout"><b>Weak-foot use 41st percentile</b> — still the biggest single gap, but up 19 points in 90 days. Ball involvement and top speed are now both top-quarter for U14 wingers.</div>
+      <div class="lockwrap"><div class="ico">🔒</div><b>Premium feature</b><p>Unlock the full device radar layer for Luka.</p><button class="btn js-pay">See plans</button></div>
+    </div>
+
+    <div class="radar-card prem" data-gate="premium">
+      <span class="src">Ōura · ring</span>
+      <h3>Recovery &amp; Sleep<span class="badge-prem">Premium</span></h3>
+      <p class="sub">Nightly readiness, sleep and heart-rate variability contributors.</p>
+      <div class="radar-body"><svg id="r-ou" viewBox="0 0 400 330" width="100%" height="300" role="img" aria-label="Radar chart of Oura recovery metrics"></svg></div>
+      <div class="legend"><span><i style="background:#5fb4ff"></i>This month</span><span><i style="background:#9db3a6"></i>90 days ago</span></div>
+      <div class="readout"><b>Sleep score 64</b> — the softest axis on the whole profile. Two late tournament nights pulled timing and restfulness down; readiness recovered within 48 hours, which is what you want to see at this age.</div>
+      <div class="lockwrap"><div class="ico">🔒</div><b>Premium feature</b><p>Recovery data is a premium feature. Guides see it free.</p><button class="btn js-pay">See plans</button></div>
+    </div>
+
+    <div class="radar-card prem" data-gate="premium">
+      <span class="src">Plantiga · insole</span>
+      <h3>Mechanics &amp; Load<span class="badge-prem">Premium</span></h3>
+      <p class="sub">Asymmetry, ground contact and mechanical load, every step.</p>
+      <div class="radar-body"><svg id="r-pl" viewBox="0 0 400 330" width="100%" height="300" role="img" aria-label="Radar chart of Plantiga mechanics metrics"></svg></div>
+      <div class="legend"><span><i style="background:#b79bff"></i>This month</span><span><i style="background:#9db3a6"></i>90 days ago</span></div>
+      <div class="readout"><b>Impact symmetry 62</b> — the same left-side flag the DARI screening raised in July, now confirmed in the wild rather than on a capture day. This is the axis that justifies the whole insole.</div>
+      <div class="lockwrap"><div class="ico">🔒</div><b>Premium feature</b><p>Mechanics data is a premium feature. Guides see it free.</p><button class="btn js-pay">See plans</button></div>
+    </div>
+
+    <div class="radar-card wide prem" data-gate="premium">
+      <span class="src">The Brain · all three devices + DARI capture</span>
+      <h3>Athlete State — the one radar that goes on the report<span class="badge-prem">Premium</span></h3>
+      <p class="sub">Six roll-up axes, each fed by more than one source. This is the shape a parent, a guide and a scout all look at.</p>
+      <div class="radar-body"><svg id="r-all" viewBox="0 0 420 340" width="100%" height="360" role="img" aria-label="Combined athlete state radar chart"></svg></div>
+      <div class="legend"><span><i style="background:#2ee08a"></i>This month</span><span><i style="background:#9db3a6"></i>90 days ago</span><span><i style="background:#ffbe46"></i>Amber label = flagged axis</span></div>
+      <div class="readout"><b>The story in one line:</b> Luka is getting faster and more technical while his mechanics and his workload tolerance are not keeping pace — the classic shape that precedes a growth-related injury. The Brain has already moved his corrective block up the plan and told the guide before anyone got hurt.</div>
+      <div class="lockwrap"><div class="ico">🔒</div><b>Premium feature</b><p>The combined Athlete State radar is the headline premium feature.</p><button class="btn js-pay">See plans</button></div>
+    </div>
+
+  </div>
+
+  <div class="rolenote" style="border-left-color:var(--amber);"><b style="color:var(--amber);">Why a radar and not six bar charts.</b> A radar is the right chart when you have six or more axes on one common scale and the reader needs the <i>pattern</i>, not the ranking. It is the wrong chart for comparing two unrelated quantities, for more than about eight axes, or when the axis order is arbitrary — order changes the shape, so the order has to mean something. Ours is deliberate: technical and physical on the right, mechanics at the bottom, recovery on the left. A shape leaning left is a tired athlete; a shape leaning right is an athlete outrunning their own body.</div>
+</section>
+
+<!-- ============ VIEW 2 — DEVICES ============ -->
+<section class="view" id="v2">
+  <div class="kicker">Manufacturer collaboration</div>
+  <h2>Three <span>Data Partners</span><span class="mock">Access status verified 21 Aug 2026</span></h2>
+  <p class="lead">What each manufacturer actually measures, and what it would take to get that data into the Brain. The access column is the honest one — only one of the three publishes a developer interface anyone can sign up for today.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="status todo">Partnership required</span>
+      <span class="src" style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--grass);">Playermaker</span>
+      <h3 style="margin-top:6px;">Boot-mounted motion sensor</h3>
+      <p>Straps to both boots. Classifies every ball touch and every step — around 25 technical and physical metrics including ball involvement, two-footed use, release time, kicking velocity, top speed, sprints, accelerations and decelerations.</p>
+      <p style="margin-top:10px;color:#cfe0d6;"><b>Access:</b> no public developer documentation found. There is precedent for manufacturer-to-platform data sharing — Playermaker performance data has been integrated into Pixellot's automated video analytics — so the route is a commercial data-sharing agreement, not a self-serve key.</p>
+    </div>
+
+    <div class="card">
+      <span class="status ok">Public API v2</span>
+      <span class="src" style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);">Ōura</span>
+      <h3 style="margin-top:6px;">Smart ring</h3>
+      <p>Photoplethysmography, body temperature, blood-oxygen and motion sensing overnight. Daily Sleep, Activity, Readiness, Stress and Resilience scores, each broken into contributors already normalised 1–100.</p>
+      <p style="margin-top:10px;color:#cfe0d6;"><b>Access:</b> documented REST API version 2 with personal access tokens and OAuth — endpoints for daily readiness, daily sleep, daily activity, daily stress and more. The one device we could prototype against this week.</p>
+    </div>
+
+    <div class="card">
+      <span class="status todo">Partnership required</span>
+      <span class="src" style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);">Plantiga</span>
+      <h3 style="margin-top:6px;">Sensor insole</h3>
+      <p>Sits under the insole of any shoe or boot. Impact and push-off asymmetry, ground contact time, total g-load, mechanical load variability, movement classification (walk, run, jump, cut, accelerate, decelerate) and distance by intensity band.</p>
+      <p style="margin-top:10px;color:#cfe0d6;"><b>Access:</b> no public developer documentation found on the site. Positioned explicitly as the layer that fills the gap between motion capture, force plates and GPS — which is exactly the Brain's argument, and the reason they are the most natural partner of the three.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:36px;font-size:15px;">Live connection panel<span class="mock">Mockup — no data is flowing</span></h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Device</th><th>Status</th><th>Last sync</th><th>Cadence</th><th>Consent held</th><th>Feeds</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag pm">Playermaker</span></td><td style="color:var(--grass);">Connected</td><td>2 hours ago</td><td>After every session</td><td>Parent · 12 Jun 2026</td><td>Technical &amp; Ball · Speed &amp; Power</td></tr>
+      <tr><td><span class="tag ou">Ōura</span></td><td style="color:var(--grass);">Connected</td><td>06:12 today</td><td>Nightly</td><td><b style="color:var(--red);">Guardian account required</b></td><td>Recovery · Sleep</td></tr>
+      <tr><td><span class="tag pl">Plantiga</span></td><td style="color:var(--amber);">Pilot</td><td>3 days ago</td><td>Per session</td><td>Parent · 12 Jun 2026</td><td>Mechanics &amp; Symmetry · Workload</td></tr>
+      <tr><td><span class="tag br">DARI capture</span></td><td style="color:var(--grass);">In platform</td><td>14 Jul 2026</td><td>Every 8–12 weeks</td><td>Parent · 12 Jun 2026</td><td>All axes · sets the baseline</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="lead" style="font-size:13.5px;margin-top:14px;">The screening stays the anchor. Devices tell you what happened between screenings; the DARI capture is what re-calibrates the norms. Without a capture, the wearable data has nothing to be a percentile of.</p>
+</section>
+
+<!-- ============ VIEW 3 — TRANSLATION ============ -->
+<section class="view" id="v3">
+  <div class="kicker">The actual work</div>
+  <h2>Raw Metric <span>→ Percentile → Axis</span></h2>
+  <p class="lead">This table is the product. Anyone can draw a radar; the defensible asset is the middle column — the norm set that says what 41 touches per minute means for a thirteen-year-old winger, and Sandro's judgement about which raw metrics deserve an axis at all.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Source</th><th>Raw metric from the device</th><th>Normalised against</th><th>Radar axis</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag pm">PM</span></td><td>Ball touches per minute of play</td><td>U14 male winger touch distribution</td><td>Ball involvement</td></tr>
+      <tr><td><span class="tag pm">PM</span></td><td>Share of touches on the weaker foot</td><td>Age band target curve, not peer average</td><td>Weak-foot use</td></tr>
+      <tr><td><span class="tag pm">PM</span></td><td>Time from receiving to releasing the ball</td><td>Position-specific release time</td><td>Release speed</td></tr>
+      <tr><td><span class="tag pm">PM</span></td><td>Kicking velocity</td><td>Age and body-mass adjusted</td><td>Kick velocity</td></tr>
+      <tr><td><span class="tag pm">PM</span></td><td>Top speed, sprint count</td><td>Age band, with a growth-spurt correction</td><td>Top speed</td></tr>
+      <tr><td><span class="tag pm">PM</span> <span class="tag pl">PL</span></td><td>Accelerations and decelerations per session</td><td>Age band; decel weighted higher than accel</td><td>Accel / decel</td></tr>
+      <tr><td><span class="tag ou">OU</span></td><td>Daily readiness score and contributors</td><td>Already 1–100; re-anchored to the athlete's own 60-day median</td><td>Readiness</td></tr>
+      <tr><td><span class="tag ou">OU</span></td><td>Daily sleep score, total sleep, timing, restfulness</td><td>Age-appropriate sleep-duration guidance, not adult norms</td><td>Sleep quality</td></tr>
+      <tr><td><span class="tag ou">OU</span></td><td>Heart-rate variability balance</td><td>Athlete's own rolling baseline only</td><td>HRV balance</td></tr>
+      <tr><td><span class="tag ou">OU</span></td><td>Resting heart rate, recovery index</td><td>Athlete's own baseline; age band as a sanity check</td><td>Resting heart rate · Recovery index</td></tr>
+      <tr><td><span class="tag pl">PL</span></td><td>Impact asymmetry, left versus right</td><td>Sandro's vulnerability thresholds by age band</td><td>Impact symmetry <span class="tag br">flag axis</span></td></tr>
+      <tr><td><span class="tag pl">PL</span></td><td>Push-off asymmetry</td><td>Same threshold family</td><td>Push-off symmetry</td></tr>
+      <tr><td><span class="tag pl">PL</span></td><td>Ground contact time</td><td>Age and speed adjusted</td><td>Ground contact</td></tr>
+      <tr><td><span class="tag pl">PL</span></td><td>Total g-load per week</td><td>Acute versus chronic load ratio for the athlete</td><td>Weekly load <span class="tag br">flag axis</span></td></tr>
+      <tr><td><span class="tag pl">PL</span></td><td>Mechanical load variability</td><td>Athlete's own baseline; rising variability is the early warning</td><td>Load variability</td></tr>
+      <tr><td><span class="tag br">Brain</span></td><td>DARI capture — Motion Age, landing mechanics, trunk stability</td><td>The norm tables themselves</td><td>Re-calibrates every axis above</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="warnbox">
+    <h3>⚠ The honest limit of this design</h3>
+    <p>Three devices measure three different things at three different sampling rates, and none of them was validated against the others. A percentile built on top of them is a modelling choice, not a measurement. Two rules keep it defensible: never draw an axis the source device cannot actually support, and always show the reader which device an axis came from. The moment the radar stops being traceable to a named sensor it becomes decoration.</p>
+  </div>
+</section>
+
+<!-- ============ VIEW 4 — PLANS ============ -->
+<section class="view" id="v4">
+  <div class="kicker">Business model mockup</div>
+  <h2>Free to Join. <span>Premium to See Yourself.</span></h2>
+  <p class="lead">Joining the platform is free — profile, moments, guide messages, booking. The Motion Intelligence layer is where the subscription sits. Guides never pay: they are developing the player, and a guide who cannot see the data cannot coach from it. Families pay, and a paid family plan is what unlocks the ability to share anything outward to a scout or a club.</p>
+
+  <div class="plans">
+    <div class="plan">
+      <div class="tier">FREE · EVERYONE</div>
+      <div class="price">$0</div>
+      <div class="per">Always</div>
+      <ul>
+        <li>Player profile and moments</li>
+        <li>Guide messages and session history</li>
+        <li>Booking and payment for screenings</li>
+        <li>Technical &amp; Ball radar — teaser only</li>
+        <li class="no">Recovery, Mechanics, Athlete State radars</li>
+        <li class="no">Trend history beyond 30 days</li>
+        <li class="no">Sharing to a scout or club</li>
+      </ul>
+    </div>
+
+    <div class="plan hot">
+      <div class="tier">FAMILY PREMIUM</div>
+      <div class="price">$—<span style="font-size:14px;color:var(--muted);"> /mo</span></div>
+      <div class="per">Price not set — see question P1</div>
+      <ul>
+        <li>All four radars, all axes</li>
+        <li>Full trend history and month-on-month overlay</li>
+        <li>Device connections — all three manufacturers</li>
+        <li>Vulnerability flags and corrective plan</li>
+        <li>Parent-controlled share links to scouts and clubs</li>
+        <li>Downloadable athlete report</li>
+      </ul>
+      <button class="btn js-pay" style="margin-top:16px;width:100%;">Start premium</button>
+    </div>
+
+    <div class="plan">
+      <div class="tier">GUIDE / COACH</div>
+      <div class="price">$0</div>
+      <div class="per">Free, by design</div>
+      <ul>
+        <li>Every radar for every player they work with</li>
+        <li>Flags, thresholds and corrective prescriptions</li>
+        <li>Squad view across their players</li>
+        <li>Guide Academy and Ask the Brain</li>
+        <li class="no">Cannot unlock the parent's own view for them</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Guide access is granted per player by the parent, and ends when the working relationship ends.</p>
+    </div>
+
+    <div class="plan">
+      <div class="tier">SCOUT / CLUB</div>
+      <div class="price">Invite</div>
+      <div class="per">Never buys access directly</div>
+      <ul>
+        <li>Sees only what a parent shares, by expiring link</li>
+        <li>Named recipient printed on every page</li>
+        <li>Every open logged to parent and player</li>
+        <li class="no">Cannot browse or search players</li>
+        <li class="no">Cannot see anything if the family plan lapses</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">A scout never pays and never holds an account with data in it. The family owns the door.</p>
+    </div>
+  </div>
+
+  <div class="rolenote" style="border-left-color:var(--violet);"><b style="color:var(--violet);">The gate that matters.</b> Sharing outward is the moment a family feels the value, so it sits behind the plan — a share link cannot be created, and an existing link stops resolving, if the family plan is not active. Flip the plan switch in the bar above and move through the four roles to see every state.</div>
+
+  <div class="qbox">
+    <h3>Pricing questions this mockup cannot answer</h3>
+    <ul>
+      <li><b>P1</b> Monthly or per-season? The season is spring to summer — a monthly plan invites a family to cancel in October, which is exactly when off-season development data matters most.</li>
+      <li><b>P2</b> Does the $249 screening include a period of premium, and if so how long?</li>
+      <li><b>P3</b> Who pays for the hardware — does the family buy the ring and the insoles, is it rented per season, or does a sponsor fund it under the donor model?</li>
+      <li><b>P4</b> One plan per child or one per family? Two siblings on the platform is the common case.</li>
+      <li><b>P5</b> If the plan lapses, what happens to the data already collected — frozen and restorable, or exported and deleted?</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ VIEW 5 — BEFORE WE BUILD ============ -->
+<section class="view" id="v5">
+  <div class="kicker">Blockers, not to-dos</div>
+  <h2>Read This <span>Before Any Code</span></h2>
+  <p class="lead">Nothing here is a design opinion. Each one either stops the feature or changes its shape, and each was found while checking the three manufacturers rather than assumed.</p>
+
+  <div class="warnbox">
+    <h3>⚠ BLOCKER 1 — Ōura's terms require the account holder to be 18</h3>
+    <p>Ōura's Terms of Use state: “You represent and warrant that you are at least 18 years of age and have the legal authority to accept this Agreement on your behalf or on behalf of any party you represent.” A thirteen-year-old cannot hold an Ōura account. That does not necessarily kill the integration — a parent-held account, or a written arrangement with Ōura, may be the route — but it must be settled with Ōura directly before a single line of integration code is written, and before any recovery axis is shown on a youth profile. <b>Verified against Ōura's own terms, 21 August 2026.</b></p>
+  </div>
+
+  <div class="warnbox" style="border-color:rgba(255,190,70,.45);background:rgba(255,190,70,.06);">
+    <h3 style="color:var(--amber);">⚠ BLOCKER 2 — two of the three have no public developer interface</h3>
+    <p style="color:#efe3cf;">Only Ōura publishes an API anyone can build against today. Playermaker and Plantiga would each need a commercial data-sharing agreement. That is a business-development timeline measured in months, not a sprint — and it means the honest build order is Ōura first as a working proof, then walk into the other two conversations with a demonstration rather than a slide.</p>
+  </div>
+
+  <div class="qbox">
+    <h3>Open questions for David and Sandro</h3>
+    <ul>
+      <li><b>D1</b> Continuous wearable data on a minor is a different consent conversation from a one-off screening. Canada and Croatia both — and this sits directly on top of the age-assurance blocker already logged against the player-moments feature.</li>
+      <li><b>D2</b> Who owns a percentile? The norm set is Sandro's methodology applied to a manufacturer's raw data. The ownership question in the partnership file has to be answered before the first norm table is built on top of third-party data.</li>
+      <li><b>D3</b> Does a flagged axis create a duty to act? A radar that shows an injury risk to a parent, and is then ignored, is a different legal object from one that no one saw. Name who is accountable for a flag before the flag exists.</li>
+      <li><b>D4</b> Which device is mandatory for a premium plan to mean anything? A premium subscription that shows three empty radars because the family never bought a ring is a refund conversation.</li>
+      <li><b>D5</b> Do device metrics feed the Brain's norm tables — that is, does the platform learn from customer data? If yes, it belongs in the consent and in the ownership agreement, and it is the same open question already raised about player-uploaded video.</li>
+    </ul>
+  </div>
+
+  <div class="pillrow">
+    <span class="pill">Mockup only</span>
+    <span class="pill blue">No code written</span>
+    <span class="pill amber">No manufacturer contacted</span>
+    <span class="pill">Sample data throughout</span>
+  </div>
+</section>
+
+<div class="foot">Radar chart — also called a spider, star, web, polar or Kiviat chart. Static mockup, sample data, no live device connections. PitchPro × Rajic, 21 August 2026.</div>
+
+<!-- MODAL -->
+<div class="modal" id="paywall">
+  <div class="modal-box">
+    <div class="ico">🔓</div>
+    <h3>Motion Intelligence is a premium feature</h3>
+    <p>Joining PitchPro is free. The device radar layer — recovery, mechanics and the combined Athlete State — sits on the Family Premium plan.</p>
+    <ul>
+      <li>All four radars, every axis, full history</li>
+      <li>Connect Playermaker, Ōura and Plantiga</li>
+      <li>Vulnerability flags and the corrective plan</li>
+      <li>Parent-controlled share links to scouts and clubs</li>
+    </ul>
+    <p style="color:var(--muted);font-size:12.5px;">Guides and coaches see all of this free for the players they work with.</p>
+    <div class="modal-actions">
+      <button class="btn" id="simulate">Simulate subscribing</button>
+      <button class="btn ghost" id="closepay">Not now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- radar chart renderer ---------- */
+function radar(id, axes, series, flags){
+  var svg = document.getElementById(id);
+  if(!svg) return;
+  var vb = svg.getAttribute('viewBox').split(' ');
+  var W = +vb[2], H = +vb[3];
+  var cx = W/2, cy = H/2 + 14, R = Math.min(W,H)/2 - 84;
+  var n = axes.length, ns = 'http://www.w3.org/2000/svg', out = '';
+  flags = flags || [];
+
+  function pt(i, v){
+    var a = -Math.PI/2 + i*2*Math.PI/n;
+    return [cx + Math.cos(a)*R*(v/100), cy + Math.sin(a)*R*(v/100)];
+  }
+  /* rings */
+  for(var r=1; r<=4; r++){
+    var ring = '';
+    for(var i=0;i<n;i++){ var p = pt(i, r*25); ring += p[0].toFixed(1)+','+p[1].toFixed(1)+' '; }
+    out += '<polygon points="'+ring+'" fill="none" stroke="rgba(255,255,255,'+(r===4?'.16':'.07')+')" stroke-width="1"/>';
+  }
+  /* spokes + labels */
+  for(var i=0;i<n;i++){
+    var e = pt(i,100);
+    out += '<line x1="'+cx+'" y1="'+cy+'" x2="'+e[0].toFixed(1)+'" y2="'+e[1].toFixed(1)+'" stroke="rgba(255,255,255,.07)"/>';
+    var lp = pt(i,119), anchor = 'middle';
+    if(lp[0] > cx+6) anchor = 'start';
+    if(lp[0] < cx-6) anchor = 'end';
+    var col = flags.indexOf(i) > -1 ? '#ffbe46' : '#9db3a6';
+    var lines = axes[i].label.split('|');
+    for(var k=0;k<lines.length;k++){
+      out += '<text x="'+lp[0].toFixed(1)+'" y="'+(lp[1]+k*12).toFixed(1)+'" fill="'+col+'" font-size="10.5" font-weight="600" text-anchor="'+anchor+'" dominant-baseline="middle">'+lines[k]+'</text>';
+    }
+  }
+  /* series */
+  for(var s=0;s<series.length;s++){
+    var ser = series[s], poly = '';
+    for(var i2=0;i2<n;i2++){ var q = pt(i2, ser.values[i2]); poly += q[0].toFixed(1)+','+q[1].toFixed(1)+' '; }
+    out += '<polygon points="'+poly+'" fill="'+(ser.fill||'none')+'" stroke="'+ser.color+'" stroke-width="'+(ser.dash?1.6:2.4)+'"'+(ser.dash?' stroke-dasharray="'+ser.dash+'"':'')+' stroke-linejoin="round"/>';
+    if(!ser.dash){
+      for(var i3=0;i3<n;i3++){
+        var d = pt(i3, ser.values[i3]);
+        out += '<circle cx="'+d[0].toFixed(1)+'" cy="'+d[1].toFixed(1)+'" r="3.2" fill="'+ser.color+'"/>';
+        var vp = pt(i3, ser.values[i3] + 9);
+        out += '<text x="'+vp[0].toFixed(1)+'" y="'+vp[1].toFixed(1)+'" fill="'+ser.color+'" font-size="9.5" font-weight="700" text-anchor="middle">'+ser.values[i3]+'</text>';
+      }
+    }
+  }
+  svg.innerHTML = out;
+}
+
+var A = function(l){ return {label:l}; };
+
+radar('r-pm',
+  [A('Ball|involvement'),A('Release|speed'),A('Kick|velocity'),A('Top|speed'),A('Accel /|decel'),A('Weak-foot|use')],
+  [{color:'#9db3a6',dash:'4 4',values:[62,55,64,79,58,22]},
+   {color:'#2ee08a',fill:'rgba(46,224,138,.20)',values:[78,66,72,84,69,41]}],
+  [5]);
+
+radar('r-ou',
+  [A('Readiness'),A('Resting|heart rate'),A('Recovery|index'),A('Activity|balance'),A('Sleep|score'),A('HRV|balance')],
+  [{color:'#9db3a6',dash:'4 4',values:[66,74,60,70,58,62]},
+   {color:'#5fb4ff',fill:'rgba(95,180,255,.18)',values:[71,77,69,74,64,58]}],
+  [4]);
+
+radar('r-pl',
+  [A('Jump|power'),A('Ground|contact'),A('Push-off|symmetry'),A('Impact|symmetry'),A('Load|variability'),A('Weekly|load')],
+  [{color:'#9db3a6',dash:'4 4',values:[76,70,66,58,60,71]},
+   {color:'#b79bff',fill:'rgba(183,155,255,.18)',values:[81,74,70,62,55,88]}],
+  [3,5]);
+
+radar('r-all',
+  [A('Technical'),A('Speed &|power'),A('Workload|tolerance'),A('Mechanics &|symmetry'),A('Recovery'),A('Sleep')],
+  [{color:'#9db3a6',dash:'4 4',values:[60,74,72,61,63,58]},
+   {color:'#2ee08a',fill:'rgba(46,224,138,.20)',values:[71,79,58,63,68,64]}],
+  [2,3]);
+
+/* ---------- tabs ---------- */
+var tabs = document.querySelectorAll('.tab'), views = document.querySelectorAll('.view');
+tabs.forEach(function(t){ t.addEventListener('click', function(){
+  tabs.forEach(function(x){x.classList.remove('on');});
+  views.forEach(function(v){v.classList.remove('on');});
+  t.classList.add('on');
+  document.getElementById(t.dataset.v).classList.add('on');
+  window.scrollTo(0,0);
+});});
+
+/* ---------- role + plan gating ---------- */
+var state = { role:'guide', plan:false };
+var notes = {
+  guide:'<b>Guide / Coach view.</b> Every radar is unlocked. Guides never pay — they are the ones developing the player, and the platform is worth nothing to a family if the coach cannot see the data.',
+  parent:'<b>Parent view.</b> The technical radar is a free teaser. Recovery, mechanics and the combined Athlete State need the Family Premium plan — and so does creating any share link to a scout or club.',
+  player:'<b>Player view.</b> Same gate as the parent, because the parent holds the plan. A player can always see their own free teaser; nothing here can be unlocked by the player alone.',
+  scout:'<b>Scout / Club view.</b> A scout sees nothing except through an expiring link the parent created, and a link can only exist while the family plan is active. There is no scout subscription — the family owns the door.'
+};
+function apply(){
+  document.getElementById('rolenote').innerHTML = notes[state.role];
+  document.getElementById('planlabel').textContent = 'Family premium plan: ' + (state.plan ? 'ACTIVE' : 'OFF');
+  document.getElementById('planswitch').classList.toggle('on', state.plan);
+  document.querySelectorAll('.prem').forEach(function(el){
+    var gate = el.dataset.gate, locked;
+    if(state.role === 'guide') locked = false;
+    else if(state.role === 'scout') locked = !state.plan;
+    else locked = (gate === 'premium') && !state.plan;
+    el.classList.toggle('locked', locked);
+    var lw = el.querySelector('.lockwrap');
+    if(lw && state.role === 'scout'){
+      lw.querySelector('b').textContent = 'Not shared with you';
+      lw.querySelector('p').textContent = 'This family is not on a premium plan, so the share link no longer resolves.';
+      lw.querySelector('button').textContent = 'Request access from the family';
+    } else if(lw){
+      lw.querySelector('b').textContent = 'Premium feature';
+      lw.querySelector('p').textContent = 'Unlock the full device radar layer for Luka.';
+      lw.querySelector('button').textContent = 'See plans';
+    }
+  });
+}
+document.querySelectorAll('.role').forEach(function(b){ b.addEventListener('click', function(){
+  document.querySelectorAll('.role').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); state.role = b.dataset.r; apply();
+});});
+document.getElementById('planswitch').addEventListener('click', function(){ state.plan = !state.plan; apply(); });
+
+/* ---------- paywall ---------- */
+var modal = document.getElementById('paywall');
+document.addEventListener('click', function(e){
+  if(e.target.classList && e.target.classList.contains('js-pay')) modal.classList.add('on');
+});
+document.getElementById('closepay').addEventListener('click', function(){ modal.classList.remove('on'); });
+document.getElementById('simulate').addEventListener('click', function(){
+  state.plan = true; apply(); modal.classList.remove('on');
+});
+modal.addEventListener('click', function(e){ if(e.target === modal) modal.classList.remove('on'); });
+
+apply();
+</script>
+</body>
+</html>
