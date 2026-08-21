@@ -7,7 +7,7 @@
     {g:'Public site', items:[
       {f:'index.html', t:'PitchPro Pathways — home', d:'Public marketing site'},
       {f:'pro-pathways.html', t:'Pro Pathways', d:'Programme site'},
-      {f:'sandro-rajic-website.html', t:'Sandro Rajic — practice site', d:'Movement assessment practice'}
+      {f:'sandro-rajic-website.html', t:'Sandro Rajic — practice site', d:'Movement assessment practice · opens in a new tab (the one page without this button)', nt:true}
     ]},
     {g:'Motion Intelligence', items:[
       {f:'motion-intelligence.html', t:'The Brain', d:'Platform concept, knowledge base, build plan'},
@@ -18,14 +18,14 @@
       {f:'player-moments-flow.html', t:'Feature map and flow', d:'Start here for the moments feature'},
       {f:'portal-player.html', t:'Player portal', d:'Timeline, composer, profile'},
       {f:'portal-parent.html', t:'Parent portal', d:'Approvals, safety and permissions'},
-      {f:'portal-guide.html', t:'Guide portal', d:'Player feed, comments, record'},
+      {f:'portal-guide.html', t:'Guide portal', d:'Player feed, comments, my showcase, record'},
       {f:'portal-admin.html', t:'Admin portal', d:'Safeguarding queue, audit log, compliance'}
     ]},
     {g:'Guide pages', items:[
-      {f:'guide-portal-sandro.html', t:'Guide — Sandro', d:''},
-      {f:'guide-portal-nick.html', t:'Guide — Coach Nick', d:''},
-      {f:'guide-portal-grego.html', t:'Guide — Grego', d:''},
-      {f:'grego-brand-guidelines.html', t:'Grego brand guidelines', d:''}
+      {f:'guide-portal-sandro.html', t:'Guide — Sandro', d:'Profile page · media showcase, no video connected'},
+      {f:'guide-portal-nick.html', t:'Guide — Coach Nick', d:'Profile page · media showcase, no video connected'},
+      {f:'guide-portal-grego.html', t:'Guide — Grego', d:'Profile page · media showcase with a featured video'},
+      {f:'grego-brand-guidelines.html', t:'Grego brand guidelines', d:'Colours, type and usage'}
     ]},
     {g:'Index', items:[
       {f:'hub.html', t:'All pages', d:'This index as a full page'}
@@ -66,7 +66,8 @@
     for(var j=0;j<PAGES[i].items.length;j++){
       var it = PAGES[i].items[j];
       var cls = (it.f.toLowerCase() === here) ? ' class="pp-here"' : '';
-      html += '<a href="' + it.f + '"' + cls + '>' + it.t + (it.d ? '<span>' + it.d + '</span>' : '') + '</a>';
+      var tgt = it.nt ? ' target="_blank" rel="noopener"' : '';
+      html += '<a href="' + it.f + '"' + cls + tgt + '>' + it.t + (it.d ? '<span>' + it.d + '</span>' : '') + '</a>';
     }
   }
   html += '<button id="pp-navclose" type="button">Close</button></div>';
