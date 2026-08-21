@@ -133,6 +133,38 @@
     <div class="note">Immutable, seven-year retention, exportable by the parent in one click. A deletion by a parent removes the media but keeps the log entry — you must be able to prove what happened, without keeping what a family asked you to destroy.</div>
   </div>
 
+  <div class="sect">Profile views &amp; PitchPro Plus</div>
+
+  <div class="grid">
+    <div class="card"><h3>Plus Subscribers</h3><div class="big">6 <small>of 31 guides</small></div><div class="note" style="margin-top:6px;">19% · 0 family subscriptions yet</div></div>
+    <div class="card"><h3>Plus MRR</h3><div class="big">$174 <small>CAD</small></div><div class="note" style="margin-top:6px;">Pricing not set — placeholder at $29/guide</div></div>
+    <div class="card"><h3>Profile Views (30 days)</h3><div class="big">1,204</div><div class="note" style="margin-top:6px;">Guide pages 1,046 · player profiles 158</div></div>
+    <div class="card"><h3>Viewers Browsing Privately</h3><div class="big">61%</div><div class="note" style="margin-top:6px;">Parents, default setting. Expected and healthy.</div></div>
+  </div>
+
+  <div class="card full">
+    <h3>Gating policy — enforced in code, not by convention</h3>
+    <div class="tw"><table>
+      <tr><th>Surface</th><th>Free tier shows</th><th>Plus adds</th><th>Never gated</th></tr>
+      <tr><td><b>Player</b> — Who Viewed Me</td><td>Every viewer, named, with times and reasons</td><td>Trends, history beyond 30 days, export</td><td><span class="tag">Viewer identity</span></td></tr>
+      <tr><td><b>Parent</b> — Who's Been Looking</td><td>Every viewer of every child, named, with times and reasons</td><td>Trends, weekly digest, alerts, history, export</td><td><span class="tag">Viewer identity</span></td></tr>
+      <tr><td><b>Guide</b> — Who Viewed You</td><td>Counts and dates only; names blurred</td><td>Names of identifiable viewers, pages watched, repeat visitors</td><td><span class="tag grey">n/a — commercial</span></td></tr>
+    </table></div>
+    <div class="note"><b style="color:var(--lock);">The rule, written down because it will be argued with:</b> identity on the child side is never a paid feature. A parent must never have to pay to learn which adult looked at their child, and a child must never be shown a blurred name with an upgrade prompt. Conversion pressure belongs on the guide tier, where the viewer is an adult in a commercial relationship. A paid tier also never overrides a viewer's own privacy setting — a subscribing guide still cannot see the name of a parent browsing privately.</div>
+  </div>
+
+  <div class="card full">
+    <h3>View-pattern monitoring — safeguarding, not analytics</h3>
+    <div class="tw"><table>
+      <tr><th>Signal</th><th>Threshold</th><th>Action</th><th>Open</th></tr>
+      <tr><td>One viewer repeatedly opening one child's link late at night</td><td>4+ opens outside 08:00–21:00 local in 7 days</td><td>Flag to the safeguarding queue and tell the parent plainly</td><td><span class="tag">0</span></td></tr>
+      <tr><td>A link holder opening far more than the norm</td><td>3× the median for that link type</td><td>Surface on the parent's screen as context, no alarm</td><td><span class="tag">1</span></td></tr>
+      <tr><td>Expired link retried</td><td>Any</td><td>Logged, shown to the parent, nothing served</td><td><span class="tag">1</span></td></tr>
+      <tr><td>A guide viewing players they no longer train</td><td>Any, after access ends</td><td>Impossible by design — access ends with the relationship</td><td><span class="tag grey">n/a</span></td></tr>
+    </table></div>
+    <div class="note">These counters exist because a view log is a safeguarding instrument first and a product feature second. They are never shown to a guide.</div>
+  </div>
+
   <div class="sect">Business</div>
 
   <div class="card full">
@@ -170,6 +202,8 @@
       <tr><td><b>Child social features — legal review</b></td><td>Player moments, guide comments, promotion links. <b>No public profiles</b> — decided 21 Aug 2026</td><td><span class="tag red">Not started · blocks launch</span></td></tr>
       <tr><td>Age assurance and parental consent capture</td><td>GDPR Art. 8 · Croatia sets the age at 16</td><td><span class="tag red">Open</span></td></tr>
       <tr><td><b>Under-10 accounts by parent exception</b></td><td>Decided 21 Aug 2026. Raises the app-store age rating question and puts a child below every common platform minimum on the system</td><td><span class="tag red">Needs a written position before launch</span></td></tr>
+      <tr><td><b>Paywall policy for child-side view logs</b></td><td>Identity is never gated on the player or parent side. Needs to be written into the subscription terms, not left as a design intention</td><td><span class="tag amber">Drafted here, not yet in terms</span></td></tr>
+      <tr><td>Analytics and profiling of minors</td><td>Counting who viewed a child is processing a child's data. Confirm the lawful basis under GDPR and the Canadian equivalent</td><td><span class="tag red">Open</span></td></tr>
       <tr><td>Content moderation vendor or in-house</td><td>Image, video and language checks</td><td><span class="tag amber">Not chosen</span></td></tr>
       <tr><td>Media retention, residency and deletion policy</td><td>Where children's video is stored</td><td><span class="tag amber">Open</span></td></tr>
       <tr><td>Mandatory reporting route by jurisdiction</td><td>Alberta and Croatia differ</td><td><span class="tag red">Open</span></td></tr>
