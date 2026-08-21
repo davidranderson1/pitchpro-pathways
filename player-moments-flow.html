@@ -336,13 +336,68 @@
   </ul>
 </div>
 
+<div class="sect">12 · Who Viewed You — the premium feature</div>
+<div class="sect-sub">Added 21 August 2026. LinkedIn's most effective subscription hook, rebuilt so that the part which protects a child is never the part you sell.</div>
+
+<div class="card">
+  <h3>The decision that shapes everything else</h3>
+  <p style="font-size:16px;">On the player and parent side, <b>the identity of anyone who has looked at a child is never behind a paywall.</b> Names, times and reasons are free forever. A subscription buys analysis — trends, history, digests, alerts, export — and nothing else.</p>
+  <div class="rule" style="margin-top:18px;"><b>Why this is not just squeamishness.</b><p>LinkedIn's teaser works because it monetises curiosity. The same mechanic pointed at a family monetises fear: a parent paying to learn which adult viewed their child, and a ten-year-old shown a blurred name with an upgrade button. It reads badly because it <i>is</i> bad, and it is the single sentence from this product that would travel furthest if it ever appeared in print. The commercial cost is small — parents were never the subscription market. Guides are.</p></div>
+</div>
+
+<div class="card">
+  <h3>Gating matrix</h3>
+  <div class="tw"><table>
+    <tr><th>Surface</th><th>Free</th><th>PitchPro Plus adds</th><th>Never gated</th></tr>
+    <tr><td><b>Player</b> · Who Viewed Me</td><td>Every viewer named, what they watched, when, how many times</td><td>Views over time · history past 30 days · weekly summary to the parent · export</td><td><span class="tag">Identity</span></td></tr>
+    <tr><td><b>Parent</b> · Who's Been Looking</td><td>The same, consolidated across every child, plus expired-link attempts and unusual patterns</td><td>Trends per child · weekly digest · alerts · history · export</td><td><span class="tag">Identity</span></td></tr>
+    <tr><td><b>Guide</b> · Who Viewed You</td><td>Counts and dates; names blurred</td><td><b>Names and identities of identifiable viewers</b> · which pages and videos they watched · repeat visitors</td><td>—</td></tr>
+  </table></div>
+  <div class="note">Only the guide tier is a real paywall. That is deliberate: a guide is an adult in a commercial relationship, and knowing that a Hajduk Split scout watched their video to the end is worth paying for.</div>
+</div>
+
+<div class="card">
+  <h3>Viewer visibility — the rule that runs both ways</h3>
+  <ul>
+    <li><b>Parents browse guides semi-privately by default.</b> A guide sees "a parent of a U12 player, Calgary", not a name. Ten guides looked at while choosing one should not mean ten guides know who you are.</li>
+    <li><b>Contact reveals you.</b> The moment a parent enquires, their name is shown. Browsing is private; making contact is not.</li>
+    <li><b>A subscription never overrides someone else's privacy setting.</b> A guide on Plus still cannot see the name of a parent browsing privately. Plus reveals who is <i>revealable</i> — it does not buy access to a person who has chosen otherwise.</li>
+    <li><b>Guides are always identifiable to a child and to a parent.</b> There is no private mode on the child side. An adult who looks at a child is named, every time, with no setting to change it.</li>
+    <li><b>Nothing a child does appears in a guide's analytics.</b> On any tier, ever. A player is never a number in an adult's dashboard.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>What the child-side screen is actually for</h3>
+  <p>It looks like a vanity metric and it is not. Because the only people who can ever see a child are named, parent-approved guides and named link holders, the list is always people the child knows — which makes it three useful things at once:</p>
+  <ul>
+    <li><b>Safeguarding.</b> A parent sees, without asking, that a link was opened three times on a Wednesday evening, or that an expired link was retried.</li>
+    <li><b>Motivation that is honest.</b> "Coach Nick watched your volley twice" is a real fact about a real adult paying attention, not a manufactured number.</li>
+    <li><b>Proof the promises are true.</b> The strongest line in the whole design — "there are no strangers on this list, and there never will be" — only means something because the child can go and look.</li>
+  </ul>
+  <div class="warn" style="margin-top:18px;"><b>Three things to keep out of it.</b><p>No leaderboards or percentile ranking of children against each other. No "your views are down this week" nudge to a ten-year-old. No view counts on a moment the child chose to keep family-only — a private post must never come back as something that underperformed.</p></div>
+</div>
+
+<div class="card">
+  <h3>What this adds to the build</h3>
+  <div class="tw"><table>
+    <tr><th>Item</th><th>Why</th></tr>
+    <tr><td>A view event log, per viewer, per object, immutable</td><td>It is a safeguarding record before it is analytics. Same retention as the audit log.</td></tr>
+    <tr><td>Viewer visibility setting on the parent account</td><td>Semi-private by default; the guide tier depends on it existing.</td></tr>
+    <tr><td>Pattern monitoring — late-night repeat opens, expired-link retries, above-median link opens</td><td>In the admin safeguarding queue, never shown to a guide.</td></tr>
+    <tr><td>Subscription and billing for guides</td><td>The first paid tier on the platform. Nothing else currently bills a guide.</td></tr>
+    <tr><td>Two new compliance rows</td><td>Counting who viewed a child is processing a child's data — the lawful basis needs confirming. And the never-gated policy has to be in the subscription terms, not just in this document.</td></tr>
+  </table></div>
+  <div class="note">Build it after stage 5 (promotion links) — a view log is worth little until there is something outward-facing to view.</div>
+</div>
+
 <div class="sect">The mockups</div>
 <div class="links">
   <a href="portal-player.html">Player portal (new)</a>
   <a href="portal-parent.html">Parent portal</a>
   <a href="portal-guide.html">Guide portal</a>
   <a href="portal-admin.html">Admin</a>
-  <a href="hub.html">All pages</a>
+  <a href="index.html">Back to the hub</a>
 </div>
 
 </div>
