@@ -245,7 +245,7 @@
         <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;" data-i18n="leoSideSub">The report above is written by guides. This part Leo writes himself — his moments, his goals, his streak. You see all of it.</p>
         <div class="row"><div><div class="who">24 moments · 11-week streak</div><div class="meta">Latest: "Weak-foot volley" — waiting for you</div></div><span class="tag amber" style="cursor:pointer;" onclick="go('moments')" data-i18n="openTimeline">Open timeline</span></div>
         <div class="row"><div><div class="who">2 goals Leo set himself</div><div class="meta">200 weak-foot touches 5×/week · start every game</div></div><span class="tag blue">On track</span></div>
-        <div class="row"><div><div class="who">Public profile</div><div class="meta">Off — only you can switch this on</div></div><span class="tag lock" style="cursor:pointer;" onclick="go('safety')">🔒 Off</span></div>
+        <div class="row"><div><div class="who">Play promotion links</div><div class="meta">1 live (Grego, expires 30 Aug) · 1 expired · no public page exists</div></div><span class="tag lock" style="cursor:pointer;" onclick="go('safety')" data-i18n="manage">Manage</span></div>
       </div>
     </div>
 
@@ -362,19 +362,44 @@
       <div class="card" style="margin-bottom:16px;">
         <h3 data-i18n="beyondTitle">3 · Beyond the circle</h3>
         <div class="consent"><span class="cs"><b data-i18n="teamMates">Teammates &amp; friends on PitchPro</b><span data-i18n="teamMatesSub">Player-to-player following, inside the platform only. Both parents must approve each connection.</span></span><div class="pilldot off"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="publicProfile">Public profile</b><span data-i18n="publicProfileSub">pitchpropathways.com/p/leo-torres — a link anyone can open, including clubs and scouts.</span></span><div class="pilldot off"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="scoutShare">Share a private scouting link</b><span data-i18n="scoutShareSub">A single expiring link you generate for one named club. Better than a public page for most families.</span></span><span class="tag blue" data-i18n="setUp">Set up</span></div>
+        <div class="consent"><span class="cs"><b data-i18n="promoLink">Play promotion link</b><span data-i18n="promoLinkSub">A private, expiring link you create for one named person — a scout, a club, or a guide who wants to follow a current or former player. This replaces a public profile; there is no page anyone can find.</span></span><span class="tag blue" style="cursor:pointer;" data-i18n="createLink">Create a link</span></div>
+        <div class="consent"><span class="cs"><b data-i18n="noPublic">Public profile</b><span data-i18n="noPublicSub">Not offered. A findable page carrying a child's name, age, position and photographs is the one thing this design will not do.</span></span><span class="tag lock" data-i18n="notOffered">🔒 Not offered</span></div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3 data-i18n="pubTitle">4 · If you turn the public profile on, this is exactly what shows</h3>
-        <div class="consent"><span class="cs"><b data-i18n="pfFirst">First name and initial only — "Leo T."</b><span data-i18n="pfFirstSub">Full surname is never published.</span></span><div class="pilldot fixed"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="pfAge">Age group (U12) and position</b></span><div class="pilldot"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="pfBadges">Badges and streak</b></span><div class="pilldot"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="pfMoments">Up to 6 moments Leo chooses — each one approved by you individually</b></span><div class="pilldot"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="pfReport">Report numbers (Motion Age, shuttle time)</b><span data-i18n="pfReportSub">Off by default. Publishing a child's assessment data is a decision, not a default.</span></span><div class="pilldot off"></div></div>
-        <div class="consent"><span class="cs"><b data-i18n="pfNever">Never published, no setting available</b><span data-i18n="pfNeverSub">Surname · school · club · city · training venue and times · any photo with another child in it · anything from a family-only moment</span></span><span class="tag lock">🔒 Never</span></div>
-        <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="pubNote">Switching the public profile off pulls the page down immediately and de-indexes it. Moments that were public stay in Leo's private timeline.</p>
+        <h3 data-i18n="pubTitle">4 · Play promotion links — the only way anything leaves the circle</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;" data-i18n="pubIntro">One link, one named person, one expiry date. Used when a scout or a club asks to see a player, and equally when a guide — including one who no longer trains Leo — wants to follow how he is getting on. You create it, you see every time it is opened, and you can kill it in one tap.</p>
+
+        <div class="card" style="background:var(--panel);margin-bottom:16px;">
+          <h3 data-i18n="builder">Create a link</h3>
+          <div class="consent"><span class="cs"><b data-i18n="lkWho">Who is it for</b><span data-i18n="lkWhoSub">A name and a role, typed by you. The name is printed across every page of the link, so a forwarded link is obvious.</span></span><span class="tag grey">Grego · guide</span></div>
+          <div class="consent"><span class="cs"><b data-i18n="lkWhy">Why</b><span data-i18n="lkWhySub">Recorded for your own file and shown to Leo.</span></span><span class="tag grey">Split camp trial</span></div>
+          <div class="consent"><span class="cs"><b data-i18n="lkExpiry">Expires</b><span data-i18n="lkExpirySub">7, 30 or 90 days. There is no "never".</span></span><span class="tag">30 days</span></div>
+          <div class="consent"><span class="cs"><b data-i18n="lkPass">Passcode</b><span data-i18n="lkPassSub">Six digits, sent separately. Recommended for anyone you have not met.</span></span><div class="pilldot"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="lkDl">Allow download of the clips</b><span data-i18n="lkDlSub">Off means watch-only, in the browser, watermarked.</span></span><div class="pilldot off"></div></div>
+        </div>
+
+        <div class="card" style="background:var(--panel);margin-bottom:16px;">
+          <h3 data-i18n="lkShows">What the link holder sees</h3>
+          <div class="consent"><span class="cs"><b data-i18n="pfFirst">First name and initial only — "Leo T."</b><span data-i18n="pfFirstSub">Full surname is never shown, on any link.</span></span><div class="pilldot fixed"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfAge">Age group (U12) and position</b></span><div class="pilldot"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfMoments">Up to 6 moments — Leo proposes, you approve each one</b></span><div class="pilldot"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfBadges">Badges and streak</b></span><div class="pilldot"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfReport">Player Report summary (Motion Age, shuttle time, guide sections)</b><span data-i18n="pfReportSub">Off by default. Sensible for a scout you have chosen to approach; not for someone who approached you.</span></span><div class="pilldot off"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfContact">Your contact details</b><span data-i18n="pfContactSub">Off means enquiries come back through PitchPro, not to your phone.</span></span><div class="pilldot off"></div></div>
+          <div class="consent"><span class="cs"><b data-i18n="pfNever">Never shown, no setting available</b><span data-i18n="pfNeverSub">Surname · school · club · home city · training venue and times · any photo with another child in it · anything from a family-only moment · anything Leo has not put forward</span></span><span class="tag lock">🔒 Never</span></div>
+        </div>
+
+        <div class="card" style="background:var(--panel);">
+          <h3 data-i18n="lkActive">Links that exist</h3>
+          <table>
+            <tr><th data-i18n="thFor">For</th><th data-i18n="thReason">Reason</th><th data-i18n="thExpires">Expires</th><th data-i18n="thOpens">Opened</th><th data-i18n="thContent">Shows</th><th></th></tr>
+            <tr><td><b>Grego</b><br><span style="color:var(--muted);font-size:12px;" data-i18n="roleGuide">Guide · Lovrencsics Academy</span></td><td data-i18n="rsnCamp">Split camp trial</td><td>30 Aug</td><td>3 times · last 19 Aug</td><td data-i18n="shows4">4 moments · no report</td><td><span class="tag red" style="cursor:pointer;" data-i18n="revoke">Revoke</span></td></tr>
+            <tr><td><b>Calgary Foothills</b><br><span style="color:var(--muted);font-size:12px;" data-i18n="roleScout">Club scout</span></td><td data-i18n="rsnTrial">U13 trial enquiry</td><td data-i18n="expired">Expired 12 Jul</td><td>1 time</td><td data-i18n="shows6">6 moments · report on</td><td><span class="tag grey" data-i18n="closed2">Closed</span></td></tr>
+            <tr><td><b>Coach Ramirez</b><br><span style="color:var(--muted);font-size:12px;" data-i18n="roleFormer">Former guide · 2025 season</span></td><td data-i18n="rsnCatch">Wanted to see how he is getting on</td><td data-i18n="expired2">Expired 4 Jun</td><td>2 times</td><td data-i18n="shows3">3 moments · no report</td><td><span class="tag grey" data-i18n="closed2">Closed</span></td></tr>
+          </table>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="pubNote">Revoking kills a link instantly, mid-session. Every open is logged with a date and shown to you and to Leo — he always knows who has looked at his football. Links are never indexed by search engines and cannot be guessed.</p>
+        </div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
@@ -546,12 +571,28 @@ const i18n={
  futureGuide:'Bilo koji budući vodič',basisFuture:'Pojavljuje se tek nakon prvog odrađenog treninga',basisFutureNote:'Svakoga odobravate prije nego Leo može dijeliti s njim',askMe:'Pitaj me',
  circleNote:'Vodič nikada ne može zatražiti pristup djetetu. Jedini put unutra je stvarno odrađen trening, pa vaše odobrenje. Svaki komentar vodiča kopira se u vaš sandučić i pohranjuje u sigurnosni zapisnik — privatnih poruka vodič–igrač nema nigdje na platformi.',
  beyondTitle:'3 · Izvan kruga',teamMates:'Suigrači i prijatelji na PitchProu',teamMatesSub:'Povezivanje igrača, samo unutar platforme. Oba roditelja moraju odobriti svaku vezu.',
- publicProfile:'Javni profil',publicProfileSub:'pitchpropathways.com/p/leo-torres — poveznica koju svatko može otvoriti, uključujući klubove i skaute.',
- scoutShare:'Podijeli privatnu poveznicu za skaute',scoutShareSub:'Jedna poveznica s rokom trajanja za jedan imenovani klub. Za većinu obitelji bolje od javne stranice.',setUp:'Postavi',
- pubTitle:'4 · Ako uključite javni profil, ovo se točno prikazuje',pfFirst:'Samo ime i inicijal — "Leo T."',pfFirstSub:'Prezime se nikada ne objavljuje.',pfAge:'Dobna skupina (U12) i pozicija',pfBadges:'Bedževi i niz',pfMoments:'Do 6 trenutaka koje Leo odabere — svaki odobravate pojedinačno',
- pfReport:'Brojke iz izvještaja (Motion Age, vrijeme šatla)',pfReportSub:'Isključeno kao zadano. Objava podataka procjene djeteta je odluka, ne zadana postavka.',
- pfNever:'Nikada se ne objavljuje, nema postavke',pfNeverSub:'Prezime · škola · klub · grad · dvorana i termini · svaka fotografija s drugim djetetom · bilo što iz trenutka označenog samo za obitelj',
- pubNote:'Isključivanje javnog profila odmah uklanja stranicu i miče je iz tražilica. Trenuci koji su bili javni ostaju u Leovoj privatnoj vremenskoj crti.',
+ manage:'Upravljaj',
+ promoLink:'Poveznica za promociju igrača',promoLinkSub:'Privatna poveznica s rokom trajanja koju izrađujete za jednu imenovanu osobu — skauta, klub ili vodiča koji želi pratiti sadašnjeg ili bivšeg igrača. Zamjenjuje javni profil; stranice koju bilo tko može pronaći nema.',createLink:'Izradi poveznicu',
+ noPublic:'Javni profil',noPublicSub:'Ne nudi se. Stranica koju se može pronaći, s imenom, dobi, pozicijom i fotografijama djeteta, jedino je što ovaj dizajn neće raditi.',notOffered:'🔒 Ne nudi se',
+ pubTitle:'4 · Poveznice za promociju igrača — jedini način da išta izađe iz kruga',
+ pubIntro:'Jedna poveznica, jedna imenovana osoba, jedan datum isteka. Koristi se kad skaut ili klub zatraži uvid u igrača, a jednako tako i kad vodič — uključujući onoga koji Lea više ne trenira — želi vidjeti kako napreduje. Vi je izrađujete, vidite svako otvaranje i možete je ugasiti jednim dodirom.',
+ builder:'Izradi poveznicu',
+ lkWho:'Za koga je',lkWhoSub:'Ime i uloga, koje upisujete vi. Ime je ispisano preko svake stranice poveznice, pa je proslijeđena poveznica odmah očita.',
+ lkWhy:'Razlog',lkWhySub:'Bilježi se za vašu evidenciju i prikazuje se Leu.',
+ lkExpiry:'Istječe',lkExpirySub:'7, 30 ili 90 dana. Opcije "nikad" nema.',
+ lkPass:'Pristupni kod',lkPassSub:'Šest znamenki, šalje se odvojeno. Preporučeno za svakoga koga niste upoznali.',
+ lkDl:'Dopusti preuzimanje snimaka',lkDlSub:'Isključeno znači samo gledanje, u pregledniku, s vodenim žigom.',
+ lkShows:'Što nositelj poveznice vidi',
+ pfFirst:'Samo ime i inicijal — "Leo T."',pfFirstSub:'Prezime se ne prikazuje ni na jednoj poveznici.',pfAge:'Dobna skupina (U12) i pozicija',
+ pfMoments:'Do 6 trenutaka — Leo predlaže, vi odobravate svaki',pfBadges:'Bedževi i niz',
+ pfReport:'Sažetak izvještaja igrača (Motion Age, vrijeme šatla, dijelovi vodiča)',pfReportSub:'Isključeno kao zadano. Razumno za skauta kojemu ste se sami obratili; ne i za nekoga tko se obratio vama.',
+ pfContact:'Vaši kontaktni podaci',pfContactSub:'Isključeno znači da upiti dolaze preko PitchProa, a ne na vaš telefon.',
+ pfNever:'Nikada se ne prikazuje, nema postavke',pfNeverSub:'Prezime · škola · klub · grad stanovanja · dvorana i termini · svaka fotografija s drugim djetetom · bilo što iz trenutka označenog samo za obitelj · bilo što što Leo nije sam predložio',
+ lkActive:'Postojeće poveznice',thFor:'Za koga',thReason:'Razlog',thExpires:'Istječe',thOpens:'Otvoreno',thContent:'Prikazuje',
+ roleGuide:'Vodič · Lovrencsics Academy',rsnCamp:'Proba za kamp u Splitu',shows4:'4 trenutka · bez izvještaja',revoke:'Opozovi',
+ roleScout:'Klupski skaut',rsnTrial:'Upit za probu U13',expired:'Isteklo 12. srpnja',shows6:'6 trenutaka · izvještaj uključen',closed2:'Zatvoreno',
+ roleFormer:'Bivši vodič · sezona 2025.',rsnCatch:'Želio je vidjeti kako napreduje',expired2:'Isteklo 4. lipnja',shows3:'3 trenutka · bez izvještaja',
+ pubNote:'Opoziv gasi poveznicu istog trena, usred pregledavanja. Svako otvaranje bilježi se s datumom i prikazuje vama i Leu — on uvijek zna tko je gledao njegov nogomet. Poveznice tražilice nikada ne indeksiraju i ne mogu se pogoditi.',
  mediaTitle:'5 · Pravila za snimke',mrStrip:'Ukloni podatke o lokaciji sa svake objave',mrStripSub:'Preporučeno. Ne može se isključiti za igrače mlađe od 13.',mrFaces:'Zadrži svaki trenutak s nepoznatim licem',
  mrTone:'Označi opise koji zvuče uznemireno',mrToneSub:'Zadržava se za vas i obavještava se sigurnosni tim. Leu se ne govori da je označeno zbog tona.',mrLength:'Ograničenje trajanja videa',
  mrPitch:'PitchPro smije koristiti Leove trenutke u marketingu',mrPitchSub:'Odvojeno od vaše postojeće privole za fotografije, isključeno osim ako ne kažete drukčije.',
