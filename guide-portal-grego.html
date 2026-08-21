@@ -79,6 +79,28 @@
 
   footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;padding:28px 0;text-align:center;background:var(--pitch);}
   footer a{color:var(--grass);text-decoration:none;}
+
+  /* ---- Showcase (media) ---- */
+  .showcase h2{margin-bottom:14px;}
+  .sc-lede{color:var(--muted);max-width:60ch;font-size:16px;}
+  .sc-feature{margin-top:34px;display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:start;}
+  @media(max-width:860px){.sc-feature{grid-template-columns:1fr;}}
+  .sc-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#000;box-shadow:0 18px 44px rgba(0,0,0,.45);}
+  .sc-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .sc-cap{padding-top:4px;}
+  .sc-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#ffd7d7;background:rgba(255,0,0,.14);border:1px solid rgba(255,60,60,.35);border-radius:999px;padding:5px 12px;margin-bottom:12px;}
+  .sc-t{font-family:var(--head);text-transform:uppercase;font-size:17px;font-weight:900;line-height:1.2;}
+  .sc-t small{display:block;font-family:var(--body);text-transform:none;font-weight:500;font-size:13.5px;color:var(--gold);letter-spacing:0;margin-top:6px;}
+  .sc-m{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-top:12px;}
+  .sc-why{font-size:14.5px;color:var(--muted);margin-top:14px;}
+  .sc-h{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted);margin:44px 0 14px;}
+  .sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+  .sc-tile{aspect-ratio:16/10;border-radius:12px;border:1px dashed rgba(255,255,255,.16);background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:12px;}
+  .sc-tile .ic{font-size:21px;opacity:.5;}
+  .sc-tile b{font-size:12.5px;color:var(--muted);font-weight:700;}
+  .sc-tile small{font-size:11px;color:rgba(157,191,169,.65);}
+  .sc-rules{margin-top:34px;border:1px solid var(--line);border-left:3px solid var(--sea);border-radius:0 12px 12px 0;background:var(--card);padding:20px 24px;font-size:13.5px;color:var(--muted);}
+  .sc-rules b{color:var(--white);display:block;font-size:14px;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -86,7 +108,7 @@
 <div class="topbar">
   <div class="wrap">
     <span class="net">🏆 PitchPro Pathways · Guide Network</span>
-    <span>Booking &amp; payments handled securely by <a href="pitchpro-pathways-website.html">PitchPro Pathways</a></span>
+    <span>Booking &amp; payments handled securely by <a href="index.html">PitchPro Pathways</a></span>
   </div>
 </div>
 
@@ -125,6 +147,41 @@
   </div>
 </section>
 
+<section class="showcase" id="showcase">
+  <div class="wrap">
+    <div class="kicker">Video &amp; Photos</div>
+    <h2>See the work, not just the words.</h2>
+    <p class="sc-lede">A guide page should show you the pitch. Start with where Grego comes from &mdash; and, as the season runs, moments from the academy sessions themselves.</p>
+
+    <div class="sc-feature">
+      <div class="sc-frame">
+        <iframe src="https://www.youtube-nocookie.com/embed/lGD1ddNf00c?rel=0" title="A KAPIT&Aacute;NY VISSZAT&Eacute;RT - Lovrencsics Gerg&#337; m&aacute;r edz&#337;k&eacute;nt kamatoztatja tud&aacute;s&aacute;t | Fradi M&eacute;dia" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="sc-cap">
+        <div class="sc-badge">&#9654; Featured video</div>
+        <div class="sc-t">The Captain Has Returned
+          <small>A Kapit&aacute;ny Visszat&eacute;rt &mdash; Lovrencsics Gerg&#337; m&aacute;r edz&#337;k&eacute;nt kamatoztatja tud&aacute;s&aacute;t</small>
+        </div>
+        <div class="sc-m">YouTube &middot; Ferencv&aacute;rosi Torna Club &mdash; Fradi M&eacute;dia</div>
+        <p class="sc-why">A Hungarian club portrait of the playing career that sits behind the coaching &mdash; the captain who came back, now passing it on. In Hungarian; the football needs no translation.</p>
+      </div>
+    </div>
+
+    <div class="sc-h">More from Grego &mdash; coming as the season runs</div>
+    <div class="sc-grid">
+      <div class="sc-tile"><span class="ic">&#9654;</span><b>Session clip</b><small>Small-sided games, Dra&#269;evac</small></div>
+      <div class="sc-tile"><span class="ic">&#9654;</span><b>Session clip</b><small>First touch under pressure</small></div>
+      <div class="sc-tile"><span class="ic">&#128247;</span><b>Photo</b><small>Academy group, 2016 generation</small></div>
+      <div class="sc-tile"><span class="ic">&#128247;</span><b>Photo</b><small>Summer camp, Split</small></div>
+    </div>
+
+    <div class="sc-rules">
+      <b>How media works on this page</b>
+      No child appears in a photo or a clip here without their parent&rsquo;s written consent, and nothing shared privately with a family is ever used. Grego chooses what appears; PitchPro Pathways reviews every item before it goes live and takes anything down on request.
+    </div>
+  </div>
+</section>
+
 <section class="expect">
   <div class="wrap">
     <div class="kicker">For Parents</div>
@@ -159,13 +216,13 @@
   <div class="wrap">
     <h2>Your child belongs on the pitch.</h2>
     <p>Whether you're in Split or planning a summer in Europe, start with a conversation. Book through PitchPro Pathways and we'll take care of the rest — first session is about your child feeling at home.</p>
-    <a class="btn btn-sea" href="pitchpro-pathways-website.html#register">Book Through PitchPro Pathways</a>
+    <a class="btn btn-sea" href="index.html#register">Book Through PitchPro Pathways</a>
     <div class="assure"><b>✓</b> Secure international booking &amp; payment &nbsp;&nbsp;<b>✓</b> Croatian &amp; English spoken &nbsp;&nbsp;<b>✓</b> Family-first academy</div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">Grego and Lovrencsics Academy are guides on the <a href="pitchpro-pathways-website.html">PitchPro Pathways</a> network. All bookings, scheduling, and payments are managed by PitchPro Pathways. · © 2026</div>
+  <div class="wrap">Grego and Lovrencsics Academy are guides on the <a href="index.html">PitchPro Pathways</a> network. All bookings, scheduling, and payments are managed by PitchPro Pathways. · © 2026</div>
 </footer>
 
 </body>
