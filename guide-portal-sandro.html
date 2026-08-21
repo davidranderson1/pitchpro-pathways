@@ -70,6 +70,30 @@
 
   footer{background:var(--pitch);border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:13px;padding:28px 0;text-align:center;}
   footer a{color:var(--grass);text-decoration:none;}
+
+  /* ---- Showcase (media) ---- */
+  .showcase h2{margin-bottom:14px;}
+  .sc-lede{color:#3d5c63;max-width:60ch;font-size:16px;}
+  .sc-feature{margin-top:34px;display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:start;}
+  @media(max-width:860px){.sc-feature{grid-template-columns:1fr;}}
+  .sc-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid #dde4e6;background:var(--soft);}
+  .sc-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .sc-frame.empty{border-style:dashed;display:flex;align-items:center;justify-content:center;text-align:center;padding:26px;}
+  .sc-empty .play{width:56px;height:56px;border-radius:50%;border:1px solid #cfd9db;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent);margin:0 auto 14px;}
+  .sc-empty b{display:block;font-family:var(--serif);font-size:18px;margin-bottom:8px;}
+  .sc-empty span{font-size:13.5px;color:#3d5c63;max-width:44ch;display:inline-block;}
+  .sc-cap{padding-top:4px;}
+  .sc-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);background:rgba(6,89,247,.07);border:1px solid rgba(6,89,247,.2);padding:5px 12px;margin-bottom:12px;}
+  .sc-t{font-family:var(--serif);font-size:20px;line-height:1.2;}
+  .sc-why{font-size:14.5px;color:#3d5c63;margin-top:14px;}
+  .sc-h{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#5b767c;margin:44px 0 14px;}
+  .sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+  .sc-tile{aspect-ratio:16/10;border:1px dashed #cfd9db;background:#fafbfb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:12px;}
+  .sc-tile .ic{font-size:21px;opacity:.45;}
+  .sc-tile b{font-size:12.5px;color:#5b767c;font-weight:700;}
+  .sc-tile small{font-size:11px;color:#8aa1a6;}
+  .sc-rules{margin-top:34px;border:1px solid #dde4e6;border-left:3px solid var(--accent);background:#fff;padding:20px 24px;font-size:13.5px;color:#3d5c63;}
+  .sc-rules b{color:var(--ink);display:block;font-size:14.5px;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -77,7 +101,7 @@
 <div class="topbar">
   <div class="wrap">
     <span class="net">🏆 PitchPro Pathways · Guide Network</span>
-    <span>Booking &amp; payments handled securely by <a href="pitchpro-pathways-website.html">PitchPro Pathways</a></span>
+    <span>Booking &amp; payments handled securely by <a href="index.html">PitchPro Pathways</a></span>
   </div>
 </div>
 
@@ -116,6 +140,42 @@
   </div>
 </section>
 
+<section class="showcase" id="showcase">
+  <div class="wrap">
+    <div class="eyebrow">Video &amp; Photos</div>
+    <h2>See the work, not just the words.</h2>
+    <p class="sc-lede">Every guide on the network gets a place to show families what an assessment and a session actually look like &mdash; one featured video, and a handful of clips and photos alongside it.</p>
+
+    <div class="sc-feature">
+      <div class="sc-frame empty">
+        <div class="sc-empty">
+          <div class="play">&#9654;</div>
+          <b>No video connected yet</b>
+          <span>Sandro connects a YouTube channel from the guide portal and picks one video to feature here. Until then this space stays empty rather than filled with stock footage.</span>
+        </div>
+      </div>
+      <div class="sc-cap">
+        <div class="sc-badge">Featured video</div>
+        <div class="sc-t">Coming soon</div>
+        <p class="sc-why">The featured video is the first thing most families watch. It is chosen by the guide, not by us &mdash; an assessment walkthrough, an interview, or simply a few minutes of how the work is done.</p>
+      </div>
+    </div>
+
+    <div class="sc-h">Clips &amp; photos</div>
+    <div class="sc-grid">
+      <div class="sc-tile"><span class="ic">&#9654;</span><b>Open slot</b><small>Assessment clip</small></div>
+      <div class="sc-tile"><span class="ic">&#9654;</span><b>Open slot</b><small>Session clip</small></div>
+      <div class="sc-tile"><span class="ic">&#128247;</span><b>Open slot</b><small>Photo</small></div>
+      <div class="sc-tile"><span class="ic">&#128247;</span><b>Open slot</b><small>Photo</small></div>
+    </div>
+
+    <div class="sc-rules">
+      <b>How media works on this page</b>
+      No child appears in a photo or a clip here without their parent&rsquo;s written consent, and nothing shared privately with a family is ever used. The guide chooses what appears; PitchPro Pathways reviews every item before it goes live and takes anything down on request.
+    </div>
+  </div>
+</section>
+
 <section class="expect">
   <div class="wrap">
     <div class="eyebrow">For Parents</div>
@@ -146,13 +206,13 @@
   <div class="wrap">
     <h2>Start with a conversation.</h2>
     <p>Book through PitchPro Pathways and we'll begin with the consult — no obligation beyond that first conversation. If I'm not the right fit for your child, I'll tell you, and the PitchPro team will help you find the guide who is.</p>
-    <a class="btn btn-blue" href="pitchpro-pathways-website.html#register">Book Through PitchPro Pathways</a>
+    <a class="btn btn-blue" href="index.html#register">Book Through PitchPro Pathways</a>
     <div class="assure"><b>✓</b> Secure booking &amp; payment &nbsp;&nbsp;<b>✓</b> No long-term commitment to start &nbsp;&nbsp;<b>✓</b> Full assessment report included</div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">Sandro Rajic is an independent practice partnered with <a href="pitchpro-pathways-website.html">PitchPro Pathways</a>. All youth bookings, scheduling, and payments are managed by PitchPro Pathways. · © 2026</div>
+  <div class="wrap">Sandro Rajic is an independent practice partnered with <a href="index.html">PitchPro Pathways</a>. All youth bookings, scheduling, and payments are managed by PitchPro Pathways. · © 2026</div>
 </footer>
 
 </body>
