@@ -9,6 +9,7 @@
   :root{
     --pitch:#0b120e; --panel:#101a14; --card:#15211a; --grass:#2ee08a; --grass-deep:#17b06a;
     --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09); --warn:#ffb84d; --blue:#4d9fff;
+    --lock:#b79bff; --red:#ff7a7a;
     --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -29,6 +30,9 @@
   .btn{display:inline-block;border:none;cursor:pointer;font-family:var(--body);font-weight:700;font-size:14.5px;text-decoration:none;padding:13px 26px;border-radius:999px;transition:all .2s;}
   .btn-grass{background:var(--grass);color:#06130c;width:100%;}
   .btn-grass:hover{background:#4ff0a0;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--muted);}
+  .btn-sm2{padding:8px 16px;font-size:12.5px;width:auto;}
+  .btn-red{background:transparent;border:1px solid rgba(255,122,122,.4);color:var(--red);}
   .login-note{font-size:12px;color:var(--muted);margin-top:18px;}
 
   /* APP SHELL */
@@ -42,6 +46,8 @@
   .nav-item:hover{color:var(--white);}
   .nav-item.active{color:var(--grass);border-left-color:var(--grass);background:rgba(46,224,138,.06);}
   .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
+  .nav-item .badge-dot.amber{background:var(--warn);color:#231602;}
+  .nav-sec{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(157,179,166,.55);padding:18px 20px 6px;font-weight:800;}
   main{padding:34px 38px;max-width:1050px;}
   .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:30px;}
   .child-switch{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 8px;}
@@ -64,6 +70,9 @@
   .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);}
   .tag.amber{background:rgba(255,184,77,.14);color:var(--warn);}
   .tag.blue{background:rgba(77,159,255,.14);color:var(--blue);}
+  .tag.lock{background:rgba(183,155,255,.14);color:var(--lock);}
+  .tag.grey{background:rgba(255,255,255,.07);color:var(--muted);}
+  .tag.red{background:rgba(255,122,122,.14);color:var(--red);}
   .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;}
   .row:last-child{border-bottom:none;}
   .row .who{font-weight:600;}
@@ -72,6 +81,8 @@
   .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--grass-deep),var(--grass));}
   .note-strip{background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.25);border-radius:12px;padding:14px 18px;font-size:13px;color:#cfe2f8;margin-bottom:22px;}
   .note-strip b{color:var(--blue);}
+  .note-strip.lock{background:rgba(183,155,255,.07);border-color:rgba(183,155,255,.28);color:#e0d6ff;}
+  .note-strip.lock b{color:var(--lock);}
   .msg{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:14px;}
   .msg .from{font-weight:700;font-size:13px;}
   .msg .from span{color:var(--muted);font-weight:500;font-size:12px;margin-left:8px;}
@@ -84,13 +95,44 @@
   .score b{color:var(--white);font-family:var(--head);}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);}
-  td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+  td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
   .doc-row .btn-sm{font-size:12px;padding:7px 16px;background:transparent;border:1px solid var(--grass);color:var(--grass);border-radius:999px;cursor:pointer;font-weight:700;}
-  .consent{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;}
-  .pilldot{width:42px;height:24px;border-radius:99px;background:var(--grass);position:relative;}
+  .consent{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .consent:last-child{border-bottom:none;}
+  .consent .cs span{display:block;color:var(--muted);font-size:12.5px;}
+  .pilldot{width:42px;height:24px;border-radius:99px;background:var(--grass);position:relative;flex-shrink:0;cursor:pointer;}
   .pilldot::after{content:'';position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#06130c;}
   .pilldot.off{background:rgba(255,255,255,.15);}
   .pilldot.off::after{left:3px;right:auto;background:var(--muted);}
+  .pilldot.fixed{background:var(--lock);cursor:not-allowed;}
+
+  /* MOMENTS */
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2f6b4a,#17b06a);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:13px;flex-shrink:0;}
+  .moment{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+  .moment.pend{border-color:rgba(255,184,77,.35);}
+  .m-head{display:flex;align-items:center;gap:11px;padding:14px 18px;}
+  .m-head .who{font-weight:700;font-size:14px;}
+  .m-head .when{color:var(--muted);font-size:12px;}
+  .m-head .right{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+  .m-media{height:190px;background:repeating-linear-gradient(90deg,#12281c 0 46px,#0f2318 46px 92px);display:flex;align-items:center;justify-content:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;}
+  .m-media span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(157,179,166,.65);font-weight:700;}
+  .m-media .play{position:absolute;width:50px;height:50px;border-radius:50%;background:rgba(11,18,14,.72);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:19px;}
+  .m-body{padding:15px 18px;}
+  .m-body p{font-size:14px;color:#dfeae4;}
+  .m-aud{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center;}
+  .m-aud .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:4px;}
+  .m-foot{display:flex;gap:8px;align-items:center;padding:13px 18px;border-top:1px solid var(--line);flex-wrap:wrap;}
+  .m-comment{padding:13px 18px;border-top:1px solid var(--line);background:rgba(255,255,255,.015);}
+  .m-comment .cm{font-size:13.5px;color:#dfeae4;margin-bottom:9px;}
+  .m-comment .cm:last-child{margin-bottom:0;}
+  .m-comment .cm b{color:var(--grass);}
+  .m-comment .cm .stamp{color:var(--muted);font-size:11.5px;margin-left:6px;}
+  .flagline{background:rgba(255,184,77,.08);border:1px solid rgba(255,184,77,.28);border-radius:10px;padding:10px 14px;font-size:12.5px;color:#ffe0ad;margin:0 18px 14px;}
+
+  .seg{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;flex-wrap:wrap;}
+  .seg button{flex:1;min-width:140px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
+  .seg button.on{background:var(--grass);color:#06130c;}
+  .seg-note{font-size:12.5px;color:var(--muted);margin-top:10px;}
 </style>
 </head>
 <body>
@@ -121,6 +163,9 @@
     <div class="nav-item" data-s="book" data-i18n="navBook">Bookings</div>
     <div class="nav-item" data-s="pay" data-i18n="navPay">Payments</div>
     <div class="nav-item" data-s="msg" data-i18n="navMsg">Messages &amp; Docs <span class="badge-dot">2</span></div>
+    <div class="nav-sec" data-i18n="navSecPlayer">Leo's account</div>
+    <div class="nav-item" data-s="moments" data-i18n="navMoments">Moments &amp; Approvals <span class="badge-dot amber">1</span></div>
+    <div class="nav-item" data-s="safety" data-i18n="navSafety">Safety &amp; Permissions</div>
   </aside>
   <main>
     <div class="topline">
@@ -145,14 +190,27 @@
       </div>
       <div class="grid g2" style="margin-top:16px;">
         <div class="card">
+          <h3 data-i18n="momentsCard">Leo's Moments</h3>
+          <div class="row"><div><div class="who" data-i18n="mPending">1 moment waiting for you</div><div class="meta" data-i18n="mPendingSub">"Weak-foot volley" · posted 6:42 PM today</div></div><span class="tag amber" style="cursor:pointer;" onclick="go('moments')" data-i18n="review">Review</span></div>
+          <div class="row"><div><div class="who" data-i18n="mComment">Coach Nick commented on a moment</div><div class="meta" data-i18n="mCommentSub">Copy saved to your inbox · Sat 2:10 PM</div></div><span class="tag" data-i18n="read">Read</span></div>
+          <div class="row"><div><div class="who" data-i18n="mStreak">Leo is on an 11-week posting streak</div><div class="meta" data-i18n="mStreakSub">24 moments since March</div></div><span class="tag blue">🔥</span></div>
+        </div>
+        <div class="card">
           <h3 data-i18n="latestNote">Latest Guide Note</h3>
           <div class="msg"><div class="from">Coach Nick <span>Yesterday</span></div><div style="font-size:13.5px;color:#cfe0d6;margin-top:4px;">Leo's first step off the left foot is noticeably quicker this week. We'll test it under pressure next session — watch for it in Saturday's game.</div></div>
         </div>
+      </div>
+      <div class="grid g2" style="margin-top:16px;">
         <div class="card">
           <h3 data-i18n="quickActions">Quick Actions</h3>
           <div class="row"><span class="who" data-i18n="qaBook">Book a session</span><span class="tag" data-i18n="go">Go</span></div>
           <div class="row"><span class="who" data-i18n="qaReport">View latest Player Report</span><span class="tag" data-i18n="go">Go</span></div>
           <div class="row"><span class="who" data-i18n="qaMsg">Message a guide</span><span class="tag" data-i18n="go">Go</span></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="accountsCard">Player accounts</h3>
+          <div class="row"><div><div class="who">Leo · U12</div><div class="meta" data-i18n="leoMode">Active · post first, you review after · 3 guides approved</div></div><span class="tag">Active</span></div>
+          <div class="row"><div><div class="who">Mia · U9</div><div class="meta" data-i18n="miaMode">No player account — available from age 10</div></div><span class="tag grey" data-i18n="notYet">Not yet</span></div>
         </div>
       </div>
     </div>
@@ -181,6 +239,160 @@
         <h3 data-i18n="goals">Development Goals (set with family)</h3>
         <div class="row"><span class="who">Confident left foot in matches</span><span class="tag amber" data-i18n="inProgress">In progress</span></div>
         <div class="row"><span class="who">Academy tryout readiness by spring 2027</span><span class="tag blue" data-i18n="onTrack">On track</span></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h3 data-i18n="leoSide">Leo's own side of the profile</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;" data-i18n="leoSideSub">The report above is written by guides. This part Leo writes himself — his moments, his goals, his streak. You see all of it.</p>
+        <div class="row"><div><div class="who">24 moments · 11-week streak</div><div class="meta">Latest: "Weak-foot volley" — waiting for you</div></div><span class="tag amber" style="cursor:pointer;" onclick="go('moments')" data-i18n="openTimeline">Open timeline</span></div>
+        <div class="row"><div><div class="who">2 goals Leo set himself</div><div class="meta">200 weak-foot touches 5×/week · start every game</div></div><span class="tag blue">On track</span></div>
+        <div class="row"><div><div class="who">Public profile</div><div class="meta">Off — only you can switch this on</div></div><span class="tag lock" style="cursor:pointer;" onclick="go('safety')">🔒 Off</span></div>
+      </div>
+    </div>
+
+    <!-- MOMENTS & APPROVALS -->
+    <div class="screen" id="s-moments">
+      <h2 data-i18n="momTitle">Moments &amp; Approvals</h2>
+      <div class="sub" data-i18n="momSub">Everything Leo posts lands here — whether or not it needs your approval first.</div>
+
+      <div class="note-strip lock"><b data-i18n="momMode">Leo's review mode: post first, you review after.</b> <span data-i18n="momModeSub">His moments go straight to the guides you've approved, and you can take any of them down. Switch to approve-first in Safety &amp; Permissions if you'd rather see each one before his guides do.</span> <span class="tag lock" style="cursor:pointer;margin-left:6px;" onclick="go('safety')" data-i18n="change">Change</span></div>
+
+      <div class="card" style="margin-bottom:22px;">
+        <h3 data-i18n="momFlag">Held for you — flagged automatically</h3>
+        <p style="font-size:13px;color:var(--muted);" data-i18n="momFlagSub">Even in post-first mode, a moment is held if our safety check spots something: a face we don't recognise, a location clue, a school crest, or a caption the model rates as distressed. You decide what happens next.</p>
+      </div>
+
+      <!-- pending -->
+      <div class="moment pend">
+        <div class="m-head">
+          <span class="avatar">LT</span>
+          <span><span class="who">Leo Torres</span><br><span class="when">Today, 6:42 PM · tagged: Agility session, Coach Nick</span></span>
+          <span class="right"><span class="tag amber" data-i18n="held">⏳ Held for review</span></span>
+        </div>
+        <div class="m-media"><span>Video · 0:18</span><div class="play">▶</div></div>
+        <div class="flagline" data-i18n="flagWhy">⚠ Held because: a second child's face is visible at 0:11, and the caption mentions a venue name. Nothing has been shared with anyone yet.</div>
+        <div class="m-body">
+          <p>Hit the weak-foot volley 4 times in a row today. Coach Nick said my left foot is finally catching up 🔥</p>
+          <div class="m-aud">
+            <span class="lbl" data-i18n="leoChose">Leo chose</span>
+            <span class="tag lock">🔒 You — always</span>
+            <span class="tag">Coach Nick</span>
+            <span class="tag">Sandro</span>
+            <span class="tag grey">Grego — off</span>
+          </div>
+        </div>
+        <div class="m-foot">
+          <button class="btn btn-grass btn-sm2" data-i18n="approveShare">Approve &amp; share with Leo's guides</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="approveFam">Keep it between us</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="blurFace">Blur the other face, then share</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="sendBack">Send back to Leo with a note</button>
+          <button class="btn btn-red btn-sm2" data-i18n="removeIt">Remove</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin:26px 0 16px;">
+        <h3 data-i18n="momLive">Already shared</h3>
+        <p style="font-size:13px;color:var(--muted);" data-i18n="momLiveSub">You can take any of these down at any time. Taking one down removes it from every guide immediately and tells Leo you did it — we never remove something behind his back.</p>
+      </div>
+
+      <div class="moment">
+        <div class="m-head">
+          <span class="avatar">LT</span>
+          <span><span class="who">Leo Torres</span><br><span class="when">Sat 19 Jul, 11:20 AM</span></span>
+          <span class="right"><span class="tag" data-i18n="shared">✓ Shared</span><span class="tag blue">💬 2</span></span>
+        </div>
+        <div class="m-media"><span>Photo</span></div>
+        <div class="m-body">
+          <p>First start in midfield. We lost 2–1 but I completed my first proper switch of play.</p>
+          <div class="m-aud"><span class="lbl" data-i18n="seenBy">Seen by</span><span class="tag lock">🔒 You</span><span class="tag">Coach Nick ✓</span><span class="tag">Sandro ✓</span><span class="tag grey">Grego — not yet</span></div>
+        </div>
+        <div class="m-comment">
+          <div class="cm"><b>Coach Nick</b><span class="stamp">Sat 2:10 PM · copied to you automatically</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div>
+          <div class="cm"><b>You</b><span class="stamp">Sat 3:02 PM</span><br>So proud of you. Dad watched it four times.</div>
+        </div>
+        <div class="m-foot">
+          <button class="btn btn-ghost btn-sm2" data-i18n="addComment">Add a comment</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="restrict">Narrow who can see it</button>
+          <button class="btn btn-red btn-sm2" data-i18n="takeDown">Take it down</button>
+          <span style="margin-left:auto;font-size:12px;color:var(--muted);" data-i18n="reportGuide">Report a guide comment</span>
+        </div>
+      </div>
+
+      <div class="moment">
+        <div class="m-head">
+          <span class="avatar">LT</span>
+          <span><span class="who">Leo Torres</span><br><span class="when">Thu 17 Jul, 8:05 PM</span></span>
+          <span class="right"><span class="tag lock" data-i18n="famOnly">🔒 Family only — Leo's choice</span></span>
+        </div>
+        <div class="m-body">
+          <p>Rough session. Couldn't get the turn right and got frustrated. Writing it down so I remember it got better.</p>
+          <div class="m-aud"><span class="lbl" data-i18n="seenBy">Seen by</span><span class="tag lock">🔒 You only</span></div>
+        </div>
+        <div class="m-foot"><span style="font-size:12.5px;color:var(--muted);" data-i18n="famOnlyNote">Leo turned his guides off for this one. He can do that for any moment — he can never turn you off.</span></div>
+      </div>
+    </div>
+
+    <!-- SAFETY & PERMISSIONS -->
+    <div class="screen" id="s-safety">
+      <h2 data-i18n="safeTitle">Safety &amp; Permissions</h2>
+      <div class="sub" data-i18n="safeSub">Leo's guardrails. You set the boundary; inside it, Leo decides.</div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="modeTitle">1 · How much freedom does Leo get?</h3>
+        <div class="seg">
+          <button data-i18n="modeA">Approve first<br><span style="font-weight:500;font-size:11.5px;">nothing leaves the family until you say so</span></button>
+          <button class="on" data-i18n="modeB">Post first, review after<br><span style="font-weight:500;font-size:11.5px;">goes to approved guides straight away</span></button>
+          <button data-i18n="modeC">Family only<br><span style="font-weight:500;font-size:11.5px;">journal — nobody outside the family, ever</span></button>
+        </div>
+        <p class="seg-note" data-i18n="modeNote">You set this per child, not by age — Leo is on post-first, Mia would start on approve-first. Change it whenever you like; changing it never affects moments already posted. Flagged moments are held for you in every mode.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="circleTitle">2 · Who is allowed in Leo's circle</h3>
+        <table>
+          <tr><th data-i18n="thWho">Who</th><th data-i18n="thBasis">Why they qualify</th><th data-i18n="thSee">Can see moments</th><th data-i18n="thReact">Can react 👏</th><th data-i18n="thComment">Can comment</th><th></th></tr>
+          <tr><td><b>You &amp; David</b></td><td data-i18n="basisParent">Parent account</td><td><span class="tag lock">Always</span></td><td>—</td><td>Yes</td><td><span class="tag lock">🔒</span></td></tr>
+          <tr><td><b>Coach Nick</b></td><td data-i18n="basisNick">14 sessions since April · background check ✓</td><td>Yes</td><td>Yes</td><td>Yes</td><td><div class="pilldot"></div></td></tr>
+          <tr><td><b>Sandro Rajic</b></td><td data-i18n="basisSandro">Screening Jun 2026 · background check ✓</td><td>Yes</td><td>Yes</td><td>Yes</td><td><div class="pilldot"></div></td></tr>
+          <tr><td><b>Grego</b></td><td data-i18n="basisGrego">Camp intake call · background check ✓</td><td>Yes</td><td>Yes</td><td><span class="tag grey" data-i18n="reactOnly">Off — react only</span></td><td><div class="pilldot"></div></td></tr>
+          <tr style="opacity:.55;"><td><b data-i18n="futureGuide">Any future guide</b></td><td data-i18n="basisFuture">Appears here only after a first completed session</td><td colspan="3" data-i18n="basisFutureNote">You approve each one before Leo can share with them</td><td><span class="tag amber" data-i18n="askMe">Ask me</span></td></tr>
+        </table>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="circleNote">A guide can never request access to a child. The only route in is a real completed session, then your approval. Every guide comment is copied to your inbox and stored in the safeguarding log — there are no private guide-to-player messages anywhere on the platform.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="beyondTitle">3 · Beyond the circle</h3>
+        <div class="consent"><span class="cs"><b data-i18n="teamMates">Teammates &amp; friends on PitchPro</b><span data-i18n="teamMatesSub">Player-to-player following, inside the platform only. Both parents must approve each connection.</span></span><div class="pilldot off"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="publicProfile">Public profile</b><span data-i18n="publicProfileSub">pitchpropathways.com/p/leo-torres — a link anyone can open, including clubs and scouts.</span></span><div class="pilldot off"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="scoutShare">Share a private scouting link</b><span data-i18n="scoutShareSub">A single expiring link you generate for one named club. Better than a public page for most families.</span></span><span class="tag blue" data-i18n="setUp">Set up</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="pubTitle">4 · If you turn the public profile on, this is exactly what shows</h3>
+        <div class="consent"><span class="cs"><b data-i18n="pfFirst">First name and initial only — "Leo T."</b><span data-i18n="pfFirstSub">Full surname is never published.</span></span><div class="pilldot fixed"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="pfAge">Age group (U12) and position</b></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="pfBadges">Badges and streak</b></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="pfMoments">Up to 6 moments Leo chooses — each one approved by you individually</b></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="pfReport">Report numbers (Motion Age, shuttle time)</b><span data-i18n="pfReportSub">Off by default. Publishing a child's assessment data is a decision, not a default.</span></span><div class="pilldot off"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="pfNever">Never published, no setting available</b><span data-i18n="pfNeverSub">Surname · school · club · city · training venue and times · any photo with another child in it · anything from a family-only moment</span></span><span class="tag lock">🔒 Never</span></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="pubNote">Switching the public profile off pulls the page down immediately and de-indexes it. Moments that were public stay in Leo's private timeline.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="mediaTitle">5 · Media rules</h3>
+        <div class="consent"><span class="cs"><b data-i18n="mrStrip">Strip location data from every upload</b><span data-i18n="mrStripSub">Recommended. Cannot be switched off for players under 13.</span></span><div class="pilldot fixed"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="mrFaces">Hold any moment with an unrecognised face</b></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="mrTone">Flag captions that sound distressed</b><span data-i18n="mrToneSub">Held for you, and the safeguarding team is told. Leo is not told it was flagged for tone.</span></span><div class="pilldot"></div></div>
+        <div class="consent"><span class="cs"><b data-i18n="mrLength">Video length limit</b></span><span class="tag">60 seconds</span></div>
+        <div class="consent"><span class="cs"><b data-i18n="mrPitch">PitchPro may use Leo's moments in marketing</b><span data-i18n="mrPitchSub">Separate from your existing photo consent, and off unless you say otherwise.</span></span><div class="pilldot off"></div></div>
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="controlTitle">6 · Your controls</h3>
+        <div class="row"><div><div class="who" data-i18n="ctlExport">Download everything Leo has posted</div><div class="meta" data-i18n="ctlExportSub">Media, captions, comments, and the full audit log — one file</div></div><span class="tag" data-i18n="download">Download</span></div>
+        <div class="row"><div><div class="who" data-i18n="ctlPause">Pause Leo's account</div><div class="meta" data-i18n="ctlPauseSub">He keeps his timeline but cannot post or receive comments</div></div><span class="tag amber" data-i18n="pause">Pause</span></div>
+        <div class="row"><div><div class="who" data-i18n="ctlClose">Close the account and delete all moments</div><div class="meta" data-i18n="ctlCloseSub">Permanent, 30-day grace period, guides lose access immediately</div></div><span class="tag red" data-i18n="close">Close</span></div>
+        <div class="row"><div><div class="who" data-i18n="ctlReport">Report a concern to the safeguarding team</div><div class="meta" data-i18n="ctlReportSub">A person, not a form — response within one working day</div></div><span class="tag blue" data-i18n="report">Report</span></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:14px;" data-i18n="dataRights2">Data rights: PIPEDA (Canada) and GDPR (EU families). For a child's account we also apply the GDPR Article 8 rule — a parent holds consent until 16 in Croatia. privacy@pitchpropathways.com</p>
       </div>
     </div>
 
@@ -264,7 +476,7 @@
     <div class="screen" id="s-msg">
       <h2 data-i18n="msgTitle">Messages &amp; Documents</h2>
       <div class="sub" data-i18n="msgSub">All communication stays on the platform.</div>
-      <div class="note-strip"><b data-i18n="safety">Child safety, by design.</b> <span data-i18n="safetySub">Guides communicate with parents only — never directly with players. All messages are visible to PitchPro's safeguarding team.</span></div>
+      <div class="note-strip"><b data-i18n="safety">Child safety, by design.</b> <span data-i18n="safetySub">There are no private channels to a child anywhere on PitchPro. Guides message parents here. Where a guide comments on one of Leo's moments, that comment is public to his circle, copied to you the moment it is written, and kept in the safeguarding log — a guide can never send a child something you don't see.</span></div>
       <div class="card">
         <h3>Coach Nick</h3>
         <div class="msg"><div class="from">Coach Nick <span>Yesterday 6:12 PM</span></div><div style="font-size:13.5px;margin-top:4px;">Leo's first step off the left foot is noticeably quicker. We'll test it under pressure Thursday.</div></div>
@@ -272,11 +484,17 @@
         <div class="msg"><div class="from">Sandro Rajic <span>Jul 12</span></div><div style="font-size:13.5px;margin-top:4px;">Reassessment booked for Aug 14. The June report is in Leo's profile — bring questions to the family meeting.</div></div>
       </div>
       <div class="card" style="margin-top:16px;">
+        <h3 data-i18n="copies">Copies of guide comments on Leo's moments</h3>
+        <div class="msg"><div class="from">Coach Nick → Leo's moment "First start in midfield" <span>Sat 2:10 PM</span></div><div style="font-size:13.5px;margin-top:4px;">That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div></div>
+        <p style="font-size:12.5px;color:var(--muted);" data-i18n="copiesNote">Every one of these arrives here automatically. You don't have to go looking.</p>
+      </div>
+      <div class="card" style="margin-top:16px;">
         <h3 data-i18n="docs">Documents &amp; Consents</h3>
         <table>
           <tr class="doc-row"><td>Service Agreement</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
           <tr class="doc-row"><td>Liability Waiver</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
           <tr class="doc-row"><td>Health &amp; Assessment Consent</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
+          <tr class="doc-row"><td>Player Account Agreement — Leo</td><td><span class="tag" data-i18n="signed">Signed</span></td><td><button class="btn-sm" data-i18n="view">View</button></td></tr>
         </table>
         <div class="consent"><span data-i18n="photoConsent">Photo &amp; video permission (training clips, progress analysis)</span><div class="pilldot"></div></div>
         <div class="consent"><span data-i18n="marketingConsent">Marketing use of imagery</span><div class="pilldot off"></div></div>
@@ -290,24 +508,66 @@
 
 <script>
 function enter(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';}
-document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>{
-  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.getElementById('s-'+n.dataset.s).classList.add('on');
+function go(s){
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  var n=document.querySelector('.nav-item[data-s="'+s+'"]'); if(n) n.classList.add('active');
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+  document.getElementById('s-'+s).classList.add('on');
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>go(n.dataset.s)));
+document.querySelectorAll('.pilldot:not(.fixed)').forEach(p=>p.addEventListener('click',()=>p.classList.toggle('off')));
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+  b.parentNode.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
 }));
 function switchChild(el,name){document.querySelectorAll('.child-chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');document.getElementById('childName').textContent=name;}
 const i18n={
  en:{},
  hr:{portalTitle:'Obiteljski portal',portalSub:'Prijavite se i pratite put svog djeteta. Termini, izvještaji, poruke i plaćanja na jednom sigurnom mjestu.',email:'E-mail',password:'Lozinka',enterDemo:'Uđi u demo portal',loginNote:'Prijava nije aktivna u ovom pregledu. Prava prijava s dvofaktorskom zaštitom stiže s platformom.',
  navDash:'Početna',navPlayer:'Profil igrača',navPath:'Put razvoja',navBook:'Termini',navPay:'Plaćanja',navMsg:'Poruke i dokumenti',
+ navSecPlayer:'Leov račun',navMoments:'Trenuci i odobrenja',navSafety:'Sigurnost i dopuštenja',
  dashTitle:'Dobrodošli natrag, Maria',dashSub:'Evo gdje je Leov put ovog tjedna.',nextSession:'Sljedeći trening',program:'Trenutni program',nextReassess:'Sljedeća procjena',withSandro:'Procjena pokreta · sa Sandrom',latestNote:'Zadnja bilješka vodiča',quickActions:'Brze radnje',qaBook:'Rezerviraj termin',qaReport:'Pogledaj zadnji izvještaj',qaMsg:'Pošalji poruku vodiču',go:'Idi',
+ momentsCard:'Leovi trenuci',mPending:'1 trenutak čeka vas',mPendingSub:'"Volej slabijom nogom" · objavljeno danas u 18:42',review:'Pregledaj',mComment:'Coach Nick je komentirao trenutak',mCommentSub:'Kopija je u vašem sandučiću · sub 14:10',read:'Pročitaj',mStreak:'Leo ima niz od 11 tjedana',mStreakSub:'24 trenutka od ožujka',
+ accountsCard:'Računi igrača',leoMode:'Aktivan · objavljuje odmah, vi pregledavate poslije · 3 odobrena vodiča',miaMode:'Nema račun igrača — dostupno od 10. godine',notYet:'Još ne',
  reportStd:'PitchPro izvještaj igrača.',reportStdSub:'Jedan standardizirani izvještaj za sve vodiče. Svaki vodič doprinosi svojom disciplinom — vaše dijete dobiva potpunu sliku.',goals:'Razvojni ciljevi (dogovoreni s obitelji)',inProgress:'U tijeku',onTrack:'Po planu',
+ leoSide:'Leov dio profila',leoSideSub:'Izvještaj iznad pišu vodiči. Ovaj dio Leo piše sam — njegovi trenuci, ciljevi, niz. Vi vidite sve.',openTimeline:'Otvori vremensku crtu',
+ momTitle:'Trenuci i odobrenja',momSub:'Sve što Leo objavi dolazi ovdje — bez obzira treba li vaše odobrenje.',momMode:'Leov način pregleda: objavljuje odmah, vi pregledavate poslije.',momModeSub:'Njegovi trenuci idu izravno vodičima koje ste odobrili, a vi ih možete ukloniti. Prebacite na odobrenje-prvo u Sigurnosti i dopuštenjima ako želite vidjeti svaki prije vodiča.',change:'Promijeni',
+ momFlag:'Zadržano za vas — automatski označeno',momFlagSub:'I u načinu objavi-prvo trenutak se zadržava ako sigurnosna provjera nešto uoči: nepoznato lice, trag lokacije, školski grb ili opis koji model ocijeni kao uznemiren. Vi odlučujete što dalje.',
+ held:'⏳ Zadržano na pregled',flagWhy:'⚠ Zadržano jer: u 0:11 vidljivo je lice drugog djeteta, a opis spominje naziv dvorane. Ništa još nije podijeljeno.',leoChose:'Leo je odabrao',
+ approveShare:'Odobri i podijeli s Leovim vodičima',approveFam:'Neka ostane među nama',blurFace:'Zamuti drugo lice pa podijeli',sendBack:'Vrati Leu uz poruku',removeIt:'Ukloni',
+ momLive:'Već podijeljeno',momLiveSub:'Bilo koji od ovih možete ukloniti u svakom trenutku. Uklanjanje ga odmah miče svim vodičima i javlja Leu da ste to učinili — nikada ne uklanjamo nešto iza njegovih leđa.',
+ shared:'✓ Podijeljeno',seenBy:'Vide',addComment:'Dodaj komentar',restrict:'Suzi tko vidi',takeDown:'Ukloni',reportGuide:'Prijavi komentar vodiča',
+ famOnly:'🔒 Samo obitelj — Leov izbor',famOnlyNote:'Leo je za ovaj trenutak isključio vodiče. To može za bilo koji trenutak — vas nikada ne može isključiti.',
+ safeTitle:'Sigurnost i dopuštenja',safeSub:'Leove zaštitne ograde. Vi postavljate granicu; unutar nje Leo odlučuje.',
+ modeTitle:'1 · Koliko slobode Leo dobiva?',modeA:'Odobrenje prvo<br><span style="font-weight:500;font-size:11.5px;">ništa ne izlazi iz obitelji dok ne kažete</span>',modeB:'Objavi prvo, pregled poslije<br><span style="font-weight:500;font-size:11.5px;">ide odobrenim vodičima odmah</span>',modeC:'Samo obitelj<br><span style="font-weight:500;font-size:11.5px;">dnevnik — nitko izvan obitelji, nikada</span>',
+ modeNote:'Ovo postavljate po djetetu, ne po dobi — Leo je na objavi-prvo, Mia bi počela na odobrenju-prvo. Mijenjajte kad želite; promjena nikada ne utječe na već objavljene trenutke. Označeni trenuci zadržavaju se u svakom načinu.',
+ circleTitle:'2 · Tko smije biti u Leovu krugu',thWho:'Tko',thBasis:'Zašto ispunjava uvjete',thSee:'Vidi trenutke',thReact:'Može reagirati 👏',thComment:'Može komentirati',
+ basisParent:'Roditeljski račun',basisNick:'14 treninga od travnja · provjera ✓',basisSandro:'Procjena lipanj 2026 · provjera ✓',basisGrego:'Uvodni poziv za kamp · provjera ✓',reactOnly:'Isključeno — samo reakcije',
+ futureGuide:'Bilo koji budući vodič',basisFuture:'Pojavljuje se tek nakon prvog odrađenog treninga',basisFutureNote:'Svakoga odobravate prije nego Leo može dijeliti s njim',askMe:'Pitaj me',
+ circleNote:'Vodič nikada ne može zatražiti pristup djetetu. Jedini put unutra je stvarno odrađen trening, pa vaše odobrenje. Svaki komentar vodiča kopira se u vaš sandučić i pohranjuje u sigurnosni zapisnik — privatnih poruka vodič–igrač nema nigdje na platformi.',
+ beyondTitle:'3 · Izvan kruga',teamMates:'Suigrači i prijatelji na PitchProu',teamMatesSub:'Povezivanje igrača, samo unutar platforme. Oba roditelja moraju odobriti svaku vezu.',
+ publicProfile:'Javni profil',publicProfileSub:'pitchpropathways.com/p/leo-torres — poveznica koju svatko može otvoriti, uključujući klubove i skaute.',
+ scoutShare:'Podijeli privatnu poveznicu za skaute',scoutShareSub:'Jedna poveznica s rokom trajanja za jedan imenovani klub. Za većinu obitelji bolje od javne stranice.',setUp:'Postavi',
+ pubTitle:'4 · Ako uključite javni profil, ovo se točno prikazuje',pfFirst:'Samo ime i inicijal — "Leo T."',pfFirstSub:'Prezime se nikada ne objavljuje.',pfAge:'Dobna skupina (U12) i pozicija',pfBadges:'Bedževi i niz',pfMoments:'Do 6 trenutaka koje Leo odabere — svaki odobravate pojedinačno',
+ pfReport:'Brojke iz izvještaja (Motion Age, vrijeme šatla)',pfReportSub:'Isključeno kao zadano. Objava podataka procjene djeteta je odluka, ne zadana postavka.',
+ pfNever:'Nikada se ne objavljuje, nema postavke',pfNeverSub:'Prezime · škola · klub · grad · dvorana i termini · svaka fotografija s drugim djetetom · bilo što iz trenutka označenog samo za obitelj',
+ pubNote:'Isključivanje javnog profila odmah uklanja stranicu i miče je iz tražilica. Trenuci koji su bili javni ostaju u Leovoj privatnoj vremenskoj crti.',
+ mediaTitle:'5 · Pravila za snimke',mrStrip:'Ukloni podatke o lokaciji sa svake objave',mrStripSub:'Preporučeno. Ne može se isključiti za igrače mlađe od 13.',mrFaces:'Zadrži svaki trenutak s nepoznatim licem',
+ mrTone:'Označi opise koji zvuče uznemireno',mrToneSub:'Zadržava se za vas i obavještava se sigurnosni tim. Leu se ne govori da je označeno zbog tona.',mrLength:'Ograničenje trajanja videa',
+ mrPitch:'PitchPro smije koristiti Leove trenutke u marketingu',mrPitchSub:'Odvojeno od vaše postojeće privole za fotografije, isključeno osim ako ne kažete drukčije.',
+ controlTitle:'6 · Vaše kontrole',ctlExport:'Preuzmi sve što je Leo objavio',ctlExportSub:'Snimke, opisi, komentari i cijeli zapisnik — jedna datoteka',download:'Preuzmi',
+ ctlPause:'Pauziraj Leov račun',ctlPauseSub:'Zadržava vremensku crtu, ali ne može objavljivati ni primati komentare',pause:'Pauziraj',
+ ctlClose:'Zatvori račun i obriši sve trenutke',ctlCloseSub:'Trajno, uz 30 dana počeka, vodiči gube pristup odmah',close:'Zatvori',
+ ctlReport:'Prijavi zabrinutost sigurnosnom timu',ctlReportSub:'Osoba, ne obrazac — odgovor u jednom radnom danu',report:'Prijavi',
+ dataRights2:'Prava na podatke: PIPEDA (Kanada) i GDPR (EU obitelji). Za dječji račun primjenjujemo i pravilo iz čl. 8 GDPR-a — u Hrvatskoj privolu drži roditelj do 16. godine. privacy@pitchpropathways.com',
  pathTitle:'Leov put',pathSub:'Plan puta — gdje je bio, kamo ide.',progressSince:'Napredak od početka',famMeeting:'Obiteljski sastanak',
- meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz Leove ciljeve u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokoučinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
+ meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz Leove ciljeve u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokučinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
  calFeed:'Obiteljski kalendar povezan.',calFeedSub:'Svi potvrđeni termini automatski se pojavljuju u vašem Google / Apple / Outlook kalendaru.',addCal:'Dodaj u kalendar',
  bookTitle:'Termini',bookSub:'Sve rezervacije idu kroz PitchPro — jedan kalendar, jedno mjesto.',upcoming:'Nadolazeći',past:'Nedavni',confirmed:'Potvrđeno',pending:'Na čekanju',done:'Odrađeno',cancelNote:'Otkazivanje do 24h prije termina je besplatno. Kasnija otkazivanja slijede pravila iz ugovora.',
  payTitle:'Plaćanja',paySub:'Sva plaćanja na jednom mjestu — s računima. Vodiči nikada ne primaju plaćanja izravno.',enrollment:'Trenutni upis',payMethod:'Način plaćanja',payMethodNote:'Sigurno pohranjeno kod pružatelja plaćanja. PitchPro osoblje nikada ne vidi broj kartice.',receipts:'Računi',thDate:'Datum',thItem:'Stavka',thAmount:'Iznos',receipt:'Račun',
- msgTitle:'Poruke i dokumenti',msgSub:'Sva komunikacija ostaje na platformi.',safety:'Sigurnost djece, po dizajnu.',safetySub:'Vodiči komuniciraju samo s roditeljima — nikada izravno s igračima. Sve poruke vidljive su PitchPro timu za zaštitu.',docs:'Dokumenti i privole',signed:'Potpisano',view:'Otvori',photoConsent:'Dozvola za foto i video (snimke treninga, analiza napretka)',marketingConsent:'Korištenje snimaka u marketingu',dataRights:'Vaša prava: zatražite kopiju ili brisanje podataka vaše obitelji u bilo kojem trenutku — privacy@pitchpropathways.com. Slijedimo PIPEDA (Kanada) i GDPR (EU obitelji).'}
+ msgTitle:'Poruke i dokumenti',msgSub:'Sva komunikacija ostaje na platformi.',safety:'Sigurnost djece, po dizajnu.',safetySub:'Na PitchProu ne postoji nijedan privatni kanal prema djetetu. Vodiči poruke šalju roditeljima ovdje. Kad vodič komentira Leov trenutak, taj je komentar vidljiv njegovu krugu, kopira se vama istog trenutka i čuva u sigurnosnom zapisniku — vodič djetetu nikada ne može poslati nešto što vi ne vidite.',
+ copies:'Kopije komentara vodiča na Leovim trenucima',copiesNote:'Svaki od njih stiže ovdje automatski. Ne morate ih tražiti.',
+ docs:'Dokumenti i privole',signed:'Potpisano',view:'Otvori',photoConsent:'Dozvola za foto i video (snimke treninga, analiza napretka)',marketingConsent:'Korištenje snimaka u marketingu',dataRights:'Vaša prava: zatražite kopiju ili brisanje podataka vaše obitelji u bilo kojem trenutku — privacy@pitchpropathways.com. Slijedimo PIPEDA (Kanada) i GDPR (EU obitelji).'}
 };
 let base={};
 document.querySelectorAll('[data-i18n]').forEach(el=>{base[el.dataset.i18n]=el.innerHTML;});
