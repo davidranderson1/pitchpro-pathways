@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Moments — Feature Map &amp; Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0b120e; --panel:#101a14; --card:#15211a; --grass:#2ee08a; --grass-deep:#17b06a;
+    --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09); --warn:#ffb84d; --blue:#4d9fff;
+    --lock:#b79bff; --red:#ff7a7a;
+    --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--body);background:var(--pitch);color:var(--white);font-size:15px;line-height:1.6;padding-top:30px;}
+  h1,h2,h3,h4{font-family:var(--head);text-transform:uppercase;line-height:1.15;}
+  .demo-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--warn);color:#231602;font-size:12px;font-weight:700;text-align:center;padding:6px;letter-spacing:.08em;text-transform:uppercase;}
+  .wrap{max-width:1080px;margin:0 auto;padding:34px 24px 80px;}
+  .crest{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--grass),var(--grass-deep));display:inline-flex;align-items:center;justify-content:center;font-size:20px;margin-right:12px;vertical-align:middle;}
+  header h1{font-size:26px;}
+  header .sub{color:var(--muted);font-size:14px;margin-top:8px;max-width:760px;}
+  .sect{font-size:16px;letter-spacing:.06em;margin:46px 0 6px;color:var(--grass);}
+  .sect-sub{color:var(--muted);font-size:13.5px;margin-bottom:20px;max-width:800px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:16px;}
+  .card h3{font-size:13px;letter-spacing:.1em;color:var(--muted);margin-bottom:14px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
+  td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top;}
+  .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);white-space:nowrap;}
+  .tag.amber{background:rgba(255,184,77,.14);color:var(--warn);}
+  .tag.blue{background:rgba(77,159,255,.14);color:var(--blue);}
+  .tag.lock{background:rgba(183,155,255,.14);color:var(--lock);}
+  .tag.red{background:rgba(255,122,122,.14);color:var(--red);}
+  .tag.grey{background:rgba(255,255,255,.07);color:var(--muted);}
+  .note{font-size:12.5px;color:var(--muted);margin-top:14px;}
+
+  /* page map */
+  .map{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media(max-width:900px){.map{grid-template-columns:1fr 1fr;}}
+  @media(max-width:560px){.map{grid-template-columns:1fr;}}
+  .col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .col > .hd{font-family:var(--head);text-transform:uppercase;font-size:12px;letter-spacing:.1em;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--line);}
+  .col.player > .hd{color:var(--grass);} .col.parent > .hd{color:var(--lock);}
+  .col.guide > .hd{color:var(--blue);} .col.admin > .hd{color:var(--warn);}
+  .pg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:12.5px;}
+  .pg b{display:block;font-size:13px;margin-bottom:2px;}
+  .pg span{color:var(--muted);font-size:11.5px;line-height:1.45;display:block;}
+  .pg.new{border-color:rgba(46,224,138,.4);}
+  .pg.chg{border-color:rgba(255,184,77,.35);}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:16px;}
+  .swatch{display:inline-block;width:11px;height:11px;border-radius:3px;border:1.5px solid;vertical-align:middle;margin-right:5px;}
+
+  /* flow */
+  .flow{display:flex;flex-direction:column;gap:0;}
+  .step{display:flex;gap:16px;align-items:flex-start;}
+  .rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:34px;}
+  .dot{width:34px;height:34px;border-radius:50%;background:var(--panel);border:2px solid var(--grass);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:13px;color:var(--grass);flex-shrink:0;}
+  .dot.lockc{border-color:var(--lock);color:var(--lock);}
+  .dot.amberc{border-color:var(--warn);color:var(--warn);}
+  .dot.bluec{border-color:var(--blue);color:var(--blue);}
+  .line{width:2px;flex:1;background:var(--line);min-height:20px;}
+  .stepbody{padding-bottom:22px;flex:1;}
+  .stepbody b{font-size:14.5px;}
+  .stepbody .actor{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-bottom:3px;}
+  .a-player{color:var(--grass);} .a-parent{color:var(--lock);} .a-guide{color:var(--blue);} .a-sys{color:var(--warn);}
+  .stepbody p{font-size:13.5px;color:#cfe0d6;margin-top:4px;}
+  .branch{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .bx{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:12.5px;flex:1;min-width:190px;}
+  .bx b{display:block;font-size:12.5px;margin-bottom:2px;}
+  .bx span{color:var(--muted);font-size:11.5px;}
+  .bx.ok{border-color:rgba(46,224,138,.35);} .bx.hold{border-color:rgba(255,184,77,.35);} .bx.no{border-color:rgba(255,122,122,.35);}
+
+  /* states */
+  .states{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  @media(max-width:820px){.states{grid-template-columns:1fr;}}
+  .st{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px;}
+  .st .nm{font-family:var(--head);text-transform:uppercase;font-size:13px;letter-spacing:.06em;margin-bottom:6px;}
+  .st .ds{font-size:12.5px;color:var(--muted);}
+  .st .who{font-size:11.5px;color:var(--muted);margin-top:9px;padding-top:9px;border-top:1px solid var(--line);}
+  .st .who b{color:var(--white);}
+
+  .rule{background:rgba(183,155,255,.07);border:1px solid rgba(183,155,255,.28);border-radius:12px;padding:16px 20px;margin-bottom:14px;}
+  .rule b{color:var(--lock);}
+  .rule p{font-size:13.5px;color:#e0d6ff;margin-top:4px;}
+  .warn{background:rgba(255,122,122,.06);border:1px solid rgba(255,122,122,.3);border-radius:12px;padding:16px 20px;margin-bottom:14px;}
+  .warn b{color:var(--red);}
+  .warn p{font-size:13.5px;color:#ffd8d8;margin-top:4px;}
+  ol,ul{margin:8px 0 0 20px;font-size:13.5px;color:#cfe0d6;}
+  li{margin-bottom:7px;}
+  a{color:var(--grass);}
+  .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+  .links a{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:13px;font-weight:700;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="demo-banner">Concept map — for review, not a specification. 21 August 2026.</div>
+
+<div class="wrap">
+<header>
+  <h1><span class="crest">⚽</span>Player Moments — Feature Map</h1>
+  <div class="sub">What a player profile does, what it changes in every other portal, and the exact points where a parent decides. Read this alongside the four clickable mockups linked at the bottom.</div>
+</header>
+
+<div class="sect">1 · The idea in one sentence</div>
+<div class="card">
+  <p style="font-size:16px;">A player from age ten keeps a private, Instagram-shaped record of their own football life — <b>always visible to a parent, never visible to anyone the parent has not approved</b> — and the guides who actually train them can see it and answer, on the record, where the parent reads every word.</p>
+  <div class="rule" style="margin-top:18px;"><b>The one rule the whole feature hangs on.</b><p>The parent sets the boundary. Inside that boundary, the player decides. Neither of them can hide a moment from the parent, and there is no private channel to a child anywhere on the platform.</p></div>
+</div>
+
+<div class="sect">2 · Page map — what is new, what changes</div>
+<div class="sect-sub">Four portals. One is new; three change. The player portal is where the engagement lives, but most of the design work is in the parent's controls.</div>
+<div class="map">
+  <div class="col player">
+    <div class="hd">Player portal · NEW</div>
+    <div class="pg new"><b>Login</b><span>Parent creates the account. Age 10+.</span></div>
+    <div class="pg new"><b>My Timeline</b><span>The feed. Each moment shows its own audience and status.</span></div>
+    <div class="pg new"><b>Post a Moment</b><span>Media, caption, audience picker. Parent chip is locked on.</span></div>
+    <div class="pg new"><b>My Profile</b><span>Avatar, badges, streak, read-only report numbers, moment grid.</span></div>
+    <div class="pg new"><b>My Goals</b><span>Player-set goals beside the family-set ones.</span></div>
+    <div class="pg new"><b>Who Sees What</b><span>Player's own controls, with parent locks shown in purple.</span></div>
+    <div class="pg new"><b>Activity</b><span>Reactions, comments, parent decisions.</span></div>
+  </div>
+  <div class="col parent">
+    <div class="hd">Parent portal · CHANGED</div>
+    <div class="pg chg"><b>Dashboard</b><span>New card: pending moments, guide comments, streak.</span></div>
+    <div class="pg chg"><b>Player Profile</b><span>New block: the child's own side of the profile.</span></div>
+    <div class="pg new"><b>Moments &amp; Approvals</b><span>Held queue, shared feed, take-down, comment copies.</span></div>
+    <div class="pg new"><b>Safety &amp; Permissions</b><span>Six sections. The real control surface.</span></div>
+    <div class="pg chg"><b>Messages &amp; Docs</b><span>Guide-comment copies; safeguarding wording rewritten.</span></div>
+  </div>
+  <div class="col guide">
+    <div class="hd">Guide portal · CHANGED</div>
+    <div class="pg chg"><b>Today</b><span>Reminder wording rewritten; new moments surfaced.</span></div>
+    <div class="pg new"><b>Player Moments</b><span>Read, applaud, comment. Every word copied to the parent.</span></div>
+    <div class="pg chg"><b>Player Notes</b><span>Attach a moment as evidence in the Player Report.</span></div>
+    <div class="pg new"><b>My Record</b><span>Standing, permissions held, comment history.</span></div>
+  </div>
+  <div class="col admin">
+    <div class="hd">Admin · CHANGED</div>
+    <div class="pg new"><b>Moments metrics</b><span>Accounts, volume, holds, escalations.</span></div>
+    <div class="pg new"><b>Safeguarding queue</b><span>The one screen a human must work daily.</span></div>
+    <div class="pg new"><b>Guide conduct</b><span>Narrowings, reports, automatic review triggers.</span></div>
+    <div class="pg new"><b>Audit log</b><span>Immutable, exportable, seven years.</span></div>
+    <div class="pg chg"><b>Compliance watch</b><span>Five new blocking rows.</span></div>
+  </div>
+</div>
+<div class="legend">
+  <span><span class="swatch" style="border-color:var(--grass);"></span>New page</span>
+  <span><span class="swatch" style="border-color:var(--warn);"></span>Existing page, changed</span>
+  <span><span class="swatch" style="border-color:var(--line);"></span>Unchanged</span>
+</div>
+
+<div class="sect">3 · The life of one moment</div>
+<div class="sect-sub">From the player's phone to the guide's screen. Every branch here is a decision someone has to make in the build.</div>
+<div class="card">
+<div class="flow">
+
+  <div class="step"><div class="rail"><div class="dot">1</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-player">Player</div><b>Captures a photo or a short video and writes what happened</b>
+      <p>Optionally tags the session, a guide, or one of their goals. Sixty-second limit on video.</p></div></div>
+
+  <div class="step"><div class="rail"><div class="dot">2</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-player">Player</div><b>Chooses who sees it</b>
+      <p>The parent chip is pre-ticked and cannot be unticked. Approved guides are pre-ticked according to the player's defaults, and the player can untick any of them for this one post. Nobody outside the approved circle can be added from this screen.</p></div></div>
+
+  <div class="step"><div class="rail"><div class="dot amberc">3</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-sys">Automatic check — runs on every moment in every mode</div><b>Media and language screen</b>
+      <p>Strips location data. Looks for an unrecognised face, a school crest, a street sign, a venue name, and a caption the language model rates as distressed.</p>
+      <div class="branch">
+        <div class="bx ok"><b>Clean</b><span>Continues to step 4.</span></div>
+        <div class="bx hold"><b>Flagged</b><span>Held before anyone sees it. Parent is told it is held and why — except for a tone flag.</span></div>
+        <div class="bx no"><b>Tone flag</b><span>Held, parent told it is held, reason withheld from the automated message. A named person calls the parent. The child is told nothing.</span></div>
+      </div></div></div>
+
+  <div class="step"><div class="rail"><div class="dot lockc">4</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-parent">Parent's review mode decides what happens next</div><b>Approve first, or post first</b>
+      <div class="branch">
+        <div class="bx"><b>Approve first</b><span>Held for the parent. Guides see nothing until the parent approves.</span></div>
+        <div class="bx"><b>Post first, review after</b><span>Goes straight to the approved guides. Parent can take it down at any time.</span></div>
+        <div class="bx"><b>Family only</b><span>Never leaves the family, whatever the player picked. A private journal.</span></div>
+      </div></div></div>
+
+  <div class="step"><div class="rail"><div class="dot lockc">5</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-parent">Parent — on a held moment</div><b>Five choices, not two</b>
+      <p>Approve and share · keep it between us · blur the face and then share · send it back with a note · remove it. "Send it back with a note" is the one that teaches something; a bare reject teaches nothing.</p></div></div>
+
+  <div class="step"><div class="rail"><div class="dot bluec">6</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-guide">Guide</div><b>Sees it, reacts, comments</b>
+      <p>Only guides who have completed a real session with this player, are approved by the parent, and were included by the player on this post. A guide cannot search for players, request access, or follow anyone.</p></div></div>
+
+  <div class="step"><div class="rail"><div class="dot amberc">7</div><div class="line"></div></div>
+    <div class="stepbody"><div class="actor a-sys">System — the instant the guide hits send</div><b>The comment is copied to the parent and written to the audit log</b>
+      <p>Not a digest, not a daily summary. Immediately, in the parent's inbox. The guide sees "copied to the parent" on their own comment as they write it. This is what makes guide-to-player contact defensible.</p></div></div>
+
+  <div class="step"><div class="rail"><div class="dot lockc">8</div></div>
+    <div class="stepbody"><div class="actor a-parent">Parent — at any time afterwards</div><b>Take down, narrow, report</b>
+      <p>A take-down removes the moment from every guide immediately and tells the player it happened. We never remove a child's post behind their back — that is how a child learns the system is honest rather than arbitrary.</p></div></div>
+
+</div>
+</div>
+
+<div class="sect">4 · The states a moment can be in</div>
+<div class="card">
+<div class="states">
+  <div class="st"><div class="nm" style="color:var(--muted);">Draft</div><div class="ds">Saved, not submitted.</div><div class="who">Visible to <b>player only</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--warn);">Held — auto</div><div class="ds">Flagged by the media or language check.</div><div class="who">Visible to <b>parent, admin</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--warn);">Held — mode</div><div class="ds">Approve-first account, waiting on the parent.</div><div class="who">Visible to <b>player, parent</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--lock);">Family only</div><div class="ds">Player chose it, or the account is journal-mode.</div><div class="who">Visible to <b>player, parent</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--grass);">Shared</div><div class="ds">Live to the guides the player included.</div><div class="who">Visible to <b>player, parent, chosen guides</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--blue);">Returned</div><div class="ds">Sent back by the parent with a note. Editable.</div><div class="who">Visible to <b>player, parent</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--red);">Taken down</div><div class="ds">Pulled by the parent after sharing. Player is told.</div><div class="who">Visible to <b>player, parent, admin</b></div></div>
+  <div class="st"><div class="nm" style="color:var(--red);">Escalated</div><div class="ds">With the safeguarding team. A person is handling it.</div><div class="who">Visible to <b>admin</b> — parent contacted by phone</div></div>
+  <div class="st"><div class="nm" style="color:var(--grass);">Published</div><div class="ds">On the public profile. Parent approved this one individually.</div><div class="who">Visible to <b>anyone with the link</b></div></div>
+</div>
+<div class="note">Nine states. Every one needs its own copy for the player, its own notification, and its own row in the audit log. This is the part that always gets underestimated.</div>
+</div>
+
+<div class="sect">5 · Who can do what</div>
+<div class="card">
+  <table>
+    <tr><th>Capability</th><th>Player</th><th>Parent</th><th>Approved guide</th><th>Admin</th><th>Public</th></tr>
+    <tr><td>Post a moment</td><td><span class="tag">Yes</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>See every moment the player posts</td><td><span class="tag">Yes</span></td><td><span class="tag lock">Always — cannot be turned off</span></td><td>Only those included</td><td>Only held or reported</td><td>—</td></tr>
+    <tr><td>Choose the audience for one moment</td><td><span class="tag">Yes, within the approved circle</span></td><td>Can narrow after the fact</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Decide who is allowed in the circle at all</td><td>—</td><td><span class="tag lock">Only the parent</span></td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>React 👏</td><td>—</td><td>Yes</td><td>If the parent allows</td><td>—</td><td>—</td></tr>
+    <tr><td>Comment</td><td>On their own moment</td><td>Yes</td><td><span class="tag amber">If the parent allows · copied to the parent · logged</span></td><td>—</td><td>—</td></tr>
+    <tr><td>Message the child privately</td><td>—</td><td>Yes</td><td><span class="tag red">Never — no such channel exists</span></td><td><span class="tag red">Never</span></td><td>—</td></tr>
+    <tr><td>Delete a moment</td><td>Yes, own</td><td>Yes, any</td><td>—</td><td>Only via a logged safeguarding action</td><td>—</td></tr>
+    <tr><td>Turn on the public profile</td><td>Can ask</td><td><span class="tag lock">Only the parent</span></td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Choose which moments go public</td><td>Proposes up to six</td><td>Approves each one</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr><td>Export everything</td><td>—</td><td><span class="tag">One click</span></td><td>—</td><td>Yes</td><td>—</td></tr>
+    <tr><td>Close the account</td><td>Can ask</td><td><span class="tag lock">Only the parent</span></td><td>—</td><td>Yes, for cause</td><td>—</td></tr>
+  </table>
+</div>
+
+<div class="sect">6 · Age and freedom — set per child, not per birthday</div>
+<div class="card">
+  <table>
+    <tr><th>Age</th><th>What exists</th><th>Default mode</th><th>Who can change it</th></tr>
+    <tr><td><b>Under 10</b></td><td>No player account. The child appears in the parent's portal only.</td><td>—</td><td>—</td></tr>
+    <tr><td><b>10–12</b></td><td>Full player account.</td><td><span class="tag amber">Approve first</span></td><td>Parent can move to post-first at any time</td></tr>
+    <tr><td><b>13–15</b></td><td>Full player account.</td><td><span class="tag">Post first, review after</span></td><td>Parent can move back to approve-first at any time</td></tr>
+    <tr><td><b>16+</b></td><td>Full player account. Under GDPR in Croatia the parent still holds consent to 16, so the boundary genuinely moves here rather than at 13.</td><td><span class="tag">Post first</span></td><td>Parent still holds the account until 16; review the model again before you build for older teens</td></tr>
+  </table>
+  <div class="note">The default follows the age; the setting does not. A parent can put a ten-year-old on post-first or a fifteen-year-old on family-only. That is what you asked for, and it is also the honest position — parents know their own child and a birthday is a poor proxy for judgement.</div>
+</div>
+
+<div class="sect">7 · The public profile, and why it is last</div>
+<div class="card">
+  <p>A public page for a named child is a different product from a private journal, and it carries the risk that everything else in this design is built to avoid. Three positions, in the order they should ship:</p>
+  <ol>
+    <li><b>Private circle only</b> — parent, approved guides. Ship this first and live with it for a season.</li>
+    <li><b>Private scouting link</b> — one expiring link, generated by the parent, for one named club. Solves the actual need (a coach wants to see the kid play) without a page anyone can find. This is very likely where you should stop.</li>
+    <li><b>Public profile</b> — first name and initial, age group, position, badges, and up to six parent-approved moments. Never a surname, school, club, city, venue, training time, another child's face, or anything from a family-only moment. Report numbers off by default.</li>
+  </ol>
+  <div class="warn" style="margin-top:18px;"><b>Say this out loud before building the third one.</b><p>A public page with a child's first name, age, position, photos, and a training streak is enough for a stranger to start a conversation that sounds informed. The private scouting link gets a family ninety per cent of the value at a fraction of the risk. If the public profile ships anyway, the FIFA Article 18bis and 18ter exposure in the partnership file also applies here — a public shop window for young players is exactly the surface a regulator looks at.</p></div>
+</div>
+
+<div class="sect">8 · What makes them come back</div>
+<div class="card">
+  <table>
+    <tr><th>Hook</th><th>Who it is for</th><th>Why it works</th><th>Risk</th></tr>
+    <tr><td>A guide answered your moment</td><td>Player</td><td>The strongest one by far. A real adult who knows their football replied to something they made.</td><td>Guide response time becomes a service expectation. Set one.</td></tr>
+    <tr><td>Streak</td><td>Player</td><td>Cheap, effective, already in the mockup.</td><td>Streaks punish injury and holidays. Make them pausable, and never rank children against each other.</td></tr>
+    <tr><td>Badges from real milestones</td><td>Player</td><td>Tied to report numbers and completed sessions, so they mean something.</td><td>Never award a badge for posting volume. That is the line between a training log and a slot machine.</td></tr>
+    <tr><td>Your moment became evidence in your report</td><td>Player</td><td>The single most on-brand mechanic available to you — the child's own footage feeding the Player Report.</td><td>Needs the guide to actually do it.</td></tr>
+    <tr><td>Something is waiting for you</td><td>Parent</td><td>The approval queue is a daily reason to open the portal.</td><td>Approval fatigue. Post-first mode exists for exactly this.</td></tr>
+    <tr><td>See what your child said about training</td><td>Parent</td><td>Answers "how was practice" better than the child ever will.</td><td>None, and this may be the feature parents actually pay for.</td></tr>
+  </table>
+</div>
+
+<div class="sect">9 · What this costs — decide before any code</div>
+<div class="card">
+  <div class="warn"><b>The screens are the cheap part.</b><p>Everything below is a real obligation the moment a ten-year-old uploads a video, and none of it is optional.</p></div>
+  <table>
+    <tr><th>#</th><th>Decision</th><th>Why it blocks</th></tr>
+    <tr><td>1</td><td><b>Legal review of a social feature for children</b>, Canada and Croatia together</td><td>Different rules, different mandatory reporting routes, one product.</td></tr>
+    <tr><td>2</td><td><b>Age assurance and how parental consent is captured</b></td><td>GDPR Article 8 — Croatia sets the age at 16, Canada differs. Determines the whole tier model.</td></tr>
+    <tr><td>3</td><td><b>Who moderates, and how fast</b> — vendor or in-house</td><td>A tone flag at 9:48 PM needs a named person, not a queue nobody reads.</td></tr>
+    <tr><td>4</td><td><b>Where children's video is stored, and for how long</b></td><td>Data residency, retention, and the cost of video hosting at scale.</td></tr>
+    <tr><td>5</td><td><b>Guide code of conduct, rewritten for comments</b></td><td>Your current guide agreements are unsigned. This changes what they must say.</td></tr>
+    <tr><td>6</td><td><b>Insurance</b> — does the current policy cover a platform hosting children's content?</td><td>Ask before launch, not after.</td></tr>
+    <tr><td>7</td><td><b>Background checks completed for every guide who can comment</b></td><td>Currently marked pending in the admin portal.</td></tr>
+    <tr><td>8</td><td><b>The safeguarding response protocol, written down</b></td><td>Who calls the parent, within what time, and what is said to the child. Write it before you need it.</td></tr>
+  </table>
+  <div class="note">Items 1, 2, 3 and 8 are launch blockers. Items 4 to 7 can run in parallel with the build.</div>
+</div>
+
+<div class="sect">10 · A build order that de-risks it</div>
+<div class="card">
+  <table>
+    <tr><th>Stage</th><th>What ships</th><th>Why this order</th></tr>
+    <tr><td><span class="tag">1</span></td><td>Player account, timeline, composer, <b>family-only</b>. No guides, no comments, no public.</td><td>A private journal shared with a parent carries almost none of the risk and tests whether children actually use it. If they do not, everything after this is moot.</td></tr>
+    <tr><td><span class="tag">2</span></td><td>Parent approval queue, review modes, automatic media check.</td><td>Build the controls before the audience exists, not after.</td></tr>
+    <tr><td><span class="tag">3</span></td><td>Guide visibility — <b>read and react only</b>. No free text.</td><td>Proves the circle model with the lowest-stakes interaction available.</td></tr>
+    <tr><td><span class="tag amber">4</span></td><td>Guide comments, with the parent copy and the audit log.</td><td>Only after items 1, 2, 3 and 8 in the previous table are closed.</td></tr>
+    <tr><td><span class="tag blue">5</span></td><td>Private scouting link.</td><td>Delivers the real scouting need without a public page.</td></tr>
+    <tr><td><span class="tag red">6</span></td><td>Public profile — only if stage 5 proves insufficient.</td><td>It probably will not be.</td></tr>
+  </table>
+</div>
+
+<div class="sect">11 · Still open — for David</div>
+<div class="card">
+  <ul>
+    <li><b>Q1 · Does a player account cost anything?</b> Free with an active program, or part of a subscription that survives between programs? It is the strongest retention asset you have in the off-season.</li>
+    <li><b>Q2 · Guide response time.</b> If a guide answering a moment is the main hook, what is the promise — same day, forty-eight hours, best effort? It affects guide compensation.</li>
+    <li><b>Q3 · Does the moment feed touch the Motion Intelligence Platform?</b> Player-uploaded video is training data. If it feeds the Brain, that needs saying explicitly in the consent, and it interacts with the ownership question already open in the partnership file.</li>
+    <li><b>Q4 · Siblings.</b> Mia is nine. Does she get a read-only view of her brother's timeline, or nothing at all until ten?</li>
+    <li><b>Q5 · Two parents, one child.</b> Which parent approves? Both, either, or a nominated one? Separated families make this a real question rather than a detail.</li>
+    <li><b>Q6 · Croatia versus Canada launch.</b> Croatian families arrive through Grego. If the age of consent differs, does the feature launch in one country first?</li>
+  </ul>
+</div>
+
+<div class="sect">The mockups</div>
+<div class="links">
+  <a href="portal-player.html">Player portal (new)</a>
+  <a href="portal-parent.html">Parent portal</a>
+  <a href="portal-guide.html">Guide portal</a>
+  <a href="portal-admin.html">Admin</a>
+  <a href="index.html">Back to the hub</a>
+</div>
+
+</div>
+</body>
+</html>
