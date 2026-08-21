@@ -67,6 +67,31 @@
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
   td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
+  /* showcase */
+  .sc-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+  @media(max-width:820px){.sc-steps{grid-template-columns:1fr 1fr;}}
+  .sc-step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .sc-step .n{font-family:var(--head);font-size:12px;letter-spacing:.14em;color:var(--muted);font-weight:900;}
+  .sc-step b{display:block;font-size:13.5px;margin:6px 0 4px;}
+  .sc-step small{font-size:11.5px;color:var(--muted);line-height:1.45;display:block;}
+  .sc-step.now{border-color:var(--grass);background:rgba(46,224,138,.06);}
+  .sc-step.now .n{color:var(--grass);}
+  .sc-frame{width:100%;aspect-ratio:16/9;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:var(--pitch);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;}
+  .sc-frame b{display:block;font-family:var(--head);text-transform:uppercase;font-size:13px;letter-spacing:.08em;margin-bottom:7px;}
+  .sc-frame small{font-size:12.5px;color:var(--muted);max-width:40ch;display:inline-block;}
+  .sc-frame .play{width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);margin:0 auto 12px;}
+  .sc-split{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start;}
+  @media(max-width:820px){.sc-split{grid-template-columns:1fr;}}
+  .sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:6px;}
+  .sc-tile{aspect-ratio:4/3;border:1px dashed rgba(255,255,255,.16);border-radius:10px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;color:var(--muted);text-align:center;padding:8px;}
+  .sc-tile .ic{font-size:18px;opacity:.55;}
+  .sc-dim{opacity:.45;}
+  .sc-src{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;font-size:13px;flex-shrink:0;}
+  .sc-src.yt{background:rgba(255,0,0,.16);}
+  .sc-src.ig{background:rgba(225,48,108,.14);}
+  .sc-src.vm{background:rgba(26,183,234,.14);}
+  .sc-src.up{background:rgba(46,224,138,.12);}
+  .sc-link{color:var(--grass);text-decoration:none;font-weight:700;}
   /* moments */
   .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2f6b4a,#17b06a);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:13px;flex-shrink:0;}
   .moment{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;}
@@ -111,6 +136,7 @@
     <div class="nav-item" data-s="moments">Player Moments <span class="badge-dot">2</span></div>
     <div class="nav-item" data-s="players">Player Notes</div>
     <div class="nav-item" data-s="avail">Availability</div>
+    <div class="nav-item" data-s="showcase">My Showcase</div>
     <div class="nav-item" data-s="record">My Record</div>
     <div class="side-foot"><b style="color:var(--lock);">Everything you write is on the record.</b><br>Comments, reactions and notes are copied to the parent and stored in the safeguarding log.</div>
   </aside>
@@ -221,6 +247,98 @@
           <div class="d" style="opacity:.55;">6–8 PM<br>personal ⌁</div><div class="d busy">4–7 PM<br>booked</div><div class="d on">4–7 PM</div><div class="d busy">4–7 PM<br>booked</div><div class="d on">4–6 PM</div><div class="d on">9–12 AM</div><div class="d">—</div>
         </div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:14px;">Green = open to booking · Amber = booked · Grey ⌁ = blocked by your connected calendar · All times MT · Set recurring windows in settings (build phase).</p>
+      </div>
+    </div>
+
+    <div class="screen" id="s-showcase">
+      <h2>My Showcase</h2>
+      <div class="sub">The part of your public guide page families look at before they book &mdash; one featured video, a few photos, and your own words.</div>
+
+      <div class="note-strip"><b>Nothing here publishes itself.</b> Anything you connect or upload sits in review until PitchPro clears it. If a child is recognisable in it, the review checks that the parent&rsquo;s written consent is already on file &mdash; without it the item does not go live.</div>
+
+      <div class="card">
+        <h3>Where you are</h3>
+        <div class="sc-steps">
+          <div class="sc-step now"><div class="n">STEP 1</div><b>Connect</b><small>Link a channel, or upload files directly.</small></div>
+          <div class="sc-step"><div class="n">STEP 2</div><b>Choose</b><small>Pick one video to feature, plus up to four extras.</small></div>
+          <div class="sc-step"><div class="n">STEP 3</div><b>Review</b><small>PitchPro checks consent and content.</small></div>
+          <div class="sc-step"><div class="n">STEP 4</div><b>Live</b><small>It appears on your guide page.</small></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);">Review is usually the same working day. You can swap your featured video whenever you like &mdash; the new one goes through review, the old one stays up until it clears.</p>
+      </div>
+
+      <div class="card">
+        <h3>Connected media accounts</h3>
+        <div class="row">
+          <div style="display:flex;align-items:center;gap:11px;"><span class="sc-src yt">&#9654;</span><div><div class="who">YouTube</div><div class="meta">Read-only. We list your public videos so you can pick one &mdash; we never post, edit or delete anything on your channel.</div></div></div>
+          <button class="btn btn-ghost btn-sm2">Connect</button>
+        </div>
+        <div class="row">
+          <div style="display:flex;align-items:center;gap:11px;"><span class="sc-src up">&#8593;</span><div><div class="who">Direct upload</div><div class="meta">Upload a clip or photo straight from your phone. Best for short session moments.</div></div></div>
+          <button class="btn btn-ghost btn-sm2">Upload</button>
+        </div>
+        <div class="row sc-dim">
+          <div style="display:flex;align-items:center;gap:11px;"><span class="sc-src ig">&#9673;</span><div><div class="who">Instagram</div><div class="meta">Not available yet</div></div></div>
+          <span class="tag grey">Planned</span>
+        </div>
+        <div class="row sc-dim">
+          <div style="display:flex;align-items:center;gap:11px;"><span class="sc-src vm">&#9679;</span><div><div class="who">Vimeo</div><div class="meta">Not available yet</div></div></div>
+          <span class="tag grey">Planned</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Your featured video</h3>
+        <div class="sc-split">
+          <div class="sc-frame">
+            <div>
+              <div class="play">&#9654;</div>
+              <b>Nothing featured yet</b>
+              <small>Connect a channel above, or upload a file, and the video you choose appears here and at the top of your guide page.</small>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;">Once a channel is connected, your public videos are listed here and you tick the one you want families to see first.</p>
+            <table class="sc-dim">
+              <tr><th>From your channel</th><th style="text-align:right;">Feature</th></tr>
+              <tr><td>Your video titles appear here</td><td style="text-align:right;"><span class="tag grey">&#9711;</span></td></tr>
+              <tr><td>&hellip;</td><td style="text-align:right;"><span class="tag grey">&#9711;</span></td></tr>
+              <tr><td>&hellip;</td><td style="text-align:right;"><span class="tag grey">&#9711;</span></td></tr>
+            </table>
+            <p style="font-size:12px;color:var(--muted);margin-top:12px;">Available once your channel is connected.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Photos and short clips &mdash; up to four</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:12px;">These sit under the featured video as a small grid. Four is the limit on purpose: a short, well-chosen set reads better to a parent than a gallery.</p>
+        <div class="sc-grid">
+          <div class="sc-tile"><span class="ic">&#43;</span>Add photo</div>
+          <div class="sc-tile"><span class="ic">&#43;</span>Add photo</div>
+          <div class="sc-tile"><span class="ic">&#43;</span>Add clip</div>
+          <div class="sc-tile"><span class="ic">&#43;</span>Add clip</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Your introduction</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:12px;">Two or three sentences in your own voice, shown beside your featured video. Say what a first session with you is actually like.</p>
+        <textarea placeholder="I have been coaching agility work in Calgary for eleven years&hellip;"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px;flex-wrap:wrap;">
+          <span style="font-size:12px;color:var(--muted);">400 characters maximum. Reviewed with the rest of your media.</span>
+          <button class="btn btn-ghost btn-sm2">Save draft</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>What families see</h3>
+        <div class="row"><div><div class="who">Your guide page</div><div class="meta">Nothing featured yet &mdash; the media block shows an empty frame rather than stock footage</div></div><a class="sc-link" href="guide-portal-nick.html#showcase" target="_blank" rel="noopener">Preview &#8599;</a></div>
+        <div class="row"><div><div class="who">A page with media live &mdash; Grego, Lovrencsics Academy</div><div class="meta">A connected YouTube video featured, with clip and photo slots beneath it</div></div><a class="sc-link" href="guide-portal-grego.html#showcase" target="_blank" rel="noopener">See the example &#8599;</a></div>
+      </div>
+
+      <div class="warnbox">
+        <b>The media rules, in short.</b> No recognisable child without their parent&rsquo;s written consent on file. Nothing that came from a family-only moment, ever &mdash; those are the family&rsquo;s, not yours. No surnames, no school kit, no venue signage, no training times. A parent can ask for anything to be taken down and it comes down the same day, without a discussion.
       </div>
     </div>
 
