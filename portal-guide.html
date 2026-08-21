@@ -111,6 +111,32 @@
   .m-comment .cm .stamp{color:var(--muted);font-size:11.5px;margin-left:6px;}
   .warnbox{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.28);border-radius:12px;padding:14px 18px;font-size:13px;color:#ffe0ad;margin-bottom:16px;}
   .warnbox b{color:var(--warn);}
+  /* WHO VIEWED */
+  .vw{display:flex;gap:13px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+  .vw:last-child{border-bottom:none;}
+  .vw .av2{width:38px;height:38px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:14px;flex-shrink:0;}
+  .vw .txt{flex:1;min-width:0;}
+  .vw .txt b{display:block;font-size:14px;}
+  .vw .txt span{display:block;color:var(--muted);font-size:12.5px;}
+  .vw .end{margin-left:auto;text-align:right;flex-shrink:0;}
+  .vw .end .n{font-family:var(--head);font-size:17px;font-weight:900;}
+  .vw .end .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .vw.blur .txt b,.vw.blur .txt span{filter:blur(4.5px);user-select:none;}
+  .vw.blur .av2{filter:blur(3px);}
+  .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+  @media(max-width:700px){.stat3{grid-template-columns:1fr;}}
+  .stat3 .s{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .stat3 .s b{display:block;font-family:var(--head);font-size:26px;font-weight:900;}
+  .stat3 .s span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .plus{background:linear-gradient(135deg,rgba(183,155,255,.10),rgba(77,159,255,.06));border:1px solid rgba(183,155,255,.32);border-radius:16px;padding:22px;}
+  .plus h3{color:var(--lock);}
+  .plus ul{margin:10px 0 0 18px;font-size:13.5px;color:#e0d6ff;}
+  .plus li{margin-bottom:6px;}
+  .free-bar{display:flex;align-items:center;gap:10px;background:rgba(46,224,138,.07);border:1px solid rgba(46,224,138,.3);border-radius:12px;padding:13px 17px;font-size:13px;color:#c9f3de;margin-bottom:18px;}
+  .free-bar b{color:var(--grass);}
+  .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
+  .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
+  .seg2 button.on{background:var(--lock);color:#170f2b;}
 </style>
 </head>
 <body>
@@ -137,6 +163,7 @@
     <div class="nav-item" data-s="players">Player Notes</div>
     <div class="nav-item" data-s="avail">Availability</div>
     <div class="nav-item" data-s="showcase">My Showcase</div>
+    <div class="nav-item" data-s="views">Who Viewed You <span class="badge-dot" style="background:var(--lock);color:#170f2b;">PLUS</span></div>
     <div class="nav-item" data-s="record">My Record</div>
     <div class="side-foot"><b style="color:var(--lock);">Everything you write is on the record.</b><br>Comments, reactions and notes are copied to the parent and stored in the safeguarding log.</div>
   </aside>
@@ -342,6 +369,70 @@
       </div>
     </div>
 
+
+    <!-- WHO VIEWED YOU -->
+    <div class="screen" id="s-views">
+      <h2>Who Viewed You</h2>
+      <div class="sub">Who has looked at your guide page and your showcase in the last 30 days.</div>
+
+      <div class="seg2">
+        <button class="on" onclick="tier('free',this)">Free — what you see today</button>
+        <button onclick="tier('plus',this)">PitchPro Plus — preview</button>
+      </div>
+
+      <div class="stat3">
+        <div class="s"><b>47</b><span>Views this month</span></div>
+        <div class="s"><b>31</b><span>People</span></div>
+        <div class="s"><b>6</b><span>Came back twice or more</span></div>
+      </div>
+
+      <div id="free-view">
+        <div class="note-strip"><b>You are on the free tier.</b> You can see how many people looked and when. Names are part of PitchPro Plus.</div>
+        <div class="card">
+          <h3>Recent viewers · 31 people</h3>
+          <div class="vw blur"><span class="av2">MK</span><span class="txt"><b>Martin Kovač</b><span>Academy scout · Hajduk Split youth setup</span></span><span class="end"><span class="n">4</span><span class="l">Views</span></span></div>
+          <div class="vw blur"><span class="av2">JW</span><span class="txt"><b>Jen Whitfield</b><span>Parent of a U14 player · Calgary</span></span><span class="end"><span class="n">2</span><span class="l">Views</span></span></div>
+          <div class="vw blur"><span class="av2">RD</span><span class="txt"><b>Rob Delaney</b><span>Parent of a U12 player · Airdrie</span></span><span class="end"><span class="n">3</span><span class="l">Views</span></span></div>
+          <div class="vw blur"><span class="av2">SR</span><span class="txt"><b>Sandro Rajic</b><span>Guide on the platform</span></span><span class="end"><span class="n">1</span><span class="l">View</span></span></div>
+          <div style="text-align:center;padding:20px 0 6px;">
+            <button class="btn btn-grass" style="width:auto;background:var(--lock);color:#170f2b;" onclick="tier('plus',document.querySelectorAll('.seg2 button')[1])">See who viewed you — PitchPro Plus</button>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">27 more people looked at your page this month.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="plus-view" style="display:none;">
+        <div class="note-strip lock"><b>PitchPro Plus preview.</b> Names shown for every viewer who is identifiable. Viewers who chose to browse privately stay private — a subscription buys you information, not other people's privacy.</div>
+        <div class="card">
+          <h3>Identified · 12 of 31</h3>
+          <div class="vw"><span class="av2" style="background:rgba(255,184,77,.18);color:var(--warn);">MK</span><span class="txt"><b>Martin Kovač</b><span>Academy scout · Hajduk Split youth setup · first view 4 Aug, most recent yesterday · watched your featured video to the end</span></span><span class="end"><span class="n">4</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">JW</span><span class="txt"><b>Jen Whitfield</b><span>Parent of Ava, U14 · your player since 21 Jul · revealed her name when she enquired</span></span><span class="end"><span class="n">2</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">RD</span><span class="txt"><b>Rob Delaney</b><span>Parent of Sofia, U12 · enquired 2 Jul</span></span><span class="end"><span class="n">3</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">SR</span><span class="txt"><b>Sandro Rajic</b><span>Guide on the platform · guides are always identifiable to each other</span></span><span class="end"><span class="n">1</span><span class="l">View</span></span></div>
+        </div>
+        <div class="card">
+          <h3>Browsing privately · 19 of 31</h3>
+          <div class="vw"><span class="av2">P</span><span class="txt"><b>A parent of a U12 player</b><span>Calgary · came back three times · has not made contact</span></span><span class="end"><span class="n">3</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2">P</span><span class="txt"><b>A parent of a U10 player</b><span>Okotoks · first visit</span></span><span class="end"><span class="n">1</span><span class="l">View</span></span></div>
+          <div class="vw"><span class="av2">P</span><span class="txt"><b>A parent of a U15 player</b><span>Split, Croatia · first visit</span></span><span class="end"><span class="n">1</span><span class="l">View</span></span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Parents browse semi-privately by default. Age group and city are shown because they help you judge whether a page is reaching the right families; a name is not, and is not yours to have until they choose to make contact. A returning private viewer is still a strong signal — three visits and no enquiry usually means something on the page is not answering a question.</p>
+        </div>
+      </div>
+
+      <div class="warnbox" style="margin-top:16px;"><b>What this screen will never show you.</b> Who viewed a player. Nothing a child does on this platform appears in a guide's analytics, on any tier, ever. If a player has shared a moment with you, you see the moment — you do not see how often they looked at your page, and they do not become a number in your dashboard.</div>
+
+      <div class="plus" style="margin-top:16px;">
+        <h3>What PitchPro Plus includes for guides</h3>
+        <ul>
+          <li><b>Names and identities of the people who viewed you</b> — the whole point of the tier</li>
+          <li>Which of your pages and videos they actually watched, and for how long</li>
+          <li>Repeat visitors, and who came back after an enquiry went quiet</li>
+        </ul>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Considered and not in this version, kept here so the decision is on the record: referral source and watch-through detail, search appearances and ranking against comparable guides, and enquiry-to-booking conversion tracking. Any of the three can be added later; none of them changes the privacy model.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:8px;">Pricing not set.</p>
+      </div>
+    </div>
+
     <div class="screen" id="s-record">
       <h2>My Record</h2>
       <div class="sub">What PitchPro holds about you, and what families see before they book.</div>
@@ -382,6 +473,11 @@ function go(s){
   window.scrollTo(0,0);
 }
 document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>go(n.dataset.s)));
+function tier(t,btn){
+  document.querySelectorAll('.seg2 button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.getElementById('free-view').style.display = (t==='free')?'block':'none';
+  document.getElementById('plus-view').style.display = (t==='plus')?'block':'none';
+}
 </script>
 <script src="site-nav.js" defer></script>
 </body>
