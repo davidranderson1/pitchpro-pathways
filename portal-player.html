@@ -148,6 +148,32 @@
   .consent{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;}
   .consent:last-child{border-bottom:none;}
   .consent .cs span{display:block;color:var(--muted);font-size:12.5px;}
+  /* WHO VIEWED */
+  .vw{display:flex;gap:13px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+  .vw:last-child{border-bottom:none;}
+  .vw .av2{width:38px;height:38px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:900;font-size:14px;flex-shrink:0;}
+  .vw .txt{flex:1;min-width:0;}
+  .vw .txt b{display:block;font-size:14px;}
+  .vw .txt span{display:block;color:var(--muted);font-size:12.5px;}
+  .vw .end{margin-left:auto;text-align:right;flex-shrink:0;}
+  .vw .end .n{font-family:var(--head);font-size:17px;font-weight:900;}
+  .vw .end .l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .vw.blur .txt b,.vw.blur .txt span{filter:blur(4.5px);user-select:none;}
+  .vw.blur .av2{filter:blur(3px);}
+  .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+  @media(max-width:700px){.stat3{grid-template-columns:1fr;}}
+  .stat3 .s{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .stat3 .s b{display:block;font-family:var(--head);font-size:26px;font-weight:900;}
+  .stat3 .s span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .plus{background:linear-gradient(135deg,rgba(183,155,255,.10),rgba(77,159,255,.06));border:1px solid rgba(183,155,255,.32);border-radius:16px;padding:22px;}
+  .plus h3{color:var(--lock);}
+  .plus ul{margin:10px 0 0 18px;font-size:13.5px;color:#e0d6ff;}
+  .plus li{margin-bottom:6px;}
+  .free-bar{display:flex;align-items:center;gap:10px;background:rgba(46,224,138,.07);border:1px solid rgba(46,224,138,.3);border-radius:12px;padding:13px 17px;font-size:13px;color:#c9f3de;margin-bottom:18px;}
+  .free-bar b{color:var(--grass);}
+  .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
+  .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
+  .seg2 button.on{background:var(--lock);color:#170f2b;}
 </style>
 </head>
 <body>
@@ -178,6 +204,7 @@
     <div class="nav-item" data-s="profile">My Profile</div>
     <div class="nav-item" data-s="goals">My Goals</div>
     <div class="nav-item" data-s="who">Who Sees What</div>
+    <div class="nav-item" data-s="views">Who Viewed Me</div>
     <div class="nav-item" data-s="act">Activity <span class="badge-dot">3</span></div>
     <div class="side-foot"><b style="color:var(--lock);">Family account linked</b><br>Alma (Mum) is your parent on PitchPro. She can see everything you post here.</div>
   </aside>
@@ -428,6 +455,73 @@
         <div class="consent"><span class="cs"><b>Direct messages to guides</b><span>You post moments; guides reply on the moment. There are no private chats.</span></span><span class="tag lock">🔒 Never</span></div>
         <div class="consent"><span class="cs"><b>Review mode</b><span>Post first, parent reviews after. Your parent can change this.</span></span><span class="tag lock">Post first</span></div>
         <button class="btn btn-ghost" style="margin-top:16px;">Ask my parent to change something</button>
+      </div>
+    </div>
+
+
+    <!-- WHO VIEWED ME -->
+    <div class="screen" id="s-views">
+      <h2>Who Viewed Me</h2>
+      <div class="sub">Everyone who has looked at your football in the last 30 days.</div>
+
+      <div class="free-bar"><b>Free, always.</b> Knowing who has looked at you is not something anyone should have to pay for. This screen is never locked, on your account or your mum's.</div>
+
+      <div class="stat3">
+        <div class="s"><b>11</b><span>Views this week</span></div>
+        <div class="s"><b>4</b><span>People</span></div>
+        <div class="s"><b>0</b><span>Strangers</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3>This week</h3>
+        <div class="vw">
+          <span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">CN</span>
+          <span class="txt"><b>Coach Nick</b><span>Your agility guide · watched "Weak-foot volley" twice and "First start in midfield" once</span></span>
+          <span class="end"><span class="n">3</span><span class="l">Tue &amp; Thu</span></span>
+        </div>
+        <div class="vw">
+          <span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">SR</span>
+          <span class="txt"><b>Sandro Rajic</b><span>Your movement guide · opened your profile before booking the reassessment</span></span>
+          <span class="end"><span class="n">1</span><span class="l">Monday</span></span>
+        </div>
+        <div class="vw">
+          <span class="av2" style="background:rgba(183,155,255,.18);color:var(--lock);">G</span>
+          <span class="txt"><b>Grego</b><span>Through the promotion link Mum sent him for the Split camp trial · expires 30 Aug</span></span>
+          <span class="end"><span class="n">3</span><span class="l">Wed evening</span></span>
+        </div>
+        <div class="vw">
+          <span class="av2" style="background:rgba(255,184,77,.18);color:var(--warn);">M</span>
+          <span class="txt"><b>Mum</b><span>Every day, as usual</span></span>
+          <span class="end"><span class="n">4</span><span class="l">This week</span></span>
+        </div>
+      </div>
+
+      <div class="note-strip lock"><b>Nobody on this list is a stranger, and nobody ever will be.</b> The only people who can see anything of yours are the guides your mum has approved, and the named people she has sent a promotion link to. There is no public page with your name on it, so there is no way for someone you don't know to find you.</div>
+
+      <div class="grid g2" style="margin-bottom:16px;">
+        <div class="card">
+          <h3>Most watched</h3>
+          <div class="row"><div><div class="who">"Weak-foot volley"</div><div class="meta">Posted today · 5 views · Coach Nick watched it twice</div></div><span class="tag">Top</span></div>
+          <div class="row"><div><div class="who">"First start in midfield"</div><div class="meta">19 Jul · 4 views · 2 comments</div></div><span class="tag blue">2nd</span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Views are counted so you can see who is paying attention — not to rank you against anyone. There are no leaderboards here and there never will be.</p>
+        </div>
+        <div class="card">
+          <h3>Nobody watched</h3>
+          <div class="row"><div><div class="who">"Tough session"</div><div class="meta">17 Jul · family only — you chose that</div></div><span class="tag lock">🔒 Private</span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">A moment you keep to yourself never shows up here as something that "underperformed". It was not supposed to be seen.</p>
+        </div>
+      </div>
+
+      <div class="plus">
+        <h3>PitchPro Plus — for the family account</h3>
+        <p style="font-size:13.5px;color:#e0d6ff;">Everything above stays free. Plus adds the extras, and your mum controls whether the family has it:</p>
+        <ul>
+          <li>Views over time — is interest building before a trial, or falling away?</li>
+          <li>History further back than 30 days</li>
+          <li>A weekly summary sent to your parent</li>
+          <li>Download the whole record</li>
+        </ul>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">If the family does not subscribe, you lose the charts. You never lose a name.</p>
       </div>
     </div>
 
