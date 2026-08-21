@@ -29,6 +29,7 @@
   .big small{font-size:13px;color:var(--muted);font-family:var(--body);font-weight:500;}
   .full{margin-bottom:16px;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
   td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
   .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);}
@@ -106,18 +107,18 @@
 
   <div class="card full">
     <h3>Guide Conduct on Player Moments</h3>
-    <table>
+    <div class="tw"><table>
       <tr><th>Guide</th><th>Players including them</th><th>Comments (30 days)</th><th>Parent copies delivered</th><th>Reported</th><th>Permission level</th><th>Standing</th></tr>
       <tr><td><b>Coach Nick</b></td><td>3</td><td>18</td><td>18 / 18</td><td>0</td><td>Comment + react</td><td><span class="tag">Clear</span></td></tr>
       <tr><td><b>Sandro Rajic</b></td><td>6</td><td>9</td><td>9 / 9</td><td>0</td><td>Comment + react</td><td><span class="tag">Clear</span></td></tr>
       <tr><td><b>Grego</b></td><td>4</td><td>21</td><td>21 / 21</td><td>1 · closed</td><td>React only on 2 of 4</td><td><span class="tag amber">Watch</span></td></tr>
-    </table>
+    </table></div>
     <div class="note">A parent narrowing a guide to react-only shows here immediately. Three narrowings across different families is an automatic conduct review, whether or not anything was reported.</div>
   </div>
 
   <div class="card full">
     <h3>Audit Log — every action on a child's content</h3>
-    <table>
+    <div class="tw"><table>
       <tr><th>When</th><th>Actor</th><th>Action</th><th>Object</th><th>Visible to</th></tr>
       <tr><td>Today 6:43 PM</td><td>System</td><td>Held moment (face + venue)</td><td>Elle · "Weak-foot volley"</td><td>Parent, admin</td></tr>
       <tr><td>Sat 2:10 PM</td><td>Coach Nick</td><td>Commented</td><td>Elle · "First start in midfield"</td><td>Player, parent, admin</td></tr>
@@ -128,7 +129,7 @@
       <tr><td>Tue 11:22 AM</td><td>Link holder (Grego)</td><td>Opened promotion link</td><td>Elle · link #EL-0812</td><td>Player, parent, admin</td></tr>
       <tr><td>Jul 12</td><td>System</td><td>Promotion link expired automatically</td><td>Elle · link #EL-0611 (Calgary Foothills)</td><td>Player, parent, admin</td></tr>
       <tr><td>Jul 14</td><td>Alma</td><td>Set review mode: post-first</td><td>Elle · account</td><td>Player, parent, admin</td></tr>
-    </table>
+    </table></div>
     <div class="note">Immutable, seven-year retention, exportable by the parent in one click. A deletion by a parent removes the media but keeps the log entry — you must be able to prove what happened, without keeping what a family asked you to destroy.</div>
   </div>
 
@@ -136,31 +137,31 @@
 
   <div class="card full">
     <h3>Guide Earnings &amp; Revenue Splits — admin only</h3>
-    <table>
+    <div class="tw"><table>
       <tr><th>Guide</th><th>Model</th><th>Split (guide / platform)</th><th>July Sessions</th><th>Gross</th><th>Guide Payout</th><th>Platform</th><th>Status</th></tr>
       <tr><td><b>Sandro Rajic</b><br><span style="color:var(--muted);font-size:12px;">Established practice · Featured Partner</span></td><td>Referral partner</td><td>85 / 15</td><td>9 screenings</td><td>$2,241</td><td>$1,905</td><td>$336</td><td><span class="tag">Agreement draft</span></td></tr>
       <tr><td><b>Coach Nick</b><br><span style="color:var(--muted);font-size:12px;">Building book via platform</span></td><td>Platform-first</td><td>70 / 30</td><td>22 sessions</td><td>$2,420</td><td>$1,694</td><td>$726</td><td><span class="tag amber">Terms pending</span></td></tr>
       <tr><td><b>Grego</b><br><span style="color:var(--muted);font-size:12px;">Lovrencsics Academy · EU payouts</span></td><td>Academy hybrid</td><td>75 / 25</td><td>16 sessions</td><td>$1,520</td><td>$1,140</td><td>$380</td><td><span class="tag amber">Terms pending</span></td></tr>
       <tr><td><b>Camp add-ons</b><br><span style="color:var(--muted);font-size:12px;">Split summer camp deposits</span></td><td>Platform product</td><td>— / 100</td><td>2 deposits</td><td>$1,000</td><td>—</td><td>$1,000</td><td><span class="tag blue">Escrowed</span></td></tr>
-    </table>
+    </table></div>
     <div class="note">Splits vary by guide establishment — DoorDash-style tiering: established guides keep more (they bring their book and brand); platform-built guides trade margin for demand generation. All figures are sample data. Payouts via Stripe Connect in the build phase; EU payout (Grego) needs cross-border setup.</div>
   </div>
 
   <div class="card full">
     <h3>Bookings Pipeline</h3>
-    <table>
+    <div class="tw"><table>
       <tr><th>Parent</th><th>Player</th><th>Stage</th><th>Program</th><th>Next Step</th></tr>
       <tr><td>Alma</td><td>Elle (U12)</td><td><span class="tag">Active</span></td><td>Total Athlete wk 5</td><td>Reassessment Aug 14</td></tr>
       <tr><td>Alma</td><td>Adin (U10) · age 9</td><td><span class="tag lock">Account by exception</span></td><td>Foundation Training wk 2</td><td>Locked to family-only until 10th birthday (4 Jun 2027)</td></tr>
       <tr><td>Jen</td><td>Ava (U14)</td><td><span class="tag blue">Onboarding</span></td><td>First session Jul 21</td><td>Post-session parent check-in</td></tr>
       <tr><td>Rob</td><td>Sofia (U12)</td><td><span class="tag amber">Applied</span></td><td>—</td><td>Consult call to book</td></tr>
       <tr><td>Marina 🇭🇷</td><td>Ivan (U9)</td><td><span class="tag amber">Applied</span></td><td>Lovrencsics group</td><td>Grego intake · HR docs</td></tr>
-    </table>
+    </table></div>
   </div>
 
   <div class="card full">
     <h3>Compliance Watch</h3>
-    <table>
+    <div class="tw"><table>
       <tr><th>Item</th><th>Scope</th><th>Status</th></tr>
       <tr><td>Guide agreements (rev-share, IP, conduct)</td><td>All guides</td><td><span class="tag amber">Lawyer review needed</span></td></tr>
       <tr><td>Safeguarding policy + background checks</td><td>All guides, before launch</td><td><span class="tag amber">Policy drafted, checks pending</span></td></tr>
@@ -172,7 +173,7 @@
       <tr><td>Content moderation vendor or in-house</td><td>Image, video and language checks</td><td><span class="tag amber">Not chosen</span></td></tr>
       <tr><td>Media retention, residency and deletion policy</td><td>Where children's video is stored</td><td><span class="tag amber">Open</span></td></tr>
       <tr><td>Mandatory reporting route by jurisdiction</td><td>Alberta and Croatia differ</td><td><span class="tag red">Open</span></td></tr>
-    </table>
+    </table></div>
     <div class="note">The five rows added for player moments are the real cost of this feature. The screens are the easy part. Dropping the public profile in favour of named, expiring promotion links removes the largest single item from this list — a findable page carrying a child's name and photographs would have brought its own review, its own de-indexing obligations and its own insurance question.</div>
   </div>
 </div>
