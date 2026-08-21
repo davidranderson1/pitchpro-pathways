@@ -9,6 +9,7 @@
   :root{
     --pitch:#0b120e; --panel:#101a14; --card:#15211a; --grass:#2ee08a; --grass-deep:#17b06a;
     --white:#fff; --muted:#9db3a6; --line:rgba(255,255,255,.09); --warn:#ffb84d; --blue:#4d9fff;
+    --lock:#b79bff; --red:#ff7a7a;
     --head:'Archivo',sans-serif; --body:'Inter',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -29,11 +30,24 @@
   .full{margin-bottom:16px;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
-  td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+  td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
   .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(46,224,138,.14);color:var(--grass);}
   .tag.amber{background:rgba(255,184,77,.14);color:var(--warn);}
   .tag.blue{background:rgba(77,159,255,.14);color:var(--blue);}
+  .tag.lock{background:rgba(183,155,255,.14);color:var(--lock);}
+  .tag.red{background:rgba(255,122,122,.14);color:var(--red);}
+  .tag.grey{background:rgba(255,255,255,.07);color:var(--muted);}
   .note{font-size:12.5px;color:var(--muted);margin-top:12px;}
+  .sect{font-family:var(--head);text-transform:uppercase;font-size:15px;letter-spacing:.06em;margin:34px 0 14px;padding-top:22px;border-top:1px solid var(--line);color:var(--grass);}
+  .btn{display:inline-block;border:none;cursor:pointer;font-family:var(--body);font-weight:700;font-size:12.5px;padding:8px 16px;border-radius:999px;background:transparent;border:1px solid var(--line);color:var(--muted);}
+  .btn.g{border-color:var(--grass);color:var(--grass);}
+  .btn.r{border-color:rgba(255,122,122,.4);color:var(--red);}
+  .queue{background:var(--panel);border:1px solid rgba(255,184,77,.28);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .queue .qh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px;}
+  .queue .qh b{font-size:14px;}
+  .queue .qh .when{color:var(--muted);font-size:12px;}
+  .queue p{font-size:13.5px;color:#dfeae4;margin-bottom:10px;}
+  .queue .acts{display:flex;gap:8px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -51,6 +65,70 @@
     <div class="card"><h3>Gross Bookings (July)</h3><div class="big">$6,240 <small>CAD</small></div></div>
     <div class="card"><h3>Platform Net (July)</h3><div class="big">$1,514 <small>CAD</small></div></div>
   </div>
+
+  <div class="sect">Player accounts &amp; moments</div>
+
+  <div class="grid">
+    <div class="card"><h3>Player Accounts</h3><div class="big">9 <small>of 14 players</small></div><div class="note" style="margin-top:6px;">5 under 10 · not eligible</div></div>
+    <div class="card"><h3>Moments (7 days)</h3><div class="big">63</div><div class="note" style="margin-top:6px;">41 shared with a guide · 22 family only</div></div>
+    <div class="card"><h3>Held by Auto-Check</h3><div class="big" style="color:var(--warn);">6</div><div class="note" style="margin-top:6px;">4 cleared by parent · 2 open</div></div>
+    <div class="card"><h3>Escalated to Safeguarding</h3><div class="big" style="color:var(--red);">1</div><div class="note" style="margin-top:6px;">Open 14 hours · SLA 1 working day</div></div>
+  </div>
+
+  <div class="card full">
+    <h3>Safeguarding Queue — needs a human</h3>
+
+    <div class="queue">
+      <div class="qh"><span class="tag red">Escalated</span><b>Tone flag · player caption</b><span class="when">Player 0412 (U13) · yesterday 9:48 PM</span></div>
+      <p>Caption rated as distressed by the language check. Parent has been notified that the moment is held; the parent has <b>not</b> been told the reason is tone. The player has not been told anything.</p>
+      <div class="acts">
+        <button class="btn g">Open the safeguarding protocol</button>
+        <button class="btn">Call the parent</button>
+        <button class="btn">Mark as no concern</button>
+        <button class="btn r">Escalate to external referral</button>
+      </div>
+      <div class="note">A tone flag is never handled by an automated message to the child. A named person calls the parent. This is the single most important rule in the whole feature.</div>
+    </div>
+
+    <div class="queue">
+      <div class="qh"><span class="tag amber">Held</span><b>Unrecognised face + venue name</b><span class="when">Leo Torres (U12) · today 6:42 PM</span></div>
+      <p>Second child visible at 0:11, caption names the dome. Sitting with the parent for decision. No guide has seen it.</p>
+      <div class="acts"><button class="btn">View</button><button class="btn">Nudge the parent</button><button class="btn g">Auto-blur and release to parent</button></div>
+    </div>
+
+    <div class="queue" style="border-color:var(--line);">
+      <div class="qh"><span class="tag grey">Closed</span><b>Guide comment reported by a parent</b><span class="when">Guide: Grego · Jul 09 · closed Jul 10</span></div>
+      <p>Parent reported a comment as too directive about club selection. Reviewed against the code of conduct; comment removed, guide re-briefed, no restriction applied. FIFA Article 18bis note added to the guide's file.</p>
+      <div class="acts"><button class="btn">Open the record</button></div>
+    </div>
+  </div>
+
+  <div class="card full">
+    <h3>Guide Conduct on Player Moments</h3>
+    <table>
+      <tr><th>Guide</th><th>Players including them</th><th>Comments (30 days)</th><th>Parent copies delivered</th><th>Reported</th><th>Permission level</th><th>Standing</th></tr>
+      <tr><td><b>Coach Nick</b></td><td>3</td><td>18</td><td>18 / 18</td><td>0</td><td>Comment + react</td><td><span class="tag">Clear</span></td></tr>
+      <tr><td><b>Sandro Rajic</b></td><td>6</td><td>9</td><td>9 / 9</td><td>0</td><td>Comment + react</td><td><span class="tag">Clear</span></td></tr>
+      <tr><td><b>Grego</b></td><td>4</td><td>21</td><td>21 / 21</td><td>1 · closed</td><td>React only on 2 of 4</td><td><span class="tag amber">Watch</span></td></tr>
+    </table>
+    <div class="note">A parent narrowing a guide to react-only shows here immediately. Three narrowings across different families is an automatic conduct review, whether or not anything was reported.</div>
+  </div>
+
+  <div class="card full">
+    <h3>Audit Log — every action on a child's content</h3>
+    <table>
+      <tr><th>When</th><th>Actor</th><th>Action</th><th>Object</th><th>Visible to</th></tr>
+      <tr><td>Today 6:43 PM</td><td>System</td><td>Held moment (face + venue)</td><td>Leo Torres · "Weak-foot volley"</td><td>Parent, admin</td></tr>
+      <tr><td>Sat 2:10 PM</td><td>Coach Nick</td><td>Commented</td><td>Leo Torres · "First start in midfield"</td><td>Player, parent, admin</td></tr>
+      <tr><td>Sat 2:10 PM</td><td>System</td><td>Copied comment to parent</td><td>Maria Torres inbox</td><td>Parent, admin</td></tr>
+      <tr><td>Fri 8:12 PM</td><td>Maria Torres</td><td>Approved and shared</td><td>Leo Torres · "Shuttle PB"</td><td>Player, parent, admin</td></tr>
+      <tr><td>Wed 7:31 PM</td><td>Maria Torres</td><td>Returned to player with a note</td><td>Leo Torres · "New boots"</td><td>Player, parent, admin</td></tr>
+      <tr><td>Jul 14</td><td>Maria Torres</td><td>Set review mode: post-first</td><td>Leo Torres · account</td><td>Player, parent, admin</td></tr>
+    </table>
+    <div class="note">Immutable, seven-year retention, exportable by the parent in one click. A deletion by a parent removes the media but keeps the log entry — you must be able to prove what happened, without keeping what a family asked you to destroy.</div>
+  </div>
+
+  <div class="sect">Business</div>
 
   <div class="card full">
     <h3>Guide Earnings &amp; Revenue Splits — admin only</h3>
@@ -83,7 +161,13 @@
       <tr><td>Safeguarding policy + background checks</td><td>All guides, before launch</td><td><span class="tag amber">Policy drafted, checks pending</span></td></tr>
       <tr><td>Parent consents (photo/marketing/data)</td><td>All families</td><td><span class="tag">In portal design</span></td></tr>
       <tr><td>GDPR readiness (EU families via Grego)</td><td>Croatia arm</td><td><span class="tag amber">Open</span></td></tr>
+      <tr><td><b>Child social features — legal review</b></td><td>Player moments, guide comments, public profiles</td><td><span class="tag red">Not started · blocks launch</span></td></tr>
+      <tr><td>Age assurance and parental consent capture</td><td>GDPR Art. 8 · Croatia sets the age at 16</td><td><span class="tag red">Open</span></td></tr>
+      <tr><td>Content moderation vendor or in-house</td><td>Image, video and language checks</td><td><span class="tag amber">Not chosen</span></td></tr>
+      <tr><td>Media retention, residency and deletion policy</td><td>Where children's video is stored</td><td><span class="tag amber">Open</span></td></tr>
+      <tr><td>Mandatory reporting route by jurisdiction</td><td>Alberta and Croatia differ</td><td><span class="tag red">Open</span></td></tr>
     </table>
+    <div class="note">The five rows added for player moments are the real cost of this feature. The screens are the easy part.</div>
   </div>
 </div>
 
