@@ -46,13 +46,15 @@
   .nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;color:var(--muted);cursor:pointer;font-weight:600;font-size:14px;border-left:3px solid transparent;}
   .nav-item:hover{color:var(--white);}
   .nav-item.active{color:var(--grass);border-left-color:var(--grass);background:rgba(46,224,138,.06);}
+  .nav-item .badge-dot.amber{background:var(--warn);color:#231602;}
   .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
   .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
   .lang{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;}
   .lang button{border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;}
   .lang button.on{background:var(--grass);color:#06130c;}
   .side-foot{padding:18px 20px;margin-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.5;}
-  main{padding:34px 38px;max-width:1000px;}
+  main{padding:34px 38px;min-width:0;max-width:1000px;}
+  @media(max-width:620px){main{padding:24px 16px;}}
   .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:26px;}
 
   .screen{display:none;} .screen.on{display:block;}
@@ -179,6 +181,49 @@
   .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
   .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
   .seg2 button.on{background:var(--lock);color:#170f2b;}
+  /* FIRST RUN / INTAKE */
+  .ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 0 22px;}
+  @media(max-width:760px){.ladder{grid-template-columns:1fr 1fr;}}
+  .rung{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;position:relative;}
+  .rung .n{font-family:var(--head);font-size:11px;letter-spacing:.14em;color:var(--muted);font-weight:900;}
+  .rung b{display:block;font-size:13px;margin:5px 0 3px;}
+  .rung small{font-size:11.5px;color:var(--muted);line-height:1.45;display:block;}
+  .rung.now{border-color:var(--grass);background:rgba(46,224,138,.07);}
+  .rung.now .n{color:var(--grass);}
+  .rung.done{border-color:rgba(46,224,138,.35);}
+  .rung.done .n::after{content:' ✓';color:var(--grass);}
+  .rung.locked{opacity:.45;}
+  .intake-box{width:100%;background:var(--pitch);border:1.5px solid rgba(46,224,138,.35);border-radius:14px;padding:16px 18px;color:var(--white);font-family:var(--body);font-size:15.5px;line-height:1.6;min-height:132px;resize:vertical;}
+  .intake-box::placeholder{color:rgba(157,179,166,.7);}
+  .intake-box:focus{outline:2px solid var(--grass);outline-offset:2px;}
+  .chipset{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12.5px;color:var(--muted);cursor:pointer;text-align:left;font-family:var(--body);}
+  .chip:hover{border-color:var(--grass);color:var(--white);}
+  .chip:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
+  .heard{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .hchip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 8px 6px 13px;font-size:12.5px;font-weight:600;background:rgba(46,224,138,.12);color:var(--grass);border:1px solid rgba(46,224,138,.3);}
+  .hchip.blue{background:rgba(77,159,255,.12);color:var(--blue);border-color:rgba(77,159,255,.3);}
+  .hchip.amber{background:rgba(255,184,77,.12);color:var(--warn);border-color:rgba(255,184,77,.32);}
+  .hchip.lockc{background:rgba(183,155,255,.12);color:var(--lock);border-color:rgba(183,155,255,.32);}
+  .hchip .x{border:none;background:rgba(0,0,0,.25);color:inherit;border-radius:50%;width:18px;height:18px;line-height:1;font-size:12px;cursor:pointer;font-family:var(--body);}
+  .hgroup{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 2px;}
+  .match{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 19px;margin-bottom:10px;}
+  .match.top{border-color:var(--grass);background:rgba(46,224,138,.06);}
+  .match .rank{font-family:var(--head);font-size:12px;font-weight:900;color:var(--muted);width:20px;flex-shrink:0;padding-top:2px;}
+  .match.top .rank{color:var(--grass);}
+  .match .mb{flex:1;min-width:0;}
+  .match .mb b{display:block;font-size:15px;margin-bottom:3px;}
+  .match .mb .why{font-size:13px;color:#cfe0d6;margin:6px 0 0;}
+  .match .mb .why q{color:var(--grass);font-style:italic;}
+  .match .price{text-align:right;flex-shrink:0;}
+  .match .price b{font-family:var(--head);font-size:17px;display:block;}
+  .match .price span{font-size:11.5px;color:var(--muted);}
+  .honest{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.3);border-radius:12px;padding:15px 18px;font-size:13.5px;color:#ffe0ad;margin-top:14px;}
+  .honest b{color:var(--warn);}
+  .privacy-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;}
+  .demo-toggle{display:flex;gap:5px;background:var(--card);border:1px solid rgba(255,184,77,.35);border-radius:999px;padding:4px;}
+  .demo-toggle button{border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;cursor:pointer;}
+  .demo-toggle button.on{background:var(--warn);color:#231602;}
   .nav-item:focus-visible,.child-chip:focus-visible,.pilldot:focus-visible,.seg button:focus-visible,.seg2 button:focus-visible,.lang button:focus-visible,.btn:focus-visible,.btn-sm:focus-visible,.aud-opt:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}}
 </style>
@@ -206,6 +251,7 @@
   <aside>
     <div class="side-brand"><span class="crest">⚽</span> PITCHPRO<br>PLAYER</div>
     <div class="side-me"><span class="avatar">E</span><span><b>Elle</b>U12 · Midfield</span></div>
+    <div class="nav-item" data-s="start" data-i18n="pStart">Start Here <span class="badge-dot amber">1</span></div>
     <div class="nav-item active" data-s="feed" data-i18n="pTimeline">My Timeline</div>
     <div class="nav-item" data-s="new" data-i18n="pPost">Post a Moment</div>
     <div class="nav-item" data-s="profile" data-i18n="pProfile">My Profile</div>
@@ -221,6 +267,33 @@
         <button class="on" onclick="setLang('en',this)">EN</button>
         <button onclick="setLang('hr',this)">HR</button>
       </div>
+    </div>
+
+    <!-- FIRST RUN -->
+    <div class="screen" id="s-start">
+      <h2 data-i18n="pStartTitle">Start Here</h2>
+      <div class="sub" data-i18n="pStartSub">Nobody has asked you yet. So — what do you actually want to get better at?</div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="pIntakeH">Tell us in your own words</h3>
+        <p style="font-size:14px;color:#cfe0d6;margin-bottom:14px;" data-i18n="pIntakeP">There is no right answer and nobody is marking it. Write it how you would say it to a friend. Your guides will read it, and so will your mum — that is the deal here, and it is why you can be honest.</p>
+        <label for="pl-text" style="position:absolute;left:-9999px;">What do you want to get better at?</label>
+        <textarea id="pl-text" class="intake-box" placeholder="I want to stop being scared of going into tackles. And my left foot is basically useless. I want to start every game next season, and I want to be the one people pass to when it is tight."></textarea>
+        <div class="chipset">
+          <button class="chip" onclick="ppChip('pl','I want to be quicker over the first five metres. ')" data-i18n="pchip1">Be quicker off the mark</button>
+          <button class="chip" onclick="ppChip('pl','My left foot is useless and I want to fix it. ')" data-i18n="pchip2">Fix my weak foot</button>
+          <button class="chip" onclick="ppChip('pl','I get nervous before games and I want to stop. ')" data-i18n="pchip3">Stop being nervous before games</button>
+          <button class="chip" onclick="ppChip('pl','I keep getting injured and it is annoying. ')" data-i18n="pchip4">Stop getting injured</button>
+          <button class="chip" onclick="ppChip('pl','I want to start every game next season. ')" data-i18n="pchip5">Start every game</button>
+          <button class="chip" onclick="ppChip('pl','I just want to enjoy it more. ')" data-i18n="pchip6">Enjoy it more</button>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <button class="btn btn-grass" style="width:auto;" onclick="ppGoPlayer()" data-i18n="pReadBack">Read it back to me</button>
+        </div>
+        <p class="privacy-note" data-i18n="pIntakePrivacy">Your mum sees this, the same as everything else here. Your guides see it too, because it is the whole point — Coach Nick cannot help with something he does not know about. Nobody outside that sees a word of it.</p>
+      </div>
+
+      <div id="pl-result" hidden></div>
     </div>
 
     <!-- TIMELINE -->
@@ -584,6 +657,14 @@ document.querySelectorAll('.pilldot').forEach(function(p){
 });
 
 const i18n={en:{},hr:{
+ pStart:'Počni ovdje',pStartTitle:'Počni ovdje',
+ pStartSub:'Nitko te još nije pitao. Dakle — u čemu zapravo želiš biti bolja?',
+ pIntakeH:'Reci nam svojim riječima',
+ pIntakeP:'Nema točnog odgovora i nitko ovo ne ocjenjuje. Napiši kako bi rekla prijatelju. Tvoji vodiči će to pročitati, a i tvoja mama — takav je dogovor ovdje i zato možeš biti iskrena.',
+ pchip1:'Biti brža na prvih pet metara',pchip2:'Popraviti slabiju nogu',pchip3:'Prestati se živcirati prije utakmica',
+ pchip4:'Prestati se ozljeđivati',pchip5:'Igrati od prve minute svaku utakmicu',pchip6:'Više uživati',
+ pReadBack:'Pročitaj mi to natrag',
+ pIntakePrivacy:'Tvoja mama ovo vidi, kao i sve ostalo ovdje. Vide i tvoji vodiči, jer u tome je cijela poanta — Coach Nick ti ne može pomoći oko nečega o čemu ne zna. Nitko izvan toga ne vidi ni riječ.',
  pAct:'Aktivnost',
  pActSub:'Što se dogodilo na tvojim trenucima.',
  pAddGoal:'+ Dodaj cilj',
@@ -640,6 +721,231 @@ function setLang(l,btn){
     const k=el.dataset.i18n;
     el.innerHTML = (l==='en')?base[k]:(i18n.hr[k]||base[k]);
   });
+}
+
+/* ------------------------------------------------------------------
+   PATHWAY INTAKE — scripted demo interpreter.
+   In the product this is a model call. Here it is deterministic keyword
+   matching so the demo works offline and gives the same answer twice.
+   Nothing is sent anywhere; the text never leaves the page.
+   ------------------------------------------------------------------ */
+var PP_CATALOGUE = [
+  {id:'screen', name:'Movement Intelligence Screening', price:'$249', commit:'one session + report', guide:'Sandro Rajic'},
+  {id:'found',  name:'Foundation Training',            price:'$149', commit:'4 weeks · 2× weekly',  guide:'Coach Nick'},
+  {id:'mental', name:'Mental Edge',                    price:'$199', commit:'6 weeks · 1-to-1',      guide:'Dr. Lisa Chen'},
+  {id:'total',  name:'Total Athlete',                  price:'$349', commit:'8 weeks · 3× weekly',   guide:'Coach Nick'},
+  {id:'scout',  name:'Scout Ready Program',            price:'$399', commit:'8 weeks + 2 showcases', guide:'Sarah Williams'},
+  {id:'camp',   name:'Split Summer Camp',              price:'from €600', commit:'1 week · Croatia', guide:'Grego'},
+  {id:'fast',   name:'Academy Fast Track',             price:'$799', commit:'12 weeks · 5× weekly',  guide:'multiple'}
+];
+
+var PP_RULES = [
+  {sig:'injury',   group:'Focus',      label:'Injury history or niggles', cls:'amber',
+   words:['injur','hamstring','knee','ankle','groin','pain','hurt','sore','recover'], picks:['screen','total']},
+  {sig:'growth',   group:'Focus',      label:'Growing fast', cls:'amber',
+   words:['grow','growth','shot up','clumsy','coordination','awkward'], picks:['screen','found']},
+  {sig:'speed',    group:'Focus',      label:'Speed and fitness', cls:'',
+   words:['slow','speed','quick','fast','fitness','stamina','tired','pace','agility','strong','strength'], picks:['total','screen']},
+  {sig:'technical',group:'Focus',      label:'Technical skills', cls:'',
+   words:['left foot','weak foot','touch','passing','pass','shooting','shoot','dribbl','control','technique','skill'], picks:['found','camp']},
+  {sig:'mental',   group:'Focus',      label:'Confidence and mindset', cls:'',
+   words:['confidence','confident','nervous','scared','afraid','shy','pressure','anxious','focus','gives up','give up','frustrat','head drops','believe','not good enough','good enough','doubt','freeze','bottle','worried','worry','hides','hiding','beats himself','beats herself'], picks:['mental','found']},
+  {sig:'academy',  group:'Ambition',   label:'Academy or trial ambition', cls:'blue',
+   words:['academy','trial','scout','showcase','signed','sign for','a team','first team','represent','provincial','national'], picks:['screen','scout']},
+  {sig:'pro',      group:'Ambition',   label:'Professional aspiration', cls:'blue',
+   words:['pro','professional','contract','premier','mls','scholarship','college','university'], picks:['screen','fast']},
+  {sig:'enjoy',    group:'Ambition',   label:'Enjoyment and belonging', cls:'',
+   words:['enjoy','fun','love the game','friends','happy','confidence','healthy','active'], picks:['found','mental']},
+  {sig:'croatia',  group:'Constraints',label:'Croatia connection', cls:'lockc',
+   words:['croatia','split','europe','european','hajduk','abroad','moving'], picks:['camp']},
+  {sig:'budget',   group:'Constraints',label:'Budget matters', cls:'lockc',
+   words:['afford','budget','expensive','cost','cheap','money'], picks:['found']},
+  {sig:'time',     group:'Constraints',label:'Limited time', cls:'lockc',
+   words:['busy','once a week','one night','weekend only','travel','far','drive'], picks:['found']},
+  {sig:'childled', group:'Who is driving it', label:'Child-led — they asked for this', cls:'',
+   words:['he wants','she wants','they want','he asked','she asked','he keeps','she keeps','his idea','her idea','he asks','she asks','asks to','asking to','begs','wants to go','his own idea','her own idea','pushed for'], picks:[]},
+  {sig:'parentled',group:'Who is driving it', label:'Parent-led — worth checking with them', cls:'amber',
+   words:['i want','we want','i think','i would like','we would like','i need','we need'], picks:[]}
+];
+
+var PP_FLAGS = [
+  {sig:'health', words:['asthma','diagnos','adhd','autis','concussion','medication','condition','allerg','epilep','diabet'],
+   text:'You mentioned something health-related. That is treated as medical information from the moment you type it — it is not stored with this note, and it belongs on the health consent form where it is properly protected.'},
+  {sig:'pressure', words:['has to','must make','only chance','last chance','depends on','no choice','make it or'],
+   text:'One thing worth saying plainly: nothing at this age decides a career. The strongest predictor of a child still playing at eighteen is whether they enjoyed it at eleven. We will build towards the ambition, but we will not tell you it is a certainty.'}
+];
+
+function ppInterpret(text){
+  var t = (text||'').toLowerCase();
+  var hits = [], picks = {}, flags = [];
+  PP_RULES.forEach(function(r){
+    var found = r.words.filter(function(w){ return t.indexOf(w) >= 0; });
+    if(found.length){
+      hits.push({group:r.group, label:r.label, cls:r.cls, quote:found[0], sig:r.sig});
+      r.picks.forEach(function(p,i){ picks[p] = (picks[p]||0) + (2 - i*0.5) + found.length*0.2; });
+    }
+  });
+  PP_FLAGS.forEach(function(f){
+    var found = f.words.filter(function(w){ return t.indexOf(w) >= 0; });
+    if(found.length) flags.push(f);
+  });
+  if(hits.some(function(h){return h.sig==='childled';}) && hits.some(function(h){return h.sig==='parentled';})){
+    hits = hits.filter(function(h){ return h.sig !== 'parentled'; });
+  }
+  var ranked = Object.keys(picks).sort(function(a,b){ return picks[b]-picks[a]; }).slice(0,3);
+  return {hits:hits, picks:ranked, flags:flags, words:t.split(/\s+/).filter(Boolean).length};
+}
+
+function ppRender(res, prefix){
+  var out = document.getElementById(prefix+'-result');
+  if(!res.hits.length && !res.picks.length){
+    out.innerHTML = '<div class="honest"><b>I did not get enough to go on.</b> A sentence or two about what your child is like, and what you are hoping changes, is plenty. There is no wrong answer and nobody is marking it.</div>';
+    out.hidden = false; out.scrollIntoView({behavior:'smooth', block:'start'}); return;
+  }
+  var groups = {};
+  res.hits.forEach(function(h){ (groups[h.group] = groups[h.group] || []).push(h); });
+  var html = '<div class="card" style="margin-bottom:16px;"><h3>Here is what I heard</h3>'
+    + '<p style="font-size:13.5px;color:var(--muted);">Nothing has been saved or applied yet. Remove anything I got wrong — the matches below update as you do.</p>';
+  Object.keys(groups).forEach(function(g){
+    html += '<div class="hgroup">'+g+'</div><div class="heard">';
+    groups[g].forEach(function(h,i){
+      html += '<span class="hchip '+h.cls+'">'+h.label
+           +' <button class="x" title="Remove" onclick="ppDrop(\''+prefix+'\',\''+h.sig+'\')">×</button></span>';
+    });
+    html += '</div>';
+  });
+  html += '<p class="privacy-note">Read from '+res.words+' words you wrote. This is a scripted demo of the interpretation step — in the product a model does this and its reading is always shown back to you like this, never applied silently.</p></div>';
+
+  html += '<div class="card" style="margin-bottom:16px;"><h3>What that points to</h3>';
+  res.picks.forEach(function(id, i){
+    var p = PP_CATALOGUE.filter(function(c){ return c.id===id; })[0];
+    if(!p) return;
+    var reason = res.hits.filter(function(h){
+      return PP_RULES.filter(function(r){ return r.sig===h.sig && r.picks.indexOf(id)>=0; }).length;
+    })[0];
+    html += '<div class="match'+(i===0?' top':'')+'">'
+      + '<span class="rank">'+(i+1)+'</span>'
+      + '<span class="mb"><b>'+p.name+'</b><span style="font-size:12.5px;color:var(--muted);">'+p.commit+' · with '+p.guide+'</span>'
+      + (reason ? '<p class="why">Matched because you wrote <q>'+reason.quote+'</q> — '+reason.label.toLowerCase()+'.</p>' : '')
+      + '</span>'
+      + '<span class="price"><b>'+p.price+'</b><span>'+(i===0?'start here':'after that')+'</span></span></div>';
+  });
+  html += '</div>';
+
+  res.flags.forEach(function(f){ html += '<div class="honest"><b>Worth saying:</b> '+f.text+'</div>'; });
+
+  var isPro = res.hits.some(function(h){ return h.sig==='pro'; });
+  if(isPro){
+    html += '<div class="honest"><b>What we will not promise.</b> No programme on this platform produces a professional contract, and anyone who tells you otherwise is selling something. What we can do is measure where your child is, remove what is holding them back, and put them in front of people who know what they are looking at. The rest is theirs.</div>';
+  }
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">'
+    + '<button class="btn btn-grass" style="width:auto;">Book the first one</button>'
+    + '<button class="btn btn-ghost">Talk it through with someone first</button>'
+    + '<button class="btn btn-ghost" onclick="ppReset(\''+prefix+'\')">Start again</button></div>';
+  out.innerHTML = html;
+  out.hidden = false;
+  out.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+var ppState = {};
+function ppGo(prefix){
+  var txt = document.getElementById(prefix+'-text').value;
+  ppState[prefix] = {text:txt, dropped:[]};
+  var res = ppInterpret(txt);
+  ppState[prefix].res = res;
+  ppRender(res, prefix);
+  var r1 = document.getElementById(prefix+'-rung1'), r2 = document.getElementById(prefix+'-rung2');
+  if(r1){ r1.classList.remove('now'); r1.classList.add('done'); }
+  if(r2){ r2.classList.remove('locked'); r2.classList.add('now'); }
+}
+function ppDrop(prefix, sig){
+  var st = ppState[prefix]; if(!st) return;
+  st.res.hits = st.res.hits.filter(function(h){ return h.sig !== sig; });
+  var picks = {};
+  st.res.hits.forEach(function(h){
+    var r = PP_RULES.filter(function(x){ return x.sig===h.sig; })[0];
+    if(r) r.picks.forEach(function(p,i){ picks[p] = (picks[p]||0) + (2 - i*0.5); });
+  });
+  st.res.picks = Object.keys(picks).sort(function(a,b){ return picks[b]-picks[a]; }).slice(0,3);
+  ppRender(st.res, prefix);
+}
+function ppReset(prefix){
+  document.getElementById(prefix+'-text').value = '';
+  var out = document.getElementById(prefix+'-result'); out.hidden = true; out.innerHTML='';
+  var r1 = document.getElementById(prefix+'-rung1'), r2 = document.getElementById(prefix+'-rung2');
+  if(r1){ r1.classList.add('now'); r1.classList.remove('done'); }
+  if(r2){ r2.classList.add('locked'); r2.classList.remove('now'); }
+  document.getElementById(prefix+'-text').focus();
+}
+function ppChip(prefix, text){
+  var box = document.getElementById(prefix+'-text');
+  box.value = (box.value ? box.value.replace(/\s*$/,' ') : '') + text;
+  box.focus();
+}
+
+/* player-side render: goals and guides, never prices — a child is not sold to */
+function ppGoPlayer(){
+  var txt = document.getElementById('pl-text').value;
+  var res = ppInterpret(txt);
+  /* the parent/child driver signal is meaningless on the child's own page */
+  res.hits = res.hits.filter(function(h){ return h.sig!=='parentled' && h.sig!=='childled'; });
+  var out = document.getElementById('pl-result');
+  if(!res.hits.length){
+    out.innerHTML = '<div class="honest"><b>Give me a bit more.</b> One sentence about what you want to be better at is enough.</div>';
+    out.hidden = false; return;
+  }
+  var GOALS = {
+    injury:'Get through a whole season without the same injury',
+    growth:'Stay coordinated while I am growing',
+    speed:'Be quicker over the first five metres',
+    technical:'Make my weak foot as good as my strong one',
+    mental:'Play the same when it is tight as when it is easy',
+    academy:'Be ready when someone comes to watch',
+    pro:'Keep getting better for as long as I want to',
+    enjoy:'Still love it at the end of the season',
+    croatia:'Hold my own at the camp in Split'
+  };
+  var GUIDES = {
+    injury:'Sandro — he measures how you move',
+    growth:'Sandro — he measures how you move',
+    speed:'Coach Nick — speed and agility',
+    technical:'Grego — technical work',
+    mental:'Dr. Lisa Chen — the mental side',
+    academy:'Coach Nick, and Sandro for the baseline',
+    croatia:'Grego, in Split'
+  };
+  var html = '<div class="card" style="margin-bottom:16px;"><h3>Here is what I heard</h3>'
+    + '<p style="font-size:13.5px;color:var(--muted);">Nothing is saved yet. Tap the × on anything I got wrong.</p><div class="heard">';
+  res.hits.forEach(function(h){
+    html += '<span class="hchip '+h.cls+'">'+h.label+' <button class="x" onclick="this.parentNode.remove()">×</button></span>';
+  });
+  html += '</div></div>';
+
+  var goals = res.hits.map(function(h){ return GOALS[h.sig]; }).filter(Boolean).slice(0,3);
+  if(goals.length){
+    html += '<div class="card" style="margin-bottom:16px;"><h3>Goals you could set yourself</h3>'
+      + '<p style="font-size:13.5px;color:var(--muted);">These go in My Goals. You can change the wording — they are yours, not ours.</p>';
+    goals.forEach(function(g){
+      html += '<div class="row"><span class="who">'+g+'</span><span class="tag" style="cursor:pointer;">+ Add</span></div>';
+    });
+    html += '</div>';
+  }
+  var guides = [];
+  res.hits.forEach(function(h){ if(GUIDES[h.sig] && guides.indexOf(GUIDES[h.sig])<0) guides.push(GUIDES[h.sig]); });
+  if(guides.length){
+    html += '<div class="card" style="margin-bottom:16px;"><h3>Who can actually help with this</h3>';
+    guides.slice(0,3).forEach(function(g){
+      html += '<div class="row"><span class="who">'+g+'</span><span class="tag blue">Ask Mum</span></div>';
+    });
+    html += '<p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You cannot book anything yourself — your mum does that. But she will see this, so she will know why you are asking.</p></div>';
+  }
+  if(res.hits.some(function(h){return h.sig==='mental';})){
+    html += '<div class="honest"><b>One thing.</b> Being nervous before a game is not a fault and it is not unusual — most of the people you watch on television feel it too. It is a thing you can get better at, like a weak foot.</div>';
+  }
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">'
+    + '<button class="btn btn-grass" style="width:auto;">Save this and tell Mum</button>'
+    + '<button class="btn btn-ghost" onclick="ppReset(\'pl\')">Start again</button></div>';
+  out.innerHTML = html; out.hidden = false; out.scrollIntoView({behavior:'smooth',block:'start'});
 }
 </script>
 <script src="site-nav.js" defer></script>
