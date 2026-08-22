@@ -38,6 +38,10 @@
   .nav-item:hover{color:var(--white);}
   .nav-item.active{color:var(--grass);border-left-color:var(--grass);background:rgba(46,224,138,.06);}
   .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
+  .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .lang{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;}
+  .lang button{border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;}
+  .lang button.on{background:var(--grass);color:#06130c;}
   .side-foot{padding:18px 20px;margin-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.5;}
   main{padding:34px 38px;max-width:1000px;}
   .screen{display:none;} .screen.on{display:block;}
@@ -65,6 +69,7 @@
   .cal .d.busy{border-color:var(--warn);color:var(--warn);}
   .cal .hd{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:4px 0;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
   td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
   /* showcase */
@@ -137,6 +142,8 @@
   .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
   .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
   .seg2 button.on{background:var(--lock);color:#170f2b;}
+  .nav-item:focus-visible,.child-chip:focus-visible,.pilldot:focus-visible,.seg button:focus-visible,.seg2 button:focus-visible,.lang button:focus-visible,.btn:focus-visible,.btn-sm:focus-visible,.aud-opt:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}}
 </style>
 </head>
 <body>
@@ -146,7 +153,7 @@
 <div id="login">
   <div class="login-card">
     <div class="crest">🏆</div>
-    <h1>Guide Portal</h1>
+    <h1 data-i18n="gTitle">Guide Portal</h1>
     <div class="sub">Your sessions, your players, your notes — booking and payment handled for you by PitchPro.</div>
     <button class="btn btn-grass" onclick="document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';">Enter Demo as Coach Nick</button>
     <div style="font-size:12px;color:var(--muted);margin-top:18px;">Authentication is not active in this preview.</div>
@@ -158,39 +165,45 @@
   <aside>
     <div class="side-brand"><span class="crest">🏆</span> PITCHPRO<br>GUIDE</div>
     <div class="side-me"><b>Coach Nick</b>Soccer Agility Guide · Calgary</div>
-    <div class="nav-item active" data-s="today">Today</div>
+    <div class="nav-item active" data-s="today" data-i18n="gToday">Today</div>
     <div class="nav-item" data-s="moments">Player Moments <span class="badge-dot">2</span></div>
-    <div class="nav-item" data-s="players">Player Notes</div>
-    <div class="nav-item" data-s="avail">Availability</div>
-    <div class="nav-item" data-s="showcase">My Showcase</div>
+    <div class="nav-item" data-s="players" data-i18n="gNotes">Player Notes</div>
+    <div class="nav-item" data-s="avail" data-i18n="gAvail">Availability</div>
+    <div class="nav-item" data-s="showcase" data-i18n="gShowcase">My Showcase</div>
     <div class="nav-item" data-s="views">Who Viewed You <span class="badge-dot" style="background:var(--lock);color:#170f2b;">PLUS</span></div>
-    <div class="nav-item" data-s="record">My Record</div>
+    <div class="nav-item" data-s="record" data-i18n="gRecord">My Record</div>
     <div class="side-foot"><b style="color:var(--lock);">Everything you write is on the record.</b><br>Comments, reactions and notes are copied to the parent and stored in the safeguarding log.</div>
   </aside>
   <main>
+    <div class="topline" style="justify-content:flex-end;margin-bottom:18px;">
+      <div class="lang">
+        <button class="on" onclick="setLang('en',this)">EN</button>
+        <button onclick="setLang('hr',this)">HR</button>
+      </div>
+    </div>
 
     <div class="screen on" id="s-today">
-      <h2>Tuesday, July 21</h2>
+      <h2>Tuesday, August 18</h2>
       <div class="sub">3 sessions · Calgary NW Dome</div>
       <div class="note-strip"><b>Reminder:</b> there is no private channel to a player anywhere on PitchPro. Direct messages go to parents. If a player shares a moment with you, you can react and comment on that moment — and every word is copied to the parent as you write it and kept in the safeguarding log.</div>
       <div class="card">
-        <h3>Today's Sessions</h3>
-        <div class="row"><div><div class="who">4:30 PM · Nora (U12)</div><div class="meta">Agility · Total Athlete wk 5 · focus: COD under pressure · note: mild left-hip asymmetry (see report)</div></div><span class="tag">Confirmed</span></div>
+        <h3 data-i18n="gSessions">Today's Sessions</h3>
+        <div class="row"><div><div class="who">4:30 PM · Elle (U12)</div><div class="meta">Agility · Total Athlete wk 5 · focus: COD under pressure · note: mild left-hip asymmetry (see report)</div></div><span class="tag">Confirmed</span></div>
         <div class="row"><div><div class="who">5:30 PM · Small group (U10 ×4)</div><div class="meta">Footwork circuit · parents pitchside</div></div><span class="tag">Confirmed</span></div>
         <div class="row"><div><div class="who">6:30 PM · Ava (U14)</div><div class="meta">First session — meet &amp; move · intake notes in profile</div></div><span class="tag amber">New Player</span></div>
       </div>
       <div class="card">
-        <h3>Needs Your Attention</h3>
-        <div class="row"><div><div class="who">2 new moments from your players</div><div class="meta">Nora ×1 · Ava ×1 · shared with you by the player</div></div><span class="tag" style="cursor:pointer;" onclick="go('moments')">Open</span></div>
-        <div class="row"><div><div class="who">Post-session note due — Nora (Jul 16)</div><div class="meta">Parents see notes within 24h of session</div></div><span class="tag amber">Due</span></div>
-        <div class="row"><div><div class="who">Reassessment input — Nora</div><div class="meta">Add your agility section to the Player Report before Aug 14 (Sandro's screening same day)</div></div><span class="tag amber">Aug 10</span></div>
+        <h3 data-i18n="gAttention">Needs Your Attention</h3>
+        <div class="row"><div><div class="who">2 new moments from your players</div><div class="meta">Elle ×1 · Ava ×1 · shared with you by the player</div></div><span class="tag" style="cursor:pointer;" onclick="go('moments')">Open</span></div>
+        <div class="row"><div><div class="who">Post-session note due — Elle (Aug 13)</div><div class="meta">Parents see notes within 24h of session</div></div><span class="tag amber">Due</span></div>
+        <div class="row"><div><div class="who">Reassessment input — Elle</div><div class="meta">Add your agility section to the Player Report before Sep 11 (Sandro's screening same day)</div></div><span class="tag amber">Sep 07</span></div>
       </div>
     </div>
 
     <!-- PLAYER MOMENTS -->
     <div class="screen" id="s-moments">
-      <h2>Player Moments</h2>
-      <div class="sub">What your players choose to show you between sessions.</div>
+      <h2 data-i18n="gMoments">Player Moments</h2>
+      <div class="sub" data-i18n="gMomSub">What your players choose to show you between sessions.</div>
 
       <div class="note-strip lock"><b>You are a guest here.</b> A moment reaches you only when three things are true: you have completed a real session with that player, their parent has approved you, and the player has chosen to include you on that particular post. You cannot request access, search for players, or follow anyone. Players can remove you at any time and are never told to explain why.</div>
 
@@ -199,7 +212,7 @@
       <div class="moment">
         <div class="m-head">
           <span class="avatar">E</span>
-          <span><span class="who">Nora · U12</span><br><span class="when">Sat 19 Jul, 11:20 AM · tagged: match day</span></span>
+          <span><span class="who">Elle · U12</span><br><span class="when">Sat 16 Aug, 11:20 AM · tagged: match day</span></span>
           <span class="right"><span class="tag">Your player · 14 sessions</span></span>
         </div>
         <div class="m-media"><span>Photo</span></div>
@@ -207,20 +220,20 @@
           <p>First start in midfield. We lost 2–1 but I completed my first proper switch of play.</p>
         </div>
         <div class="m-comment">
-          <div class="cm"><b>You</b><span class="stamp">Sat 2:10 PM · copied to Marta · logged</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div>
+          <div class="cm"><b>You</b><span class="stamp">Sat 2:10 PM · copied to Alma · logged</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div>
         </div>
         <div class="m-foot">
-          <button class="btn btn-ghost btn-sm2">👏 Applaud</button>
-          <button class="btn btn-ghost btn-sm2">💬 Comment</button>
-          <button class="btn btn-ghost btn-sm2">📎 Attach to Nora's report</button>
-          <span style="margin-left:auto;font-size:12px;color:var(--muted);">Parent: Marta · sees everything here</span>
+          <button class="btn btn-ghost btn-sm2" data-i18n="gApplaud">👏 Applaud</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="gComment">💬 Comment</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="gAttach">📎 Attach to Elle's report</button>
+          <span style="margin-left:auto;font-size:12px;color:var(--muted);">Parent: Alma · sees everything here</span>
         </div>
       </div>
 
       <div class="moment">
         <div class="m-head">
           <span class="avatar">A</span>
-          <span><span class="who">Ava · U14</span><br><span class="when">Sun 20 Jul, 4:02 PM</span></span>
+          <span><span class="who">Ava · U14</span><br><span class="when">Sun 17 Aug, 4:02 PM</span></span>
           <span class="right"><span class="tag amber">New player · 0 sessions yet</span></span>
         </div>
         <div class="m-media"><span>Video · 0:22</span><div class="play">▶</div></div>
@@ -229,46 +242,46 @@
         </div>
         <div class="m-foot">
           <span class="tag grey">💬 Commenting locked until your first completed session</span>
-          <button class="btn btn-ghost btn-sm2">Reply to the parent instead</button>
+          <button class="btn btn-ghost btn-sm2" data-i18n="gReplyParent">Reply to the parent instead</button>
         </div>
       </div>
 
       <div class="card">
-        <h3>Your comment history</h3>
+        <h3 data-i18n="gHistory">Your comment history</h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Every comment you have ever written to a player, oldest retained for 7 years. You cannot edit or delete these — neither can we, without a logged safeguarding action.</p>
-        <table>
+        <div class="tw"><table>
           <tr><th>When</th><th>Player</th><th>Moment</th><th>Parent copy</th><th>Status</th></tr>
-          <tr><td>Sat 2:10 PM</td><td>Nora</td><td>First start in midfield</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
-          <tr><td>Jul 12</td><td>Nora</td><td>Shuttle PB</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
-          <tr><td>Jul 04</td><td>Sofia</td><td>Weak-foot drill</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
-        </table>
+          <tr><td>Sat 2:10 PM</td><td>Elle</td><td>First start in midfield</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+          <tr><td>Aug 9</td><td>Elle</td><td>Shuttle PB</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+          <tr><td>Aug 01</td><td>Sofia</td><td>Weak-foot drill</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+        </table></div>
       </div>
     </div>
 
     <div class="screen" id="s-players">
-      <h2>Player Notes</h2>
+      <h2 data-i18n="gNotes">Player Notes</h2>
       <div class="sub">Your section of the standardized PitchPro Player Report. Notes are visible to parents — write to them.</div>
       <div class="card">
-        <h3>Nora · U12 · Total Athlete wk 5</h3>
-        <div class="row"><div><div class="who">Jul 16 — Session note</div><div class="meta">"First step off the left foot noticeably quicker. Testing under pressure next session."</div></div><span class="tag">Posted</span></div>
-        <div class="row"><div><div class="who">Jul 14 — Session note</div><div class="meta">"Great energy. 5-10-5 at 5.9s — best yet. Left-foot work continues."</div></div><span class="tag">Posted</span></div>
-        <div class="row"><div><div class="who">Jul 19 — Attached from a player moment</div><div class="meta">"First start in midfield" · switch of play · evidence for the agility section</div></div><span class="tag blue">Attached</span></div>
-        <h3 style="margin-top:18px;">New note</h3>
+        <h3>Elle · U12 · Total Athlete wk 5</h3>
+        <div class="row"><div><div class="who">Aug 13 — Session note</div><div class="meta">"First step off the left foot noticeably quicker. Testing under pressure next session."</div></div><span class="tag">Posted</span></div>
+        <div class="row"><div><div class="who">Aug 11 — Session note</div><div class="meta">"Great energy. 5-10-5 at 5.9s — best yet. Left-foot work continues."</div></div><span class="tag">Posted</span></div>
+        <div class="row"><div><div class="who">Aug 16 — Attached from a player moment</div><div class="meta">"First start in midfield" · switch of play · evidence for the agility section</div></div><span class="tag blue">Attached</span></div>
+        <h3 style="margin-top:18px;" data-i18n="gNewNote">New note</h3>
         <textarea placeholder="Write for the parent: what you worked on, what you saw, what's next…"></textarea>
         <div style="margin-top:10px;"><button class="btn btn-grass" style="width:auto;">Post Note (demo)</button></div>
       </div>
       <div class="card">
-        <h3>Report Contribution — due Aug 10</h3>
-        <div class="row"><div><div class="who">Agility &amp; Speed section · Nora</div><div class="meta">Your standardized metrics: 5-10-5, 10m sprint, COD rating + summary paragraph</div></div><span class="tag amber">Open</span></div>
+        <h3>Report Contribution — due Sep 07</h3>
+        <div class="row"><div><div class="who">Agility &amp; Speed section · Elle</div><div class="meta">Your standardized metrics: 5-10-5, 10m sprint, COD rating + summary paragraph</div></div><span class="tag amber">Open</span></div>
       </div>
     </div>
 
     <div class="screen" id="s-avail">
-      <h2>Availability</h2>
+      <h2 data-i18n="gAvail">Availability</h2>
       <div class="sub">Parents book from these windows. Changes sync to the PitchPro calendar — you never chase payments or scheduling.</div>
       <div class="note-strip" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;"><span><b>Connected: Google Calendar ✓</b> Your personal busy times automatically block PitchPro bookings, and confirmed sessions push back to your calendar. Two-way sync, no double-booking.</span><span class="tag">Synced 4 min ago</span></div>
       <div class="card">
-        <h3>Week of Jul 20 — Calgary NW Dome</h3>
+        <h3>Week of Aug 17 — Calgary NW Dome</h3>
         <div class="cal">
           <div class="hd">Mon</div><div class="hd">Tue</div><div class="hd">Wed</div><div class="hd">Thu</div><div class="hd">Fri</div><div class="hd">Sat</div><div class="hd">Sun</div>
           <div class="d" style="opacity:.55;">6–8 PM<br>personal ⌁</div><div class="d busy">4–7 PM<br>booked</div><div class="d on">4–7 PM</div><div class="d busy">4–7 PM<br>booked</div><div class="d on">4–6 PM</div><div class="d on">9–12 AM</div><div class="d">—</div>
@@ -278,7 +291,7 @@
     </div>
 
     <div class="screen" id="s-showcase">
-      <h2>My Showcase</h2>
+      <h2 data-i18n="gShowcase">My Showcase</h2>
       <div class="sub">The part of your public guide page families look at before they book &mdash; one featured video, a few photos, and your own words.</div>
 
       <div class="note-strip"><b>Nothing here publishes itself.</b> Anything you connect or upload sits in review until PitchPro clears it. If a child is recognisable in it, the review checks that the parent&rsquo;s written consent is already on file &mdash; without it the item does not go live.</div>
@@ -326,12 +339,12 @@
           </div>
           <div>
             <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;">Once a channel is connected, your public videos are listed here and you tick the one you want families to see first.</p>
-            <table class="sc-dim">
+            <div class="tw"><table class="sc-dim">
               <tr><th>From your channel</th><th style="text-align:right;">Feature</th></tr>
               <tr><td>Your video titles appear here</td><td style="text-align:right;"><span class="tag grey">&#9711;</span></td></tr>
               <tr><td>&hellip;</td><td style="text-align:right;"><span class="tag grey">&#9711;</span></td></tr>
               <tr><td>&hellip;</td><td style="text-align:right;"><span class="tag grey">&#9711;</span></td></tr>
-            </table>
+            </table></div>
             <p style="font-size:12px;color:var(--muted);margin-top:12px;">Available once your channel is connected.</p>
           </div>
         </div>
@@ -372,22 +385,29 @@
 
     <!-- WHO VIEWED YOU -->
     <div class="screen" id="s-views">
-      <h2>Who Viewed You</h2>
-      <div class="sub">Who has looked at your guide page and your showcase in the last 30 days.</div>
+      <h2 data-i18n="gViews">Who Viewed You</h2>
+      <div class="sub" data-i18n="gViewsSub">Who has looked at your guide page and your showcase in the last 30 days.</div>
 
-      <div class="seg2">
-        <button class="on" onclick="tier('free',this)">Free — what you see today</button>
-        <button onclick="tier('plus',this)">PitchPro Plus — preview</button>
+      <!-- DEMO ONLY: this control must not ship. In the product a guide sees one tier,
+           decided server-side. It exists here so the free and paid states can be compared. -->
+      <div class="seg2" data-demo-only="true">
+        <button class="on" onclick="tier('free',this)" data-i18n="gFree">Free — what you see today</button>
+        <button onclick="tier('plus',this)" data-i18n="gPlusPrev">PitchPro Plus — preview</button>
       </div>
+      <p style="font-size:12px;color:var(--muted);margin:-6px 0 16px;"><b style="color:var(--warn);">Demo control.</b> Real guides see one tier, decided on the server. This switch exists so you can compare the two states.</p>
 
       <div class="stat3">
-        <div class="s"><b>47</b><span>Views this month</span></div>
-        <div class="s"><b>31</b><span>People</span></div>
-        <div class="s"><b>6</b><span>Came back twice or more</span></div>
+        <div class="s"><b>47</b><span data-i18n="gVM">Views this month</span></div>
+        <div class="s"><b>31</b><span data-i18n="gPeople">People</span></div>
+        <div class="s"><b>6</b><span data-i18n="gRepeat">Came back twice or more</span></div>
       </div>
 
       <div id="free-view">
         <div class="note-strip"><b>You are on the free tier.</b> You can see how many people looked and when. Names are part of PitchPro Plus.</div>
+        <!-- BUILD NOTE: in this mockup the names below are real text with a CSS blur over them,
+             which means anyone can read them in the page source. In the product the free tier must
+             never receive the names from the server. Blur is a visual treatment, never access control. -->
+        <div class="warnbox" style="margin-bottom:16px;"><b>Build note, not a feature.</b> In this mockup the hidden names are real text behind a blur, so they are readable in the page source. In the product the free tier must never be sent the names at all — the gate belongs on the server.</div>
         <div class="card">
           <h3>Recent viewers · 31 people</h3>
           <div class="vw blur"><span class="av2">MK</span><span class="txt"><b>Martin Kovač</b><span>Academy scout · Hajduk Split youth setup</span></span><span class="end"><span class="n">4</span><span class="l">Views</span></span></div>
@@ -405,9 +425,9 @@
         <div class="note-strip lock"><b>PitchPro Plus preview.</b> Names shown for every viewer who is identifiable. Viewers who chose to browse privately stay private — a subscription buys you information, not other people's privacy.</div>
         <div class="card">
           <h3>Identified · 12 of 31</h3>
-          <div class="vw"><span class="av2" style="background:rgba(255,184,77,.18);color:var(--warn);">MK</span><span class="txt"><b>Martin Kovač</b><span>Academy scout · Hajduk Split youth setup · first view 4 Aug, most recent yesterday · watched your featured video to the end</span></span><span class="end"><span class="n">4</span><span class="l">Views</span></span></div>
-          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">JW</span><span class="txt"><b>Jen Whitfield</b><span>Parent of Ava, U14 · your player since 21 Jul · revealed her name when she enquired</span></span><span class="end"><span class="n">2</span><span class="l">Views</span></span></div>
-          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">RD</span><span class="txt"><b>Rob Delaney</b><span>Parent of Sofia, U12 · enquired 2 Jul</span></span><span class="end"><span class="n">3</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:rgba(255,184,77,.18);color:var(--warn);">MK</span><span class="txt"><b>Martin Kovač</b><span>Academy scout · Hajduk Split youth setup · first view 1 Sep, most recent yesterday · watched your featured video to the end</span></span><span class="end"><span class="n">4</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">JW</span><span class="txt"><b>Jen Whitfield</b><span>Parent of Ava, U14 · your player since 18 Aug · revealed her name when she enquired</span></span><span class="end"><span class="n">2</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">RD</span><span class="txt"><b>Rob Delaney</b><span>Parent of Sofia, U12 · enquired 30 Jul</span></span><span class="end"><span class="n">3</span><span class="l">Views</span></span></div>
           <div class="vw"><span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">SR</span><span class="txt"><b>Sandro Rajic</b><span>Guide on the platform · guides are always identifiable to each other</span></span><span class="end"><span class="n">1</span><span class="l">View</span></span></div>
         </div>
         <div class="card">
@@ -422,7 +442,7 @@
       <div class="warnbox" style="margin-top:16px;"><b>What this screen will never show you.</b> Who viewed a player. Nothing a child does on this platform appears in a guide's analytics, on any tier, ever. If a player has shared a moment with you, you see the moment — you do not see how often they looked at your page, and they do not become a number in your dashboard.</div>
 
       <div class="plus" style="margin-top:16px;">
-        <h3>What PitchPro Plus includes for guides</h3>
+        <h3 data-i18n="gPlusTitle">What PitchPro Plus includes for guides</h3>
         <ul>
           <li><b>Names and identities of the people who viewed you</b> — the whole point of the tier</li>
           <li>Which of your pages and videos they actually watched, and for how long</li>
@@ -434,28 +454,28 @@
     </div>
 
     <div class="screen" id="s-record">
-      <h2>My Record</h2>
+      <h2 data-i18n="gRecord">My Record</h2>
       <div class="sub">What PitchPro holds about you, and what families see before they book.</div>
       <div class="card">
-        <h3>Safeguarding standing</h3>
+        <h3 data-i18n="gStanding">Safeguarding standing</h3>
         <div class="row"><div><div class="who">Background check</div><div class="meta">Vulnerable sector check · renewed 12 Feb 2026 · next due Feb 2029</div></div><span class="tag">Valid</span></div>
         <div class="row"><div><div class="who">Safeguarding training</div><div class="meta">Completed 3 Mar 2026 · annual refresh</div></div><span class="tag">Valid</span></div>
         <div class="row"><div><div class="who">Code of conduct</div><div class="meta">Signed 3 Mar 2026 · includes the player-moments rules</div></div><span class="tag">Signed</span></div>
         <div class="row"><div><div class="who">Concerns raised about you</div><div class="meta">None on record</div></div><span class="tag">Clear</span></div>
       </div>
       <div class="card">
-        <h3>Players who include you</h3>
-        <div class="row"><div><div class="who">Nora · U12</div><div class="meta">Parent approved 14 Apr · player has you on by default</div></div><span class="tag">Comment + react</span></div>
-        <div class="row"><div><div class="who">Sofia · U12</div><div class="meta">Parent approved 2 Jul · react only</div></div><span class="tag blue">React only</span></div>
+        <h3 data-i18n="gPlayers">Players who include you</h3>
+        <div class="row"><div><div class="who">Elle · U12</div><div class="meta">Parent approved 12 May · player has you on by default</div></div><span class="tag">Comment + react</span></div>
+        <div class="row"><div><div class="who">Sofia · U12</div><div class="meta">Parent approved 30 Jul · react only</div></div><span class="tag blue">React only</span></div>
         <div class="row"><div><div class="who">Ava · U14</div><div class="meta">Pending first completed session</div></div><span class="tag grey">View only</span></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You cannot change anything on this list. Parents grant it and players narrow it.</p>
       </div>
       <div class="card">
-        <h3>Promotion links shared with you</h3>
+        <h3 data-i18n="gLinks">Promotion links shared with you</h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">When you stop training a player, your access to their moments ends with the working relationship. If the family wants you to keep following along — or wants your opinion on a trial — they send you a private link with an expiry date on it. Your name is printed across it. Do not forward one.</p>
-        <div class="row"><div><div class="who">Marco · U13 · former player</div><div class="meta">Sent by the parent 2 Aug · expires 1 Sep · 5 moments · no report</div></div><span class="tag">Open</span></div>
-        <div class="row"><div><div class="who">Nora · U12</div><div class="meta">Not needed — you are in her circle and see her moments directly</div></div><span class="tag grey">n/a</span></div>
-        <div class="row"><div><div class="who">Jonah · U15 · former player</div><div class="meta">Link expired 4 Jun · ask the parent if you would like another</div></div><span class="tag grey">Expired</span></div>
+        <div class="row"><div><div class="who">Marco · U13 · former player</div><div class="meta">Sent by the parent 30 Aug · expires 29 Sep · 5 moments · no report</div></div><span class="tag">Open</span></div>
+        <div class="row"><div><div class="who">Elle · U12</div><div class="meta">Not needed — you are in her circle and see her moments directly</div></div><span class="tag grey">n/a</span></div>
+        <div class="row"><div><div class="who">Jonah · U15 · former player</div><div class="meta">Link expired 2 Jul · ask the parent if you would like another</div></div><span class="tag grey">Expired</span></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You cannot request a link from a player, only from a parent, and every time you open one the parent and the player both see it.</p>
       </div>
     </div>
@@ -477,6 +497,58 @@ function tier(t,btn){
   document.querySelectorAll('.seg2 button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   document.getElementById('free-view').style.display = (t==='free')?'block':'none';
   document.getElementById('plus-view').style.display = (t==='plus')?'block':'none';
+}
+
+/* keyboard access for the div-based controls in this mockup */
+document.querySelectorAll('.nav-item,.child-chip,.pilldot,.aud-opt').forEach(function(el){
+  if(!el.hasAttribute('role')) el.setAttribute('role','button');
+  if(!el.hasAttribute('tabindex') && !el.classList.contains('fixed') && !el.classList.contains('blocked')) el.setAttribute('tabindex','0');
+  el.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}
+  });
+});
+document.querySelectorAll('.pilldot').forEach(function(p){
+  var set=function(){p.setAttribute('aria-pressed', p.classList.contains('off')?'false':'true');};
+  set(); p.addEventListener('click',set);
+});
+
+const i18n={en:{},hr:{
+ gApplaud:'👏 Pljesak',
+ gAttach:'📎 Priloži uz Ellin izvještaj',
+ gAttention:'Traži vašu pozornost',
+ gAvail:'Dostupnost',
+ gComment:'💬 Komentiraj',
+ gFree:'Besplatno — što danas vidite',
+ gHistory:'Povijest vaših komentara',
+ gLinks:'Poveznice za promociju podijeljene s vama',
+ gMomSub:'Što vam igrači odluče pokazati između treninga.',
+ gMoments:'Trenuci igrača',
+ gNewNote:'Nova bilješka',
+ gNotes:'Bilješke o igračima',
+ gPeople:'Osoba',
+ gPlayers:'Igrači koji vas uključuju',
+ gPlusPrev:'PitchPro Plus — pregled',
+ gPlusTitle:'Što PitchPro Plus uključuje za vodiče',
+ gRecord:'Moj dosje',
+ gRepeat:'Vratilo se dvaput ili više',
+ gReplyParent:'Umjesto toga odgovorite roditelju',
+ gSessions:'Današnji treninzi',
+ gShowcase:'Moja vitrina',
+ gStanding:'Status zaštite djece',
+ gTitle:'Portal vodiča',
+ gToday:'Danas',
+ gVM:'Pregleda ovaj mjesec',
+ gViews:'Tko je gledao vas',
+ gViewsSub:'Tko je u zadnjih 30 dana pogledao vašu stranicu vodiča i vitrinu.'
+}};
+let base={};
+document.querySelectorAll('[data-i18n]').forEach(el=>{base[el.dataset.i18n]=el.innerHTML;});
+function setLang(l,btn){
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    el.innerHTML = (l==='en')?base[k]:(i18n.hr[k]||base[k]);
+  });
 }
 </script>
 <script src="site-nav.js" defer></script>
