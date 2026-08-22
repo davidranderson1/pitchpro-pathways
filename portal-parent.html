@@ -48,7 +48,8 @@
   .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
   .nav-item .badge-dot.amber{background:var(--warn);color:#231602;}
   .nav-sec{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(157,179,166,.55);padding:18px 20px 6px;font-weight:800;}
-  main{padding:34px 38px;max-width:1050px;}
+  main{padding:34px 38px;min-width:0;max-width:1050px;}
+  @media(max-width:620px){main{padding:24px 16px;}}
   .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:30px;}
   .child-switch{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 8px;}
   .child-chip{padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);}
@@ -163,6 +164,49 @@
   .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
   .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
   .seg2 button.on{background:var(--lock);color:#170f2b;}
+  /* FIRST RUN / INTAKE */
+  .ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 0 22px;}
+  @media(max-width:760px){.ladder{grid-template-columns:1fr 1fr;}}
+  .rung{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;position:relative;}
+  .rung .n{font-family:var(--head);font-size:11px;letter-spacing:.14em;color:var(--muted);font-weight:900;}
+  .rung b{display:block;font-size:13px;margin:5px 0 3px;}
+  .rung small{font-size:11.5px;color:var(--muted);line-height:1.45;display:block;}
+  .rung.now{border-color:var(--grass);background:rgba(46,224,138,.07);}
+  .rung.now .n{color:var(--grass);}
+  .rung.done{border-color:rgba(46,224,138,.35);}
+  .rung.done .n::after{content:' ✓';color:var(--grass);}
+  .rung.locked{opacity:.45;}
+  .intake-box{width:100%;background:var(--pitch);border:1.5px solid rgba(46,224,138,.35);border-radius:14px;padding:16px 18px;color:var(--white);font-family:var(--body);font-size:15.5px;line-height:1.6;min-height:132px;resize:vertical;}
+  .intake-box::placeholder{color:rgba(157,179,166,.7);}
+  .intake-box:focus{outline:2px solid var(--grass);outline-offset:2px;}
+  .chipset{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12.5px;color:var(--muted);cursor:pointer;text-align:left;font-family:var(--body);}
+  .chip:hover{border-color:var(--grass);color:var(--white);}
+  .chip:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
+  .heard{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .hchip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 8px 6px 13px;font-size:12.5px;font-weight:600;background:rgba(46,224,138,.12);color:var(--grass);border:1px solid rgba(46,224,138,.3);}
+  .hchip.blue{background:rgba(77,159,255,.12);color:var(--blue);border-color:rgba(77,159,255,.3);}
+  .hchip.amber{background:rgba(255,184,77,.12);color:var(--warn);border-color:rgba(255,184,77,.32);}
+  .hchip.lockc{background:rgba(183,155,255,.12);color:var(--lock);border-color:rgba(183,155,255,.32);}
+  .hchip .x{border:none;background:rgba(0,0,0,.25);color:inherit;border-radius:50%;width:18px;height:18px;line-height:1;font-size:12px;cursor:pointer;font-family:var(--body);}
+  .hgroup{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 2px;}
+  .match{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px 19px;margin-bottom:10px;}
+  .match.top{border-color:var(--grass);background:rgba(46,224,138,.06);}
+  .match .rank{font-family:var(--head);font-size:12px;font-weight:900;color:var(--muted);width:20px;flex-shrink:0;padding-top:2px;}
+  .match.top .rank{color:var(--grass);}
+  .match .mb{flex:1;min-width:0;}
+  .match .mb b{display:block;font-size:15px;margin-bottom:3px;}
+  .match .mb .why{font-size:13px;color:#cfe0d6;margin:6px 0 0;}
+  .match .mb .why q{color:var(--grass);font-style:italic;}
+  .match .price{text-align:right;flex-shrink:0;}
+  .match .price b{font-family:var(--head);font-size:17px;display:block;}
+  .match .price span{font-size:11.5px;color:var(--muted);}
+  .honest{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.3);border-radius:12px;padding:15px 18px;font-size:13.5px;color:#ffe0ad;margin-top:14px;}
+  .honest b{color:var(--warn);}
+  .privacy-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;}
+  .demo-toggle{display:flex;gap:5px;background:var(--card);border:1px solid rgba(255,184,77,.35);border-radius:999px;padding:4px;}
+  .demo-toggle button{border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;cursor:pointer;}
+  .demo-toggle button.on{background:var(--warn);color:#231602;}
   .nav-item:focus-visible,.child-chip:focus-visible,.pilldot:focus-visible,.seg button:focus-visible,.seg2 button:focus-visible,.lang button:focus-visible,.btn:focus-visible,.btn-sm:focus-visible,.aud-opt:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}}
 </style>
@@ -189,6 +233,7 @@
 <div class="shell">
   <aside>
     <div class="side-brand"><span class="crest">🏆</span> PITCHPRO<br>PATHWAYS</div>
+    <div class="nav-item" data-s="start" data-i18n="navStart">Get Started <span class="badge-dot amber">1</span></div>
     <div class="nav-item active" data-s="dash" data-i18n="navDash">Dashboard</div>
     <div class="nav-item" data-s="player" data-i18n="navPlayer">Player Profile</div>
     <div class="nav-item" data-s="path" data-i18n="navPath">Pathway</div>
@@ -207,9 +252,66 @@
         <span class="child-chip" role="button" tabindex="0" aria-pressed="false" onclick="switchChild(this,'Adin')">Adin (U10)</span>
       </div>
       <span id="scopeNote" class="scope-note" hidden data-i18n="scopeNote">This screen covers both children</span>
-      <div class="lang">
-        <button class="on" onclick="setLang('en',this)">EN</button>
-        <button onclick="setLang('hr',this)">HR</button>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div class="demo-toggle" title="Demo control — not part of the product">
+          <button onclick="go('start')" data-i18n="dayOne">Day one</button>
+          <button class="on" onclick="go('dash')" data-i18n="weekEleven">Week 11</button>
+        </div>
+        <div class="lang">
+          <button class="on" onclick="setLang('en',this)">EN</button>
+          <button onclick="setLang('hr',this)">HR</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- FIRST RUN -->
+    <div class="screen" id="s-start" data-scope="family">
+      <h2 data-i18n="startTitle">Let's build Elle's pathway</h2>
+      <div class="sub" data-i18n="startSub">Five minutes now, and the rest of this portal shapes itself around what you tell us. There is nothing to fill in twice.</div>
+
+      <div class="ladder">
+        <div class="rung now" id="pp-rung1"><span class="n">Step 1</span><b data-i18n="rung1">Tell us the goal</b><small data-i18n="rung1s">In your own words</small></div>
+        <div class="rung locked" id="pp-rung2"><span class="n">Step 2</span><b data-i18n="rung2">Agree the pathway</b><small data-i18n="rung2s">We suggest, you decide</small></div>
+        <div class="rung locked"><span class="n">Step 3</span><b data-i18n="rung3">Book the first session</b><small data-i18n="rung3s">One guide, one date</small></div>
+        <div class="rung locked"><span class="n">Step 4</span><b data-i18n="rung4">Set up Elle's account</b><small data-i18n="rung4s">Age 10 and over</small></div>
+        <div class="rung locked"><span class="n">Step 5</span><b data-i18n="rung5">Consents</b><small data-i18n="rung5s">Two minutes, plain English</small></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <h3 data-i18n="intakeH">What are you hoping for?</h3>
+        <p style="font-size:14px;color:#cfe0d6;margin-bottom:14px;" data-i18n="intakeP">Not a form. Just tell us about your child and what you would like to be different in a year. What they are like on the pitch, what gets in the way, what they say about it themselves. A couple of sentences is plenty.</p>
+        <label for="pp-text" class="sr-only" style="position:absolute;left:-9999px;">What are you hoping for?</label>
+        <textarea id="pp-text" class="intake-box" placeholder="Elle is eleven and plays midfield for her club. She is one of the quickest in her team but she will not use her left foot at all, and she went off twice last season with the same knee. She has started saying she is not good enough for the A team. She asks to train on the weekends, so this is coming from her, not from us."></textarea>
+        <div class="chipset">
+          <button class="chip" onclick="ppChip('pp','She wants to make the A team next season. ')" data-i18n="chip1">She wants to make the A team next season</button>
+          <button class="chip" onclick="ppChip('pp','He keeps getting injured and I do not know why. ')" data-i18n="chip2">He keeps getting injured and I do not know why</button>
+          <button class="chip" onclick="ppChip('pp','Her confidence drops the moment there is pressure. ')" data-i18n="chip3">Her confidence drops under pressure</button>
+          <button class="chip" onclick="ppChip('pp','We are moving to Croatia and want him to keep playing properly. ')" data-i18n="chip4">We are moving to Croatia</button>
+          <button class="chip" onclick="ppChip('pp','Honestly I just want him to enjoy it and stay active. ')" data-i18n="chip5">I just want him to enjoy it</button>
+          <button class="chip" onclick="ppChip('pp','A scout mentioned academy trials and we have no idea what that means. ')" data-i18n="chip6">A scout mentioned academy trials</button>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <button class="btn btn-grass" style="width:auto;" onclick="ppGo('pp')" data-i18n="readBack">Read this back to me</button>
+          <button class="btn btn-ghost" onclick="go('dash')" data-i18n="skipFor">I would rather just browse the programmes</button>
+        </div>
+        <p class="privacy-note" data-i18n="intakePrivacy"><b style="color:var(--lock);">What happens to what you write.</b> It stays in your family account. It is used once, to suggest a starting point, and you see exactly how it was read before anything is applied. It is never shown to a guide unless you send it, and you can delete the original text the moment the pathway is agreed. If you mention anything medical, that belongs on the health consent form instead — it is protected differently there.</p>
+      </div>
+
+      <div id="pp-result" hidden></div>
+
+      <div class="grid g2" style="margin-top:16px;">
+        <div class="card">
+          <h3 data-i18n="whileHere">While you are here</h3>
+          <div class="row"><div><div class="who" data-i18n="act1">Ask Elle the same question</div><div class="meta" data-i18n="act1s">Her answer arrives in her own words, beside yours. They are often different, and that difference is the useful part.</div></div><span class="tag blue" data-i18n="send">Send</span></div>
+          <div class="row"><div><div class="who" data-i18n="act2">Book a fifteen-minute call instead</div><div class="meta" data-i18n="act2s">If writing it down feels odd, say it out loud to a person</div></div><span class="tag" data-i18n="book2">Book</span></div>
+          <div class="row"><div><div class="who" data-i18n="act3">See what a Player Report looks like</div><div class="meta" data-i18n="act3s">A real one, with the numbers explained</div></div><span class="tag" data-i18n="view">View</span></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="noPressure">No pressure to decide today</h3>
+          <p style="font-size:13.5px;color:var(--muted);" data-i18n="noPressureP">Everything above can wait. Nothing is charged until you book a session, there is no subscription to start, and the pathway we suggest is a suggestion — families change it constantly and that is normal.</p>
+          <p style="font-size:13.5px;color:var(--muted);margin-top:10px;" data-i18n="noPressureP2">If you do only one thing, do the first box. It is the difference between a portal that shows you a catalogue and one that knows what you are actually here for.</p>
+        </div>
       </div>
     </div>
 
@@ -788,6 +890,24 @@ const i18n={
  hr:{portalTitle:'Obiteljski portal',portalSub:'Prijavite se i pratite put svog djeteta. Termini, izvještaji, poruke i plaćanja na jednom sigurnom mjestu.',email:'E-mail',password:'Lozinka',enterDemo:'Uđi u demo portal',loginNote:'Prijava nije aktivna u ovom pregledu. Prava prijava s dvofaktorskom zaštitom stiže s platformom.',
  navDash:'Početna',navPlayer:'Profil igrača',navPath:'Put razvoja',navBook:'Termini',navPay:'Plaćanja',navMsg:'Poruke i dokumenti',
  navSecPlayer:'Računi igrača · Elle',
+ navStart:'Početak',dayOne:'Prvi dan',weekEleven:'11. tjedan',
+ startTitle:'Izgradimo Ellin put',startSub:'Pet minuta sada i ostatak portala oblikuje se prema onome što nam kažete. Ništa ne morate upisivati dvaput.',
+ rung1:'Recite nam cilj',rung1s:'Svojim riječima',rung2:'Dogovorimo put',rung2s:'Mi predlažemo, vi odlučujete',
+ rung3:'Rezervirajte prvi termin',rung3s:'Jedan vodič, jedan datum',rung4:'Postavite Ellin račun',rung4s:'Od 10 godina',
+ rung5:'Privole',rung5s:'Dvije minute, jednostavnim jezikom',
+ intakeH:'Čemu se nadate?',
+ intakeP:'Ovo nije obrazac. Samo nam recite kakvo je vaše dijete i što biste željeli da za godinu dana bude drukčije. Kakvo je na terenu, što ga koči, što samo kaže o tome. Dvije rečenice su sasvim dovoljne.',
+ chip1:'Želi ući u prvu postavu sljedeće sezone',chip2:'Stalno se ozljeđuje, a ne znam zašto',chip3:'Samopouzdanje joj padne čim ima pritiska',
+ chip4:'Selimo se u Hrvatsku',chip5:'Samo želim da uživa',chip6:'Skaut je spomenuo probe za akademiju',
+ readBack:'Pročitaj mi to natrag',skipFor:'Radije bih samo pregledao programe',
+ intakePrivacy:'<b style="color:var(--lock);">Što se događa s onim što napišete.</b> Ostaje u vašem obiteljskom računu. Koristi se jednom, da predloži polazište, a vi točno vidite kako je pročitano prije nego se išta primijeni. Vodiču se ne prikazuje osim ako ga sami ne pošaljete, a izvorni tekst možete obrisati čim se put dogovori. Ako spomenete nešto medicinsko, to pripada na obrazac zdravstvene privole — ondje je drukčije zaštićeno.',
+ whileHere:'Dok ste ovdje',
+ act1:'Postavite Elle isto pitanje',act1s:'Njezin odgovor stiže njezinim riječima, uz vaš. Često se razlikuju, i upravo je ta razlika korisna.',send:'Pošalji',
+ act2:'Radije rezervirajte petnaestominutni poziv',act2s:'Ako vam je čudno pisati, recite to naglas osobi',book2:'Rezerviraj',
+ act3:'Pogledajte kako izgleda izvještaj igrača',act3s:'Pravi, s objašnjenim brojkama',
+ noPressure:'Nema pritiska da odlučite danas',
+ noPressureP:'Sve navedeno može pričekati. Ništa se ne naplaćuje dok ne rezervirate termin, nema pretplate koju treba pokrenuti, a put koji predlažemo je prijedlog — obitelji ga stalno mijenjaju i to je normalno.',
+ noPressureP2:'Ako učinite samo jedno, ispunite prvi okvir. To je razlika između portala koji vam pokazuje katalog i onoga koji zna zašto ste zapravo došli.',
  scopeNote:'Ovaj zaslon obuhvaća oboje djece',thChild:'Dijete',enrollment2:'Trenutni upis · Adin',
  payNote:'Popust za drugo dijete primjenjuje se automatski — Adinov Foundation Training obračunat je po cijeni za drugo dijete. Ništa se ne naplaćuje s kartice bez računa koji se ovdje pojavi iste minute.',
  adinBookNote:'Elline treninge agilnosti i Adinovu Foundation grupu utorkom drži ista dvorana — kalendar označava preklapanje pa idete samo jednom.',
@@ -824,7 +944,7 @@ const i18n={
  vViews:'Pregleda ovog tjedna',vPeople:'Osoba, sve imenovane',vUnknown:'Nepoznatih gledatelja',
  vElle:'Elle · U12',vNick:'Odobreni vodič · 14 treninga · dvaput pogledao "Volej slabijom nogom", jednom "Prvi start u sredini"',
  vSandro:'Odobreni vodič · otvorio njezin profil i srpanjski izvještaj prije rezervacije ponovne procjene',
- vGrego:'Poveznica za promociju #EL-0812 koju ste izradili za probu za kamp u Splitu · 4 trenutka, bez izvještaja · istječe 30. kolovoza',
+ vGrego:'Poveznica za promociju #EL-0812 koju ste izradili za probu za kamp u Splitu · 4 trenutka, bez izvještaja · isteče 30. kolovoza',
  vDavid:'Drugi roditelj na obiteljskom računu',
  vAdin:'Adin · U10 · iznimka ispod 10 godina',vYouOnly:'Vi, i samo vi',vAdinSub:'Njegov je račun zaključan samo na obitelj, pa ovaj zaslon nema što prijaviti i neće imati dok ima devet godina.',
  vWatch:'Vrijedno pogleda',
@@ -868,7 +988,7 @@ const i18n={
  builder:'Izradi poveznicu',
  lkWho:'Za koga je',lkWhoSub:'Ime i uloga, koje upisujete vi. Ime je ispisano preko svake stranice poveznice, pa je proslijeđena poveznica odmah očita.',
  lkWhy:'Razlog',lkWhySub:'Bilježi se za vašu evidenciju i prikazuje se Elle.',
- lkExpiry:'Istječe',lkExpirySub:'7, 30 ili 90 dana. Opcije "nikad" nema.',
+ lkExpiry:'Isteče',lkExpirySub:'7, 30 ili 90 dana. Opcije "nikad" nema.',
  lkPass:'Pristupni kod',lkPassSub:'Šest znamenki, šalje se odvojeno. Preporučeno za svakoga koga niste upoznali.',
  lkDl:'Dopusti preuzimanje snimaka',lkDlSub:'Isključeno znači samo gledanje, u pregledniku, s vodenim žigom.',
  lkShows:'Što nositelj poveznice vidi',
@@ -877,7 +997,7 @@ const i18n={
  pfReport:'Sažetak izvještaja igrača (Motion Age, vrijeme šatla, dijelovi vodiča)',pfReportSub:'Isključeno kao zadano. Razumno za skauta kojemu ste se sami obratili; ne i za nekoga tko se obratio vama.',
  pfContact:'Vaši kontaktni podaci',pfContactSub:'Isključeno znači da upiti dolaze preko PitchProa, a ne na vaš telefon.',
  pfNever:'Nikada se ne prikazuje, nema postavke',pfNeverSub:'Prezime · škola · klub · grad stanovanja · dvorana i termini · svaka fotografija s drugim djetetom · bilo što iz trenutka označenog samo za obitelj · bilo što što Elle nije sama predložila',
- lkActive:'Postojeće poveznice',thFor:'Za koga',thReason:'Razlog',thExpires:'Istječe',thOpens:'Otvoreno',thContent:'Prikazuje',
+ lkActive:'Postojeće poveznice',thFor:'Za koga',thReason:'Razlog',thExpires:'Isteče',thOpens:'Otvoreno',thContent:'Prikazuje',
  roleGuide:'Vodič · Lovrencsics Academy',rsnCamp:'Proba za kamp u Splitu',shows4:'4 trenutka · bez izvještaja',revoke:'Opozovi',
  roleScout:'Klupski skaut',rsnTrial:'Upit za probu U13',expired:'Isteklo 12. srpnja',shows6:'6 trenutaka · izvještaj uključen',closed2:'Zatvoreno',
  roleFormer:'Bivši vodič · sezona 2025.',rsnCatch:'Želio je vidjeti kako napreduje',expired2:'Isteklo 4. lipnja',shows3:'3 trenutka · bez izvještaja',
@@ -891,7 +1011,7 @@ const i18n={
  ctlReport:'Prijavi zabrinutost sigurnosnom timu',ctlReportSub:'Osoba, ne obrazac — odgovor u jednom radnom danu',report:'Prijavi',
  dataRights2:'Prava na podatke: PIPEDA (Kanada) i GDPR (EU obitelji). Za dječji račun primjenjujemo i pravilo iz čl. 8 GDPR-a — u Hrvatskoj privolu drži roditelj do 16. godine. privacy@pitchpropathways.com',
  pathTitle:'Put razvoja — Elle',pathSub:'Plan puta — gdje je bila, kamo ide.',progressSince:'Napredak od početka',famMeeting:'Obiteljski sastanak',
- meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz ciljeve koje Elle ima u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokoučinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
+ meterTitle:'Put do profesionalca — razvojna faza',meterExplain:'<b style="color:var(--white);">Učenje treniranja (9–12):</b> zlatno doba učenja vještina. Fokus je na tehničkim osnovama, koordinaciji i ljubavi prema igri — mjereno kroz ciljeve koje Elle ima u izvještaju: prvi dodir (B+ ✓), asimetrija ispod 10% (✓), slabija noga (u tijeku).',streamTag:'Razina: Natjecateljska',streamNote:'Ulazak u visokočinkovitu razinu obično se procjenjuje u fazi Treniranje treniranja — ponovne procjene grade taj put.',meterAlign:'Usklađeno s Canada Soccer LTPD · Europsko mapiranje faza kroz Lovrencsics Academy',
  calFeed:'Obiteljski kalendar povezan.',calFeedSub:'Svi potvrđeni termini automatski se pojavljuju u vašem Google / Apple / Outlook kalendaru.',addCal:'Dodaj u kalendar',
  bookTitle:'Termini',bookSub:'Sve rezervacije idu kroz PitchPro — jedan kalendar, jedno mjesto.',upcoming:'Nadolazeći',past:'Nedavni',confirmed:'Potvrđeno',pending:'Na čekanju',done:'Odrađeno',cancelNote:'Otkazivanje do 24h prije termina je besplatno. Kasnija otkazivanja slijede pravila iz ugovora.',
  payTitle:'Plaćanja',paySub:'Sva plaćanja na jednom mjestu — s računima. Vodiči nikada ne primaju plaćanja izravno.',enrollment:'Trenutni upis',payMethod:'Način plaćanja',payMethodNote:'Sigurno pohranjeno kod pružatelja plaćanja. PitchPro osoblje nikada ne vidi broj kartice.',receipts:'Računi',thDate:'Datum',thItem:'Stavka',thAmount:'Iznos',receipt:'Račun',
@@ -921,6 +1041,166 @@ document.querySelectorAll('.pilldot').forEach(function(p){
   var set=function(){p.setAttribute('aria-pressed', p.classList.contains('off')?'false':'true');};
   set(); p.addEventListener('click',set);
 });
+
+/* ------------------------------------------------------------------
+   PATHWAY INTAKE — scripted demo interpreter.
+   In the product this is a model call. Here it is deterministic keyword
+   matching so the demo works offline and gives the same answer twice.
+   Nothing is sent anywhere; the text never leaves the page.
+   ------------------------------------------------------------------ */
+var PP_CATALOGUE = [
+  {id:'screen', name:'Movement Intelligence Screening', price:'$249', commit:'one session + report', guide:'Sandro Rajic'},
+  {id:'found',  name:'Foundation Training',            price:'$149', commit:'4 weeks · 2× weekly',  guide:'Coach Nick'},
+  {id:'mental', name:'Mental Edge',                    price:'$199', commit:'6 weeks · 1-to-1',      guide:'Dr. Lisa Chen'},
+  {id:'total',  name:'Total Athlete',                  price:'$349', commit:'8 weeks · 3× weekly',   guide:'Coach Nick'},
+  {id:'scout',  name:'Scout Ready Program',            price:'$399', commit:'8 weeks + 2 showcases', guide:'Sarah Williams'},
+  {id:'camp',   name:'Split Summer Camp',              price:'from €600', commit:'1 week · Croatia', guide:'Grego'},
+  {id:'fast',   name:'Academy Fast Track',             price:'$799', commit:'12 weeks · 5× weekly',  guide:'multiple'}
+];
+
+var PP_RULES = [
+  {sig:'injury',   group:'Focus',      label:'Injury history or niggles', cls:'amber',
+   words:['injur','hamstring','knee','ankle','groin','pain','hurt','sore','recover'], picks:['screen','total']},
+  {sig:'growth',   group:'Focus',      label:'Growing fast', cls:'amber',
+   words:['grow','growth','shot up','clumsy','coordination','awkward'], picks:['screen','found']},
+  {sig:'speed',    group:'Focus',      label:'Speed and fitness', cls:'',
+   words:['slow','speed','quick','fast','fitness','stamina','tired','pace','agility','strong','strength'], picks:['total','screen']},
+  {sig:'technical',group:'Focus',      label:'Technical skills', cls:'',
+   words:['left foot','weak foot','touch','passing','pass','shooting','shoot','dribbl','control','technique','skill'], picks:['found','camp']},
+  {sig:'mental',   group:'Focus',      label:'Confidence and mindset', cls:'',
+   words:['confidence','confident','nervous','scared','afraid','shy','pressure','anxious','focus','gives up','give up','frustrat','head drops','believe','not good enough','good enough','doubt','freeze','bottle','worried','worry','hides','hiding','beats himself','beats herself'], picks:['mental','found']},
+  {sig:'academy',  group:'Ambition',   label:'Academy or trial ambition', cls:'blue',
+   words:['academy','trial','scout','showcase','signed','sign for','a team','first team','represent','provincial','national'], picks:['screen','scout']},
+  {sig:'pro',      group:'Ambition',   label:'Professional aspiration', cls:'blue',
+   words:['pro','professional','contract','premier','mls','scholarship','college','university'], picks:['screen','fast']},
+  {sig:'enjoy',    group:'Ambition',   label:'Enjoyment and belonging', cls:'',
+   words:['enjoy','fun','love the game','friends','happy','confidence','healthy','active'], picks:['found','mental']},
+  {sig:'croatia',  group:'Constraints',label:'Croatia connection', cls:'lockc',
+   words:['croatia','split','europe','european','hajduk','abroad','moving'], picks:['camp']},
+  {sig:'budget',   group:'Constraints',label:'Budget matters', cls:'lockc',
+   words:['afford','budget','expensive','cost','cheap','money'], picks:['found']},
+  {sig:'time',     group:'Constraints',label:'Limited time', cls:'lockc',
+   words:['busy','once a week','one night','weekend only','travel','far','drive'], picks:['found']},
+  {sig:'childled', group:'Who is driving it', label:'Child-led — they asked for this', cls:'',
+   words:['he wants','she wants','they want','he asked','she asked','he keeps','she keeps','his idea','her idea','he asks','she asks','asks to','asking to','begs','wants to go','his own idea','her own idea','pushed for'], picks:[]},
+  {sig:'parentled',group:'Who is driving it', label:'Parent-led — worth checking with them', cls:'amber',
+   words:['i want','we want','i think','i would like','we would like','i need','we need'], picks:[]}
+];
+
+var PP_FLAGS = [
+  {sig:'health', words:['asthma','diagnos','adhd','autis','concussion','medication','condition','allerg','epilep','diabet'],
+   text:'You mentioned something health-related. That is treated as medical information from the moment you type it — it is not stored with this note, and it belongs on the health consent form where it is properly protected.'},
+  {sig:'pressure', words:['has to','must make','only chance','last chance','depends on','no choice','make it or'],
+   text:'One thing worth saying plainly: nothing at this age decides a career. The strongest predictor of a child still playing at eighteen is whether they enjoyed it at eleven. We will build towards the ambition, but we will not tell you it is a certainty.'}
+];
+
+function ppInterpret(text){
+  var t = (text||'').toLowerCase();
+  var hits = [], picks = {}, flags = [];
+  PP_RULES.forEach(function(r){
+    var found = r.words.filter(function(w){ return t.indexOf(w) >= 0; });
+    if(found.length){
+      hits.push({group:r.group, label:r.label, cls:r.cls, quote:found[0], sig:r.sig});
+      r.picks.forEach(function(p,i){ picks[p] = (picks[p]||0) + (2 - i*0.5) + found.length*0.2; });
+    }
+  });
+  PP_FLAGS.forEach(function(f){
+    var found = f.words.filter(function(w){ return t.indexOf(w) >= 0; });
+    if(found.length) flags.push(f);
+  });
+  if(hits.some(function(h){return h.sig==='childled';}) && hits.some(function(h){return h.sig==='parentled';})){
+    hits = hits.filter(function(h){ return h.sig !== 'parentled'; });
+  }
+  var ranked = Object.keys(picks).sort(function(a,b){ return picks[b]-picks[a]; }).slice(0,3);
+  return {hits:hits, picks:ranked, flags:flags, words:t.split(/\s+/).filter(Boolean).length};
+}
+
+function ppRender(res, prefix){
+  var out = document.getElementById(prefix+'-result');
+  if(!res.hits.length && !res.picks.length){
+    out.innerHTML = '<div class="honest"><b>I did not get enough to go on.</b> A sentence or two about what your child is like, and what you are hoping changes, is plenty. There is no wrong answer and nobody is marking it.</div>';
+    out.hidden = false; out.scrollIntoView({behavior:'smooth', block:'start'}); return;
+  }
+  var groups = {};
+  res.hits.forEach(function(h){ (groups[h.group] = groups[h.group] || []).push(h); });
+  var html = '<div class="card" style="margin-bottom:16px;"><h3>Here is what I heard</h3>'
+    + '<p style="font-size:13.5px;color:var(--muted);">Nothing has been saved or applied yet. Remove anything I got wrong — the matches below update as you do.</p>';
+  Object.keys(groups).forEach(function(g){
+    html += '<div class="hgroup">'+g+'</div><div class="heard">';
+    groups[g].forEach(function(h,i){
+      html += '<span class="hchip '+h.cls+'">'+h.label
+           +' <button class="x" title="Remove" onclick="ppDrop(\''+prefix+'\',\''+h.sig+'\')">×</button></span>';
+    });
+    html += '</div>';
+  });
+  html += '<p class="privacy-note">Read from '+res.words+' words you wrote. This is a scripted demo of the interpretation step — in the product a model does this and its reading is always shown back to you like this, never applied silently.</p></div>';
+
+  html += '<div class="card" style="margin-bottom:16px;"><h3>What that points to</h3>';
+  res.picks.forEach(function(id, i){
+    var p = PP_CATALOGUE.filter(function(c){ return c.id===id; })[0];
+    if(!p) return;
+    var reason = res.hits.filter(function(h){
+      return PP_RULES.filter(function(r){ return r.sig===h.sig && r.picks.indexOf(id)>=0; }).length;
+    })[0];
+    html += '<div class="match'+(i===0?' top':'')+'">'
+      + '<span class="rank">'+(i+1)+'</span>'
+      + '<span class="mb"><b>'+p.name+'</b><span style="font-size:12.5px;color:var(--muted);">'+p.commit+' · with '+p.guide+'</span>'
+      + (reason ? '<p class="why">Matched because you wrote <q>'+reason.quote+'</q> — '+reason.label.toLowerCase()+'.</p>' : '')
+      + '</span>'
+      + '<span class="price"><b>'+p.price+'</b><span>'+(i===0?'start here':'after that')+'</span></span></div>';
+  });
+  html += '</div>';
+
+  res.flags.forEach(function(f){ html += '<div class="honest"><b>Worth saying:</b> '+f.text+'</div>'; });
+
+  var isPro = res.hits.some(function(h){ return h.sig==='pro'; });
+  if(isPro){
+    html += '<div class="honest"><b>What we will not promise.</b> No programme on this platform produces a professional contract, and anyone who tells you otherwise is selling something. What we can do is measure where your child is, remove what is holding them back, and put them in front of people who know what they are looking at. The rest is theirs.</div>';
+  }
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">'
+    + '<button class="btn btn-grass" style="width:auto;">Book the first one</button>'
+    + '<button class="btn btn-ghost">Talk it through with someone first</button>'
+    + '<button class="btn btn-ghost" onclick="ppReset(\''+prefix+'\')">Start again</button></div>';
+  out.innerHTML = html;
+  out.hidden = false;
+  out.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+var ppState = {};
+function ppGo(prefix){
+  var txt = document.getElementById(prefix+'-text').value;
+  ppState[prefix] = {text:txt, dropped:[]};
+  var res = ppInterpret(txt);
+  ppState[prefix].res = res;
+  ppRender(res, prefix);
+  var r1 = document.getElementById(prefix+'-rung1'), r2 = document.getElementById(prefix+'-rung2');
+  if(r1){ r1.classList.remove('now'); r1.classList.add('done'); }
+  if(r2){ r2.classList.remove('locked'); r2.classList.add('now'); }
+}
+function ppDrop(prefix, sig){
+  var st = ppState[prefix]; if(!st) return;
+  st.res.hits = st.res.hits.filter(function(h){ return h.sig !== sig; });
+  var picks = {};
+  st.res.hits.forEach(function(h){
+    var r = PP_RULES.filter(function(x){ return x.sig===h.sig; })[0];
+    if(r) r.picks.forEach(function(p,i){ picks[p] = (picks[p]||0) + (2 - i*0.5); });
+  });
+  st.res.picks = Object.keys(picks).sort(function(a,b){ return picks[b]-picks[a]; }).slice(0,3);
+  ppRender(st.res, prefix);
+}
+function ppReset(prefix){
+  document.getElementById(prefix+'-text').value = '';
+  var out = document.getElementById(prefix+'-result'); out.hidden = true; out.innerHTML='';
+  var r1 = document.getElementById(prefix+'-rung1'), r2 = document.getElementById(prefix+'-rung2');
+  if(r1){ r1.classList.add('now'); r1.classList.remove('done'); }
+  if(r2){ r2.classList.add('locked'); r2.classList.remove('now'); }
+  document.getElementById(prefix+'-text').focus();
+}
+function ppChip(prefix, text){
+  var box = document.getElementById(prefix+'-text');
+  box.value = (box.value ? box.value.replace(/\s*$/,' ') : '') + text;
+  box.focus();
+}
 </script>
 <script src="site-nav.js" defer></script>
 </body>
