@@ -247,44 +247,71 @@
 
 <!-- ============ VIEW 2 — DEVICES ============ -->
 <section class="view" id="v2">
-  <div class="kicker">Manufacturer collaboration</div>
-  <h2>Three <span>Data Partners</span><span class="mock">Access status verified 21 Aug 2026</span></h2>
-  <p class="lead">What each manufacturer actually measures, and what it would take to get that data into the Brain. The access column is the honest one — only one of the three publishes a developer interface anyone can sign up for today.</p>
+  <div class="kicker">Manufacturer collaboration · verified 22 August 2026</div>
+  <h2>What We Can Actually <span>Connect To</span></h2>
+  <p class="lead">Three questions decide every integration: what the source measures, whether a machine can fetch it without a human exporting a file, and what it costs in time to get permission. The tables below answer all three honestly. Nothing here has been contacted yet.</p>
 
-  <div class="grid">
-    <div class="card">
-      <span class="status todo">Partnership required</span>
-      <span class="src" style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--grass);">Playermaker</span>
-      <h3 style="margin-top:6px;">Boot-mounted motion sensor</h3>
-      <p>Straps to both boots. Classifies every ball touch and every step — around 25 technical and physical metrics including ball involvement, two-footed use, release time, kicking velocity, top speed, sprints, accelerations and decelerations.</p>
-      <p style="margin-top:10px;color:#cfe0d6;"><b>Access:</b> no public developer documentation found. There is precedent for manufacturer-to-platform data sharing — Playermaker performance data has been integrated into Pixellot's automated video analytics — so the route is a commercial data-sharing agreement, not a self-serve key.</p>
-    </div>
-
-    <div class="card">
-      <span class="status ok">Public API v2</span>
-      <span class="src" style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);">Ōura</span>
-      <h3 style="margin-top:6px;">Smart ring</h3>
-      <p>Photoplethysmography, body temperature, blood-oxygen and motion sensing overnight. Daily Sleep, Activity, Readiness, Stress and Resilience scores, each broken into contributors already normalised 1–100.</p>
-      <p style="margin-top:10px;color:#cfe0d6;"><b>Access:</b> documented REST API version 2 with personal access tokens and OAuth — endpoints for daily readiness, daily sleep, daily activity, daily stress and more. The one device we could prototype against this week.</p>
-    </div>
-
-    <div class="card">
-      <span class="status todo">Partnership required</span>
-      <span class="src" style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);">Plantiga</span>
-      <h3 style="margin-top:6px;">Sensor insole</h3>
-      <p>Sits under the insole of any shoe or boot. Impact and push-off asymmetry, ground contact time, total g-load, mechanical load variability, movement classification (walk, run, jump, cut, accelerate, decelerate) and distance by intensity band.</p>
-      <p style="margin-top:10px;color:#cfe0d6;"><b>Access:</b> no public developer documentation found on the site. Positioned explicitly as the layer that fills the gap between motion capture, force plates and GPS — which is exactly the Brain's argument, and the reason they are the most natural partner of the three.</p>
-    </div>
-  </div>
-
-  <h3 style="margin-top:36px;font-size:15px;">Live connection panel<span class="mock">Mockup — no data is flowing</span></h3>
+  <h3 style="margin-top:34px;font-size:15px;">1 · Devices that measure the athlete</h3>
   <div class="scroll">
   <table>
-    <thead><tr><th>Device</th><th>Status</th><th>Last sync</th><th>Cadence</th><th>Consent held</th><th>Feeds</th></tr></thead>
+    <thead><tr><th>Source</th><th>What it gives the Brain</th><th>How the data moves</th><th>Access today</th><th>Youth constraint</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag pm">Playermaker</span></td><td>Touch-level technical data — ball involvement, two-footed use, release time, kicking velocity — plus step-level speed and acceleration</td><td>Boot sensor → their app → their cloud</td><td style="color:var(--amber);">No public developer documentation. Commercial agreement required. Precedent exists: their data already feeds Pixellot's video analytics</td><td>Sold for youth use; terms to be read</td></tr>
+      <tr><td><span class="tag pl">Plantiga</span></td><td>Impact and push-off asymmetry, ground contact, mechanical load variability, total g-load, movement classification</td><td>Insole → phone → their cloud</td><td style="color:var(--amber);">No public developer documentation. Commercial agreement required. Positioned as the layer between motion capture, force plates and global positioning systems — the closest fit to the Brain</td><td>To be confirmed with them</td></tr>
+      <tr><td><span class="tag ou">Ōura</span></td><td>Readiness, sleep, heart-rate variability, resting heart rate, stress and resilience — contributors already scored 1–100</td><td>Ring → phone → their cloud</td><td style="color:var(--grass);">Public REST API version 2. Personal access tokens and OAuth. Buildable this week</td><td style="color:var(--red);"><b>Account holder must be 18</b></td></tr>
+      <tr><td><span class="tag br">Garmin</span></td><td>Daily activity, heart rate, sleep, stress, training load from watches many families already own</td><td>Watch → Garmin Connect cloud</td><td style="color:var(--grass);">Public OAuth API with push callbacks</td><td>Parent-held account</td></tr>
+      <tr><td><span class="tag br">WHOOP</span></td><td>Recovery, strain, sleep, heart-rate variability</td><td>Band → their cloud</td><td style="color:var(--grass);">Public OAuth API</td><td>Adult-oriented product</td></tr>
+      <tr><td><span class="tag br">Polar</span></td><td>Training sessions, heart-rate variability, nightly recharge</td><td>Watch or strap → Polar Flow cloud</td><td style="color:var(--grass);">Public OAuth API (AccessLink)</td><td>Parent-held account</td></tr>
+      <tr><td><span class="tag br">Strava</span></td><td>Sessions, distance, pace, heart rate — where an older player already logs training</td><td>App → their cloud</td><td style="color:var(--grass);">Public OAuth API, rate limited</td><td>Minimum-age terms to check</td></tr>
+      <tr><td><span class="tag br">Catapult / GPSports</span></td><td>Team-level global positioning and load — the club's own vests, not the family's</td><td>Vest → OpenField or EVO cloud</td><td style="color:var(--amber);">API exists for their own cloud platforms; commercial arrangement, and the <b>club owns the data, not the parent</b></td><td>Club consent, not parent consent</td></tr>
+      <tr><td><span class="tag br">DARI capture</span></td><td>Motion Age, landing mechanics, trunk stability — the baseline every percentile is measured against</td><td>In the practice, into the Brain</td><td style="color:var(--grass);">Already ours</td><td>Consent taken at screening</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:34px;font-size:15px;">2 · The phone platforms — do Apple and Google do the heavy lifting?</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Platform</th><th>What sits behind it</th><th>Can our server read it?</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><b>Apple Health (HealthKit)</b></td><td>Apple Watch plus anything the family already writes into Health — steps, heart rate, sleep, workouts</td><td style="color:var(--red);"><b>No.</b> There is no public server interface. Data lives on the phone. The only route is a native iPhone app that reads it locally, with per-data-type consent, and syncs to us</td><td>Available, but it means shipping an iPhone app</td></tr>
+      <tr><td><b>Google Health Connect</b></td><td>The Android equivalent — one on-device store other apps read and write</td><td style="color:var(--red);"><b>No.</b> On-device by design, one connection to many apps, but a native Android app is still required</td><td>Stable, production-ready</td></tr>
+      <tr><td><b>Google Health API</b></td><td>Launched 24 March 2026 as the next generation of the Fitbit web interface. Tied to a Google account rather than a device</td><td style="color:var(--grass);"><b>Yes.</b> Cloud, REST, OAuth2, with webhooks — activity, heart rate, sleep, body metrics</td><td style="color:var(--grass);">Generally available — the one true cloud route of the four</td></tr>
+      <tr><td><b>Samsung Health</b></td><td>Samsung watches and phones</td><td style="color:var(--red);">No — mobile software development kit, on-device only</td><td>Available</td></tr>
+      <tr><td><b>Fitbit web interface</b></td><td>Fitbit devices</td><td>Being retired</td><td style="color:var(--amber);"><b>Shuts down September 2026</b> — migrate to the Google Health API</td></tr>
+      <tr><td><b>Google Fit</b></td><td>The old Android fitness interface</td><td>Being retired</td><td style="color:var(--amber);">Supported only until the end of 2026; closed to new developers since 1 May 2024</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="rolenote" style="border-left-color:var(--grass);"><b style="color:var(--grass);">The answer to the question.</b> Half right, and the half that is right is worth having. <b>Apple does the device-to-phone lifting but nothing beyond it</b> — Apple Health is a private store on the child's phone, so “just gather the data” still means shipping and maintaining an iPhone app, and the same is true of Google Health Connect on Android. <b>Google is the exception:</b> the Google Health API launched in March 2026 is cloud-based and tied to a Google account, so a server really can read from it without an app of ours on the phone. But neither platform will ever carry a boot sensor or a sensor insole — consumer health platforms hold steps, heart rate and sleep, not touch counts or push-off asymmetry. <b>The football data will always need a direct agreement.</b></div>
+
+  <h3 style="margin-top:34px;font-size:15px;">3 · The layer that genuinely does the heavy lifting</h3>
+  <p class="lead" style="font-size:14px;">If the goal is “we just gather the data”, this is the category that delivers it. One contract, one interface, one webhook, and they absorb every manufacturer's authentication, rate limits, breaking changes and units — including mobile kits that cover Apple Health and Health Connect so we do not write two native apps ourselves.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Aggregator</th><th>Reach</th><th>Why it might suit us</th></tr></thead>
+    <tbody>
+      <tr><td><b>Terra</b></td><td>Several hundred wearables, apps, sensors and blood tests</td><td>The broadest catalogue; Ōura, Garmin, Polar, WHOOP, Fitbit, Samsung, Apple Watch all present</td></tr>
+      <tr><td><b>Spike</b></td><td>Comparable breadth</td><td>Direct competitor to Terra; worth quoting against it</td></tr>
+      <tr><td><b>Rook</b></td><td>Wearables plus mobile kits</td><td>Positions around sport and performance rather than clinical use</td></tr>
+      <tr><td><b>Validic</b> · <b>Sahha</b> · <b>Thryve</b></td><td>Health-system oriented</td><td>Stronger on regulated and clinical deployments — relevant if the executive line ever touches employer health</td></tr>
+      <tr><td><b>Open Wearables</b></td><td>Open source, self-hosted</td><td>No third party holds the children's data — which, for a youth platform, may matter more than convenience</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="chart-note" style="font-size:12.5px;color:var(--muted);margin-top:10px;">None of them carries Playermaker or Plantiga. Aggregators cover consumer health and general fitness; sport-specific manufacturers are not in their catalogues. An aggregator buys us recovery and general load cheaply — it does not buy us the ball.</p>
+
+  <h3 style="margin-top:34px;font-size:15px;">Live connection panel<span class="mock">Mockup — no data is flowing</span></h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Connection</th><th>Status</th><th>Last sync</th><th>Cadence</th><th>Consent held</th><th>Feeds</th></tr></thead>
     <tbody>
       <tr><td><span class="tag pm">Playermaker</span></td><td style="color:var(--grass);">Connected</td><td>2 hours ago</td><td>After every session</td><td>Parent · 12 Jun 2026</td><td>Technical &amp; Ball · Speed &amp; Power</td></tr>
       <tr><td><span class="tag ou">Ōura</span></td><td style="color:var(--grass);">Connected</td><td>06:12 today</td><td>Nightly</td><td><b style="color:var(--red);">Guardian account required</b></td><td>Recovery · Sleep</td></tr>
       <tr><td><span class="tag pl">Plantiga</span></td><td style="color:var(--amber);">Pilot</td><td>3 days ago</td><td>Per session</td><td>Parent · 12 Jun 2026</td><td>Mechanics &amp; Symmetry · Workload</td></tr>
+      <tr><td><span class="tag br">Google Health API</span></td><td style="color:var(--grass);">Connected</td><td>07:40 today</td><td>Webhook</td><td>Parent · 12 Jun 2026</td><td>Recovery · Workload (fallback source)</td></tr>
+      <tr><td><span class="tag br">Apple Health</span></td><td style="color:var(--muted);">Needs our iPhone app</td><td>—</td><td>—</td><td>—</td><td>Would feed Recovery · Workload</td></tr>
       <tr><td><span class="tag br">DARI capture</span></td><td style="color:var(--grass);">In platform</td><td>14 Jul 2026</td><td>Every 8–12 weeks</td><td>Parent · 12 Jun 2026</td><td>All axes · sets the baseline</td></tr>
     </tbody>
   </table>
