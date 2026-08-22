@@ -133,6 +133,44 @@
     <div class="note">Immutable, seven-year retention, exportable by the parent in one click. A deletion by a parent removes the media but keeps the log entry — you must be able to prove what happened, without keeping what a family asked you to destroy.</div>
   </div>
 
+  <div class="sect">Pathway intake — the first thing a family does</div>
+
+  <div class="grid">
+    <div class="card"><h3>Intakes Completed</h3><div class="big">11 <small>of 14 families</small></div><div class="note" style="margin-top:6px;">79% · median 34 words</div></div>
+    <div class="card"><h3>Accepted the First Match</h3><div class="big">8 <small>of 11</small></div><div class="note" style="margin-top:6px;">2 chose a cheaper option · 1 booked a call instead</div></div>
+    <div class="card"><h3>Chips Corrected by Parents</h3><div class="big">17%</div><div class="note" style="margin-top:6px;">Healthy. Zero would mean nobody is reading it.</div></div>
+    <div class="card"><h3>Flagged for a Human</h3><div class="big" style="color:var(--warn);">3</div><div class="note" style="margin-top:6px;">2 health mentions · 1 pressure language</div></div>
+  </div>
+
+  <div class="card full">
+    <h3>Intake Queue — what families actually said</h3>
+    <div class="tw"><table>
+      <tr><th>Family</th><th>Ambition read</th><th>Focus read</th><th>First match</th><th>Outcome</th><th>Flag</th></tr>
+      <tr><td>Alma · Elle (U12)</td><td>Academy or trial</td><td>Injury history · technical</td><td>Movement Intelligence Screening</td><td><span class="tag">Booked</span></td><td>—</td></tr>
+      <tr><td>Jen · Ava (U14)</td><td>Enjoyment</td><td>Confidence and mindset</td><td>Mental Edge</td><td><span class="tag">Booked</span></td><td>—</td></tr>
+      <tr><td>Rob · Sofia (U12)</td><td>Professional aspiration</td><td>Speed and fitness</td><td>Movement Intelligence Screening</td><td><span class="tag amber">Call first</span></td><td><span class="tag amber">Pressure language</span></td></tr>
+      <tr><td>Marina 🇭🇷 · Ivan (U9)</td><td>Enjoyment · Croatia</td><td>Technical skills</td><td>Foundation Training</td><td><span class="tag blue">Considering</span></td><td>—</td></tr>
+      <tr><td>Family 0412</td><td>Academy or trial</td><td>Injury history</td><td>Movement Intelligence Screening</td><td><span class="tag grey">Not returned</span></td><td><span class="tag red">Health mention</span></td></tr>
+    </table></div>
+    <div class="note"><b style="color:var(--lock);">Three rules this screen enforces.</b> The interpretation is never applied without the parent seeing it and being able to correct it — the 17% correction rate above is the evidence it is being read. A health mention is never stored with the intake note; the parent is redirected to the health consent form and the row is flagged for a person. Pressure language is not blocked, it is answered — the family gets a plain sentence about what nothing at this age decides, and a call is offered before a card is charged.</div>
+  </div>
+
+  <div class="card full">
+    <h3>What the Interpreter Extracts</h3>
+    <div class="tw"><table>
+      <tr><th>Signal</th><th>Why it earns its place</th><th>Routes to</th></tr>
+      <tr><td><b>Ambition level</b></td><td>Enjoyment, academy or professional. Sets the honesty of every reply that follows.</td><td>Programme tier</td></tr>
+      <tr><td><b>Physical concerns</b></td><td>Injury, growth, speed. The one area where measuring first genuinely changes the plan.</td><td>Movement Intelligence</td></tr>
+      <tr><td><b>Technical concerns</b></td><td>Weak foot, first touch, control.</td><td>Foundation · Split camp</td></tr>
+      <tr><td><b>Mindset concerns</b></td><td>Confidence, nerves, pressure, giving up.</td><td>Mental Edge</td></tr>
+      <tr><td><b>Constraints</b></td><td>Budget, travel, time, country.</td><td>Filters the match, never hidden</td></tr>
+      <tr><td><b>Who is driving it</b></td><td><b>The one nobody asks.</b> A parent writing "I want" against a child writing "I want" are different businesses, and it predicts whether the family is still here in a year.</td><td>Retention signal · guide briefing</td></tr>
+      <tr><td><b>Health mentions</b></td><td>Special-category data the moment it is typed.</td><td>Health consent form · human review</td></tr>
+      <tr><td><b>Pressure language</b></td><td>"Has to make it", "only chance".</td><td>Honest reframe · offer a call</td></tr>
+    </table></div>
+    <div class="note">Both sides are asked separately — the parent in the family portal, the child in theirs — and the two answers are shown side by side rather than merged. Where they disagree is the most useful thing on the record: a parent writing "scholarship" beside an eleven-year-old writing "stop being scared of tackles" tells a guide more than any assessment will.</div>
+  </div>
+
   <div class="sect">Profile views &amp; PitchPro Plus</div>
 
   <div class="grid">
@@ -204,6 +242,7 @@
       <tr><td><b>Under-10 accounts by parent exception</b></td><td>Decided 21 Aug 2026. Raises the app-store age rating question and puts a child below every common platform minimum on the system</td><td><span class="tag red">Needs a written position before launch</span></td></tr>
       <tr><td><b>Paywall policy for child-side view logs</b></td><td>Identity is never gated on the player or parent side. Needs to be written into the subscription terms, not left as a design intention</td><td><span class="tag amber">Drafted here, not yet in terms</span></td></tr>
       <tr><td><b>Premium gating must be enforced server-side</b></td><td>The mockup blurs withheld names in CSS. The build must never send a free-tier client data it is not entitled to</td><td><span class="tag amber">Spec note, carried into the build</span></td></tr>
+      <tr><td><b>Free-text intake about a child, interpreted by a model</b></td><td>Processing a minor's data, and the text may contain health information the moment a parent types it. Needs a lawful basis, a retention rule, and a written position on whether the text leaves the tenancy for inference</td><td><span class="tag red">Open · blocks the intake going live</span></td></tr>
       <tr><td>Analytics and profiling of minors</td><td>Counting who viewed a child is processing a child's data. Confirm the lawful basis under GDPR and the Canadian equivalent</td><td><span class="tag red">Open</span></td></tr>
       <tr><td>Content moderation vendor or in-house</td><td>Image, video and language checks</td><td><span class="tag amber">Not chosen</span></td></tr>
       <tr><td>Media retention, residency and deletion policy</td><td>Where children's video is stored</td><td><span class="tag amber">Open</span></td></tr>
