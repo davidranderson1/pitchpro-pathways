@@ -47,6 +47,10 @@
   .nav-item:hover{color:var(--white);}
   .nav-item.active{color:var(--grass);border-left-color:var(--grass);background:rgba(46,224,138,.06);}
   .nav-item .badge-dot{margin-left:auto;background:var(--grass);color:#06130c;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;}
+  .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .lang{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;}
+  .lang button{border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:12px;padding:6px 12px;border-radius:999px;cursor:pointer;}
+  .lang button.on{background:var(--grass);color:#06130c;}
   .side-foot{padding:18px 20px;margin-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);line-height:1.5;}
   main{padding:34px 38px;max-width:1000px;}
   .topline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:26px;}
@@ -138,6 +142,7 @@
   .mgrid .cell .st{position:absolute;top:7px;right:7px;font-size:13px;}
 
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);}
   td{padding:11px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle;}
   .pilldot{width:42px;height:24px;border-radius:99px;background:var(--grass);position:relative;flex-shrink:0;}
@@ -174,6 +179,8 @@
   .seg2{display:flex;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px;flex-wrap:wrap;}
   .seg2 button{flex:1;min-width:150px;border:none;background:transparent;color:var(--muted);font-family:var(--body);font-weight:700;font-size:13px;padding:11px 12px;border-radius:9px;cursor:pointer;}
   .seg2 button.on{background:var(--lock);color:#170f2b;}
+  .nav-item:focus-visible,.child-chip:focus-visible,.pilldot:focus-visible,.seg button:focus-visible,.seg2 button:focus-visible,.lang button:focus-visible,.btn:focus-visible,.btn-sm:focus-visible,.aud-opt:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}}
 </style>
 </head>
 <body>
@@ -184,11 +191,11 @@
 <div id="login">
   <div class="login-card">
     <div class="crest">⚽</div>
-    <h1>Player Portal</h1>
-    <div class="sub">Your training, your moments, your pathway. Set up by your parent — run by you.</div>
-    <div class="field"><label>Username</label><input placeholder="nora" disabled></div>
-    <div class="field"><label>Password</label><input type="password" placeholder="••••••••" disabled></div>
-    <button class="btn btn-grass" onclick="enter()">Enter Demo as Nora (U12)</button>
+    <h1 data-i18n="pTitle">Player Portal</h1>
+    <div class="sub" data-i18n="pLoginSub">Your training, your moments, your pathway. Set up by your parent — run by you.</div>
+    <div class="field"><label for="fld-user" data-i18n="pUser">Username</label><input id="fld-user" placeholder="elle" disabled></div>
+    <div class="field"><label for="fld-pass" data-i18n="pPass">Password</label><input id="fld-pass" type="password" placeholder="••••••••" disabled></div>
+    <button class="btn btn-grass" onclick="enter()">Enter Demo as Elle (U12)</button>
     <div class="login-note">Player accounts are created by a parent and linked to the family account. A parent can view, pause or close this account at any time. Age 10+.</div>
   </div>
 </div>
@@ -198,24 +205,30 @@
 <div class="shell">
   <aside>
     <div class="side-brand"><span class="crest">⚽</span> PITCHPRO<br>PLAYER</div>
-    <div class="side-me"><span class="avatar">E</span><span><b>Nora</b>U12 · Midfield</span></div>
-    <div class="nav-item active" data-s="feed">My Timeline</div>
-    <div class="nav-item" data-s="new">Post a Moment</div>
-    <div class="nav-item" data-s="profile">My Profile</div>
-    <div class="nav-item" data-s="goals">My Goals</div>
-    <div class="nav-item" data-s="who">Who Sees What</div>
-    <div class="nav-item" data-s="views">Who Viewed Me</div>
+    <div class="side-me"><span class="avatar">E</span><span><b>Elle</b>U12 · Midfield</span></div>
+    <div class="nav-item active" data-s="feed" data-i18n="pTimeline">My Timeline</div>
+    <div class="nav-item" data-s="new" data-i18n="pPost">Post a Moment</div>
+    <div class="nav-item" data-s="profile" data-i18n="pProfile">My Profile</div>
+    <div class="nav-item" data-s="goals" data-i18n="pGoals">My Goals</div>
+    <div class="nav-item" data-s="who" data-i18n="pWho">Who Sees What</div>
+    <div class="nav-item" data-s="views" data-i18n="pViews">Who Viewed Me</div>
     <div class="nav-item" data-s="act">Activity <span class="badge-dot">3</span></div>
-    <div class="side-foot"><b style="color:var(--lock);">Family account linked</b><br>Marta (Mum) is your parent on PitchPro. She can see everything you post here.</div>
+    <div class="side-foot"><b style="color:var(--lock);">Family account linked</b><br>Alma (Mum) is your parent on PitchPro. She can see everything you post here.</div>
   </aside>
   <main>
+    <div class="topline" style="justify-content:flex-end;margin-bottom:18px;">
+      <div class="lang">
+        <button class="on" onclick="setLang('en',this)">EN</button>
+        <button onclick="setLang('hr',this)">HR</button>
+      </div>
+    </div>
 
     <!-- TIMELINE -->
     <div class="screen on" id="s-feed">
       <div class="topline">
         <div>
-          <h2>My Timeline</h2>
-          <div class="sub" style="margin-bottom:0;">Everything you've captured on your pathway — 24 moments since March.</div>
+          <h2 data-i18n="pTimeline">My Timeline</h2>
+          <div class="sub" style="margin-bottom:0;" data-i18n="pTlSub">Everything you've captured on your pathway — 24 moments since March.</div>
         </div>
         <button class="btn btn-grass" style="width:auto;" onclick="go('new')">+ Post a Moment</button>
       </div>
@@ -226,7 +239,7 @@
       <div class="moment">
         <div class="m-head">
           <span class="avatar" style="width:34px;height:34px;font-size:13px;">E</span>
-          <span><span class="who">Nora</span><br><span class="when">Today, 6:42 PM · Calgary NW Dome</span></span>
+          <span><span class="who">Elle</span><br><span class="when">Today, 6:42 PM · Calgary NW Dome</span></span>
           <span class="right"><span class="tag amber">⏳ Waiting for Mum</span></span>
         </div>
         <div class="m-media"><span>Video · 0:18</span><div class="play">▶</div></div>
@@ -242,8 +255,8 @@
         </div>
         <div class="m-foot">
           <span class="react">⏳ <b>Held</b> · guides can't see it yet</span>
-          <button class="btn btn-ghost" style="padding:7px 16px;font-size:12.5px;margin-left:auto;">Edit</button>
-          <button class="btn btn-ghost" style="padding:7px 16px;font-size:12.5px;">Delete</button>
+          <button class="btn btn-ghost" style="padding:7px 16px;font-size:12.5px;margin-left:auto;" data-i18n="pEdit">Edit</button>
+          <button class="btn btn-ghost" style="padding:7px 16px;font-size:12.5px;" data-i18n="pDelete">Delete</button>
         </div>
       </div>
 
@@ -251,7 +264,7 @@
       <div class="moment">
         <div class="m-head">
           <span class="avatar" style="width:34px;height:34px;font-size:13px;">E</span>
-          <span><span class="who">Nora</span><br><span class="when">Sat 19 Jul, 11:20 AM · match day</span></span>
+          <span><span class="who">Elle</span><br><span class="when">Sat 16 Aug, 11:20 AM · match day</span></span>
           <span class="right"><span class="tag">✓ Shared</span></span>
         </div>
         <div class="m-media"><span>Photo</span></div>
@@ -271,7 +284,7 @@
           <span class="react" style="margin-left:auto;">👁 seen by 3 of 4</span>
         </div>
         <div class="m-comment">
-          <div class="cm"><b>Coach Nick</b><span class="stamp">Sat 2:10 PM</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.<span class="copied">↳ Copied to Marta · logged · guide comments are never private</span></div>
+          <div class="cm"><b>Coach Nick</b><span class="stamp">Sat 2:10 PM</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.<span class="copied">↳ Copied to Alma · logged · guide comments are never private</span></div>
           <div class="cm"><b>Mum</b><span class="stamp">Sat 3:02 PM</span><br>So proud of you. Dad watched it four times.</div>
         </div>
       </div>
@@ -280,7 +293,7 @@
       <div class="moment">
         <div class="m-head">
           <span class="avatar" style="width:34px;height:34px;font-size:13px;">E</span>
-          <span><span class="who">Nora</span><br><span class="when">Thu 17 Jul, 8:05 PM</span></span>
+          <span><span class="who">Elle</span><br><span class="when">Thu 14 Aug, 8:05 PM</span></span>
           <span class="right"><span class="tag lock">🔒 Family only</span></span>
         </div>
         <div class="m-body">
@@ -294,21 +307,21 @@
         <div class="m-foot"><span class="react">🔒 <b>You chose family only</b> · guides never saw this</span></div>
       </div>
 
-      <div class="card" style="text-align:center;color:var(--muted);font-size:13px;">Older moments · March–June 2026 · 21 more</div>
+      <div class="card" style="text-align:center;color:var(--muted);font-size:13px;">Older moments · March–July 2026 · 21 more</div>
     </div>
 
     <!-- COMPOSER -->
     <div class="screen" id="s-new">
-      <h2>Post a Moment</h2>
-      <div class="sub">A photo or a short video, and what happened. That's it.</div>
+      <h2 data-i18n="pPost">Post a Moment</h2>
+      <div class="sub" data-i18n="pPostSub">A photo or a short video, and what happened. That's it.</div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>1 · Your photo or video</h3>
+        <h3 data-i18n="pStep1">1 · Your photo or video</h3>
         <div class="drop"><span class="ic">📸</span><b style="color:var(--white);">Tap to add a photo or video</b><br>Up to 60 seconds · stays inside PitchPro · never posted anywhere else by us</div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>2 · What happened?</h3>
+        <h3 data-i18n="pStep2">2 · What happened?</h3>
         <textarea placeholder="Hit the weak-foot volley 4 times in a row today…"></textarea>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
           <span class="tag grey">＋ Tag a session</span>
@@ -318,11 +331,11 @@
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>3 · Who sees it — you choose</h3>
+        <h3 data-i18n="pStep3">3 · Who sees it — you choose</h3>
         <div class="aud-pick">
           <div class="aud-opt fixed"><span class="tick">✓</span><span class="txt"><b>Mum &amp; Dad</b><span>Always on. A parent sees every moment you post — this can't be switched off.</span></span><span class="end tag lock">Locked by parent</span></div>
           <div class="aud-opt on" onclick="this.classList.toggle('on')"><span class="tick">✓</span><span class="txt"><b>Coach Nick</b><span>Agility guide · you've trained together 14 times</span></span><span class="end tag">Approved by parent</span></div>
-          <div class="aud-opt on" onclick="this.classList.toggle('on')"><span class="tick">✓</span><span class="txt"><b>Sandro Rajic</b><span>Movement guide · screening June 2026</span></span><span class="end tag">Approved by parent</span></div>
+          <div class="aud-opt on" onclick="this.classList.toggle('on')"><span class="tick">✓</span><span class="txt"><b>Sandro Rajic</b><span>Movement guide · screening July 2026</span></span><span class="end tag">Approved by parent</span></div>
           <div class="aud-opt" onclick="this.classList.toggle('on')"><span class="tick">✓</span><span class="txt"><b>Grego</b><span>Technical guide · Lovrencsics Academy</span></span><span class="end tag">Approved by parent</span></div>
           <div class="aud-opt blocked"><span class="tick"></span><span class="txt"><b>Teammates &amp; friends on PitchPro</b><span>Not switched on for your account.</span></span><span class="end tag grey">Parent hasn't allowed this</span></div>
           <div class="aud-opt blocked"><span class="tick"></span><span class="txt"><b>Add to a promotion link</b><span>A private, expiring link your parent sends to one named person — a scout, a club, or a guide.</span></span><span class="end tag grey">Only a parent can send one</span></div>
@@ -334,8 +347,8 @@
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button class="btn btn-grass" style="width:auto;">Post Moment (demo)</button>
-        <button class="btn btn-ghost">Save as draft</button>
-        <button class="btn btn-ghost">Post to family only</button>
+        <button class="btn btn-ghost" data-i18n="pDraft">Save as draft</button>
+        <button class="btn btn-ghost" data-i18n="pFamOnly">Post to family only</button>
       </div>
     </div>
 
@@ -344,7 +357,7 @@
       <div class="phead">
         <div class="av">E</div>
         <div>
-          <h2>Nora</h2>
+          <h2>Elle</h2>
           <div class="line">Age 11 · U12 · Midfield · Right foot · On the pathway since March 2026</div>
           <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
             <span class="tag blue">Learn to Train (9–12)</span>
@@ -352,26 +365,26 @@
           </div>
         </div>
         <div class="pstats">
-          <div><b>24</b><span>Moments</span></div>
-          <div><b>37</b><span>Sessions</span></div>
-          <div><b>11</b><span>Week streak</span></div>
+          <div><b>24</b><span data-i18n="pMoments">Moments</span></div>
+          <div><b>37</b><span data-i18n="pSessions">Sessions</span></div>
+          <div><b>11</b><span data-i18n="pStreak">Week streak</span></div>
         </div>
       </div>
 
       <div class="grid g2" style="margin-bottom:16px;">
         <div class="card">
-          <h3>My Numbers <span class="tag grey" style="margin-left:6px;">Read only</span></h3>
+          <h3 data-i18n="pNums">My Numbers <span class="tag grey" style="margin-left:6px;">Read only</span></h3>
           <div class="row"><span class="who">Motion Age</span><span><b>10.1</b> <span class="meta">vs 12.0 chronological</span></span></div>
           <div class="row"><span class="who">5-10-5 shuttle</span><span><b>5.9s</b> <span class="meta" style="color:var(--grass)">↓ 0.3s</span></span></div>
           <div class="row"><span class="who">Asymmetry</span><span><b>7%</b> <span class="meta" style="color:var(--grass)">↓ from 12%</span></span></div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">These come from your Player Report. Your guides write them — you can see them, you can't change them.</p>
         </div>
         <div class="card">
-          <h3>Badges</h3>
+          <h3 data-i18n="pBadges">Badges</h3>
           <div class="badges">
             <div class="badge"><span class="ic">🔥</span><span class="nm">11-week streak</span><span class="dt">Jul 2026</span></div>
             <div class="badge"><span class="ic">⚡</span><span class="nm">Sub-6.0 shuttle</span><span class="dt">Jul 2026</span></div>
-            <div class="badge"><span class="ic">🎯</span><span class="nm">Baseline set</span><span class="dt">Jun 2026</span></div>
+            <div class="badge"><span class="ic">🎯</span><span class="nm">Baseline set</span><span class="dt">Jul 2026</span></div>
             <div class="badge locked"><span class="ic">🇭🇷</span><span class="nm">Split camp</span><span class="dt">Locked</span></div>
           </div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:14px;">Badges are earned from real sessions and real report milestones — never bought, never for posting a lot.</p>
@@ -379,7 +392,7 @@
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>My Moments</h3>
+        <h3 data-i18n="pMine">My Moments</h3>
         <div class="mgrid">
           <div class="cell"><span class="st">✓</span>Weak-foot volley</div>
           <div class="cell"><span class="st">⏳</span>Match day</div>
@@ -394,27 +407,27 @@
       </div>
 
       <div class="card">
-        <h3>Play Promotion Link</h3>
+        <h3 data-i18n="pLink">Play Promotion Link</h3>
         <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;">There is no public page with your name on it. When someone needs to see how you're playing — a scout, a club, a guide you used to train with — your parent sends them a private link that stops working on a date she picks. She can switch it off at any moment.</p>
-        <div class="row"><div><div class="who">Split camp trial · Grego</div><div class="meta">Sent 2 Aug · expires 30 Aug · opened 3 times · shows 4 of your moments</div></div><span class="tag">Live</span></div>
-        <div class="row"><div><div class="who">Calgary Foothills U13 · scout</div><div class="meta">Expired 12 Jul · link no longer opens</div></div><span class="tag grey">Expired</span></div>
+        <div class="row"><div><div class="who">Split camp trial · Grego</div><div class="meta">Sent 30 Aug · expires 27 Sep · opened 3 times · shows 4 of your moments</div></div><span class="tag">Live</span></div>
+        <div class="row"><div><div class="who">Calgary Foothills U13 · scout</div><div class="meta">Expired 9 Aug · link no longer opens</div></div><span class="tag grey">Expired</span></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You choose up to six moments you'd want someone to see. Your parent approves each one before it goes on a link, and you can see every link that exists and who it went to.</p>
-        <button class="btn btn-ghost" style="margin-top:12px;">Suggest my six best moments</button>
+        <button class="btn btn-ghost" style="margin-top:12px;" data-i18n="pSuggest">Suggest my six best moments</button>
       </div>
     </div>
 
     <!-- GOALS -->
     <div class="screen" id="s-goals">
-      <h2>My Goals</h2>
-      <div class="sub">Two kinds: the ones you set, and the ones you set with your family and guides.</div>
+      <h2 data-i18n="pGoals">My Goals</h2>
+      <div class="sub" data-i18n="pGoalsSub">Two kinds: the ones you set, and the ones you set with your family and guides.</div>
       <div class="card" style="margin-bottom:16px;">
-        <h3>Set by me</h3>
+        <h3 data-i18n="pSetMe">Set by me</h3>
         <div class="row"><div><div class="who">200 weak-foot touches, 5 days a week</div><div class="meta">Day 24 · longest run 11 days</div></div><span class="tag">On track</span></div>
-        <div class="row"><div><div class="who">Start every game this season</div><div class="meta">Added 2 Jul</div></div><span class="tag amber">In progress</span></div>
-        <button class="btn btn-ghost" style="margin-top:14px;">+ Add a goal</button>
+        <div class="row"><div><div class="who">Start every game this season</div><div class="meta">Added 30 Jul</div></div><span class="tag amber">In progress</span></div>
+        <button class="btn btn-ghost" style="margin-top:14px;" data-i18n="pAddGoal">+ Add a goal</button>
       </div>
       <div class="card">
-        <h3>Set with my family and guides <span class="tag grey" style="margin-left:6px;">Read only</span></h3>
+        <h3 data-i18n="pSetFam">Set with my family and guides <span class="tag grey" style="margin-left:6px;">Read only</span></h3>
         <div class="row"><div><div class="who">Confident left foot in matches</div><div class="meta">Agreed at the June family meeting · Coach Nick tracking</div></div><span class="tag amber">In progress</span></div>
         <div class="row"><div><div class="who">Academy tryout readiness by spring 2027</div><div class="meta">Reviewed each quarter</div></div><span class="tag blue">On track</span></div>
       </div>
@@ -422,25 +435,25 @@
 
     <!-- WHO SEES WHAT -->
     <div class="screen" id="s-who">
-      <h2>Who Sees What</h2>
-      <div class="sub">Your settings. Some of them your parent decides — those show a purple lock.</div>
+      <h2 data-i18n="pWho">Who Sees What</h2>
+      <div class="sub" data-i18n="pWhoSub">Your settings. Some of them your parent decides — those show a purple lock.</div>
 
       <div class="note-strip lock"><b>The deal.</b> Your parent decides who is <i>allowed</i> in your circle. You decide who actually sees each moment. Neither of you can hide a moment from a parent.</div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>My circle</h3>
-        <table>
+        <h3 data-i18n="pCircle">My circle</h3>
+        <div class="tw"><table>
           <tr><th>Who</th><th>Why they're here</th><th>Sees new moments by default</th><th>Can comment</th><th></th></tr>
           <tr><td><b>Mum &amp; Dad</b></td><td>Parent account</td><td><span class="tag lock">Always</span></td><td>Yes</td><td><div class="pilldot fixed" title="Locked"></div></td></tr>
           <tr><td><b>Coach Nick</b></td><td>14 sessions together</td><td>On</td><td>Yes · copied to parent</td><td><div class="pilldot"></div></td></tr>
-          <tr><td><b>Sandro Rajic</b></td><td>Screening Jun 2026</td><td>On</td><td>Yes · copied to parent</td><td><div class="pilldot"></div></td></tr>
+          <tr><td><b>Sandro Rajic</b></td><td>Screening Jul 2026</td><td>On</td><td>Yes · copied to parent</td><td><div class="pilldot"></div></td></tr>
           <tr><td><b>Grego</b></td><td>Camp intake call</td><td>Off — your choice</td><td>Yes · copied to parent</td><td><div class="pilldot off"></div></td></tr>
-        </table>
+        </table></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Turning a guide off here means they stop seeing new moments. They keep the ones you already shared unless you delete them.</p>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>My preferences</h3>
+        <h3 data-i18n="pPrefs">My preferences</h3>
         <div class="consent"><span class="cs"><b>Default audience for a new moment</b><span>What's pre-ticked when you open the composer.</span></span><span class="tag">Family + approved guides</span></div>
         <div class="consent"><span class="cs"><b>Let guides react with 👏</b><span>A reaction is not a message.</span></span><div class="pilldot"></div></div>
         <div class="consent"><span class="cs"><b>Let guides comment</b><span>Every comment is copied to your parent and kept on the record.</span></span><div class="pilldot"></div></div>
@@ -448,32 +461,32 @@
       </div>
 
       <div class="card">
-        <h3>Locked by my parent</h3>
+        <h3 data-i18n="pLocked">Locked by my parent</h3>
         <div class="consent"><span class="cs"><b>Promotion links</b><span>Only a parent can create one, and only for a named person. There is no public page.</span></span><span class="tag lock">🔒 Parent only</span></div>
         <div class="consent"><span class="cs"><b>Teammates &amp; friends</b><span>Not enabled for your account yet.</span></span><span class="tag lock">🔒 Off</span></div>
-        <div class="consent"><span class="cs"><b>Milo's timeline</b><span>Your brother has an account too. You can't see each other's moments unless Mum switches it on for both of you.</span></span><span class="tag lock">🔒 Off</span></div>
+        <div class="consent"><span class="cs"><b>Adin's timeline</b><span>Your brother has an account too. You can't see each other's moments unless Mum switches it on for both of you.</span></span><span class="tag lock">🔒 Off</span></div>
         <div class="consent"><span class="cs"><b>Direct messages to guides</b><span>You post moments; guides reply on the moment. There are no private chats.</span></span><span class="tag lock">🔒 Never</span></div>
         <div class="consent"><span class="cs"><b>Review mode</b><span>Post first, parent reviews after. Your parent can change this.</span></span><span class="tag lock">Post first</span></div>
-        <button class="btn btn-ghost" style="margin-top:16px;">Ask my parent to change something</button>
+        <button class="btn btn-ghost" style="margin-top:16px;" data-i18n="pAskChange">Ask my parent to change something</button>
       </div>
     </div>
 
 
     <!-- WHO VIEWED ME -->
     <div class="screen" id="s-views">
-      <h2>Who Viewed Me</h2>
-      <div class="sub">Everyone who has looked at your football in the last 30 days.</div>
+      <h2 data-i18n="pViews">Who Viewed Me</h2>
+      <div class="sub" data-i18n="pViewsSub">Everyone who has looked at your football in the last 30 days.</div>
 
       <div class="free-bar"><b>Free, always.</b> Knowing who has looked at you is not something anyone should have to pay for. This screen is never locked, on your account or your mum's.</div>
 
       <div class="stat3">
-        <div class="s"><b>11</b><span>Views this week</span></div>
-        <div class="s"><b>4</b><span>People</span></div>
-        <div class="s"><b>0</b><span>Strangers</span></div>
+        <div class="s"><b>11</b><span data-i18n="pVW">Views this week</span></div>
+        <div class="s"><b>4</b><span data-i18n="pPeople">People</span></div>
+        <div class="s"><b>0</b><span data-i18n="pStrangers">Strangers</span></div>
       </div>
 
       <div class="card" style="margin-bottom:16px;">
-        <h3>This week</h3>
+        <h3 data-i18n="pWeek">This week</h3>
         <div class="vw">
           <span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">CN</span>
           <span class="txt"><b>Coach Nick</b><span>Your agility guide · watched "Weak-foot volley" twice and "First start in midfield" once</span></span>
@@ -486,7 +499,7 @@
         </div>
         <div class="vw">
           <span class="av2" style="background:rgba(183,155,255,.18);color:var(--lock);">G</span>
-          <span class="txt"><b>Grego</b><span>Through the promotion link Mum sent him for the Split camp trial · expires 30 Aug</span></span>
+          <span class="txt"><b>Grego</b><span>Through the promotion link Mum sent him for the Split camp trial · expires 27 Sep</span></span>
           <span class="end"><span class="n">3</span><span class="l">Wed evening</span></span>
         </div>
         <div class="vw">
@@ -500,14 +513,14 @@
 
       <div class="grid g2" style="margin-bottom:16px;">
         <div class="card">
-          <h3>Most watched</h3>
+          <h3 data-i18n="pMost">Most watched</h3>
           <div class="row"><div><div class="who">"Weak-foot volley"</div><div class="meta">Posted today · 5 views · Coach Nick watched it twice</div></div><span class="tag">Top</span></div>
-          <div class="row"><div><div class="who">"First start in midfield"</div><div class="meta">19 Jul · 4 views · 2 comments</div></div><span class="tag blue">2nd</span></div>
+          <div class="row"><div><div class="who">"First start in midfield"</div><div class="meta">16 Aug · 4 views · 2 comments</div></div><span class="tag blue">2nd</span></div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Views are counted so you can see who is paying attention — not to rank you against anyone. There are no leaderboards here and there never will be.</p>
         </div>
         <div class="card">
-          <h3>Nobody watched</h3>
-          <div class="row"><div><div class="who">"Tough session"</div><div class="meta">17 Jul · family only — you chose that</div></div><span class="tag lock">🔒 Private</span></div>
+          <h3 data-i18n="pNone">Nobody watched</h3>
+          <div class="row"><div><div class="who">"Tough session"</div><div class="meta">14 Aug · family only — you chose that</div></div><span class="tag lock">🔒 Private</span></div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">A moment you keep to yourself never shows up here as something that "underperformed". It was not supposed to be seen.</p>
         </div>
       </div>
@@ -527,16 +540,16 @@
 
     <!-- ACTIVITY -->
     <div class="screen" id="s-act">
-      <h2>Activity</h2>
-      <div class="sub">What happened on your moments.</div>
+      <h2 data-i18n="pAct">Activity</h2>
+      <div class="sub" data-i18n="pActSub">What happened on your moments.</div>
       <div class="card" style="margin-bottom:16px;">
-        <h3>New</h3>
+        <h3 data-i18n="pNew">New</h3>
         <div class="row"><div><div class="who">👏 Coach Nick applauded "First start in midfield"</div><div class="meta">Sat 2:09 PM</div></div><span class="tag">New</span></div>
         <div class="row"><div><div class="who">💬 Coach Nick commented on "First start in midfield"</div><div class="meta">Sat 2:10 PM · your mum got a copy</div></div><span class="tag">New</span></div>
         <div class="row"><div><div class="who">✓ Mum approved "Shuttle PB" — now visible to your guides</div><div class="meta">Fri 8:12 PM</div></div><span class="tag">New</span></div>
       </div>
       <div class="card">
-        <h3>Earlier</h3>
+        <h3 data-i18n="pEarlier">Earlier</h3>
         <div class="row"><div><div class="who">↩ Mum sent "New boots" back to you</div><div class="meta">Wed · "Can you retake it without our street sign in the background?"</div></div><span class="tag amber">Returned</span></div>
         <div class="row"><div><div class="who">🏅 You earned the Sub-6.0 shuttle badge</div><div class="meta">Jul 2</div></div><span class="tag blue">Badge</span></div>
       </div>
@@ -556,6 +569,78 @@ function go(s){
   window.scrollTo(0,0);
 }
 document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>go(n.dataset.s)));
+
+/* keyboard access for the div-based controls in this mockup */
+document.querySelectorAll('.nav-item,.child-chip,.pilldot,.aud-opt').forEach(function(el){
+  if(!el.hasAttribute('role')) el.setAttribute('role','button');
+  if(!el.hasAttribute('tabindex') && !el.classList.contains('fixed') && !el.classList.contains('blocked')) el.setAttribute('tabindex','0');
+  el.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}
+  });
+});
+document.querySelectorAll('.pilldot').forEach(function(p){
+  var set=function(){p.setAttribute('aria-pressed', p.classList.contains('off')?'false':'true');};
+  set(); p.addEventListener('click',set);
+});
+
+const i18n={en:{},hr:{
+ pAct:'Aktivnost',
+ pActSub:'Što se dogodilo na tvojim trenucima.',
+ pAddGoal:'+ Dodaj cilj',
+ pAskChange:'Zamoli roditelja da nešto promijeni',
+ pBadges:'Bedževi',
+ pCircle:'Moj krug',
+ pDelete:'Obriši',
+ pDraft:'Spremi kao skicu',
+ pEarlier:'Ranije',
+ pEdit:'Uredi',
+ pFamOnly:'Objavi samo za obitelj',
+ pGoals:'Moji ciljevi',
+ pGoalsSub:'Dvije vrste: oni koje postaviš sama i oni koje dogovoriš s obitelji i vodičima.',
+ pLink:'Poveznica za promociju igrača',
+ pLocked:'Zaključao roditelj',
+ pLoginSub:'Tvoj trening, tvoji trenuci, tvoj put. Postavlja roditelj — vodiš ti.',
+ pMine:'Moji trenuci',
+ pMoments:'Trenutaka',
+ pMost:'Najgledanije',
+ pNew:'Novo',
+ pNone:'Nitko nije gledao',
+ pNums:'Moji brojevi <span class="tag grey" style="margin-left:6px;">Samo za čitanje</span>',
+ pPass:'Lozinka',
+ pPeople:'Osoba',
+ pPost:'Objavi trenutak',
+ pPostSub:'Fotografija ili kratki video i što se dogodilo. To je sve.',
+ pPrefs:'Moje postavke',
+ pProfile:'Moj profil',
+ pSessions:'Treninga',
+ pSetFam:'Dogovoreno s obitelji i vodičima <span class="tag grey" style="margin-left:6px;">Samo za čitanje</span>',
+ pSetMe:'Postavila sam ja',
+ pStep1:'1 · Tvoja fotografija ili video',
+ pStep2:'2 · Što se dogodilo?',
+ pStep3:'3 · Tko to vidi — ti biraš',
+ pStrangers:'Nepoznatih',
+ pStreak:'Tjedana zaredom',
+ pSuggest:'Predloži mojih šest najboljih trenutaka',
+ pTimeline:'Moja vremenska crta',
+ pTitle:'Portal igrača',
+ pTlSub:'Sve što si zabilježila na svom putu — 24 trenutka od ožujka.',
+ pUser:'Korisničko ime',
+ pVW:'Pregleda ovaj tjedan',
+ pViews:'Tko me gledao',
+ pViewsSub:'Svi koji su u zadnjih 30 dana pogledali tvoj nogomet.',
+ pWeek:'Ovaj tjedan',
+ pWho:'Tko što vidi',
+ pWhoSub:'Tvoje postavke. O nekima odlučuje roditelj — one imaju ljubičastu bravicu.'
+}};
+let base={};
+document.querySelectorAll('[data-i18n]').forEach(el=>{base[el.dataset.i18n]=el.innerHTML;});
+function setLang(l,btn){
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    el.innerHTML = (l==='en')?base[k]:(i18n.hr[k]||base[k]);
+  });
+}
 </script>
 <script src="site-nav.js" defer></script>
 </body>
