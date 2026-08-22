@@ -122,10 +122,12 @@
     <div class="pg new"><b>My Goals</b><span>Player-set goals beside the family-set ones.</span></div>
     <div class="pg new"><b>Who Sees What</b><span>Player's own controls, with parent locks shown in purple.</span></div>
     <div class="pg new"><b>Activity</b><span>Reactions, comments, parent decisions.</span></div>
+    <div class="pg new"><b>Start Here</b><span>The child's own words. Goals, not prices.</span></div>
     <div class="pg new"><b>Who Viewed Me</b><span>Every viewer named. Never gated.</span></div>
   </div>
   <div class="col parent">
     <div class="hd">Parent portal · CHANGED</div>
+    <div class="pg new"><b>Get Started</b><span>Day one. Intake box, read-back, matched pathway.</span></div>
     <div class="pg chg"><b>Dashboard</b><span>New card: pending moments, guide comments, streak.</span></div>
     <div class="pg chg"><b>Player Profile</b><span>New block: the child's own side of the profile.</span></div>
     <div class="pg new"><b>Moments &amp; Approvals</b><span>Held queue, shared feed, take-down, comment copies. Per child.</span></div>
@@ -145,6 +147,7 @@
   </div>
   <div class="col admin">
     <div class="hd">Admin · CHANGED</div>
+    <div class="pg new"><b>Intake queue</b><span>What families said, what was matched, what was flagged.</span></div>
     <div class="pg new"><b>Moments metrics</b><span>Accounts, volume, holds, escalations.</span></div>
     <div class="pg new"><b>Safeguarding queue</b><span>The one screen a human must work daily.</span></div>
     <div class="pg new"><b>Guide conduct</b><span>Narrowings, reports, automatic review triggers.</span></div>
@@ -336,6 +339,8 @@
     <li><b>Q4 · Siblings — partly answered.</b> Adin, nine, now has an account by exception, locked to family only. Still open: can two siblings on the same family account see each other's timelines? The mockup has it <b>off</b>, needing the parent to switch it on for both. Confirm that is right — an older sibling commenting on a younger one is a dynamic worth thinking about before you enable it.</li>
     <li><b>Q5 · Two parents, one child.</b> Which parent approves? Both, either, or a nominated one? Separated families make this a real question rather than a detail.</li>
     <li><b>Q6 · Croatia versus Canada launch.</b> Croatian families arrive through Grego. If the age of consent differs, does the feature launch in one country first?</li>
+    <li><b>Q9 · Does the intake text reach a model outside the tenancy?</b> It decides the whole data-protection position, and it is the first question a lawyer will ask about day one.</li>
+    <li><b>Q10 · How long is the original intake text kept?</b> The design offers the parent a delete once the pathway is agreed. Confirm that is the default rather than the option.</li>
     <li><b>Q7 · Who may be sent a promotion link?</b> Anyone the parent names, or only from a list the platform recognises — a registered guide, a verified club? Free-typing a name is simpler and puts the judgement with the parent; a verified list is safer and much more work.</li>
     <li><b>Q8 · Does a former guide keep anything at all?</b> The design says feed access ends with the working relationship and a link is the polite door. Confirm that is what you want, because guides may expect otherwise.</li>
   </ul>
@@ -394,6 +399,66 @@
     <tr><td>Two new compliance rows</td><td>Counting who viewed a child is processing a child's data — the lawful basis needs confirming. And the never-gated policy has to be in the subscription terms, not just in this document.</td></tr>
   </table></div>
   <div class="note">Build it after stage 5 (promotion links) — a view log is worth little until there is something outward-facing to view.</div>
+</div>
+
+<div class="sect">13 · Day one — the pathway intake</div>
+<div class="sect-sub">Added 22 August 2026, answering the empty-state question. A family arriving on day one has nothing to look at and everything to say. So the first screen asks, rather than shows.</div>
+
+<div class="card">
+  <h3>The argument against a wall of buttons</h3>
+  <p style="font-size:16px;">A new family does not need eight actions. They need <b>one</b>, and it should be the one only they can do: tell us what they are here for. Everything else — the programme, the guide, the first booking, the report — is a consequence of that answer, and the platform can work most of it out.</p>
+  <div class="rule" style="margin-top:18px;"><b>Why a text box beats a form.</b><p>A twenty-field intake form asks a parent to translate their situation into our categories before we have earned it. A sentence — <q>she will not use her left foot and she went off twice with the same knee</q> — carries ambition, a technical gap, an injury pattern and a worried parent, in the family's own words, at the moment of highest motivation. It is the cheapest high-signal input in the whole product, and no competitor has it.</p></div>
+</div>
+
+<div class="card">
+  <h3>The flow, and the rule that protects it</h3>
+  <div class="flow">
+    <div class="step"><div class="rail"><div class="dot">1</div><div class="line"></div></div>
+      <div class="stepbody"><div class="actor a-parent">Parent</div><b>Writes two or three sentences</b>
+        <p>Six starter chips seed the box for anyone who freezes at a blank field. The placeholder is a real example, not instructions.</p></div></div>
+    <div class="step"><div class="rail"><div class="dot amberc">2</div><div class="line"></div></div>
+      <div class="stepbody"><div class="actor a-sys">System</div><b>Reads it and extracts signals</b>
+        <p>Ambition, timeframe, physical, technical, mindset, constraints, who is driving it, plus two flag classes — health mentions and pressure language.</p></div></div>
+    <div class="step"><div class="rail"><div class="dot lockc">3</div><div class="line"></div></div>
+      <div class="stepbody"><div class="actor a-parent">Parent — the step that makes it trustworthy</div><b>Sees exactly how it was read, and corrects it</b>
+        <p>Every extracted signal is a chip the parent can delete, and the matches re-rank as they do. <b>Nothing is ever applied silently.</b> A correction rate near zero would mean nobody is reading it; the target is that people argue with it.</p></div></div>
+    <div class="step"><div class="rail"><div class="dot">4</div><div class="line"></div></div>
+      <div class="stepbody"><div class="actor a-sys">System</div><b>Matches up to three programmes, and says why</b>
+        <p>Each match quotes the phrase that produced it — <q>matched because you wrote "hamstring"</q>. Price and time commitment are shown up front. Where the ambition outruns what any programme can deliver, it says so.</p></div></div>
+    <div class="step"><div class="rail"><div class="dot bluec">5</div></div>
+      <div class="stepbody"><div class="actor a-player">Player, separately</div><b>Is asked the same question in their own words</b>
+        <p>Different copy, no prices — a child is not sold to. Their answer becomes suggested goals and a note to their guides. The two answers sit side by side and are never merged.</p></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>What it extracts, and the one signal nobody else collects</h3>
+  <div class="tw"><table>
+    <tr><th>Signal</th><th>Routes to</th></tr>
+    <tr><td>Ambition — enjoyment, academy, professional</td><td>Programme tier and the honesty of the reply</td></tr>
+    <tr><td>Physical — injury, growth, speed</td><td>Movement Intelligence Screening</td></tr>
+    <tr><td>Technical — weak foot, touch, control</td><td>Foundation Training · Split camp</td></tr>
+    <tr><td>Mindset — nerves, pressure, giving up</td><td>Mental Edge</td></tr>
+    <tr><td>Constraints — budget, travel, time, country</td><td>Filters the match, and is shown rather than hidden</td></tr>
+    <tr><td><b>Who is driving it</b></td><td><b>Retention signal and guide briefing</b></td></tr>
+  </table></div>
+  <p style="margin-top:14px;">That last row is the one worth building for. A parent writing <q>I want him to</q> and a child writing <q>I want to</q> are different businesses with different churn. Nobody asks it because nobody thinks to; it falls out of free text for nothing.</p>
+</div>
+
+<div class="card">
+  <h3>Four rules the design commits to</h3>
+  <ul>
+    <li><b>Never apply an interpretation silently.</b> The read-back screen is not a nicety; it is the whole trust mechanism. Get this wrong at minute one and the family never believes the Player Report either.</li>
+    <li><b>Never sell to the child.</b> The player's version returns goals and guide names. No prices, no programmes, no upgrade prompts. Ever.</li>
+    <li><b>Never promise an outcome.</b> Where a parent writes professional ambition, the reply says plainly that no programme produces a contract, and what it can do instead. That paragraph will lose the occasional sale and is worth more than the sale.</li>
+    <li><b>Health mentions leave the intake immediately.</b> A parent who types an injury or a diagnosis has produced special-category data. It is not stored with the note; the parent is redirected to the health consent form and the row is flagged for a person.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>What this costs before it can go live</h3>
+  <div class="warn"><b>One new blocking compliance row.</b><p>Free text about a child, interpreted by a model, is processing a minor's data — and the text may contain health information the moment a parent types it. Three things need writing down: the lawful basis, the retention rule for the original text, and whether the text ever leaves the tenancy to reach a model. Building the intake before those answers exist is the wrong order.</p></div>
+  <p style="margin-top:14px;">The interpreter in the mockup is deterministic keyword matching, not a model — so the demo works offline, gives the same answer twice, and sends nothing anywhere. It is good enough to type into during a meeting, which is what it is for.</p>
 </div>
 
 <div class="sect">The mockups</div>
