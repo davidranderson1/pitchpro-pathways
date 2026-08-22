@@ -15,7 +15,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;min-height:100vh}
-  .wrap{max-width:860px;margin:0 auto;padding:20px 16px 90px}
+  .wrap{max-width:900px;margin:0 auto;padding:20px 16px 90px}
   header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 18px}
   .brand{font:900 15px/1.2 Archivo,Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
   .brand span{color:var(--txt)}
@@ -38,20 +38,35 @@
   .ok{color:var(--green);font-size:13px;margin-top:12px;min-height:18px}
   /* tabs */
   #app{display:none}
-  nav.tabs{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 14px;position:sticky;top:0;
+  nav.tabs{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 12px;position:sticky;top:0;
     background:var(--bg);z-index:5}
   nav.tabs button{flex:0 0 auto;background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
     padding:9px 15px;font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
   nav.tabs button[aria-selected="true"]{color:var(--green);border-color:var(--green-dim);background:var(--card2)}
   .screen{display:none}.screen.on{display:block}
   h2.scr{font:900 17px/1.3 Archivo,Inter,sans-serif;margin:6px 0 14px}
-  /* week */
-  .weeknav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  /* filters */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:2px 0 12px}
+  .fgroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .flabel{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+  .fchip{background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 13px;
+    font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;cursor:pointer}
+  .fchip.on{color:#06130c;background:var(--green);border-color:var(--green)}
+  .fchip.on.blue{background:var(--blue);border-color:var(--blue)}
+  .fsep{width:1px;height:22px;background:var(--line);margin:0 4px}
+  /* view toggle + nav */
+  .viewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .seg button{background:var(--card);border:0;color:var(--muted);padding:9px 16px;font:800 11px/1 Inter,sans-serif;
+    letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+  .seg button.on{background:var(--card2);color:var(--green)}
+  .weeknav{display:flex;align-items:center;gap:10px}
   .weeknav button{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 14px;
     font:800 13px Inter,sans-serif;cursor:pointer}
-  .weeknav .wlabel{font:800 13px/1.3 Inter,sans-serif;text-align:center}
+  .weeknav .wlabel{font:800 13px/1.3 Inter,sans-serif;text-align:center;min-width:150px}
   .banner{border:1px dashed rgba(255,200,87,.5);background:rgba(255,200,87,.07);color:var(--amber);
     border-radius:12px;padding:11px 14px;font-size:13px;margin-bottom:14px}
+  /* week list */
   .day{margin-bottom:14px}
   .dayhead{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px}
   .dayhead b{color:var(--txt)}
@@ -68,12 +83,34 @@
   .chip.t-tournament{background:rgba(95,180,255,.12);color:var(--blue)}
   .chip.t-no_session{background:rgba(255,255,255,.06);color:var(--muted)}
   .chip.unconfb{background:rgba(255,200,87,.12);color:var(--amber)}
+  .chip.clubc{background:rgba(255,255,255,.06);color:var(--muted)}
   .ev h3{font:700 15px/1.35 Inter,sans-serif;margin:7px 0 2px}
   .times{font:800 14px/1.4 Inter,sans-serif;margin-top:3px}
   .times .report{color:var(--amber)}
   .times .start{color:var(--txt)}
   .meta{font-size:13px;color:var(--muted);margin-top:3px}
+  .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
+    text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
+  .gcal:hover{background:rgba(95,180,255,.08)}
   .empty{color:var(--muted);font-size:13.5px;padding:10px 2px}
+  /* month grid */
+  .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .mdow{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    text-align:center;padding:4px 0 6px}
+  .mday{min-height:64px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 5px;
+    cursor:pointer;overflow:hidden}
+  .mday.out{opacity:.35}
+  .mday.today{border-color:var(--green-dim)}
+  .mday.sel{border-color:var(--green);background:var(--card2)}
+  .mday .n{font:800 11px/1 Inter,sans-serif;color:var(--muted);margin-bottom:4px}
+  .mday.today .n{color:var(--green)}
+  .pill{display:flex;align-items:center;gap:4px;font:700 9.5px/1.35 Inter,sans-serif;color:var(--txt);
+    background:rgba(255,255,255,.05);border-radius:6px;padding:2px 4px;margin-bottom:2px;white-space:nowrap;overflow:hidden}
+  .pill .dot{width:6px;height:6px;border-radius:50%;flex:0 0 auto}
+  .pill.warned{border:1px dashed rgba(255,200,87,.5)}
+  .dot.d1{background:var(--green)} .dot.d2{background:var(--blue)} .dot.dt{background:var(--amber)}
+  .more{font:700 9.5px/1 Inter,sans-serif;color:var(--muted)}
+  #mDetail{margin-top:14px}
   /* tables */
   .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
   table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
@@ -100,6 +137,13 @@
   .acct-row b{color:var(--txt)}
   button.ghost{background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:11px 16px;
     font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:16px}
+  .feedurl{font:12px/1.5 monospace;background:var(--card2);border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;word-break:break-all;color:var(--muted);margin:10px 0}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .btnrow .gcal{margin-top:0}
+  .steps{font-size:13px;color:var(--muted);margin-top:12px}
+  .steps b{color:var(--txt)}
+  .steps p{margin-bottom:6px}
   .foot{font-size:11.5px;color:var(--muted);margin-top:26px;text-align:center}
 </style>
 </head>
@@ -128,24 +172,39 @@
   <!-- ============ APP ============ -->
   <div id="app">
     <nav class="tabs" role="tablist">
-      <button role="tab" aria-selected="true" data-s="week">This Week</button>
-      <button role="tab" aria-selected="false" data-s="tour">Tournament</button>
+      <button role="tab" aria-selected="true" data-s="sched">Schedule</button>
+      <button role="tab" aria-selected="false" data-s="tour">Tournaments</button>
       <button role="tab" aria-selected="false" data-s="msgs">Coach Messages</button>
       <button role="tab" aria-selected="false" data-s="acct">Account</button>
     </nav>
 
-    <section class="screen on" id="s-week">
-      <div class="weeknav">
-        <button id="wPrev" aria-label="Previous week">‹</button>
-        <div class="wlabel" id="wLabel"></div>
-        <button id="wNext" aria-label="Next week">›</button>
+    <section class="screen on" id="s-sched">
+      <div class="filters">
+        <div class="fgroup" id="fPlayers"><span class="flabel">Player</span></div>
+        <div class="fsep"></div>
+        <div class="fgroup" id="fClubs"><span class="flabel">Club</span></div>
+      </div>
+      <div class="viewbar">
+        <div class="seg" id="viewSeg">
+          <button data-v="week" class="on">Week</button>
+          <button data-v="month">Month</button>
+        </div>
+        <div class="weeknav">
+          <button id="wPrev" aria-label="Previous">‹</button>
+          <div class="wlabel" id="wLabel"></div>
+          <button id="wNext" aria-label="Next">›</button>
+        </div>
       </div>
       <div id="wBanner"></div>
       <div id="wDays"></div>
+      <div id="mWrap" style="display:none">
+        <div class="mgrid" id="mGrid"></div>
+        <div id="mDetail"></div>
+      </div>
     </section>
 
     <section class="screen" id="s-tour">
-      <h2 class="scr">Tournament</h2>
+      <h2 class="scr">Tournaments</h2>
       <div id="tourBody"></div>
     </section>
 
@@ -169,9 +228,25 @@
         </form>
         <button class="ghost" id="signOut" type="button">Sign out</button>
       </div>
+      <div class="card" style="margin-top:14px" id="feedCard">
+        <h2 class="scr" style="margin-top:0">Sync with Google Calendar</h2>
+        <p class="meta">Subscribe once and every schedule change lands in your Google Calendar automatically (Google refreshes subscribed calendars a few times a day). The link below is a private key — share it only with family.</p>
+        <div class="feedurl" id="feedUrl">Loading…</div>
+        <div class="btnrow">
+          <a class="gcal" href="#" id="copyFeed">Copy calendar link</a>
+          <a class="gcal" href="https://calendar.google.com/calendar/u/0/r/settings/addbyurl" target="_blank" rel="noopener">Open Google Calendar → From URL</a>
+        </div>
+        <div class="ok" id="copyOk"></div>
+        <div class="steps">
+          <p><b>1.</b> Tap “Copy calendar link”.</p>
+          <p><b>2.</b> Open the “From URL” page (second button — easiest on a computer), paste the link, press <b>Add calendar</b>.</p>
+          <p><b>3.</b> “Family Football” appears in your calendar list, and syncs to the Google Calendar app on your phone automatically.</p>
+          <p>Prefer a one-off? Every event card also has its own “Add to Google Calendar” button.</p>
+        </div>
+      </div>
     </section>
 
-    <div class="foot">Schedule data is entered from the coach's messages. Amber dashed cards mean the date is inferred, not confirmed — check with the coach.</div>
+    <div class="foot">Schedule data is entered from the coaches' messages. Amber dashed cards mean the date is inferred, not confirmed — check with the coach.</div>
   </div>
 </div>
 
@@ -184,7 +259,9 @@
   var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   var $ = function(id){ return document.getElementById(id); };
-  var state = { players:[], events:[], msgs:[], tours:[], fixtures:[], weekStart:null };
+  var state = { players:[], events:[], msgs:[], tours:[], fixtures:[], feedToken:null,
+                view:'week', weekStart:null, monthStart:null, selDay:null,
+                fPlayer:'all', fClub:'all' };
 
   /* ---------- helpers ---------- */
   function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
@@ -192,11 +269,18 @@
   function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   function parseISO(s){ var p=s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
   function mondayOf(d){ var x=new Date(d); var wd=(x.getDay()+6)%7; x.setDate(x.getDate()-wd); x.setHours(0,0,0,0); return x; }
+  function firstOf(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
   function addDays(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x; }
+  function addMonths(d,n){ return new Date(d.getFullYear(), d.getMonth()+n, 1); }
+  function addMin(t,mins){ var p=t.split(':'); var m=(+p[0])*60+(+p[1])+mins; return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0'); }
   var DOW=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  var DOWS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var MONF=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function fmtShort(d){ return d.getDate()+' '+MON[d.getMonth()]; }
   var TYPE_LABEL={training:'Training',duty:'Duty',match:'Match',tournament:'Tournament',no_session:'No session'};
+  function store(k,v){ try{ localStorage.setItem('pp-'+k, v); }catch(e){} }
+  function recall(k){ try{ return localStorage.getItem('pp-'+k); }catch(e){ return null; } }
 
   /* ---------- auth ---------- */
   $('loginForm').addEventListener('submit', function(e){
@@ -256,79 +340,137 @@
       sb.from('events').select('*').order('event_date',{ascending:true}).order('start_time',{ascending:true,nullsFirst:false}),
       sb.from('coach_messages').select('*').order('received_on',{ascending:false}),
       sb.from('tournaments').select('*'),
-      sb.from('tournament_fixtures').select('*').order('sort_order')
+      sb.from('tournament_fixtures').select('*').order('sort_order'),
+      sb.from('calendar_feeds').select('*').limit(1)
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
       state.tours=r[3].data||[]; state.fixtures=r[4].data||[];
-      state.weekStart = pickInitialWeek();
+      state.feedToken=(r[5].data && r[5].data[0]) ? r[5].data[0].token : null;
       if(state.players.length && state.players[0].club){
-        var cb=$('clubBadge');
-        cb.textContent = state.players[0].club;
-        cb.style.display='';
+        var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
       }
-      renderWeek(); renderTournament(); renderMessages();
+      state.fPlayer = recall('fPlayer') || 'all';
+      state.fClub = recall('fClub') || 'all';
+      if(state.fPlayer!=='all' && !state.players.some(function(p){return p.id===state.fPlayer;})) state.fPlayer='all';
+      state.view = recall('view')==='month' ? 'month' : 'week';
+      state.weekStart = pickInitialWeek();
+      state.monthStart = firstOf(state.weekStart);
+      buildFilters(); renderFeed(); syncViewSeg();
+      renderSchedule(); renderTournaments(); renderMessages();
     }).catch(function(){ showLoadError('network error'); });
   }
   function showLoadError(m){
-    $('wDays').innerHTML='<div class="banner">Could not load the schedule ('+esc(m)+'). Pull to refresh or try again shortly.</div>';
+    $('wDays').innerHTML='<div class="banner">Could not load the schedule ('+esc(m)+'). Try again shortly.</div>';
   }
   function pickInitialWeek(){
     var today=mondayOf(new Date());
     var dated=state.events.filter(function(e){ return e.event_date; });
     if(!dated.length) return today;
-    var thisWeekHas=dated.some(function(e){ var w=mondayOf(parseISO(e.event_date)); return w.getTime()===today.getTime(); });
+    var thisWeekHas=dated.some(function(e){ return mondayOf(parseISO(e.event_date)).getTime()===today.getTime(); });
     if(thisWeekHas) return today;
     var future=dated.map(function(e){ return parseISO(e.event_date); }).filter(function(d){ return d>=today; }).sort(function(a,b){return a-b;});
     return future.length ? mondayOf(future[0]) : today;
   }
-  $('wPrev').addEventListener('click', function(){ state.weekStart=addDays(state.weekStart,-7); renderWeek(); });
-  $('wNext').addEventListener('click', function(){ state.weekStart=addDays(state.weekStart, 7); renderWeek(); });
 
-  /* ---------- week view ---------- */
-  function playerById(id){ for(var i=0;i<state.players.length;i++) if(state.players[i].id===id) return state.players[i]; return null; }
-  function renderWeek(){
-    var ws=state.weekStart, we=addDays(ws,6);
-    $('wLabel').textContent='Week of '+fmtShort(ws)+' – '+fmtShort(we)+' '+we.getFullYear();
-    var inWeek=state.events.filter(function(e){
-      if(!e.event_date) return false;
-      var d=parseISO(e.event_date); return d>=ws && d<=we;
-    });
-    var anyUnconf=inWeek.some(function(e){ return !e.date_confirmed; });
-    $('wBanner').innerHTML = anyUnconf
-      ? '<div class="banner">⚠ Some dates this week are inferred from the coach saying “next week”, not confirmed. Check with the coach before relying on them.</div>' : '';
-    var html='';
-    for(var i=0;i<7;i++){
-      var day=addDays(ws,i), dayIso=iso(day);
-      var evs=inWeek.filter(function(e){ return e.event_date===dayIso; });
-      if(!evs.length) continue;
-      html+='<div class="day"><div class="dayhead"><b>'+DOW[i]+'</b> · '+fmtShort(day)+'</div>';
-      html+=tripNote(evs);
-      evs.forEach(function(e){ html+=evCard(e); });
-      html+='</div>';
-    }
-    if(!html) html='<div class="empty">Nothing scheduled this week. Use the arrows to move between weeks.</div>';
-    $('wDays').innerHTML=html;
+  /* ---------- filters ---------- */
+  function clubs(){
+    var s={};
+    state.events.forEach(function(e){ if(e.club) s[e.club]=1; });
+    state.tours.forEach(function(t){ if(t.club) s[t.club]=1; });
+    return Object.keys(s).sort();
   }
-  function tripNote(evs){
-    var timed=evs.filter(function(e){ return e.start_time && e.event_type!=='no_session'; });
-    var kids={}; timed.forEach(function(e){ kids[e.player_id]=e; });
-    var ids=Object.keys(kids);
-    if(ids.length<2) return '';
-    var a=kids[ids[0]], b=kids[ids[1]];
-    if(hm(a.start_time)===hm(b.start_time)){
-      var sameVenue = (a.venue||'')===(b.venue||'');
-      return '<div class="trip">Both at '+hm(a.start_time)+(sameVenue?' — one trip if the venue is shared (venue not stated).':' — different venues: two drop-offs.')+'</div>';
+  function buildFilters(){
+    var ph='<span class="flabel">Player</span><button class="fchip" data-f="all">All</button>';
+    state.players.forEach(function(p){ ph+='<button class="fchip" data-f="'+esc(p.id)+'">'+esc(p.first_name)+'</button>'; });
+    $('fPlayers').innerHTML=ph;
+    var ch='<span class="flabel">Club</span><button class="fchip blue" data-f="all">All</button>';
+    clubs().forEach(function(c){ ch+='<button class="fchip blue" data-f="'+esc(c)+'">'+esc(c)+'</button>'; });
+    $('fClubs').innerHTML=ch;
+    $('fPlayers').querySelectorAll('.fchip').forEach(function(b){
+      b.addEventListener('click', function(){ state.fPlayer=b.dataset.f; store('fPlayer',state.fPlayer); paintFilters(); renderSchedule(); renderTournaments(); });
+    });
+    $('fClubs').querySelectorAll('.fchip').forEach(function(b){
+      b.addEventListener('click', function(){ state.fClub=b.dataset.f; store('fClub',state.fClub); paintFilters(); renderSchedule(); renderTournaments(); });
+    });
+    paintFilters();
+  }
+  function paintFilters(){
+    $('fPlayers').querySelectorAll('.fchip').forEach(function(b){ b.classList.toggle('on', b.dataset.f===state.fPlayer); });
+    $('fClubs').querySelectorAll('.fchip').forEach(function(b){ b.classList.toggle('on', b.dataset.f===state.fClub); });
+  }
+  function visibleEvents(){
+    return state.events.filter(function(e){
+      if(state.fPlayer!=='all' && e.player_id!==state.fPlayer) return false;
+      if(state.fClub!=='all' && e.club!==state.fClub) return false;
+      return true;
+    });
+  }
+
+  /* ---------- view toggle + nav ---------- */
+  function syncViewSeg(){
+    $('viewSeg').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.v===state.view); });
+  }
+  $('viewSeg').querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      state.view=b.dataset.v; store('view',state.view);
+      if(state.view==='month'){ state.monthStart=firstOf(state.weekStart); }
+      syncViewSeg(); renderSchedule();
+    });
+  });
+  $('wPrev').addEventListener('click', function(){
+    if(state.view==='week'){ state.weekStart=addDays(state.weekStart,-7); } else { state.monthStart=addMonths(state.monthStart,-1); state.selDay=null; }
+    renderSchedule();
+  });
+  $('wNext').addEventListener('click', function(){
+    if(state.view==='week'){ state.weekStart=addDays(state.weekStart,7); } else { state.monthStart=addMonths(state.monthStart,1); state.selDay=null; }
+    renderSchedule();
+  });
+
+  function renderSchedule(){
+    if(state.view==='week'){
+      $('wDays').style.display=''; $('mWrap').style.display='none';
+      renderWeek();
+    } else {
+      $('wDays').style.display='none'; $('mWrap').style.display='';
+      renderMonth();
     }
-    return '<div class="trip">Both children have commitments today — check the times below.</div>';
+  }
+
+  /* ---------- shared card ---------- */
+  function playerById(id){ for(var i=0;i<state.players.length;i++) if(state.players[i].id===id) return state.players[i]; return null; }
+  function pIdx(id){ var p=playerById(id); return p ? (state.players.indexOf(p)%2)+1 : 1; }
+  function gcalEventLink(e){
+    if(e.event_type==='no_session' || !e.event_date) return null;
+    var p=playerById(e.player_id);
+    var date=e.event_date.replace(/-/g,'');
+    var det=[];
+    if(e.report_time && e.start_time) det.push('Arrive '+hm(e.report_time)+', kick-off '+hm(e.start_time)+'.');
+    if(e.details) det.push(e.details);
+    if(!e.date_confirmed) det.push('Date not confirmed — check with the coach.');
+    var title=(p?p.first_name+' · ':'')+e.title+' ('+e.club+')';
+    var dates;
+    if(e.report_time || e.start_time){
+      var st=(e.report_time||e.start_time), en=e.end_time||addMin(e.start_time||e.report_time,90);
+      dates=date+'T'+hm(st).replace(':','')+'00/'+date+'T'+hm(en).replace(':','')+'00';
+    } else {
+      var nd=iso(addDays(parseISO(e.event_date),1)).replace(/-/g,'');
+      dates=date+'/'+nd;
+    }
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      +'&text='+encodeURIComponent((e.date_confirmed?'':'⚠ ')+title)
+      +'&dates='+dates+'&ctz=Europe/Zagreb'
+      +'&details='+encodeURIComponent(det.join('\n'))
+      +(e.venue?'&location='+encodeURIComponent(e.venue):'');
   }
   function evCard(e){
     var p=playerById(e.player_id);
-    var pIdx = p ? (state.players.indexOf(p)%2)+1 : 1;
+    var multiClub = clubs().length>1;
     var h='<div class="ev '+(e.date_confirmed?'':'unconf')+'">';
     h+='<div class="evrow">';
-    if(p) h+='<span class="chip p'+pIdx+'">'+esc(p.first_name)+' · '+esc(p.team_label)+'</span>';
+    if(p) h+='<span class="chip p'+pIdx(e.player_id)+'">'+esc(p.first_name)+' · '+esc(p.team_label)+'</span>';
     h+='<span class="chip t-'+esc(e.event_type)+'">'+ (TYPE_LABEL[e.event_type]||esc(e.event_type)) +'</span>';
+    if(multiClub && e.club) h+='<span class="chip clubc">'+esc(e.club)+'</span>';
     if(!e.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
     h+='</div>';
     h+='<h3>'+esc(e.title)+'</h3>';
@@ -340,36 +482,145 @@
     if(e.venue) m.push('📍 '+esc(e.venue)); else if(e.event_type!=='no_session') m.push('📍 venue not stated');
     if(e.details) m.push(esc(e.details));
     if(m.length) h+='<div class="meta">'+m.join(' — ')+'</div>';
+    var g=gcalEventLink(e);
+    if(g) h+='<a class="gcal" href="'+g+'" target="_blank" rel="noopener">＋ Add to Google Calendar</a>';
     return h+'</div>';
   }
+  function tripNote(evs){
+    var timed=evs.filter(function(e){ return e.start_time && e.event_type!=='no_session'; });
+    var kids={}; timed.forEach(function(e){ kids[e.player_id]=e; });
+    var ids=Object.keys(kids);
+    if(ids.length<2) return '';
+    var a=kids[ids[0]], b=kids[ids[1]];
+    if(hm(a.start_time)===hm(b.start_time)){
+      var sameVenue = (a.venue||'')===(b.venue||'');
+      return '<div class="trip">Both at '+hm(a.start_time)+(sameVenue?' — one trip if the venue is shared'+((a.venue)?'':' (venue not stated)')+'.':' — different venues: two drop-offs.')+'</div>';
+    }
+    return '<div class="trip">Both children have commitments today — check the times below.</div>';
+  }
 
-  /* ---------- tournament ---------- */
-  function renderTournament(){
-    if(!state.tours.length){ $('tourBody').innerHTML='<div class="empty">No tournament on file yet.</div>'; return; }
-    var t=state.tours[0], h='';
-    h+='<div class="card msg"><div class="evrow">';
-    h+='<span class="chip t-tournament">Tournament</span>';
-    if(!t.date_confirmed) h+='<span class="chip unconfb">'+(t.event_date?'date unconfirmed':'date not announced')+'</span>';
-    h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
-    var meta=[];
-    if(t.event_date) meta.push('Date: '+esc(t.event_date));
-    if(t.venue) meta.push('Venue: '+esc(t.venue));
-    if(t.team_label) meta.push('Our team: '+esc(t.team_label));
-    if(!t.event_date) meta.push('Date, venue and which of our teams is playing are not on the schedule sheet — ask the coach.');
-    h+='<div class="meta">'+meta.join(' · ')+'</div>';
-    if(t.format_notes) h+='<div class="meta" style="margin-top:6px">'+esc(t.format_notes)+'</div>';
-    h+='</div>';
-    var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
-    var A={},B={};
-    fx.forEach(function(f){ if(f.stage==='group'){ (f.grp==='A'?A:B)[f.home]=1; (f.grp==='A'?A:B)[f.away]=1; } });
-    h+='<div class="card" style="margin:14px 0"><div class="meta"><span class="grpA"><b>Group A (Pitch 1):</b> '+Object.keys(A).map(esc).join(', ')+'</span><br><span class="grpB"><b>Group B (Pitch 2):</b> '+Object.keys(B).map(esc).join(', ')+'</span></div></div>';
-    h+='<div class="tw"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th></tr></thead><tbody>';
-    fx.forEach(function(f){
-      var knock=f.stage!=='group';
-      h+='<tr'+(knock?' class="knock"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td></tr>';
+  /* ---------- week view ---------- */
+  function renderWeek(){
+    var ws=state.weekStart, we=addDays(ws,6);
+    $('wLabel').textContent='Week of '+fmtShort(ws)+' – '+fmtShort(we)+' '+we.getFullYear();
+    var evs=visibleEvents();
+    var inWeek=evs.filter(function(e){
+      if(!e.event_date) return false;
+      var d=parseISO(e.event_date); return d>=ws && d<=we;
     });
-    h+='</tbody></table></div>';
-    h+='<div class="meta" style="margin-top:10px">Group stage runs 10:00–16:10, finals end 17:25 — a full day on site.</div>';
+    var anyUnconf=inWeek.some(function(e){ return !e.date_confirmed; });
+    $('wBanner').innerHTML = anyUnconf
+      ? '<div class="banner">⚠ Some dates this week are inferred from the coach saying “next week”, not confirmed. Check with the coach before relying on them.</div>' : '';
+    var html='';
+    for(var i=0;i<7;i++){
+      var day=addDays(ws,i), dayIso=iso(day);
+      var de=inWeek.filter(function(e){ return e.event_date===dayIso; });
+      if(!de.length) continue;
+      html+='<div class="day"><div class="dayhead"><b>'+DOW[i]+'</b> · '+fmtShort(day)+'</div>';
+      html+=tripNote(de);
+      de.forEach(function(e){ html+=evCard(e); });
+      html+='</div>';
+    }
+    if(!html) html='<div class="empty">Nothing scheduled this week for this selection. Use the arrows or the filters above.</div>';
+    $('wDays').innerHTML=html;
+  }
+
+  /* ---------- month view ---------- */
+  function renderMonth(){
+    var ms=state.monthStart;
+    $('wLabel').textContent=MONF[ms.getMonth()]+' '+ms.getFullYear();
+    var evs=visibleEvents().filter(function(e){ return e.event_date; });
+    var byDay={};
+    evs.forEach(function(e){ (byDay[e.event_date]=byDay[e.event_date]||[]).push(e); });
+    var anyUnconf=evs.some(function(e){
+      var d=parseISO(e.event_date);
+      return d.getMonth()===ms.getMonth() && d.getFullYear()===ms.getFullYear() && !e.date_confirmed;
+    });
+    $('wBanner').innerHTML = anyUnconf
+      ? '<div class="banner">⚠ Amber-ringed days hold dates inferred from “next week”, not confirmed.</div>' : '';
+    var todayIso=iso(new Date());
+    var h='';
+    DOWS.forEach(function(d){ h+='<div class="mdow">'+d+'</div>'; });
+    var gridStart=mondayOf(ms);
+    for(var i=0;i<42;i++){
+      var day=addDays(gridStart,i);
+      if(i>=35 && day.getMonth()!==ms.getMonth()) break;
+      var dayIso=iso(day);
+      var de=byDay[dayIso]||[];
+      var cls='mday'+(day.getMonth()!==ms.getMonth()?' out':'')+(dayIso===todayIso?' today':'')+(dayIso===state.selDay?' sel':'');
+      h+='<div class="'+cls+'" data-d="'+dayIso+'" role="button" tabindex="0" aria-label="'+DOW[(day.getDay()+6)%7]+' '+fmtShort(day)+', '+de.length+' events">';
+      h+='<div class="n">'+day.getDate()+'</div>';
+      var shown=de.slice(0,3);
+      shown.forEach(function(e){
+        var d1='d'+pIdx(e.player_id);
+        h+='<div class="pill'+(e.date_confirmed?'':' warned')+'"><span class="dot '+d1+'"></span>'+(e.start_time||e.report_time ? hm(e.report_time||e.start_time) : (e.event_type==='no_session'?'off':'day'))+'</div>';
+      });
+      if(de.length>3) h+='<div class="more">+'+(de.length-3)+' more</div>';
+      h+='</div>';
+    }
+    $('mGrid').innerHTML=h;
+    $('mGrid').querySelectorAll('.mday').forEach(function(c){
+      function pick(){ state.selDay=c.dataset.d; renderMonth(); }
+      c.addEventListener('click', pick);
+      c.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+    });
+    var dh='';
+    if(state.selDay){
+      var de2=byDay[state.selDay]||[];
+      var sd=parseISO(state.selDay);
+      dh+='<div class="dayhead" style="margin-top:4px"><b>'+DOW[(sd.getDay()+6)%7]+'</b> · '+fmtShort(sd)+' '+sd.getFullYear()+'</div>';
+      if(de2.length){ dh+=tripNote(de2); de2.forEach(function(e){ dh+=evCard(e); }); }
+      else dh+='<div class="empty">Nothing on this day for this selection.</div>';
+    } else {
+      dh='<div class="empty">Tap a day to see its details.</div>';
+    }
+    $('mDetail').innerHTML=dh;
+  }
+
+  /* ---------- tournaments ---------- */
+  function renderTournaments(){
+    var ts=state.tours.filter(function(t){ return state.fClub==='all' || t.club===state.fClub; });
+    if(!ts.length){ $('tourBody').innerHTML='<div class="empty">No tournaments on file'+(state.fClub!=='all'?' for '+esc(state.fClub):'')+'.</div>'; return; }
+    ts.sort(function(a,b){ return (a.event_date||'9999') < (b.event_date||'9999') ? -1 : 1; });
+    var multiClub = clubs().length>1;
+    var h='';
+    ts.forEach(function(t){
+      h+='<div class="card msg"><div class="evrow">';
+      h+='<span class="chip t-tournament">Tournament</span>';
+      if(multiClub && t.club) h+='<span class="chip clubc">'+esc(t.club)+'</span>';
+      if(t.event_date && !t.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
+      if(!t.event_date) h+='<span class="chip unconfb">date not announced</span>';
+      h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
+      var meta=[];
+      if(t.event_date) meta.push('Date: '+esc(t.event_date));
+      if(t.venue) meta.push('Venue: '+esc(t.venue));
+      if(t.team_label) meta.push('Our team: '+esc(t.team_label));
+      if(!t.event_date) meta.push('Date, venue and which of our teams is playing are not on the schedule sheet — ask the coach.');
+      h+='<div class="meta">'+meta.join(' · ')+'</div>';
+      if(t.format_notes) h+='<div class="meta" style="margin-top:6px">'+esc(t.format_notes)+'</div>';
+      if(t.event_date){
+        var d=t.event_date.replace(/-/g,''), nd=iso(addDays(parseISO(t.event_date),1)).replace(/-/g,'');
+        h+='<a class="gcal" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t.name+' ('+t.club+')')+'&dates='+d+'/'+nd+'&ctz=Europe/Zagreb'+(t.venue?'&location='+encodeURIComponent(t.venue):'')+'" target="_blank" rel="noopener">＋ Add to Google Calendar</a>';
+      }
+      h+='</div>';
+      var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
+      if(fx.length){
+        var A={},B={};
+        fx.forEach(function(f){ if(f.stage==='group' && f.grp){ (f.grp==='A'?A:B)[f.home]=1; (f.grp==='A'?A:B)[f.away]=1; } });
+        if(Object.keys(A).length||Object.keys(B).length){
+          h+='<div class="card" style="margin:14px 0"><div class="meta">';
+          if(Object.keys(A).length) h+='<span class="grpA"><b>Group A (Pitch 1):</b> '+Object.keys(A).map(esc).join(', ')+'</span><br>';
+          if(Object.keys(B).length) h+='<span class="grpB"><b>Group B (Pitch 2):</b> '+Object.keys(B).map(esc).join(', ')+'</span>';
+          h+='</div></div>';
+        }
+        h+='<div class="tw" style="margin-bottom:18px"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th></tr></thead><tbody>';
+        fx.forEach(function(f){
+          var knock=f.stage!=='group';
+          h+='<tr'+(knock?' class="knock"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td></tr>';
+        });
+        h+='</tbody></table></div>';
+      }
+    });
     $('tourBody').innerHTML=h;
   }
 
@@ -391,6 +642,21 @@
     });
     $('msgsBody').innerHTML=h;
   }
+
+  /* ---------- calendar feed ---------- */
+  function feedURL(){ return state.feedToken ? (SUPABASE_URL+'/functions/v1/calendar-feed?token='+state.feedToken) : null; }
+  function renderFeed(){
+    var u=feedURL();
+    $('feedUrl').textContent = u || 'Feed unavailable — ask for a new feed key.';
+  }
+  $('copyFeed').addEventListener('click', function(e){
+    e.preventDefault();
+    var u=feedURL(); if(!u) return;
+    function done(ok){ $('copyOk').textContent = ok ? 'Copied. Now paste it into Google Calendar → From URL.' : 'Could not copy automatically — long-press the link text above to copy it.'; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(u).then(function(){ done(true); }, function(){ done(false); });
+    } else { done(false); }
+  });
 })();
 </script>
 <script src="site-nav.js" defer></script>
