@@ -294,7 +294,26 @@
 
   <div class="rolenote" style="border-left-color:var(--grass);"><b style="color:var(--grass);">The answer to the question.</b> Half right, and the half that is right is worth having. <b>Apple does the device-to-phone lifting but nothing beyond it</b> — Apple Health is a private store on the child's phone, so “just gather the data” still means shipping and maintaining an iPhone app, and the same is true of Google Health Connect on Android. <b>Google is the exception:</b> the Google Health API launched in March 2026 is cloud-based and tied to a Google account, so a server really can read from it without an app of ours on the phone. <b>The aggregators are the layer that genuinely does the work</b> — one contract instead of six integrations, and mobile kits so we never write two native apps ourselves. But read down the soccer column: <b>one entry, and it is a back door</b>. STATSports pushes distance and sessions into Apple Health; nobody carries a boot sensor or a sensor insole. An aggregator buys recovery and general load cheaply. It does not buy the ball — that always needs a direct agreement with Playermaker and Plantiga.</div>
 
-  <h3 style="margin-top:34px;font-size:15px;">Live connection panel<span class="mock">Mockup — no data is flowing</span></h3>
+  <h3 style="margin-top:34px;font-size:15px;">3 · What “needs our app” actually means</h3>
+  <p class="lead" style="font-size:14px;">The obvious question is whether a consent screen solves this — the parent agrees to share, authenticates with us, done. It does not, and it is worth knowing exactly why before anyone spends a week on it. <b>Consent is not the blocker; it is an architecture problem.</b></p>
+
+  <div class="rolenote" style="border-left-color:var(--red);"><b style="color:var(--red);">There is no server to authenticate against.</b> A “connect your account” flow works when the vendor runs a cloud holding the data — Ōura, Garmin, Polar, WHOOP and the Google Health API all do, so the parent signs in, approves the scopes, and our backend pulls from their cloud from then on. Apple Health and Google Health Connect are not that. They are encrypted stores <b>on the phone itself</b>, with no cloud copy and no authorisation endpoint to point a request at. A parent who wants to share everything has no button that can grant a server access, because the data never leaves the handset unless something running on that handset carries it out. Consent is necessary but not sufficient: <b>code has to execute on the device</b>, read the store under per-data-type permission, and push it to us.</div>
+
+  <div class="grid" style="margin-top:18px;">
+    <div class="card hot"><span class="status ok">Phase 1</span><h3>1 · Skip the platforms</h3><p>Ōura, Garmin, Polar, WHOOP, Strava and the Google Health API are exactly the model you would expect: a Connect button on a web page, the parent authenticates, data flows to our server. <b>No app at all.</b> Covers recovery, sleep, heart rate and general load — most of two radars.</p></div>
+    <div class="card"><span class="status todo">Pilot only</span><h3>2 · Manual export</h3><p>Apple's Health app has “Export All Health Data”, producing a file a parent uploads to us. A snapshot, not a feed, and inelegant — but enough to prove the percentile maths on ten families before spending anything.</p></div>
+    <div class="card"><span class="status todo">Small build</span><h3>3 · An aggregator kit in a thin app</h3><p>Terra, Rook and Spike each ship a mobile component whose entire job is the Apple Health and Health Connect read. Our app becomes a login screen, a consent screen and their component; their cloud delivers to us by webhook, already normalised. <b>We never write the health code ourselves.</b></p></div>
+    <div class="card"><span class="status todo">Full build</span><h3>4 · Our own app reads it directly</h3><p>Most control, most maintenance — and Apple's store rules on health data become ours to comply with. Only worth it once the app exists for other reasons.</p></div>
+  </div>
+
+  <div class="rolenote" style="border-left-color:var(--grass);margin-top:16px;"><b style="color:var(--grass);">And we are probably shipping an app anyway.</b> The Moments feature — a player from age ten posting photos and video daily — is a phone product. Once that app exists, the Apple Health and Health Connect read is one more screen inside it, and route 3 collapses into route 4 at almost no marginal cost. So the real question is not whether, but <b>whether health arrives with the app or before it</b>.</div>
+
+  <div class="warnbox" style="border-color:rgba(255,190,70,.45);background:rgba(255,190,70,.06);margin-top:16px;">
+    <h3 style="color:var(--amber);">⚠ Three things that specifically do not work</h3>
+    <p style="color:#efe3cf;">So nobody loses a week to them. <b>A web page or progressive web app cannot read either store</b>, on either operating system — the browser has no access to it. <b>“Sign in with Apple” and “Sign in with Google” grant identity, never health data</b>; they are authentication, not a data scope. And <b>Health Connect's backup feature moves data between a user's own Android devices</b> through their Google account — it is not an export anyone else can read.</p>
+  </div>
+
+  <h3 style="margin-top:34px;font-size:15px;">4 · Live connection panel<span class="mock">Mockup — no data is flowing</span></h3>
   <div class="scroll">
   <table>
     <thead><tr><th>Connection</th><th>Status</th><th>Last sync</th><th>Cadence</th><th>Consent held</th><th>Feeds</th></tr></thead>
