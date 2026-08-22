@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Family Schedule — PitchPro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a120d; --card:#101a14; --card2:#15211a; --line:rgba(255,255,255,.08);
+    --green:#2ee08a; --green-dim:rgba(46,224,138,.35); --blue:#5fb4ff; --amber:#ffc857;
+    --txt:#f2f7f4; --muted:#9db3a6; --red:#ff7a6e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;min-height:100vh}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 16px 90px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 18px}
+  .brand{font:900 15px/1.2 Archivo,Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .brand span{color:var(--txt)}
+  .club{font:700 10.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:7px 12px;white-space:nowrap}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .private-note{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+  /* login */
+  #login{max-width:400px;margin:8vh auto 0}
+  #login h1{font:900 20px/1.25 Archivo,Inter,sans-serif;margin-bottom:4px}
+  #login p.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  label{display:block;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+  input{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);
+    padding:12px 13px;font:15px Inter,sans-serif}
+  input:focus{outline:none;border-color:var(--green-dim)}
+  button.primary{width:100%;margin-top:18px;background:var(--green);color:#06130c;border:0;border-radius:10px;
+    padding:13px;font:800 13px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+  button.primary:disabled{opacity:.55;cursor:default}
+  .err{color:var(--red);font-size:13px;margin-top:12px;min-height:18px}
+  .ok{color:var(--green);font-size:13px;margin-top:12px;min-height:18px}
+  /* tabs */
+  #app{display:none}
+  nav.tabs{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 14px;position:sticky;top:0;
+    background:var(--bg);z-index:5}
+  nav.tabs button{flex:0 0 auto;background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:9px 15px;font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+  nav.tabs button[aria-selected="true"]{color:var(--green);border-color:var(--green-dim);background:var(--card2)}
+  .screen{display:none}.screen.on{display:block}
+  h2.scr{font:900 17px/1.3 Archivo,Inter,sans-serif;margin:6px 0 14px}
+  /* week */
+  .weeknav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .weeknav button{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 14px;
+    font:800 13px Inter,sans-serif;cursor:pointer}
+  .weeknav .wlabel{font:800 13px/1.3 Inter,sans-serif;text-align:center}
+  .banner{border:1px dashed rgba(255,200,87,.5);background:rgba(255,200,87,.07);color:var(--amber);
+    border-radius:12px;padding:11px 14px;font-size:13px;margin-bottom:14px}
+  .day{margin-bottom:14px}
+  .dayhead{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px}
+  .dayhead b{color:var(--txt)}
+  .trip{font-size:12px;color:var(--blue);margin:-2px 0 8px 2px}
+  .ev{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:8px}
+  .ev.unconf{border-style:dashed;border-color:rgba(255,200,87,.45)}
+  .evrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .chip{font:800 10px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:5px 10px}
+  .chip.p1{background:rgba(46,224,138,.14);color:var(--green)}
+  .chip.p2{background:rgba(95,180,255,.14);color:var(--blue)}
+  .chip.t-training{background:rgba(46,224,138,.1);color:var(--green)}
+  .chip.t-duty{background:rgba(255,200,87,.12);color:var(--amber)}
+  .chip.t-match{background:rgba(95,180,255,.12);color:var(--blue)}
+  .chip.t-tournament{background:rgba(95,180,255,.12);color:var(--blue)}
+  .chip.t-no_session{background:rgba(255,255,255,.06);color:var(--muted)}
+  .chip.unconfb{background:rgba(255,200,87,.12);color:var(--amber)}
+  .ev h3{font:700 15px/1.35 Inter,sans-serif;margin:7px 0 2px}
+  .times{font:800 14px/1.4 Inter,sans-serif;margin-top:3px}
+  .times .report{color:var(--amber)}
+  .times .start{color:var(--txt)}
+  .meta{font-size:13px;color:var(--muted);margin-top:3px}
+  .empty{color:var(--muted);font-size:13.5px;padding:10px 2px}
+  /* tables */
+  .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+  th{font:800 10.5px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--card2)}
+  td{padding:9px 12px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:0}
+  td.slot{white-space:nowrap;font-weight:700}
+  tr.knock td{color:var(--green);font-weight:700}
+  .grpA{color:var(--green)} .grpB{color:var(--blue)}
+  /* messages */
+  .msg{margin-bottom:14px}
+  .msg .head{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+  .msg .who{font:700 13.5px Inter,sans-serif}
+  .msg .when{font-size:12px;color:var(--muted)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:640px){.cols{grid-template-columns:1fr}}
+  .langbox{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13.5px}
+  .langbox .lang{font:800 10px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .langbox.en .lang{color:var(--green)}
+  .msg .note{font-size:12.5px;color:var(--amber);margin-top:9px}
+  /* account */
+  .acct-row{font-size:14px;margin-bottom:16px;color:var(--muted)}
+  .acct-row b{color:var(--txt)}
+  button.ghost{background:none;border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:11px 16px;
+    font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:16px}
+  .foot{font-size:11.5px;color:var(--muted);margin-top:26px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">PitchPro <span>— Family Schedule</span></div>
+    <div class="club" id="clubBadge" style="display:none"></div>
+  </header>
+
+  <!-- ============ LOGIN ============ -->
+  <div id="login" class="card">
+    <h1>Sign in</h1>
+    <p class="sub">Private family schedule. Accounts are created for family members only.</p>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+      <button class="primary" id="loginBtn" type="submit">Sign in</button>
+      <div class="err" id="loginErr"></div>
+    </form>
+  </div>
+  <p class="private-note" id="loginNote">Schedules, names and venues are stored in a private database and are only visible after sign-in.</p>
+
+  <!-- ============ APP ============ -->
+  <div id="app">
+    <nav class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-s="week">This Week</button>
+      <button role="tab" aria-selected="false" data-s="tour">Tournament</button>
+      <button role="tab" aria-selected="false" data-s="msgs">Coach Messages</button>
+      <button role="tab" aria-selected="false" data-s="acct">Account</button>
+    </nav>
+
+    <section class="screen on" id="s-week">
+      <div class="weeknav">
+        <button id="wPrev" aria-label="Previous week">‹</button>
+        <div class="wlabel" id="wLabel"></div>
+        <button id="wNext" aria-label="Next week">›</button>
+      </div>
+      <div id="wBanner"></div>
+      <div id="wDays"></div>
+    </section>
+
+    <section class="screen" id="s-tour">
+      <h2 class="scr">Tournament</h2>
+      <div id="tourBody"></div>
+    </section>
+
+    <section class="screen" id="s-msgs">
+      <h2 class="scr">Coach messages — original and English</h2>
+      <div id="msgsBody"></div>
+    </section>
+
+    <section class="screen" id="s-acct">
+      <h2 class="scr">Account</h2>
+      <div class="card">
+        <div class="acct-row">Signed in as <b id="acctEmail"></b></div>
+        <form id="pwForm">
+          <label for="npw">New password (min 8 characters)</label>
+          <input id="npw" type="password" autocomplete="new-password" minlength="8" required>
+          <label for="npw2">Repeat new password</label>
+          <input id="npw2" type="password" autocomplete="new-password" minlength="8" required>
+          <button class="primary" id="pwBtn" type="submit">Change password</button>
+          <div class="err" id="pwErr"></div>
+          <div class="ok" id="pwOk"></div>
+        </form>
+        <button class="ghost" id="signOut" type="button">Sign out</button>
+      </div>
+    </section>
+
+    <div class="foot">Schedule data is entered from the coach's messages. Amber dashed cards mean the date is inferred, not confirmed — check with the coach.</div>
+  </div>
+</div>
+
+<script src="supabase.js"></script>
+<script>
+(function(){
+  'use strict';
+  var SUPABASE_URL = 'https://egkiovxdijgwkbwkvkgn.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_GbhUX7aO-GAhb3XuT_o0cQ_ATg-EsTt'; // publishable key — safe to ship; all data is behind row-level security
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { players:[], events:[], msgs:[], tours:[], fixtures:[], weekStart:null };
+
+  /* ---------- helpers ---------- */
+  function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+  function hm(t){ return t ? String(t).slice(0,5) : ''; }
+  function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function parseISO(s){ var p=s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function mondayOf(d){ var x=new Date(d); var wd=(x.getDay()+6)%7; x.setDate(x.getDate()-wd); x.setHours(0,0,0,0); return x; }
+  function addDays(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x; }
+  var DOW=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fmtShort(d){ return d.getDate()+' '+MON[d.getMonth()]; }
+  var TYPE_LABEL={training:'Training',duty:'Duty',match:'Match',tournament:'Tournament',no_session:'No session'};
+
+  /* ---------- auth ---------- */
+  $('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    $('loginErr').textContent=''; $('loginBtn').disabled=true;
+    sb.auth.signInWithPassword({ email:$('email').value.trim(), password:$('pw').value })
+      .then(function(r){
+        $('loginBtn').disabled=false;
+        if(r.error){ $('loginErr').textContent = 'Sign-in failed: '+r.error.message; return; }
+      })
+      .catch(function(){ $('loginBtn').disabled=false; $('loginErr').textContent='Network error — try again.'; });
+  });
+  $('signOut').addEventListener('click', function(){ sb.auth.signOut(); });
+
+  sb.auth.onAuthStateChange(function(_ev, session){
+    if(session){
+      $('login').style.display='none'; $('loginNote').style.display='none';
+      $('app').style.display='block';
+      $('acctEmail').textContent = (session.user && session.user.email) || '';
+      loadAll();
+    } else {
+      $('app').style.display='none';
+      $('clubBadge').style.display='none';
+      $('login').style.display='block'; $('loginNote').style.display='block';
+    }
+  });
+
+  $('pwForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    $('pwErr').textContent=''; $('pwOk').textContent='';
+    var a=$('npw').value, b=$('npw2').value;
+    if(a!==b){ $('pwErr').textContent='The two passwords do not match.'; return; }
+    $('pwBtn').disabled=true;
+    sb.auth.updateUser({ password:a }).then(function(r){
+      $('pwBtn').disabled=false;
+      if(r.error){ $('pwErr').textContent=r.error.message; return; }
+      $('pwOk').textContent='Password changed.'; $('npw').value=''; $('npw2').value='';
+    }).catch(function(){ $('pwBtn').disabled=false; $('pwErr').textContent='Network error — try again.'; });
+  });
+
+  /* ---------- tabs ---------- */
+  var tabs=document.querySelectorAll('nav.tabs button');
+  tabs.forEach(function(b){
+    b.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.setAttribute('aria-selected', x===b ? 'true':'false'); });
+      document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('on'); });
+      $('s-'+b.dataset.s).classList.add('on');
+      var h=$('s-'+b.dataset.s).querySelector('h2'); if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+      window.scrollTo(0,0);
+    });
+  });
+
+  /* ---------- data ---------- */
+  function loadAll(){
+    Promise.all([
+      sb.from('players').select('*').order('sort_order'),
+      sb.from('events').select('*').order('event_date',{ascending:true}).order('start_time',{ascending:true,nullsFirst:false}),
+      sb.from('coach_messages').select('*').order('received_on',{ascending:false}),
+      sb.from('tournaments').select('*'),
+      sb.from('tournament_fixtures').select('*').order('sort_order')
+    ]).then(function(r){
+      for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
+      state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
+      state.tours=r[3].data||[]; state.fixtures=r[4].data||[];
+      state.weekStart = pickInitialWeek();
+      if(state.players.length && state.players[0].club){
+        var cb=$('clubBadge');
+        cb.textContent = state.players[0].club;
+        cb.style.display='';
+      }
+      renderWeek(); renderTournament(); renderMessages();
+    }).catch(function(){ showLoadError('network error'); });
+  }
+  function showLoadError(m){
+    $('wDays').innerHTML='<div class="banner">Could not load the schedule ('+esc(m)+'). Pull to refresh or try again shortly.</div>';
+  }
+  function pickInitialWeek(){
+    var today=mondayOf(new Date());
+    var dated=state.events.filter(function(e){ return e.event_date; });
+    if(!dated.length) return today;
+    var thisWeekHas=dated.some(function(e){ var w=mondayOf(parseISO(e.event_date)); return w.getTime()===today.getTime(); });
+    if(thisWeekHas) return today;
+    var future=dated.map(function(e){ return parseISO(e.event_date); }).filter(function(d){ return d>=today; }).sort(function(a,b){return a-b;});
+    return future.length ? mondayOf(future[0]) : today;
+  }
+  $('wPrev').addEventListener('click', function(){ state.weekStart=addDays(state.weekStart,-7); renderWeek(); });
+  $('wNext').addEventListener('click', function(){ state.weekStart=addDays(state.weekStart, 7); renderWeek(); });
+
+  /* ---------- week view ---------- */
+  function playerById(id){ for(var i=0;i<state.players.length;i++) if(state.players[i].id===id) return state.players[i]; return null; }
+  function renderWeek(){
+    var ws=state.weekStart, we=addDays(ws,6);
+    $('wLabel').textContent='Week of '+fmtShort(ws)+' – '+fmtShort(we)+' '+we.getFullYear();
+    var inWeek=state.events.filter(function(e){
+      if(!e.event_date) return false;
+      var d=parseISO(e.event_date); return d>=ws && d<=we;
+    });
+    var anyUnconf=inWeek.some(function(e){ return !e.date_confirmed; });
+    $('wBanner').innerHTML = anyUnconf
+      ? '<div class="banner">⚠ Some dates this week are inferred from the coach saying “next week”, not confirmed. Check with the coach before relying on them.</div>' : '';
+    var html='';
+    for(var i=0;i<7;i++){
+      var day=addDays(ws,i), dayIso=iso(day);
+      var evs=inWeek.filter(function(e){ return e.event_date===dayIso; });
+      if(!evs.length) continue;
+      html+='<div class="day"><div class="dayhead"><b>'+DOW[i]+'</b> · '+fmtShort(day)+'</div>';
+      html+=tripNote(evs);
+      evs.forEach(function(e){ html+=evCard(e); });
+      html+='</div>';
+    }
+    if(!html) html='<div class="empty">Nothing scheduled this week. Use the arrows to move between weeks.</div>';
+    $('wDays').innerHTML=html;
+  }
+  function tripNote(evs){
+    var timed=evs.filter(function(e){ return e.start_time && e.event_type!=='no_session'; });
+    var kids={}; timed.forEach(function(e){ kids[e.player_id]=e; });
+    var ids=Object.keys(kids);
+    if(ids.length<2) return '';
+    var a=kids[ids[0]], b=kids[ids[1]];
+    if(hm(a.start_time)===hm(b.start_time)){
+      var sameVenue = (a.venue||'')===(b.venue||'');
+      return '<div class="trip">Both at '+hm(a.start_time)+(sameVenue?' — one trip if the venue is shared (venue not stated).':' — different venues: two drop-offs.')+'</div>';
+    }
+    return '<div class="trip">Both children have commitments today — check the times below.</div>';
+  }
+  function evCard(e){
+    var p=playerById(e.player_id);
+    var pIdx = p ? (state.players.indexOf(p)%2)+1 : 1;
+    var h='<div class="ev '+(e.date_confirmed?'':'unconf')+'">';
+    h+='<div class="evrow">';
+    if(p) h+='<span class="chip p'+pIdx+'">'+esc(p.first_name)+' · '+esc(p.team_label)+'</span>';
+    h+='<span class="chip t-'+esc(e.event_type)+'">'+ (TYPE_LABEL[e.event_type]||esc(e.event_type)) +'</span>';
+    if(!e.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
+    h+='</div>';
+    h+='<h3>'+esc(e.title)+'</h3>';
+    var t='';
+    if(e.report_time) t+='<span class="report">⏰ Arrive '+hm(e.report_time)+'</span>';
+    if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?'Kick-off ':'')+hm(e.start_time)+'</span>';
+    if(t) h+='<div class="times">'+t+'</div>';
+    var m=[];
+    if(e.venue) m.push('📍 '+esc(e.venue)); else if(e.event_type!=='no_session') m.push('📍 venue not stated');
+    if(e.details) m.push(esc(e.details));
+    if(m.length) h+='<div class="meta">'+m.join(' — ')+'</div>';
+    return h+'</div>';
+  }
+
+  /* ---------- tournament ---------- */
+  function renderTournament(){
+    if(!state.tours.length){ $('tourBody').innerHTML='<div class="empty">No tournament on file yet.</div>'; return; }
+    var t=state.tours[0], h='';
+    h+='<div class="card msg"><div class="evrow">';
+    h+='<span class="chip t-tournament">Tournament</span>';
+    if(!t.date_confirmed) h+='<span class="chip unconfb">'+(t.event_date?'date unconfirmed':'date not announced')+'</span>';
+    h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
+    var meta=[];
+    if(t.event_date) meta.push('Date: '+esc(t.event_date));
+    if(t.venue) meta.push('Venue: '+esc(t.venue));
+    if(t.team_label) meta.push('Our team: '+esc(t.team_label));
+    if(!t.event_date) meta.push('Date, venue and which of our teams is playing are not on the schedule sheet — ask the coach.');
+    h+='<div class="meta">'+meta.join(' · ')+'</div>';
+    if(t.format_notes) h+='<div class="meta" style="margin-top:6px">'+esc(t.format_notes)+'</div>';
+    h+='</div>';
+    var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
+    var A={},B={};
+    fx.forEach(function(f){ if(f.stage==='group'){ (f.grp==='A'?A:B)[f.home]=1; (f.grp==='A'?A:B)[f.away]=1; } });
+    h+='<div class="card" style="margin:14px 0"><div class="meta"><span class="grpA"><b>Group A (Pitch 1):</b> '+Object.keys(A).map(esc).join(', ')+'</span><br><span class="grpB"><b>Group B (Pitch 2):</b> '+Object.keys(B).map(esc).join(', ')+'</span></div></div>';
+    h+='<div class="tw"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th></tr></thead><tbody>';
+    fx.forEach(function(f){
+      var knock=f.stage!=='group';
+      h+='<tr'+(knock?' class="knock"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    h+='<div class="meta" style="margin-top:10px">Group stage runs 10:00–16:10, finals end 17:25 — a full day on site.</div>';
+    $('tourBody').innerHTML=h;
+  }
+
+  /* ---------- messages ---------- */
+  function renderMessages(){
+    if(!state.msgs.length){ $('msgsBody').innerHTML='<div class="empty">No messages on file yet.</div>'; return; }
+    var h='';
+    state.msgs.forEach(function(m){
+      h+='<div class="card msg"><div class="head">';
+      h+='<span class="who">'+esc(m.coach_name)+'</span>';
+      h+='<span class="chip t-training">'+esc(m.team_label)+' team</span>';
+      if(m.received_on) h+='<span class="when">received '+esc(m.received_on)+'</span>';
+      h+='</div><div class="cols">';
+      h+='<div class="langbox"><div class="lang">Hrvatski — original</div>'+esc(m.original_hr)+'</div>';
+      h+='<div class="langbox en"><div class="lang">English</div>'+esc(m.english)+'</div>';
+      h+='</div>';
+      if(m.notes) h+='<div class="note">⚠ '+esc(m.notes)+'</div>';
+      h+='</div>';
+    });
+    $('msgsBody').innerHTML=h;
+  }
+})();
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>

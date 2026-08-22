@@ -27,6 +27,9 @@
       {f:'guide-portal-grego.html', t:'Guide — Grego', d:'Profile page · media showcase with a featured video'},
       {f:'grego-brand-guidelines.html', t:'Grego brand guidelines', d:'Colours, type and usage'}
     ]},
+    {g:'Live app', items:[
+      {f:'schedule.html', t:'Family Schedule — sign in', d:'The first live feature · private sign-in · schedule data is in a private database, not in this repository'}
+    ]},
     {g:'Index', items:[
       {f:'hub.html', t:'All pages', d:'This index as a full page'}
     ]}
