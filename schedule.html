@@ -89,6 +89,8 @@
   .times .report{color:var(--amber)}
   .times .start{color:var(--txt)}
   .meta{font-size:13px;color:var(--muted);margin-top:3px}
+  .meta a.vmap{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+  tr.ours td{background:rgba(46,224,138,.08)}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -454,6 +456,7 @@
   }
 
   /* ---------- shared card ---------- */
+  function mapLink(v){ return '<a class="vmap" href="https://maps.google.com/?q='+encodeURIComponent(v)+'" target="_blank" rel="noopener">'+esc(v)+'</a>'; }
   function playerById(id){ for(var i=0;i<state.players.length;i++) if(state.players[i].id===id) return state.players[i]; return null; }
   function pIdx(id){ var p=playerById(id); return p ? (state.players.indexOf(p)%2)+1 : 1; }
   function gcalEventLink(e){
@@ -495,7 +498,7 @@
     if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?'Kick-off ':'')+hm(e.start_time)+'</span>';
     if(t) h+='<div class="times">'+t+'</div>';
     var m=[];
-    if(e.venue) m.push('📍 '+esc(e.venue)); else if(e.event_type!=='no_session') m.push('📍 venue not stated');
+    if(e.venue) m.push('📍 '+mapLink(e.venue)); else if(e.event_type!=='no_session') m.push('📍 venue not stated');
     if(e.details) m.push(esc(e.details));
     if(m.length) h+='<div class="meta">'+m.join(' — ')+'</div>';
     var g=gcalEventLink(e);
@@ -609,7 +612,7 @@
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
       var meta=[];
       if(t.event_date) meta.push('Date: '+esc(t.event_date));
-      if(t.venue) meta.push('Venue: '+esc(t.venue));
+      if(t.venue) meta.push('📍 '+mapLink(t.venue));
       if(t.team_label) meta.push('Our team: '+esc(t.team_label));
       if(!t.event_date) meta.push('Date, venue and which of our teams is playing are not on the schedule sheet — ask the coach.');
       h+='<div class="meta">'+meta.join(' · ')+'</div>';
@@ -632,7 +635,9 @@
         h+='<div class="tw" style="margin-bottom:18px"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th></tr></thead><tbody>';
         fx.forEach(function(f){
           var knock=f.stage!=='group';
-          h+='<tr'+(knock?' class="knock"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td></tr>';
+          var ours=t.club && ((f.home+' '+f.away).indexOf(t.club)>=0);
+          var cls=[knock?'knock':'',ours?'ours':''].join(' ').trim();
+          h+='<tr'+(cls?' class="'+cls+'"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td></tr>';
         });
         h+='</tbody></table></div>';
       }
