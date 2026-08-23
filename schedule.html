@@ -244,6 +244,20 @@
           <p>Prefer a one-off? Every event card also has its own “Add to Google Calendar” button.</p>
         </div>
       </div>
+      <div class="card" style="margin-top:14px" id="inboxCard" hidden>
+        <h2 class="scr" style="margin-top:0">Forward coach messages</h2>
+        <p class="meta">Got a schedule from a coach — email, WhatsApp, or a photo of a noticeboard? Send it to the family schedule inbox. It is read every hour, translated, and added to this app and the synced calendar automatically; inferred dates arrive with the amber flag, and anything unclear comes back as a question instead of a guess.</p>
+        <div class="feedurl" id="inboxAddr"></div>
+        <div class="btnrow">
+          <a class="gcal" href="#" id="copyInbox">Copy address</a>
+        </div>
+        <div class="ok" id="copyInboxOk"></div>
+        <div class="steps">
+          <p><b>Email:</b> forward it as-is.</p>
+          <p><b>WhatsApp:</b> long-press the message → Forward/Share → Gmail (or your mail app) → send to this address.</p>
+          <p><b>Text or paper schedule:</b> email a screenshot or photo to the same address.</p>
+        </div>
+      </div>
     </section>
 
     <div class="foot">Schedule data is entered from the coaches' messages. Amber dashed cards mean the date is inferred, not confirmed — check with the coach.</div>
@@ -341,12 +355,14 @@
       sb.from('coach_messages').select('*').order('received_on',{ascending:false}),
       sb.from('tournaments').select('*'),
       sb.from('tournament_fixtures').select('*').order('sort_order'),
-      sb.from('calendar_feeds').select('*').limit(1)
+      sb.from('calendar_feeds').select('*').limit(1),
+      sb.from('app_settings').select('*')
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
       state.tours=r[3].data||[]; state.fixtures=r[4].data||[];
       state.feedToken=(r[5].data && r[5].data[0]) ? r[5].data[0].token : null;
+      state.settings={}; (r[6].data||[]).forEach(function(s){ state.settings[s.key]=s.value; });
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
       }
@@ -648,6 +664,8 @@
   function renderFeed(){
     var u=feedURL();
     $('feedUrl').textContent = u || 'Feed unavailable — ask for a new feed key.';
+    var addr=state.settings && state.settings.schedule_inbox;
+    if(addr){ $('inboxCard').hidden=false; $('inboxAddr').textContent=addr; }
   }
   $('copyFeed').addEventListener('click', function(e){
     e.preventDefault();
@@ -655,6 +673,14 @@
     function done(ok){ $('copyOk').textContent = ok ? 'Copied. Now paste it into Google Calendar → From URL.' : 'Could not copy automatically — long-press the link text above to copy it.'; }
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(u).then(function(){ done(true); }, function(){ done(false); });
+    } else { done(false); }
+  });
+  $('copyInbox').addEventListener('click', function(e){
+    e.preventDefault();
+    var a=state.settings && state.settings.schedule_inbox; if(!a) return;
+    function done(ok){ $('copyInboxOk').textContent = ok ? 'Copied.' : 'Could not copy automatically — long-press the address above.'; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(a).then(function(){ done(true); }, function(){ done(false); });
     } else { done(false); }
   });
 })();
