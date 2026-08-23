@@ -91,6 +91,42 @@
   .meta{font-size:13px;color:var(--muted);margin-top:3px}
   .meta a.vmap{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
   tr.ours td{background:rgba(46,224,138,.08)}
+  /* stats */
+  .scorebtn{background:var(--card2);border:1px solid rgba(95,180,255,.35);color:var(--blue);border-radius:8px;
+    padding:5px 10px;font:800 12px/1 Inter,sans-serif;cursor:pointer;white-space:nowrap}
+  .scorebtn.has{border-color:var(--green-dim);color:var(--txt)}
+  .chip.wdl-W{background:rgba(46,224,138,.16);color:var(--green)}
+  .chip.wdl-D{background:rgba(255,200,87,.14);color:var(--amber)}
+  .chip.wdl-L{background:rgba(255,122,110,.14);color:var(--red)}
+  #statModal{position:fixed;inset:0;z-index:80;display:none;align-items:flex-start;justify-content:center;
+    padding:24px 14px;background:rgba(6,10,8,.88);overflow-y:auto}
+  #statModal.on{display:flex}
+  .smBox{background:var(--card);border:1px solid var(--green-dim);border-radius:16px;padding:20px;max-width:460px;width:100%}
+  .smBox h3{font:900 15px/1.35 Archivo,Inter,sans-serif;margin-bottom:2px}
+  .smBox .sub{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .scoreRow{display:flex;align-items:center;gap:10px;margin:10px 0 4px}
+  .scoreRow input{width:70px;text-align:center;font:800 20px Inter,sans-serif}
+  .scoreRow .vs{font:800 14px Inter,sans-serif;color:var(--muted)}
+  .scoreRow .side{font:800 10.5px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);flex:1}
+  .pRow{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .pRow label.inline{display:flex;align-items:center;gap:6px;margin:0;font:700 13px Inter,sans-serif;
+    letter-spacing:0;text-transform:none;color:var(--txt);flex:1 1 auto}
+  .pRow input[type=checkbox]{width:18px;height:18px;accent-color:var(--green)}
+  .pRow input[type=number]{width:58px;text-align:center}
+  .pRow .lbl{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .smBtns{display:flex;gap:10px;margin-top:16px}
+  .smBtns .primary{margin-top:0;flex:1}
+  .smBtns .ghost{margin-top:0}
+  .statTotals{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+  .stTile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .stTile .who{font:800 12px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .stTile .nums{font:800 13.5px/1.7 Inter,sans-serif}
+  .stTile .nums span{color:var(--muted);font-weight:700}
+  .resRow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .resRow .score{font:900 16px Archivo,Inter,sans-serif}
+  .resRow .desc{flex:1;font-size:13px;color:var(--muted);min-width:160px}
+  .resRow .desc b{color:var(--txt)}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -176,6 +212,7 @@
     <nav class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-s="sched">Schedule</button>
       <button role="tab" aria-selected="false" data-s="tour">Tournaments</button>
+      <button role="tab" aria-selected="false" data-s="stats">Stats</button>
       <button role="tab" aria-selected="false" data-s="msgs">Coach Messages</button>
       <button role="tab" aria-selected="false" data-s="acct">Account</button>
     </nav>
@@ -208,6 +245,11 @@
     <section class="screen" id="s-tour">
       <h2 class="scr">Tournaments</h2>
       <div id="tourBody"></div>
+    </section>
+
+    <section class="screen" id="s-stats">
+      <h2 class="scr">Stats</h2>
+      <div id="statsBody"></div>
     </section>
 
     <section class="screen" id="s-msgs">
@@ -266,6 +308,30 @@
   </div>
 </div>
 
+<div id="statModal">
+  <div class="smBox">
+    <h3 id="smTitle"></h3>
+    <div class="sub" id="smSub"></div>
+    <div class="scoreRow">
+      <span class="side" id="smUs">Us</span>
+      <input id="smOur" type="number" min="0" max="99" inputmode="numeric" value="0">
+      <span class="vs">–</span>
+      <input id="smOpp" type="number" min="0" max="99" inputmode="numeric" value="0">
+      <span class="side" style="text-align:right" id="smThem">Them</span>
+    </div>
+    <div id="smPlayers"></div>
+    <label for="smLineup">Line-up / who played (optional)</label>
+    <textarea id="smLineup" rows="2" style="width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 12px;font:14px Inter,sans-serif"></textarea>
+    <label for="smNotes">Game notes (optional)</label>
+    <input id="smNotes" type="text" placeholder="e.g. great second half">
+    <div class="smBtns">
+      <button class="primary" id="smSave" type="button">Save</button>
+      <button class="ghost" id="smCancel" type="button">Cancel</button>
+    </div>
+    <div class="err" id="smErr"></div>
+  </div>
+</div>
+
 <script src="supabase.js"></script>
 <script>
 (function(){
@@ -276,6 +342,7 @@
 
   var $ = function(id){ return document.getElementById(id); };
   var state = { players:[], events:[], msgs:[], tours:[], fixtures:[], feedToken:null,
+                results:[], pstats:[], userEmail:'',
                 view:'week', weekStart:null, monthStart:null, selDay:null,
                 fPlayer:'all', fClub:'all' };
 
@@ -315,7 +382,8 @@
     if(session){
       $('login').style.display='none'; $('loginNote').style.display='none';
       $('app').style.display='block';
-      $('acctEmail').textContent = (session.user && session.user.email) || '';
+      state.userEmail = (session.user && session.user.email) || '';
+      $('acctEmail').textContent = state.userEmail;
       loadAll();
     } else {
       $('app').style.display='none';
@@ -358,13 +426,16 @@
       sb.from('tournaments').select('*'),
       sb.from('tournament_fixtures').select('*').order('sort_order'),
       sb.from('calendar_feeds').select('*').limit(1),
-      sb.from('app_settings').select('*')
+      sb.from('app_settings').select('*'),
+      sb.from('game_results').select('*'),
+      sb.from('player_game_stats').select('*')
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
       state.tours=r[3].data||[]; state.fixtures=r[4].data||[];
       state.feedToken=(r[5].data && r[5].data[0]) ? r[5].data[0].token : null;
       state.settings={}; (r[6].data||[]).forEach(function(s){ state.settings[s.key]=s.value; });
+      state.results=r[7].data||[]; state.pstats=r[8].data||[];
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
       }
@@ -375,7 +446,7 @@
       state.weekStart = pickInitialWeek();
       state.monthStart = firstOf(state.weekStart);
       buildFilters(); renderFeed(); syncViewSeg();
-      renderSchedule(); renderTournaments(); renderMessages();
+      renderSchedule(); renderTournaments(); renderMessages(); renderStats();
     }).catch(function(){ showLoadError('network error'); });
   }
   function showLoadError(m){
@@ -503,7 +574,16 @@
     if(m.length) h+='<div class="meta">'+m.join(' — ')+'</div>';
     var g=gcalEventLink(e);
     if(g) h+='<a class="gcal" href="'+g+'" target="_blank" rel="noopener">＋ Add to Google Calendar</a>';
+    if(e.event_type==='match'){
+      var res=resultFor('event_id', e.id);
+      h+=' <button class="scorebtn'+(res?' has':'')+'" data-ev="'+esc(e.id)+'" type="button" style="margin-top:9px">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res)+' · edit' : '＋ score & stats')+'</button>';
+    }
     return h+'</div>';
+  }
+  function bindEvScoreBtns(root){
+    root.querySelectorAll('.scorebtn[data-ev]').forEach(function(b){
+      b.addEventListener('click', function(){ openStatModal({event_id:b.dataset.ev}); });
+    });
   }
   function tripNote(evs){
     var timed=evs.filter(function(e){ return e.start_time && e.event_type!=='no_session'; });
@@ -542,6 +622,7 @@
     }
     if(!html) html='<div class="empty">Nothing scheduled this week for this selection. Use the arrows or the filters above.</div>';
     $('wDays').innerHTML=html;
+    bindEvScoreBtns($('wDays'));
   }
 
   /* ---------- month view ---------- */
@@ -594,6 +675,7 @@
       dh='<div class="empty">Tap a day to see its details.</div>';
     }
     $('mDetail').innerHTML=dh;
+    bindEvScoreBtns($('mDetail'));
   }
 
   /* ---------- tournaments ---------- */
@@ -632,17 +714,169 @@
           if(Object.keys(B).length) h+='<span class="grpB"><b>Group B (Pitch 2):</b> '+Object.keys(B).map(esc).join(', ')+'</span>';
           h+='</div></div>';
         }
-        h+='<div class="tw" style="margin-bottom:18px"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th></tr></thead><tbody>';
+        h+='<div class="tw" style="margin-bottom:18px"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th><th>Score</th></tr></thead><tbody>';
         fx.forEach(function(f){
           var knock=f.stage!=='group';
           var ours=t.club && ((f.home+' '+f.away).indexOf(t.club)>=0);
           var cls=[knock?'knock':'',ours?'ours':''].join(' ').trim();
-          h+='<tr'+(cls?' class="'+cls+'"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td></tr>';
+          var res=resultFor('fixture_id', f.id);
+          var scoreCell;
+          if(ours){
+            scoreCell='<button class="scorebtn'+(res?' has':'')+'" data-fx="'+esc(f.id)+'" type="button">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res) : '＋ score')+'</button>';
+          } else {
+            scoreCell = res ? '<b>'+res.our_score+'–'+res.opp_score+'</b>' : '—';
+          }
+          h+='<tr'+(cls?' class="'+cls+'"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td><td>'+scoreCell+'</td></tr>';
         });
         h+='</tbody></table></div>';
       }
     });
     $('tourBody').innerHTML=h;
+    $('tourBody').querySelectorAll('.scorebtn').forEach(function(b){
+      b.addEventListener('click', function(){ openStatModal({fixture_id:b.dataset.fx}); });
+    });
+  }
+
+  /* ---------- stats ---------- */
+  function resultFor(key,id){ for(var i=0;i<state.results.length;i++){ if(state.results[i][key]===id) return state.results[i]; } return null; }
+  function statsFor(rid){ return state.pstats.filter(function(s){ return s.game_result_id===rid; }); }
+  function wdl(r){ return r.our_score>r.opp_score?'W':(r.our_score<r.opp_score?'L':'D'); }
+  function fixtureById(id){ for(var i=0;i<state.fixtures.length;i++) if(state.fixtures[i].id===id) return state.fixtures[i]; return null; }
+  function tourById(id){ for(var i=0;i<state.tours.length;i++) if(state.tours[i].id===id) return state.tours[i]; return null; }
+  function eventById(id){ for(var i=0;i<state.events.length;i++) if(state.events[i].id===id) return state.events[i]; return null; }
+
+  var ed=null; // {fixture_id} or {event_id}
+  function openStatModal(target){
+    ed=target;
+    var title='', sub='', clubName='', existing=null, defPlayer=null;
+    if(ed.fixture_id){
+      var f=fixtureById(ed.fixture_id); if(!f) return;
+      var t=tourById(f.tournament_id);
+      clubName=t?t.club:'';
+      title=f.home+(f.away&&f.away!=='—'?' – '+f.away:'');
+      sub=(t?t.name+' · ':'')+f.time_slot+(clubName?' · scores are for '+clubName:'');
+      existing=resultFor('fixture_id', ed.fixture_id);
+    } else {
+      var ev=eventById(ed.event_id); if(!ev) return;
+      clubName=ev.club||'';
+      title=ev.title;
+      sub=(ev.event_date||'')+(clubName?' · scores are for '+clubName:'');
+      existing=resultFor('event_id', ed.event_id);
+      defPlayer=ev.player_id;
+    }
+    $('smTitle').textContent=title;
+    $('smSub').textContent=sub;
+    $('smUs').textContent=clubName||'Us';
+    $('smOur').value=existing?existing.our_score:0;
+    $('smOpp').value=existing?existing.opp_score:0;
+    $('smLineup').value=existing&&existing.lineup_notes?existing.lineup_notes:'';
+    $('smNotes').value=existing&&existing.notes?existing.notes:'';
+    var rows=existing?statsFor(existing.id):[];
+    var ph='';
+    state.players.forEach(function(p){
+      var row=null; rows.forEach(function(s){ if(s.player_id===p.id) row=s; });
+      var checked=row?true:(defPlayer===p.id);
+      ph+='<div class="pRow" data-p="'+esc(p.id)+'">';
+      ph+='<label class="inline"><input type="checkbox" class="pPlayed"'+(checked?' checked':'')+'> '+esc(p.first_name)+' played</label>';
+      ph+='<span class="lbl">Goals</span><input type="number" class="pGoals" min="0" max="99" inputmode="numeric" value="'+(row?row.goals:0)+'">';
+      ph+='<span class="lbl">Assists</span><input type="number" class="pAssists" min="0" max="99" inputmode="numeric" value="'+(row?row.assists:0)+'">';
+      ph+='</div>';
+    });
+    $('smPlayers').innerHTML=ph;
+    $('smErr').textContent='';
+    $('statModal').classList.add('on');
+  }
+  function closeStatModal(){ $('statModal').classList.remove('on'); ed=null; }
+  $('smCancel').addEventListener('click', closeStatModal);
+  $('statModal').addEventListener('click', function(e){ if(e.target===$('statModal')) closeStatModal(); });
+
+  $('smSave').addEventListener('click', function(){
+    if(!ed) return;
+    $('smErr').textContent=''; $('smSave').disabled=true;
+    var payload={
+      our_score: Math.max(0, parseInt($('smOur').value||'0',10)||0),
+      opp_score: Math.max(0, parseInt($('smOpp').value||'0',10)||0),
+      lineup_notes: $('smLineup').value.trim()||null,
+      notes: $('smNotes').value.trim()||null,
+      updated_by: state.userEmail,
+      updated_at: new Date().toISOString()
+    };
+    var conflict;
+    if(ed.fixture_id){ payload.fixture_id=ed.fixture_id; conflict='fixture_id'; }
+    else { payload.event_id=ed.event_id; conflict='event_id'; }
+    sb.from('game_results').upsert(payload,{onConflict:conflict}).select().single().then(function(r){
+      if(r.error){ $('smSave').disabled=false; $('smErr').textContent=r.error.message; return; }
+      var rid=r.data.id;
+      var ups=[], dels=[];
+      $('smPlayers').querySelectorAll('.pRow').forEach(function(row){
+        var pid=row.dataset.p;
+        var played=row.querySelector('.pPlayed').checked;
+        if(played){
+          ups.push({ game_result_id:rid, player_id:pid,
+            goals: Math.max(0, parseInt(row.querySelector('.pGoals').value||'0',10)||0),
+            assists: Math.max(0, parseInt(row.querySelector('.pAssists').value||'0',10)||0) });
+        } else { dels.push(pid); }
+      });
+      var chain = ups.length ? sb.from('player_game_stats').upsert(ups,{onConflict:'game_result_id,player_id'}) : Promise.resolve({});
+      Promise.resolve(chain).then(function(r2){
+        if(r2 && r2.error){ $('smSave').disabled=false; $('smErr').textContent=r2.error.message; return; }
+        var chain2 = dels.length ? sb.from('player_game_stats').delete().eq('game_result_id',rid).in('player_id',dels) : Promise.resolve({});
+        Promise.resolve(chain2).then(function(){
+          Promise.all([ sb.from('game_results').select('*'), sb.from('player_game_stats').select('*') ]).then(function(rr){
+            state.results=(rr[0].data)||state.results; state.pstats=(rr[1].data)||state.pstats;
+            $('smSave').disabled=false;
+            closeStatModal();
+            renderTournaments(); renderStats(); renderSchedule();
+          });
+        });
+      });
+    }).catch(function(){ $('smSave').disabled=false; $('smErr').textContent='Network error — try again.'; });
+  });
+
+  function gameDesc(r){
+    if(r.fixture_id){
+      var f=fixtureById(r.fixture_id);
+      if(f){ var t=tourById(f.tournament_id);
+        return { label:f.home+(f.away&&f.away!=='—'?' – '+f.away:''), sub:(t?t.name:'')+' · '+f.time_slot, date:t?t.event_date:null }; }
+    }
+    if(r.event_id){
+      var ev=eventById(r.event_id);
+      if(ev) return { label:ev.title, sub:(ev.club||''), date:ev.event_date };
+    }
+    return { label:'Game', sub:'', date:null };
+  }
+  function renderStats(){
+    var h='<div class="statTotals">';
+    state.players.forEach(function(p){
+      var mine=state.pstats.filter(function(s){ return s.player_id===p.id; });
+      var g=0,a=0; mine.forEach(function(s){ g+=s.goals; a+=s.assists; });
+      h+='<div class="stTile"><div class="who chip p'+pIdx(p.id)+'" style="display:inline-block">'+esc(p.first_name)+'</div>';
+      h+='<div class="nums">'+mine.length+' <span>games</span> · '+g+' <span>goals</span> · '+a+' <span>assists</span></div></div>';
+    });
+    h+='</div>';
+    if(!state.results.length){
+      h+='<div class="empty">No game results yet. Enter a score from a tournament fixture row (the “＋ score” button) or a match card — parent or coach, anyone signed in can do it.</div>';
+    } else {
+      var rs=state.results.slice().sort(function(x,y){ return (gameDesc(y).date||'')<(gameDesc(x).date||'')?-1:1; });
+      rs.forEach(function(r){
+        var d=gameDesc(r);
+        var scorers=[];
+        statsFor(r.id).forEach(function(s){
+          var p=playerById(s.player_id);
+          if(p && (s.goals||s.assists)) scorers.push(esc(p.first_name)+(s.goals?' ⚽×'+s.goals:'')+(s.assists?' 🅰×'+s.assists:''));
+        });
+        h+='<div class="resRow"><span class="chip wdl-'+wdl(r)+'">'+wdl(r)+'</span><span class="score">'+r.our_score+'–'+r.opp_score+'</span>';
+        h+='<span class="desc"><b>'+esc(d.label)+'</b><br>'+esc(d.sub)+(d.date?' · '+esc(d.date):'')+(scorers.length?'<br>'+scorers.join(' · '):'')+(r.lineup_notes?'<br>Line-up: '+esc(r.lineup_notes):'')+(r.notes?'<br>'+esc(r.notes):'')+'</span>';
+        h+='<button class="scorebtn has" data-res="'+esc(r.id)+'" type="button">Edit</button></div>';
+      });
+    }
+    $('statsBody').innerHTML=h;
+    $('statsBody').querySelectorAll('.scorebtn').forEach(function(b){
+      b.addEventListener('click', function(){
+        var r=null; state.results.forEach(function(x){ if(x.id===b.dataset.res) r=x; });
+        if(r) openStatModal(r.fixture_id?{fixture_id:r.fixture_id}:{event_id:r.event_id});
+      });
+    });
   }
 
   /* ---------- messages ---------- */
