@@ -127,6 +127,29 @@
   .resRow .score{font:900 16px Archivo,Inter,sans-serif}
   .resRow .desc{flex:1;font-size:13px;color:var(--muted);min-width:160px}
   .resRow .desc b{color:var(--txt)}
+  /* recap cards */
+  .recapCard{background:linear-gradient(135deg,rgba(46,224,138,.10),rgba(95,180,255,.05)),var(--card);
+    border:1px solid var(--green-dim);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+  .recapCard .rcKick{font:800 10px/1 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:7px}
+  .recapCard h3{font:900 16px/1.3 Archivo,Inter,sans-serif;margin-bottom:2px}
+  .recapCard .rcSub{font-size:12.5px;color:var(--muted);margin-bottom:11px}
+  .recapCard .rcNums{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:9px}
+  .recapCard .rcNums div{text-align:center}
+  .recapCard .rcNums b{font:900 19px/1 Archivo,Inter,sans-serif}
+  .recapCard .rcNums span{display:block;font:700 9.5px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+  .recapCard .rcLine{font-size:13px;color:var(--muted);margin:3px 0}
+  .recapCard .rcLine b{color:var(--txt)}
+  .sharebtn{display:inline-block;margin-top:10px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--green);
+    background:none;cursor:pointer;border:1px solid var(--green-dim);border-radius:999px;padding:8px 14px}
+  .sharebtn:hover{background:rgba(46,224,138,.08)}
+  #shareModal{position:fixed;inset:0;z-index:81;display:none;align-items:flex-start;justify-content:center;
+    padding:24px 14px;background:rgba(6,10,8,.88);overflow-y:auto}
+  #shareModal.on{display:flex}
+  #shareCanvas{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);margin-top:4px}
+  .privChips{display:flex;gap:8px;margin:10px 0 6px;flex-wrap:wrap}
+  .privChips button{background:var(--card2);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:7px 13px;font:800 11px/1 Inter,sans-serif;cursor:pointer}
+  .privChips button.on{border-color:var(--green-dim);color:var(--green);background:rgba(46,224,138,.1)}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -329,6 +352,25 @@
       <button class="ghost" id="smCancel" type="button">Cancel</button>
     </div>
     <div class="err" id="smErr"></div>
+  </div>
+</div>
+
+<div id="shareModal">
+  <div class="smBox" style="max-width:430px">
+    <h3>Share this recap</h3>
+    <div class="sub">Nothing leaves this page until you send the image or text yourself. Pick how names appear first.</div>
+    <div class="privChips" id="shPriv">
+      <button data-mode="first" type="button">First names</button>
+      <button data-mode="init" type="button" class="on">Initials</button>
+      <button data-mode="none" type="button">No names</button>
+    </div>
+    <canvas id="shareCanvas" width="1080" height="1350"></canvas>
+    <div class="smBtns">
+      <button class="primary" id="shDownload" type="button">Download image</button>
+      <button class="ghost" id="shCopy" type="button">Copy as text</button>
+      <button class="ghost" id="shClose" type="button">Close</button>
+    </div>
+    <div class="err" id="shErr"></div>
   </div>
 </div>
 
@@ -860,7 +902,51 @@
     }
     return { label:'Game', sub:'', date:null };
   }
+  /* ---------- recaps (auto-generated) ---------- */
+  function computeRecaps(){
+    var recs=[];
+    state.tours.forEach(function(t){
+      var rs=state.results.filter(function(r){ var f=r.fixture_id?fixtureById(r.fixture_id):null; return !!(f&&f.tournament_id===t.id); });
+      if(rs.length) recs.push(makeRecap('Tournament recap', t.name, t.club, t.event_date, rs));
+    });
+    if(state.results.length>=2) recs.push(makeRecap('Season so far', 'All games to date', null, null, state.results));
+    return recs;
+  }
+  function makeRecap(kick,title,club,date,rs){
+    var w=0,d=0,l=0,gf=0,ga=0,best=null,lines=[];
+    rs.forEach(function(r){
+      var res=wdl(r); if(res==='W')w++; else if(res==='D')d++; else l++;
+      gf+=r.our_score; ga+=r.opp_score;
+      if(res==='W' && (!best || (r.our_score-r.opp_score)>(best.our_score-best.opp_score))) best=r;
+      lines.push({r:r, d:gameDesc(r)});
+    });
+    var per={};
+    rs.forEach(function(r){ statsFor(r.id).forEach(function(s){
+      if(!per[s.player_id]) per[s.player_id]={g:0,a:0,games:0};
+      per[s.player_id].g+=s.goals; per[s.player_id].a+=s.assists; per[s.player_id].games++;
+    });});
+    return {kick:kick,title:title,club:club,date:date,p:rs.length,w:w,d:d,l:l,gf:gf,ga:ga,best:best,per:per,lines:lines};
+  }
+  function nameFor(p,mode){
+    if(!p) return 'Player';
+    if(mode==='first') return p.first_name;
+    if(mode==='init') return p.first_name.charAt(0)+'.';
+    return 'Our player';
+  }
+  function scorerText(rec,mode){
+    var out=[];
+    state.players.forEach(function(p){
+      var s=rec.per[p.id]; if(!s) return;
+      var bits=[];
+      if(s.g) bits.push(s.g+(s.g===1?' goal':' goals'));
+      if(s.a) bits.push(s.a+(s.a===1?' assist':' assists'));
+      out.push(nameFor(p,mode)+' — '+(bits.length?bits.join(', '):s.games+' played'));
+    });
+    return out;
+  }
+
   function renderStats(){
+    var recs=computeRecaps();
     var h='<div class="statTotals">';
     state.players.forEach(function(p){
       var mine=state.pstats.filter(function(s){ return s.player_id===p.id; });
@@ -869,6 +955,15 @@
       h+='<div class="nums">'+mine.length+' <span>games</span> · '+g+' <span>goals</span> · '+a+' <span>assists</span></div></div>';
     });
     h+='</div>';
+    recs.forEach(function(rec,i){
+      h+='<div class="recapCard"><div class="rcKick">✦ '+esc(rec.kick)+' · auto-generated</div>';
+      h+='<h3>'+esc(rec.title)+'</h3>';
+      h+='<div class="rcSub">'+(rec.club?esc(rec.club)+' · ':'')+(rec.date?esc(rec.date):'updates itself as scores are entered')+'</div>';
+      h+='<div class="rcNums"><div><b>'+rec.p+'</b><span>played</span></div><div><b>'+rec.w+'-'+rec.d+'-'+rec.l+'</b><span>W-D-L</span></div><div><b>'+rec.gf+'–'+rec.ga+'</b><span>goals</span></div></div>';
+      scorerText(rec,'first').forEach(function(s){ h+='<div class="rcLine"><b>⚽ '+esc(s)+'</b></div>'; });
+      if(rec.best){ var bd=gameDesc(rec.best); h+='<div class="rcLine">★ Best result <b>'+rec.best.our_score+'–'+rec.best.opp_score+'</b> · '+esc(bd.label)+'</div>'; }
+      h+='<button class="sharebtn" data-rec="'+i+'" type="button">📤 Share this recap</button></div>';
+    });
     if(!state.results.length){
       h+='<div class="empty">No game results yet. Enter a score from a tournament fixture row (the “＋ score” button) or a match card — parent or coach, anyone signed in can do it.</div>';
     } else {
@@ -892,7 +987,100 @@
         if(r) openStatModal(r.fixture_id?{fixture_id:r.fixture_id}:{event_id:r.event_id});
       });
     });
+    $('statsBody').querySelectorAll('.sharebtn').forEach(function(b){
+      b.addEventListener('click', function(){ openShare(recs[parseInt(b.dataset.rec,10)]); });
+    });
   }
+
+  /* ---------- share recap (parent-controlled) ---------- */
+  var shRec=null, shMode='init';
+  function openShare(rec){
+    if(!rec) return;
+    shRec=rec; shMode='init';
+    $('shPriv').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.mode==='init'); });
+    $('shErr').textContent='';
+    $('shCopy').textContent='Copy as text';
+    drawShare();
+    $('shareModal').classList.add('on');
+  }
+  function closeShare(){ $('shareModal').classList.remove('on'); shRec=null; }
+  $('shPriv').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    shMode=b.dataset.mode;
+    $('shPriv').querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
+    drawShare();
+  });
+  $('shClose').addEventListener('click', closeShare);
+  $('shareModal').addEventListener('click', function(e){ if(e.target===$('shareModal')) closeShare(); });
+  function trunc(s,n){ s=String(s); return s.length>n?s.slice(0,n-1)+'…':s; }
+  function rrect(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+  function drawShare(){
+    if(!shRec) return;
+    var cv=$('shareCanvas'), c=cv.getContext('2d');
+    var W=cv.width, H=cv.height;
+    c.textAlign='left'; c.textBaseline='top';
+    c.fillStyle='#0b120e'; c.fillRect(0,0,W,H);
+    c.fillStyle='rgba(46,224,138,.06)';
+    for(var dx=34;dx<W;dx+=68) for(var dy=34;dy<H;dy+=68){ c.beginPath(); c.arc(dx,dy,3,0,7); c.fill(); }
+    c.fillStyle='#2ee08a'; c.font='900 36px Archivo, Inter, sans-serif';
+    c.fillText('PITCHPRO', 70, 64);
+    c.fillStyle='#9db3a6'; c.font='800 24px Inter, sans-serif';
+    c.fillText(shRec.kick.toUpperCase(), 70, 112);
+    c.fillStyle='#ffffff'; c.font='900 58px Archivo, Inter, sans-serif';
+    var words=String(shRec.title).split(' '), line='', y=182;
+    words.forEach(function(wd){ var t=line?line+' '+wd:wd;
+      if(c.measureText(t).width>W-140){ c.fillText(line,70,y); y+=70; line=wd; } else line=t; });
+    c.fillText(line,70,y); y+=84;
+    c.fillStyle='#9db3a6'; c.font='700 30px Inter, sans-serif';
+    c.fillText((shRec.club?shRec.club+'   ·   ':'')+(shRec.date||''),70,y); y+=72;
+    rrect(c,70,y,W-140,220,26); c.fillStyle='#15211a'; c.fill();
+    c.strokeStyle='rgba(46,224,138,.4)'; c.lineWidth=3; c.stroke();
+    var cols=[[String(shRec.p),'PLAYED'],[shRec.w+'-'+shRec.d+'-'+shRec.l,'W-D-L'],[shRec.gf+'–'+shRec.ga,'GOALS']];
+    cols.forEach(function(col,i){ var cx=70+(W-140)*(i+0.5)/3;
+      c.textAlign='center';
+      c.fillStyle='#2ee08a'; c.font='900 70px Archivo, Inter, sans-serif'; c.fillText(col[0],cx,y+42);
+      c.fillStyle='#9db3a6'; c.font='800 22px Inter, sans-serif'; c.fillText(col[1],cx,y+142); });
+    c.textAlign='left'; y+=268;
+    scorerText(shRec,shMode).forEach(function(s){ if(y>H-300) return;
+      c.fillStyle='#ffffff'; c.font='800 34px Inter, sans-serif'; c.fillText('⚽  '+trunc(s,42),70,y); y+=58; });
+    if(shRec.best){ var bd=gameDesc(shRec.best);
+      c.fillStyle='#ffbe46'; c.font='800 30px Inter, sans-serif';
+      c.fillText('★  Best result '+shRec.best.our_score+'–'+shRec.best.opp_score+' · '+trunc(bd.label,34),70,y+12); y+=72; }
+    c.fillStyle='#9db3a6'; c.font='700 26px Inter, sans-serif';
+    shRec.lines.slice(0,6).forEach(function(ln){ if(y>H-170) return;
+      c.fillText(wdl(ln.r)+'   '+ln.r.our_score+'–'+ln.r.opp_score+'    '+trunc(ln.d.label,42),70,y+14); y+=46; });
+    c.fillStyle='rgba(255,255,255,.12)'; c.fillRect(70,H-112,W-140,2);
+    c.fillStyle='#9db3a6'; c.font='800 24px Inter, sans-serif';
+    c.fillText('Made with PitchPro — the family football platform', 70, H-86);
+  }
+  $('shDownload').addEventListener('click', function(){
+    if(!shRec) return;
+    try{
+      var a=document.createElement('a');
+      a.href=$('shareCanvas').toDataURL('image/png');
+      a.download=String(shRec.title).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-recap.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    }catch(e){ $('shErr').textContent='Could not create the image on this device.'; }
+  });
+  $('shCopy').addEventListener('click', function(){
+    if(!shRec) return;
+    var t=['🏆 '+shRec.kick+': '+shRec.title];
+    if(shRec.club||shRec.date) t.push([shRec.club,shRec.date].filter(Boolean).join(' · '));
+    t.push('P'+shRec.p+'  W'+shRec.w+' D'+shRec.d+' L'+shRec.l+'  ·  goals '+shRec.gf+'–'+shRec.ga);
+    scorerText(shRec,shMode).forEach(function(s){ t.push('⚽ '+s); });
+    if(shRec.best){ var bd=gameDesc(shRec.best); t.push('★ Best result '+shRec.best.our_score+'–'+shRec.best.opp_score+' ('+bd.label+')'); }
+    t.push('— made with PitchPro');
+    var txt=t.join('\n');
+    var done=function(){ $('shErr').textContent=''; $('shCopy').textContent='Copied ✓'; setTimeout(function(){ $('shCopy').textContent='Copy as text'; },1600); };
+    var fallback=function(){
+      var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }
+      catch(e){ $('shErr').textContent='Copy failed on this device.'; }
+      ta.remove();
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(fallback);
+    else fallback();
+  });
 
   /* ---------- messages ---------- */
   function renderMessages(){
