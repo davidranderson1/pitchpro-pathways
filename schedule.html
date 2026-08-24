@@ -384,7 +384,9 @@
       $('app').style.display='block';
       state.userEmail = (session.user && session.user.email) || '';
       $('acctEmail').textContent = state.userEmail;
-      loadAll();
+      // Load data only on a real sign-in or page load with a stored session.
+      // TOKEN_REFRESHED / USER_UPDATED fire hourly and must NOT wipe the screen mid-use.
+      if(_ev==='SIGNED_IN' || _ev==='INITIAL_SESSION'){ loadTries=0; loadAll(); }
     } else {
       $('app').style.display='none';
       $('clubBadge').style.display='none';
@@ -418,6 +420,7 @@
   });
 
   /* ---------- data ---------- */
+  var loadTries=0;
   function loadAll(){
     Promise.all([
       sb.from('players').select('*').order('sort_order'),
@@ -436,6 +439,7 @@
       state.feedToken=(r[5].data && r[5].data[0]) ? r[5].data[0].token : null;
       state.settings={}; (r[6].data||[]).forEach(function(s){ state.settings[s.key]=s.value; });
       state.results=r[7].data||[]; state.pstats=r[8].data||[];
+      loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
       }
@@ -450,7 +454,18 @@
     }).catch(function(){ showLoadError('network error'); });
   }
   function showLoadError(m){
-    $('wDays').innerHTML='<div class="banner">Could not load the schedule ('+esc(m)+'). Try again shortly.</div>';
+    // Fresh sign-ins can hit a transient token-timing error ("JWT issued at future").
+    // It clears itself within seconds — so retry automatically before bothering anyone.
+    loadTries++;
+    if(loadTries<=3){
+      $('wDays').innerHTML='<div class="empty">Connecting… (attempt '+loadTries+' of 3)</div>';
+      setTimeout(loadAll, 2500*loadTries);
+      return;
+    }
+    $('wDays').innerHTML='<div class="banner">Could not load the schedule ('+esc(m)+'). '
+      +'<a href="#" id="retryLoad" style="color:var(--amber);font-weight:800;text-decoration:underline">Tap to retry</a></div>';
+    var rl=document.getElementById('retryLoad');
+    if(rl) rl.addEventListener('click', function(e){ e.preventDefault(); loadTries=0; loadAll(); });
   }
   function pickInitialWeek(){
     var today=mondayOf(new Date());
