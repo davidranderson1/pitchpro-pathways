@@ -1118,13 +1118,30 @@
     }
   }
   initNotifCard();
+  // Subscribing talks to the browser's push service (FCM on Android). That call can
+  // fail transiently ("push service error") or because a stale subscription made with a
+  // different key is still attached — so clear any old one and retry with backoff.
+  function subscribeWithRetry(reg, tries){
+    return reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: b64ToU8(VAPID_PUBLIC) })
+      .catch(function(err){
+        if(tries<=1) throw err;
+        $('notifOk').textContent='Push service busy — retrying…';
+        return new Promise(function(res){ setTimeout(res, 2500); })
+          .then(function(){ return subscribeWithRetry(reg, tries-1); });
+      });
+  }
   $('notifBtn').addEventListener('click', function(e){
     e.preventDefault(); $('notifErr').textContent=''; $('notifOk').textContent='';
     if(!('serviceWorker' in navigator) || !('PushManager' in window)){ $('notifErr').textContent='Not supported in this browser.'; return; }
     Notification.requestPermission().then(function(perm){
       if(perm!=='granted'){ $('notifErr').textContent='Permission was not granted — allow notifications for this site in the browser settings, then try again.'; return; }
       navigator.serviceWorker.ready.then(function(reg){
-        return reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: b64ToU8(VAPID_PUBLIC) });
+        return reg.pushManager.getSubscription().then(function(old){
+          if(old) return old.unsubscribe().catch(function(){}).then(function(){ return reg; });
+          return reg;
+        });
+      }).then(function(reg){
+        return subscribeWithRetry(reg, 3);
       }).then(function(sub){
         var j=sub.toJSON();
         return sb.auth.getSession().then(function(r){
@@ -1139,7 +1156,13 @@
         if(r&&r.error) throw new Error(r.error.message);
         $('notifOk').textContent='Done — this device now gets family schedule notifications.';
         $('notifBtn').textContent='Refresh notification setup';
-      }).catch(function(err){ $('notifErr').textContent='Could not enable: '+(err&&err.message?err.message:err); });
+      }).catch(function(err){
+        var m=(err&&err.message?err.message:String(err));
+        var hint='';
+        if(/push service|abort/i.test(m)) hint=' Usually temporary: check the internet connection (a VPN or private DNS can block Google’s push service), make sure this was installed from Chrome, then tap the button again. If it keeps failing, restart the phone and retry.';
+        $('notifOk').textContent='';
+        $('notifErr').textContent='Could not enable: '+m+'.'+hint;
+      });
     });
   });
 
