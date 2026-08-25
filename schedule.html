@@ -7,6 +7,10 @@
 <title>Family Schedule — PitchPro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a120d">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <style>
   :root{
     --bg:#0a120d; --card:#101a14; --card2:#15211a; --line:rgba(255,255,255,.08);
@@ -294,6 +298,18 @@
           <div class="ok" id="pwOk"></div>
         </form>
         <button class="ghost" id="signOut" type="button">Sign out</button>
+      </div>
+      <div class="card" style="margin-top:14px" id="notifCard">
+        <h2 class="scr" style="margin-top:0">Push notifications</h2>
+        <p class="meta">Get a ping on this device when a forwarded schedule has been processed, something changes, or a question needs an answer. Applies to this device only — enable it on each phone.</p>
+        <div class="steps" id="notifIos" hidden>
+          <p><b>iPhone / iPad:</b> add this app to your Home Screen first (Share button → <b>Add to Home Screen</b>), then open it from the new PitchPro icon and tap Enable — iOS only allows notifications for installed web apps.</p>
+        </div>
+        <div class="btnrow">
+          <a class="gcal" href="#" id="notifBtn">Enable notifications on this device</a>
+        </div>
+        <div class="ok" id="notifOk"></div>
+        <div class="err" id="notifErr"></div>
       </div>
       <div class="card" style="margin-top:14px" id="feedCard">
         <h2 class="scr" style="margin-top:0">Sync with Google Calendar</h2>
@@ -1080,6 +1096,51 @@
     };
     if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(fallback);
     else fallback();
+  });
+
+  /* ---------- push notifications (N1) ---------- */
+  var VAPID_PUBLIC='BEdPWmUsEx0SSqsnDYC5dJor5QbFSHm3FrZQN7pGq_ZxfxQjvc7Q27dMMWxQEF8C2iLP31y0HA23O9Qw_iZcc8A';
+  function b64ToU8(b){ var p='='.repeat((4-b.length%4)%4); var s=atob((b+p).replace(/-/g,'+').replace(/_/g,'/')); var a=new Uint8Array(s.length); for(var i=0;i<s.length;i++) a[i]=s.charCodeAt(i); return a; }
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+  function isIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1); }
+  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone===true; }
+  function initNotifCard(){
+    var supported = ('serviceWorker' in navigator) && ('PushManager' in window);
+    if(isIOS() && !isStandalone()){
+      $('notifIos').hidden=false;
+      if(!supported){ $('notifBtn').style.display='none'; return; }
+    }
+    if(!supported){ $('notifErr').textContent='This browser does not support push notifications.'; $('notifBtn').style.display='none'; return; }
+    if(window.Notification && Notification.permission==='granted'){
+      navigator.serviceWorker.ready.then(function(r){ return r.pushManager.getSubscription(); }).then(function(s){
+        if(s){ $('notifOk').textContent='Notifications are on for this device.'; $('notifBtn').textContent='Refresh notification setup'; }
+      }).catch(function(){});
+    }
+  }
+  initNotifCard();
+  $('notifBtn').addEventListener('click', function(e){
+    e.preventDefault(); $('notifErr').textContent=''; $('notifOk').textContent='';
+    if(!('serviceWorker' in navigator) || !('PushManager' in window)){ $('notifErr').textContent='Not supported in this browser.'; return; }
+    Notification.requestPermission().then(function(perm){
+      if(perm!=='granted'){ $('notifErr').textContent='Permission was not granted — allow notifications for this site in the browser settings, then try again.'; return; }
+      navigator.serviceWorker.ready.then(function(reg){
+        return reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: b64ToU8(VAPID_PUBLIC) });
+      }).then(function(sub){
+        var j=sub.toJSON();
+        return sb.auth.getSession().then(function(r){
+          var uid=r&&r.data&&r.data.session&&r.data.session.user?r.data.session.user.id:null;
+          if(!uid) throw new Error('not signed in');
+          return sb.from('push_subscriptions').upsert({
+            user_id:uid, endpoint:sub.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth,
+            device_label:(navigator.userAgentData&&navigator.userAgentData.platform)||navigator.platform||null
+          },{onConflict:'endpoint'});
+        });
+      }).then(function(r){
+        if(r&&r.error) throw new Error(r.error.message);
+        $('notifOk').textContent='Done — this device now gets family schedule notifications.';
+        $('notifBtn').textContent='Refresh notification setup';
+      }).catch(function(err){ $('notifErr').textContent='Could not enable: '+(err&&err.message?err.message:err); });
+    });
   });
 
   /* ---------- messages ---------- */
