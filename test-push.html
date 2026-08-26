@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Push diagnostic</title>
+<style>
+  body{background:#0a120d;color:#f2f7f4;font:16px/1.6 system-ui,sans-serif;max-width:640px;margin:0 auto;padding:24px}
+  h1{font-size:20px}
+  button{font:800 16px system-ui;background:#2ee08a;color:#06130c;border:0;border-radius:12px;padding:14px 20px;width:100%;margin:14px 0;cursor:pointer}
+  pre{background:#15211a;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;white-space:pre-wrap;word-break:break-all;font-size:13px}
+  .ok{color:#2ee08a}.bad{color:#ff7a6e}
+</style>
+</head>
+<body>
+<h1>Push service diagnostic</h1>
+<p>Standalone test — no app code, no database, fresh key. It only asks the browser's push service for a registration and prints exactly what happens.</p>
+<button id="go" type="button">Run push test</button>
+<pre id="log">Waiting…</pre>
+<script>
+var KEY='BDqEe9LQVFu3dTyQdA1g3EVEI4KVhTRZmDOeLPGucZ201FG3vYFq_DLEQb5tANbjhobqlSW3QuDsRXvu1W7dTaw';
+var L=document.getElementById('log'); L.textContent='';
+function log(m,cls){ var d=document.createElement('div'); if(cls)d.className=cls; d.textContent=m; L.appendChild(d); }
+function b64ToU8(b){ var p='='.repeat((4-b.length%4)%4); var s=atob((b+p).replace(/-/g,'+').replace(/_/g,'/')); var a=new Uint8Array(s.length); for(var i=0;i<s.length;i++) a[i]=s.charCodeAt(i); return a; }
+log('UA: '+navigator.userAgent);
+log('serviceWorker: '+('serviceWorker' in navigator)+' · PushManager: '+('PushManager' in window));
+if(window.PushManager && PushManager.supportedContentEncodings) log('encodings: '+Array.from(PushManager.supportedContentEncodings).join(','));
+log('clock: '+new Date().toString());
+document.getElementById('go').addEventListener('click', function(){
+  L.textContent='';
+  log('1. registering service worker…');
+  navigator.serviceWorker.register('sw-test.js').then(function(){
+    return navigator.serviceWorker.ready;
+  }).then(function(reg){
+    log('2. service worker ACTIVE ✓','ok');
+    log('3. requesting permission…');
+    return Notification.requestPermission().then(function(p){
+      log('4. permission: '+p, p==='granted'?'ok':'bad');
+      if(p!=='granted') throw new Error('permission '+p);
+      return reg.pushManager.getSubscription().then(function(old){
+        if(old){ log('   (clearing an old subscription first)'); return old.unsubscribe().then(function(){ return reg; }); }
+        return reg;
+      });
+    });
+  }).then(function(reg){
+    log('5. asking the push service for a registration…');
+    var t0=Date.now();
+    return reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:b64ToU8(KEY)}).then(function(sub){
+      log('6. SUCCESS in '+(Date.now()-t0)+'ms ✓✓✓','ok');
+      log('endpoint: '+sub.endpoint.slice(0,70)+'…');
+      log('RESULT: this phone CAN register for web push. The problem would be in the app.','ok');
+      return sub.unsubscribe();
+    }).catch(function(e){
+      log('6. FAILED after '+(Date.now()-t0)+'ms','bad');
+      log('   name: '+e.name,'bad');
+      log('   message: '+e.message,'bad');
+      log('RESULT: this phone cannot register with the browser push service at all — independent of any app or key.','bad');
+    });
+  }).catch(function(e){
+    log('ERROR at earlier step: '+e.name+' — '+e.message,'bad');
+  });
+});
+</script>
+</body>
+</html>
