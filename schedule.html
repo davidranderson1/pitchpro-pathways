@@ -154,6 +154,9 @@
   .privChips button{background:var(--card2);border:1px solid var(--line);color:var(--muted);border-radius:999px;
     padding:7px 13px;font:800 11px/1 Inter,sans-serif;cursor:pointer}
   .privChips button.on{border-color:var(--green-dim);color:var(--green);background:rgba(46,224,138,.1)}
+  .rosterGrid{display:flex;flex-wrap:wrap;gap:7px}
+  .rosterChip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:600 12.5px/1 Inter,sans-serif;color:var(--txt)}
+  .rosterChip b{color:var(--green);font-weight:900;margin-right:5px}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -511,7 +514,8 @@
       sb.from('calendar_feeds').select('*').limit(1),
       sb.from('app_settings').select('*'),
       sb.from('game_results').select('*'),
-      sb.from('player_game_stats').select('*')
+      sb.from('player_game_stats').select('*'),
+      sb.from('rosters').select('*')
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
@@ -519,6 +523,7 @@
       state.feedToken=(r[5].data && r[5].data[0]) ? r[5].data[0].token : null;
       state.settings={}; (r[6].data||[]).forEach(function(s){ state.settings[s.key]=s.value; });
       state.results=r[7].data||[]; state.pstats=r[8].data||[];
+      state.rosters=(r[9]&&r[9].data)||[];
       loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
@@ -801,12 +806,12 @@
       h+='</div>';
       var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
       if(fx.length){
-        var A={},B={};
-        fx.forEach(function(f){ if(f.stage==='group' && f.grp){ (f.grp==='A'?A:B)[f.home]=1; (f.grp==='A'?A:B)[f.away]=1; } });
+        var A={},B={},pA={},pB={};
+        fx.forEach(function(f){ if(f.stage==='group' && f.grp){ (f.grp==='A'?A:B)[f.home]=1; (f.grp==='A'?A:B)[f.away]=1; if(f.pitch){ (f.grp==='A'?pA:pB)[f.pitch]=1; } } });
         if(Object.keys(A).length||Object.keys(B).length){
           h+='<div class="card" style="margin:14px 0"><div class="meta">';
-          if(Object.keys(A).length) h+='<span class="grpA"><b>Group A (Pitch 1):</b> '+Object.keys(A).map(esc).join(', ')+'</span><br>';
-          if(Object.keys(B).length) h+='<span class="grpB"><b>Group B (Pitch 2):</b> '+Object.keys(B).map(esc).join(', ')+'</span>';
+          if(Object.keys(A).length) h+='<span class="grpA"><b>Group A'+(Object.keys(pA).length?' (Pitch '+Object.keys(pA).join('/')+')':'')+':</b> '+Object.keys(A).map(esc).join(', ')+'</span><br>';
+          if(Object.keys(B).length) h+='<span class="grpB"><b>Group B'+(Object.keys(pB).length?' (Pitch '+Object.keys(pB).join('/')+')':'')+':</b> '+Object.keys(B).map(esc).join(', ')+'</span>';
           h+='</div></div>';
         }
         h+='<div class="tw" style="margin-bottom:18px"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th><th>Score</th></tr></thead><tbody>';
@@ -824,6 +829,21 @@
           h+='<tr'+(cls?' class="'+cls+'"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td><td>'+scoreCell+'</td></tr>';
         });
         h+='</tbody></table></div>';
+      }
+      // Roster card: match the tournament's age-group year against rosters from the coach.
+      var yr=((t.name||'')+' '+(t.team_label||'')).match(/20\d{2}/);
+      if(yr && state.rosters && state.rosters.length){
+        var ros=null;
+        state.rosters.forEach(function(rr){ if(rr.team_label===yr[0] && (!ros || rr.club===t.club)) ros=rr; });
+        if(ros){
+          var pl=[]; try{ pl=(typeof ros.players==='string')?JSON.parse(ros.players):(ros.players||[]); }catch(e){ pl=[]; }
+          if(pl.length){
+            h+='<div class="card" style="margin:0 0 18px"><div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · from the coach'+(ros.updated_on?', '+esc(ros.updated_on):'')+'</div>';
+            h+='<div class="rosterGrid">';
+            pl.forEach(function(p){ h+='<span class="rosterChip"><b>'+esc(String(p.n||''))+'</b>'+esc(p.name||'')+'</span>'; });
+            h+='</div></div>';
+          }
+        }
       }
     });
     $('tourBody').innerHTML=h;
