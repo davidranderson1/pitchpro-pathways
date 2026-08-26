@@ -1,37 +1,42 @@
-/* PitchPro × Rajic — shared site navigation.
+/* PitchPro × Rajic — shared site navigation / app switcher.
    One include per page: <script src="site-nav.js" defer></script>
-   Injects a fixed "All pages" button and an overlay index of every page in the repo.
-   Self-contained: no CSS file, no dependencies, no conflict with the host page's styles. */
+   Injects a fixed "Apps" button and an overlay index of every page in the repo,
+   grouped by app, each tagged LIVE / MOCKUP / PUBLIC so nobody mistakes sample
+   data for the real thing.
+   If the host page contains an element with id="ppNavOpen", that element opens
+   the overlay instead and the floating button is not injected (lets an app put
+   the switcher in its own header). Also exposed as window.ppNav.open().
+   Self-contained: no CSS file, no dependencies, no conflict with host styles. */
 (function(){
   var PAGES = [
-    {g:'Public site', items:[
-      {f:'index.html', t:'PitchPro Pathways — home', d:'Public marketing site'},
-      {f:'pro-pathways.html', t:'Pro Pathways', d:'Programme site'},
-      {f:'sandro-rajic-website.html', t:'Sandro Rajic — practice site', d:'Movement assessment practice · opens in a new tab (the one page without this button)', nt:true}
+    {g:'Family app — live', items:[
+      {f:'schedule.html', t:'Family Schedule', tag:'LIVE', d:'Sign in required. Training, tournaments, stats, coach messages, notifications. All family data is in a private database, not in this repository.'}
     ]},
-    {g:'Motion Intelligence', items:[
-      {f:'motion-intelligence.html', t:'The Brain', d:'Platform concept, knowledge base, build plan'},
-      {f:'device-intelligence.html', t:'Device Radars', d:'Playermaker, Oura and Plantiga as radar charts'},
-      {f:'deck.html', t:'Meeting deck', d:'13 slides, options A and B, questions 1 to 10'}
-    ]},
-    {g:'Player moments', items:[
-      {f:'player-moments-flow.html', t:'Feature map and flow', d:'Start here for the moments feature'},
-      {f:'portal-player.html', t:'Player portal', d:'Timeline, composer, profile'},
-      {f:'portal-parent.html', t:'Parent portal', d:'Approvals, safety and permissions'},
-      {f:'portal-guide.html', t:'Guide portal', d:'Player feed, comments, my showcase, record'},
-      {f:'portal-admin.html', t:'Admin portal', d:'Safeguarding queue, audit log, compliance'}
+    {g:'Team App — mockups, sample data only', items:[
+      {f:'player-moments-flow.html', t:'Feature map and flow', tag:'MOCKUP', d:'How the Team App fits together — start here'},
+      {f:'portal-player.html', t:'Player portal', tag:'MOCKUP', d:'Timeline, composer, profile'},
+      {f:'portal-parent.html', t:'Parent portal', tag:'MOCKUP', d:'Approvals, safety and permissions'},
+      {f:'portal-guide.html', t:'Guide portal', tag:'MOCKUP', d:'Player feed, comments, my showcase, record'},
+      {f:'portal-admin.html', t:'Admin portal', tag:'MOCKUP', d:'Safeguarding queue, audit log, compliance'}
     ]},
     {g:'Guide pages', items:[
-      {f:'guide-portal-sandro.html', t:'Guide — Sandro', d:'Profile page · media showcase, no video connected'},
-      {f:'guide-portal-nick.html', t:'Guide — Coach Nick', d:'Profile page · media showcase, no video connected'},
-      {f:'guide-portal-grego.html', t:'Guide — Grego', d:'Profile page · media showcase with a featured video'},
-      {f:'grego-brand-guidelines.html', t:'Grego brand guidelines', d:'Colours, type and usage'}
+      {f:'guide-portal-sandro.html', t:'Guide — Sandro', tag:'MOCKUP', d:'Profile page · media showcase, no video connected'},
+      {f:'guide-portal-nick.html', t:'Guide — Coach Nick', tag:'MOCKUP', d:'Profile page · media showcase, no video connected'},
+      {f:'guide-portal-grego.html', t:'Guide — Grego', tag:'MOCKUP', d:'Profile page · media showcase with a featured video'},
+      {f:'grego-brand-guidelines.html', t:'Grego brand guidelines', tag:'MOCKUP', d:'Colours, type and usage'}
     ]},
-    {g:'Live app', items:[
-      {f:'schedule.html', t:'Family Schedule — sign in', d:'The first live feature · private sign-in · schedule data is in a private database, not in this repository'}
+    {g:'Motion Intelligence', items:[
+      {f:'motion-intelligence.html', t:'The Brain', tag:'MOCKUP', d:'Platform concept, knowledge base, build plan'},
+      {f:'device-intelligence.html', t:'Device Radars', tag:'MOCKUP', d:'Playermaker, Oura and Plantiga as radar charts'},
+      {f:'deck.html', t:'Meeting deck', tag:'MOCKUP', d:'13 slides, options A and B, questions 1 to 10'}
+    ]},
+    {g:'Public site', items:[
+      {f:'index.html', t:'PitchPro Pathways — home', tag:'PUBLIC', d:'Public marketing site'},
+      {f:'pro-pathways.html', t:'Pro Pathways', tag:'PUBLIC', d:'Programme site'},
+      {f:'sandro-rajic-website.html', t:'Sandro Rajic — practice site', tag:'PUBLIC', d:'Movement assessment practice · opens in a new tab', nt:true}
     ]},
     {g:'Index', items:[
-      {f:'hub.html', t:'All pages', d:'This index as a full page'}
+      {f:'hub.html', t:'All pages', tag:'PUBLIC', d:'This index as a full page'}
     ]}
   ];
 
@@ -54,37 +59,58 @@
     '#pp-navbox a{display:block;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.08);border-radius:11px;',
     'padding:10px 13px;margin-bottom:7px;font-size:13.5px;}',
     '#pp-navbox a:hover{border-color:rgba(46,224,138,.5);background:rgba(46,224,138,.07);}',
-    '#pp-navbox a span{display:block;font-size:12px;color:#9db3a6;margin-top:2px;}',
+    '#pp-navbox a span.pp-d{display:block;font-size:12px;color:#9db3a6;margin-top:2px;}',
     '#pp-navbox a.pp-here{border-color:rgba(46,224,138,.6);background:rgba(46,224,138,.12);color:#2ee08a;}',
+    '.pp-tag{display:inline-block;font:800 8.5px/1 Inter,sans-serif;letter-spacing:.12em;padding:3px 8px;border-radius:999px;',
+    'margin-left:8px;vertical-align:2px;}',
+    '.pp-tag.pp-live{background:rgba(46,224,138,.16);color:#2ee08a;}',
+    '.pp-tag.pp-mock{background:rgba(255,190,70,.15);color:#ffbe46;}',
+    '.pp-tag.pp-pub{background:rgba(95,180,255,.15);color:#5fb4ff;}',
     '#pp-navclose{margin-top:18px;background:none;border:1px solid rgba(255,255,255,.14);color:#9db3a6;',
     'font:800 11px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:10px 16px;border-radius:999px;cursor:pointer;}',
     '@media print{#pp-navbtn,#pp-navwrap{display:none !important;}}'
   ].join('');
   document.head.appendChild(css);
 
-  var html = '<div id="pp-navbox"><h4>PitchPro &times; Rajic &mdash; all pages</h4>' +
-             '<p class="pp-sub">Every page in the site. Mockups use sample data.</p>';
+  function tagHtml(tag){
+    if(!tag) return '';
+    var cls = tag==='LIVE' ? 'pp-live' : (tag==='MOCKUP' ? 'pp-mock' : 'pp-pub');
+    return '<span class="pp-tag '+cls+'">'+tag+'</span>';
+  }
+
+  var html = '<div id="pp-navbox"><h4>PitchPro &mdash; apps &amp; pages</h4>' +
+             '<p class="pp-sub">Switch between everything built so far. LIVE pages use the real private database; MOCKUP pages show sample data only.</p>';
   for(var i=0;i<PAGES.length;i++){
     html += '<div class="pp-g">' + PAGES[i].g + '</div>';
     for(var j=0;j<PAGES[i].items.length;j++){
       var it = PAGES[i].items[j];
       var cls = (it.f.toLowerCase() === here) ? ' class="pp-here"' : '';
       var tgt = it.nt ? ' target="_blank" rel="noopener"' : '';
-      html += '<a href="' + it.f + '"' + cls + tgt + '>' + it.t + (it.d ? '<span>' + it.d + '</span>' : '') + '</a>';
+      html += '<a href="' + it.f + '"' + cls + tgt + '>' + it.t + tagHtml(it.tag) +
+              (it.d ? '<span class="pp-d">' + it.d + '</span>' : '') + '</a>';
     }
   }
   html += '<button id="pp-navclose" type="button">Close</button></div>';
 
   function boot(){
-    var btn = document.createElement('button');
-    btn.id = 'pp-navbtn'; btn.type = 'button'; btn.textContent = '◈ All pages';
     var wrap = document.createElement('div');
     wrap.id = 'pp-navwrap'; wrap.innerHTML = html;
-    document.body.appendChild(btn); document.body.appendChild(wrap);
-    btn.addEventListener('click', function(){ wrap.classList.add('pp-on'); });
-    wrap.addEventListener('click', function(e){ if(e.target === wrap) wrap.classList.remove('pp-on'); });
-    document.getElementById('pp-navclose').addEventListener('click', function(){ wrap.classList.remove('pp-on'); });
-    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') wrap.classList.remove('pp-on'); });
+    document.body.appendChild(wrap);
+    function open(){ wrap.classList.add('pp-on'); }
+    function close(){ wrap.classList.remove('pp-on'); }
+    var hostBtn = document.getElementById('ppNavOpen');
+    if(hostBtn){
+      hostBtn.addEventListener('click', function(e){ e.preventDefault(); open(); });
+    } else {
+      var btn = document.createElement('button');
+      btn.id = 'pp-navbtn'; btn.type = 'button'; btn.textContent = '◈ Apps';
+      document.body.appendChild(btn);
+      btn.addEventListener('click', open);
+    }
+    wrap.addEventListener('click', function(e){ if(e.target === wrap) close(); });
+    document.getElementById('pp-navclose').addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+    window.ppNav = { open: open, close: close };
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
