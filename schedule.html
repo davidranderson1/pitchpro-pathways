@@ -184,6 +184,16 @@
   .famAv.coachAv{background:linear-gradient(135deg,#b79bff,#7a5fd0)}
   .famAv img{width:100%;height:100%;object-fit:cover}
   .famAv.meAv{cursor:pointer}
+  body.ro .scorebtn,body.ro .addVenue,body.ro .confUnc,body.ro #ppFav a,body.ro .famAv.meAv,body.ro #ppAvatar{pointer-events:none}
+  body.ro .scorebtn:not(.has){display:none} body.ro .addVenue{display:none} body.ro .confUnc{text-decoration:none;cursor:default}
+  body.coach .tabs button[data-s="stats"],body.coach #notifCard,body.coach #feedCard,body.coach #inboxCard,body.coach #fPlayers,body.coach .fsep{display:none}
+  body.viewer #notifCard{display:none}
+  .roleTag{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font:700 11px Inter,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-left:8px;vertical-align:middle}
+  .invCode{font:800 30px/1.1 'Inter',monospace;letter-spacing:.14em;text-align:center;background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:16px 10px;margin:12px 0;user-select:all;color:var(--txt)}
+  .invRow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13px} .invRow code{font:800 14px Inter,monospace;letter-spacing:.08em;color:var(--txt);cursor:pointer}
+  .invRow .x{margin-left:auto;color:var(--muted);cursor:pointer;text-decoration:underline dotted}
+  .authTgl{margin-top:12px;font-size:13px;color:var(--muted)} .authTgl a{color:var(--blue);cursor:pointer;text-decoration:underline}
+  .joinSep{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:18px 0 6px} .joinSep:before,.joinSep:after{content:'';flex:1;border-top:1px solid var(--line)}
   .famMain{flex:1;min-width:0}
   .famName{font:700 14px Inter,sans-serif}
   .famSub{font-size:12px;color:var(--muted);margin-top:2px}
@@ -257,16 +267,42 @@
 
   <!-- ============ LOGIN ============ -->
   <div id="login" class="card">
-    <h1>Sign in</h1>
-    <p class="sub">Private family schedule. Accounts are created for family members only.</p>
+    <h1 id="loginH">Sign in</h1>
+    <p class="sub" id="loginSub">Private family schedule. Every account belongs to a family or a coach — you need an invite code from a parent to join.</p>
     <form id="loginForm">
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="username" required>
       <label for="pw">Password</label>
-      <input id="pw" type="password" autocomplete="current-password" required>
+      <input id="pw" type="password" autocomplete="current-password" required minlength="8">
       <button class="primary" id="loginBtn" type="submit">Sign in</button>
       <div class="err" id="loginErr"></div>
+      <div class="ok" id="loginOk"></div>
     </form>
+    <div class="authTgl" id="authTgl">Got an invite code but no account yet? <a id="authSwap">Create an account</a></div>
+  </div>
+
+  <!-- ============ JOIN (signed in, not yet in a family or coaching a team) ============ -->
+  <div id="join" class="card" style="display:none">
+    <h1>Join with your invite code</h1>
+    <p class="sub">A parent gives you a code — for the other parent, a family viewer (grandparents and close family), or a coach claiming their card. Nothing is emailed; the code is passed on in person or by message.</p>
+    <form id="joinForm">
+      <label for="jCode">Invite code</label>
+      <input id="jCode" type="text" autocomplete="one-time-code" placeholder="XXXXX-XXXXX" required style="text-transform:uppercase;letter-spacing:.12em;font-weight:800">
+      <div style="display:flex;gap:8px">
+        <div style="flex:1"><label for="jFirst">First name</label><input id="jFirst" type="text" autocomplete="given-name" required></div>
+        <div style="flex:1"><label for="jLast">Last name</label><input id="jLast" type="text" autocomplete="family-name"></div>
+      </div>
+      <button class="primary" id="joinBtn" type="submit">Join</button>
+      <div class="err" id="joinErr"></div>
+    </form>
+    <div class="joinSep">or</div>
+    <form id="newFamForm">
+      <label for="nfName">Start a new family (you become its first parent)</label>
+      <input id="nfName" type="text" placeholder="e.g. Kovač family" required>
+      <button class="ghost" id="nfBtn" type="submit">Create family</button>
+      <div class="err" id="nfErr"></div>
+    </form>
+    <div class="acct-row" style="margin-top:14px">Signed in as <b id="joinEmail"></b> · <a id="joinSignOut" style="color:var(--blue);cursor:pointer;text-decoration:underline">Sign out</a></div>
   </div>
   <p class="private-note" id="loginNote">Schedules, names and venues are stored in a private database and are only visible after sign-in.</p>
 
@@ -327,7 +363,8 @@
     <section class="screen" id="s-acct">
       <h2 class="scr">Account</h2>
       <div class="card">
-        <div class="acct-row">Signed in as <b id="acctEmail"></b></div>
+        <div class="acct-row">Signed in as <b id="acctEmail"></b><span class="roleTag" id="acctRole"></span></div>
+        <div class="meta" id="acctFam" style="margin:4px 0 10px"></div>
         <form id="pwForm">
           <label for="npw">New password (min 8 characters)</label>
           <input id="npw" type="password" autocomplete="new-password" minlength="8" required>
@@ -456,6 +493,19 @@
   </div>
 </div>
 
+<div id="invModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <h3 id="invTitle">Invite code</h3>
+  <div class="sub" id="invSub"></div>
+  <div class="invCode" id="invCodeBox"></div>
+  <div class="meta" id="invExp"></div>
+  <div class="btnrow" style="flex-direction:column;align-items:stretch;gap:8px;margin-top:10px">
+    <a class="gcal" href="#" id="invCopy">Copy code</a>
+    <a class="gcal" href="#" id="invShare">Share the code and app link…</a>
+  </div>
+  <div class="ok" id="invOk"></div>
+  <div class="smBtns"><button class="ghost" id="invClose" type="button">Close</button></div>
+</div></div>
+
 <div id="calModal" class="pmod"><div class="smBox" style="max-width:420px">
   <h3 id="calTitle">Add to Calendar</h3>
   <div class="sub" id="calSub"></div>
@@ -542,7 +592,7 @@
 
   var $ = function(id){ return document.getElementById(id); };
   var state = { players:[], events:[], msgs:[], tours:[], fixtures:[], feedToken:null,
-                results:[], pstats:[], userEmail:'',
+                results:[], pstats:[], userEmail:'', ctx:null, mode:null, familyId:null, familyName:'', role:null, canEdit:false, members:[], invites:[],
                 view:'week', weekStart:null, monthStart:null, selDay:null,
                 fPlayer:'all', fClub:'all' };
 
@@ -566,33 +616,101 @@
   function recall(k){ try{ return localStorage.getItem('pp-'+k); }catch(e){ return null; } }
 
   /* ---------- auth ---------- */
+  var authMode='in';
+  function swapAuth(){
+    authMode = authMode==='in' ? 'up' : 'in';
+    $('loginErr').textContent=''; $('loginOk').textContent='';
+    $('loginH').textContent = authMode==='in' ? 'Sign in' : 'Create an account';
+    $('loginBtn').textContent = authMode==='in' ? 'Sign in' : 'Create account';
+    $('pw').autocomplete = authMode==='in' ? 'current-password' : 'new-password';
+    $('authTgl').innerHTML = authMode==='in'
+      ? 'Got an invite code but no account yet? <a id="authSwap">Create an account</a>'
+      : 'Already have an account? <a id="authSwap">Sign in</a>';
+    $('authSwap').addEventListener('click', swapAuth);
+  }
+  $('authSwap').addEventListener('click', swapAuth);
   $('loginForm').addEventListener('submit', function(e){
     e.preventDefault();
-    $('loginErr').textContent=''; $('loginBtn').disabled=true;
-    sb.auth.signInWithPassword({ email:$('email').value.trim(), password:$('pw').value })
-      .then(function(r){
+    $('loginErr').textContent=''; $('loginOk').textContent=''; $('loginBtn').disabled=true;
+    var creds={ email:$('email').value.trim(), password:$('pw').value };
+    var call = authMode==='in' ? sb.auth.signInWithPassword(creds) : sb.auth.signUp(creds);
+    call.then(function(r){
         $('loginBtn').disabled=false;
-        if(r.error){ $('loginErr').textContent = 'Sign-in failed: '+r.error.message; return; }
+        if(r.error){ $('loginErr').textContent = (authMode==='in'?'Sign-in failed: ':'Could not create the account: ')+r.error.message; return; }
+        if(authMode==='up' && r.data && !r.data.session){
+          $('loginOk').textContent='Account created — check your email for a confirmation link, then sign in and enter your invite code.';
+        }
       })
       .catch(function(){ $('loginBtn').disabled=false; $('loginErr').textContent='Network error — try again.'; });
   });
   $('signOut').addEventListener('click', function(){ sb.auth.signOut(); });
+  $('joinSignOut').addEventListener('click', function(){ sb.auth.signOut(); });
 
   sb.auth.onAuthStateChange(function(_ev, session){
     if(session){
       $('login').style.display='none'; $('loginNote').style.display='none';
-      $('app').style.display='block';
       state.userEmail = (session.user && session.user.email) || '';
       state.userId = (session.user && session.user.id) || null;
-      $('acctEmail').textContent = state.userEmail;
+      $('acctEmail').textContent = state.userEmail; $('joinEmail').textContent = state.userEmail;
       // Load data only on a real sign-in or page load with a stored session.
       // TOKEN_REFRESHED / USER_UPDATED fire hourly and must NOT wipe the screen mid-use.
-      if(_ev==='SIGNED_IN' || _ev==='INITIAL_SESSION'){ loadTries=0; loadAll(); loadChannels(); }
+      if(_ev==='SIGNED_IN' || _ev==='INITIAL_SESSION'){ loadTries=0; loadContext(); }
     } else {
-      $('app').style.display='none';
+      $('app').style.display='none'; $('join').style.display='none';
       $('clubBadge').style.display='none';
+      document.body.classList.remove('ro','coach','viewer');
       $('login').style.display='block'; $('loginNote').style.display='block';
     }
+  });
+
+  /* Who am I here? Parent or viewer of a family, a coach of a team, or nobody yet (→ join screen). */
+  function loadContext(){
+    sb.rpc('my_context').then(function(r){
+      if(r.error){ showLoadError(r.error.message); return; }
+      applyContext(r.data||{});
+    }).catch(function(){ showLoadError('network error'); });
+  }
+  function applyContext(ctx){
+    state.ctx=ctx;
+    var fams=ctx.families||[], teams=ctx.coach_teams||[];
+    document.body.classList.remove('ro','coach','viewer');
+    if(fams.length){
+      state.mode='family'; state.familyId=fams[0].id; state.familyName=fams[0].name; state.role=fams[0].role;
+      state.canEdit = state.role==='parent';
+      if(!state.canEdit){ document.body.classList.add('ro','viewer'); }
+      $('acctRole').textContent = state.role==='parent' ? 'Parent' : 'Family viewer';
+      $('acctFam').textContent = state.familyName + (state.role==='parent' ? '' : ' · read-only: you can see everything, parents make the changes');
+      $('join').style.display='none'; $('app').style.display='block';
+      loadAll(); loadChannels();
+    } else if(teams.length){
+      state.mode='coach'; state.familyId=null; state.role='coach'; state.canEdit=false;
+      document.body.classList.add('ro','coach');
+      var c=ctx.coach||{};
+      $('acctRole').textContent='Coach';
+      $('acctFam').textContent=(c.club||teams[0].club)+' · '+teams.map(function(t){ return t.team_label+' generation'; }).join(', ')+' · you see your team\'s schedule, squads and messages; no family details.';
+      $('join').style.display='none'; $('app').style.display='block';
+      loadCoach();
+    } else {
+      state.mode='none'; state.canEdit=false;
+      $('app').style.display='none'; $('join').style.display='block';
+      $('jCode').focus();
+    }
+  }
+  $('joinForm').addEventListener('submit', function(e){
+    e.preventDefault(); $('joinErr').textContent=''; $('joinBtn').disabled=true;
+    sb.rpc('redeem_invite',{ p_code:$('jCode').value.trim(), p_first_name:$('jFirst').value.trim(), p_last_name:$('jLast').value.trim() }).then(function(r){
+      $('joinBtn').disabled=false;
+      if(r.error){ $('joinErr').textContent=r.error.message; return; }
+      applyContext(r.data||{});
+    }).catch(function(){ $('joinBtn').disabled=false; $('joinErr').textContent='Network error — try again.'; });
+  });
+  $('newFamForm').addEventListener('submit', function(e){
+    e.preventDefault(); $('nfErr').textContent=''; $('nfBtn').disabled=true;
+    sb.rpc('create_family',{ p_name:$('nfName').value.trim(), p_first_name:$('jFirst').value.trim()||null, p_last_name:$('jLast').value.trim()||null }).then(function(r){
+      $('nfBtn').disabled=false;
+      if(r.error){ $('nfErr').textContent=r.error.message; return; }
+      applyContext(r.data||{});
+    }).catch(function(){ $('nfBtn').disabled=false; $('nfErr').textContent='Network error — try again.'; });
   });
 
   $('pwForm').addEventListener('submit', function(e){
@@ -637,7 +755,9 @@
       sb.from('clubs').select('*'),
       sb.from('player_history').select('*').order('sort_order'),
       sb.from('coaches').select('*').order('sort_order'),
-      sb.from('parents').select('*').order('sort_order')
+      sb.from('parents').select('*').order('sort_order'),
+      sb.from('memberships').select('*'),
+      state.canEdit ? sb.from('invites').select('*').order('created_at',{ascending:false}) : Promise.resolve({data:[]})
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
@@ -650,6 +770,8 @@
       state.history=(r[11]&&r[11].data)||[];
       state.coaches=(r[12]&&r[12].data)||[];
       state.parents=(r[13]&&r[13].data)||[];
+      state.members=(r[14]&&r[14].data)||[];
+      state.invites=(r[15]&&r[15].data)||[];
       loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
@@ -664,6 +786,44 @@
       renderSchedule(); renderTournaments(); renderMessages(); renderStats(); renderFamily();
       applyHash();
     }).catch(function(){ showLoadError('network error'); });
+  }
+  /* Coach mode: team-scoped, read-only. Players come through team_players() (names + shirts only). */
+  function loadCoach(){
+    Promise.all([
+      sb.rpc('team_players'),
+      sb.from('events').select('*').order('event_date',{ascending:true}).order('start_time',{ascending:true,nullsFirst:false}),
+      sb.from('coach_messages').select('*').order('received_on',{ascending:false}),
+      sb.from('tournaments').select('*'),
+      sb.from('tournament_fixtures').select('*').order('sort_order'),
+      sb.from('rosters').select('*'),
+      sb.from('clubs').select('*'),
+      sb.from('coaches').select('*').order('sort_order'),
+      sb.from('app_settings').select('*')
+    ]).then(function(r){
+      for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
+      state.players=r[0].data||[]; state.events=dedupeForCoach(r[1].data||[]); state.msgs=r[2].data||[];
+      state.tours=r[3].data||[]; state.fixtures=r[4].data||[]; state.rosters=r[5].data||[]; state.clubs=r[6].data||[];
+      state.coaches=r[7].data||[]; state.settings={}; (r[8].data||[]).forEach(function(s){ state.settings[s.key]=s.value; });
+      state.feedToken=null; state.results=[]; state.pstats=[]; state.history=[]; state.parents=[]; state.members=[]; state.invites=[];
+      loadTries=0;
+      var cb=$('clubBadge'); if(state.ctx&&state.ctx.coach&&state.ctx.coach.club){ cb.textContent=state.ctx.coach.club; cb.style.display=''; }
+      state.fPlayer='all'; state.fClub=recall('fClub')||'all';
+      state.view = recall('view')==='month' ? 'month' : 'week';
+      state.weekStart = pickInitialWeek(); state.monthStart = firstOf(state.weekStart);
+      buildFilters(); syncViewSeg();
+      renderSchedule(); renderTournaments(); renderMessages(); renderFamily();
+      applyHash();
+    }).catch(function(){ showLoadError('network error'); });
+  }
+  // Several families can hold the same training row (one per child). A coach sees it once, with every player named.
+  function dedupeForCoach(list){
+    var seen={}, out=[];
+    list.forEach(function(e){
+      var k=[e.event_date,e.start_time,e.report_time,e.title,e.club,e.event_type].join('|');
+      if(seen[k]){ seen[k]._players.push(e.player_id); return; }
+      var c=Object.assign({}, e); c._players=[e.player_id]; seen[k]=c; out.push(c);
+    });
+    return out;
   }
   function showLoadError(m){
     // Fresh sign-ins can hit a transient token-timing error ("JWT issued at future").
@@ -785,7 +945,9 @@
     var multiClub = clubs().length>1;
     var h='<div class="ev '+(e.date_confirmed?'':'unconf')+'">';
     h+='<div class="evrow">';
-    if(p) h+='<span class="chip p'+pIdx(e.player_id)+'">'+esc(p.first_name)+' · '+esc(p.team_label)+'</span>';
+    if(e._players && e._players.length){
+      e._players.forEach(function(pid){ var q=playerById(pid); if(q) h+='<span class="chip p'+pIdx(pid)+'" data-player="'+esc(pid)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(q.first_name)+(q.shirt_number?' #'+esc(String(q.shirt_number)):'')+' · '+esc(q.team_label)+'</span>'; });
+    } else if(p) h+='<span class="chip p'+pIdx(e.player_id)+'">'+esc(p.first_name)+' · '+esc(p.team_label)+'</span>';
     h+='<span class="chip t-'+esc(e.event_type)+'">'+ (TYPE_LABEL[e.event_type]||esc(e.event_type)) +'</span>';
     if(multiClub && e.club) h+='<span class="chip clubc">'+esc(e.club)+'</span>';
     h+='</div>';
@@ -1021,6 +1183,7 @@
 
   var ed=null; // {fixture_id} or {event_id}
   function openStatModal(target){
+    if(!state.canEdit) return;
     ed=target;
     var title='', sub='', clubName='', existing=null, defPlayer=null;
     if(ed.fixture_id){
@@ -1076,7 +1239,8 @@
       lineup_notes: $('smLineup').value.trim()||null,
       notes: $('smNotes').value.trim()||null,
       updated_by: state.userEmail,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      family_id: state.familyId
     };
     var conflict;
     if(ed.fixture_id){ payload.fixture_id=ed.fixture_id; conflict='fixture_id'; }
@@ -1089,7 +1253,7 @@
         var pid=row.dataset.p;
         var played=row.querySelector('.pPlayed').checked;
         if(played){
-          ups.push({ game_result_id:rid, player_id:pid,
+          ups.push({ game_result_id:rid, player_id:pid, family_id: state.familyId,
             goals: Math.max(0, parseInt(row.querySelector('.pGoals').value||'0',10)||0),
             assists: Math.max(0, parseInt(row.querySelector('.pAssists').value||'0',10)||0) });
         } else { dels.push(pid); }
@@ -1469,14 +1633,14 @@
       $('ppAvatar').innerHTML='<div style="text-align:center;line-height:1"><div style="font-size:24px">'+esc((p.first_name||'?').charAt(0))+'</div>'
         +(p.shirt_number?'<div style="font:800 12px Inter,sans-serif;margin-top:2px">#'+esc(String(p.shirt_number))+'</div>':'')+'</div>';
     }
-    $('ppAvatar').title='Tap to add or change the photo';
+    $('ppAvatar').title=state.canEdit?'Tap to add or change the photo':'';
     $('ppName').textContent=fullName(p)+(p.shirt_number?'  ·  #'+p.shirt_number:'');
     $('ppTeam').textContent=p.club+' · '+p.team_label+' team';
     $('ppShirt').textContent=p.shirt_number?('Shirt #'+p.shirt_number+' (provisional until the club confirms)'):'Shirt number: not set yet';
     var nats=[]; try{ nats=(typeof p.nationalities==='string')?JSON.parse(p.nationalities):(p.nationalities||[]); }catch(e){ nats=[]; }
     $('ppFlags').textContent=nats.map(function(n){ return n.flag; }).join(' ');
     $('ppElig').textContent=nats.length?('National-team eligibility (when older): '+nats.map(function(n){ return n.name; }).join(', ')):'';
-    $('ppFav').innerHTML='Favourite player: '+(p.favorite_player?('<b style="color:var(--txt)">'+esc(p.favorite_player)+'</b>'):'<a class="addVenue">not set — tap to set</a>');
+    $('ppFav').innerHTML= state.mode==='coach' ? '' : 'Favourite player: '+(p.favorite_player?('<b style="color:var(--txt)">'+esc(p.favorite_player)+'</b>'):(state.canEdit?'<a class="addVenue">not set — tap to set</a>':'not set'));
     // Career — like a resume.
     var hist=(state.history||[]).filter(function(x){ return x.player_id===p.id; });
     var ch='<div class="meta" style="margin-top:14px;font-weight:800;color:var(--txt)">Career</div>';
@@ -1490,7 +1654,7 @@
     $('ppCareer').innerHTML=ch;
     mOpen('playerModal');
   }
-  $('ppAvatar').addEventListener('click', function(){ if(ppCurrent) $('ppFile').click(); });
+  $('ppAvatar').addEventListener('click', function(){ if(ppCurrent && state.canEdit) $('ppFile').click(); });
   $('ppFile').addEventListener('change', function(){
     var f=this.files[0]; this.value='';
     if(!f||!ppCurrent) return;
@@ -1512,7 +1676,7 @@
     rd.readAsDataURL(f);
   });
   $('ppFav').addEventListener('click', function(){
-    if(!ppCurrent || document.getElementById('ppFavIn')) return;
+    if(!ppCurrent || !state.canEdit || document.getElementById('ppFavIn')) return;
     var p=ppCurrent;
     $('ppFav').innerHTML='<input id="ppFavIn" type="text" placeholder="e.g. Haaland, Messi, Ronaldo" value="'+esc(p.favorite_player||'')+'" style="margin:4px 0"> <a class="gcal" href="#" id="ppFavSave" style="margin-top:6px">Save</a>';
     document.getElementById('ppFavSave').addEventListener('click', function(e){
@@ -1543,9 +1707,56 @@
     (state.coaches||[]).forEach(function(c){ if((c.teams||[]).indexOf(teamLabel)>-1 && (!hit || !club || c.club===club)) hit=c; });
     return hit;
   }
-  function inviteGate(el){
-    el.textContent='Coming soon — invites switch on once coaches and guests get their own private space in the app. During the beta nothing is sent to anyone.';
+  /* Invite codes (P1). A parent generates a one-time code in the app and passes it on themselves —
+     nothing is emailed by the app. The invitee creates an account and enters the code on the Join screen. */
+  var invCur=null;
+  function inviteGate(el){ el.textContent='Only a parent of the family can create invites.'; }
+  function inviteKindLabel(k){ return k==='coach'?'Coach':(k==='parent'?'Parent':'Family viewer'); }
+  function createInvite(kind, coachId, label, errEl){
+    if(!state.canEdit){ inviteGate(errEl); return; }
+    errEl.textContent='Creating code…';
+    sb.rpc('create_invite',{ p_kind:kind, p_family_id:state.familyId, p_coach_id:coachId||null, p_label:label||null }).then(function(r){
+      if(r.error){ errEl.textContent=r.error.message; return; }
+      errEl.textContent='';
+      var inv={ id:r.data.id, code:r.data.code, kind:kind, label:label, expires_at:r.data.expires_at, created_at:new Date().toISOString() };
+      state.invites.unshift(inv);
+      if(kind==='coach'){ (state.coaches||[]).forEach(function(c){ if(c.id===coachId && c.claim_status==='unclaimed') c.claim_status='invited'; }); }
+      openInvite(inv); renderFamily();
+    }).catch(function(){ errEl.textContent='Network error — try again.'; });
   }
+  function openInvite(inv){
+    invCur=inv;
+    $('invTitle').textContent=inviteKindLabel(inv.kind)+' invite code';
+    $('invSub').textContent= inv.kind==='coach'
+      ? 'Give this code to '+(inv.label||'your coach')+'. They open the app, create an account with their own email, and enter the code to claim their card. They will see the team schedule, squads and messages — never family details.'
+      : (inv.kind==='parent' ? 'Give this code to the other parent. They create an account and enter it to join the family with full parent rights.'
+                             : 'Give this code to '+(inv.label||'a family viewer')+'. They create an account and enter it to see the family schedule read-only.');
+    $('invCodeBox').textContent=inv.code;
+    $('invExp').textContent='One use only · expires '+new Date(inv.expires_at).toLocaleDateString(undefined,{day:'numeric',month:'short'})+' · you can cancel it from the Family & team card.';
+    $('invOk').textContent='';
+    mOpen('invModal');
+  }
+  function inviteShareText(inv){
+    return 'You are invited to the PitchPro Family Schedule. Open '+location.origin+location.pathname+' , create an account, then enter the code '+inv.code+' (valid once, expires soon).';
+  }
+  $('invCopy').addEventListener('click', function(e){ e.preventDefault(); if(!invCur) return;
+    navigator.clipboard.writeText(invCur.code).then(function(){ $('invOk').textContent='Code copied.'; }, function(){ $('invOk').textContent='Select the code and copy it.'; }); });
+  $('invShare').addEventListener('click', function(e){ e.preventDefault(); if(!invCur) return;
+    var t=inviteShareText(invCur);
+    if(navigator.share){ navigator.share({ title:'PitchPro invite', text:t }).catch(function(){}); }
+    else navigator.clipboard.writeText(t).then(function(){ $('invOk').textContent='Invitation text copied — paste it into a message.'; }); });
+  $('invClose').addEventListener('click', function(){ mClose('invModal'); });
+  $('invModal').addEventListener('click', function(e){ if(e.target===$('invModal')) mClose('invModal'); });
+  function revokeInvite(id, errEl){
+    sb.rpc('revoke_invite',{ p_id:id }).then(function(r){
+      if(r.error){ errEl.textContent=r.error.message; return; }
+      state.invites.forEach(function(i){ if(i.id===id) i.revoked_at=new Date().toISOString(); });
+      (state.coaches||[]).forEach(function(c){ if(c.claim_status==='invited' && !state.invites.some(function(i){ return i.coach_id===c.id && liveInvite(i); })) c.claim_status='unclaimed'; });
+      renderFamily();
+    });
+  }
+  function liveInvite(i){ return !i.redeemed_at && !i.revoked_at && new Date(i.expires_at)>new Date(); }
+  function claimText(c){ return c.claim_status==='claimed'?'Card claimed':(c.claim_status==='invited'?'Invite code issued':'Card not claimed'); }
   function openCoach(c){
     if(!c) return;
     if(c.photo_url){ $('ccAvatar').innerHTML='<img src="'+esc(c.photo_url)+'" alt="">'; }
@@ -1555,14 +1766,31 @@
     $('ccTeams').textContent='Teams: '+((c.teams||[]).map(function(t){ return t+' generation'; }).join(' and ')||'—');
     var claimed=c.claim_status==='claimed';
     $('ccClaim').className='claimTag '+(claimed?'claimed':'unclaimed');
-    $('ccClaim').textContent=claimed?'Card claimed':'Card not yet claimed';
+    $('ccClaim').textContent=claimText(c);
     $('ccGate').textContent='';
+    ccCurrent=c;
+    $('ccInvite').style.display=(claimed || !state.canEdit)?'none':'';
     mOpen('coachModal');
   }
-  $('ccInvite').addEventListener('click', function(e){ e.preventDefault(); inviteGate($('ccGate')); });
+  var ccCurrent=null;
+  $('ccInvite').addEventListener('click', function(e){ e.preventDefault(); if(ccCurrent) createInvite('coach', ccCurrent.id, ccCurrent.first_name+' '+ccCurrent.last_name, $('ccGate')); });
   function renderFamily(){
     var el=document.getElementById('famBody'); if(!el) return;
     var h='', first=true;
+    if(state.mode==='coach'){
+      var c=(state.ctx&&state.ctx.coach)||{};
+      h+='<div class="famRow first"><div class="famAv coachAv">'+esc((c.first_name||'?').charAt(0)+(c.last_name||'').charAt(0))+'</div>'
+        +'<div class="famMain"><div class="famName">'+esc((c.first_name||'')+' '+(c.last_name||''))+' <span style="color:var(--muted);font-weight:600">(you)</span></div>'
+        +'<div class="famSub">'+esc((c.role||'Coach')+' · '+(c.club||''))+'</div></div><span class="claimTag claimed">Card claimed</span></div>';
+      var tp=state.players||[];
+      h+='<div class="meta" style="margin-top:12px"><b style="color:var(--txt)">Your players in the app</b> — '+tp.length+' registered by their families. Tap a name for the card (name, shirt and team only).</div>';
+      h+='<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">'+tp.map(function(p){ return '<span class="chip '+(p.team_label==='2016'?'p1':'p2')+'" data-player="'+esc(p.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(p.first_name)+(p.shirt_number?' #'+esc(String(p.shirt_number)):'')+' · '+esc(p.team_label)+'</span>'; }).join(' ')+'</div>';
+      h+='<div class="meta" style="margin-top:14px">Coach accounts are read-only in this version. Schedules still arrive through the families\' inbox; posting directly from here is the next step.</div>';
+      el.innerHTML=h;
+      el.querySelectorAll('[data-player]').forEach(function(a){ a.addEventListener('click', function(e){ e.stopPropagation(); openPlayer(playerById(a.dataset.player)); }); });
+      return;
+    }
+    h+='<div class="meta" style="margin:0 0 10px"><b style="color:var(--txt)">'+esc(state.familyName||'Family')+'</b></div>';
     (state.parents||[]).forEach(function(pr){
       var me=(pr.user_id && pr.user_id===state.userId);
       var av=pr.photo_url?'<img src="'+esc(pr.photo_url)+'" alt="">':esc((pr.first_name||'?').charAt(0));
@@ -1570,11 +1798,19 @@
         var p=playerById(id); if(!p) return '';
         return '<span class="chip '+(p.team_label==='2016'?'p1':'p2')+'" data-player="'+esc(p.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(p.first_name)+'</span>';
       }).join(' ');
-      h+='<div class="famRow'+(first?' first':'')+'"><div class="famAv'+(me?' meAv" title="Tap to add or change your photo" role="button" tabindex="0':'')+'">'+av+'</div>'
+      h+='<div class="famRow'+(first?' first':'')+'"><div class="famAv'+(me&&state.canEdit?' meAv" title="Tap to add or change your photo" role="button" tabindex="0':'')+'">'+av+'</div>'
         +'<div class="famMain"><div class="famName">'+esc(pr.first_name+' '+pr.last_name)+(me?' <span style="color:var(--muted);font-weight:600">(you)</span>':'')+'</div>'
         +'<div class="famSub">'+esc(pr.role)+'</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">'+kids+'</div></div>'
         +'<span class="claimTag claimed">Account active</span></div>';
       first=false;
+    });
+    var parentIds={}; (state.parents||[]).forEach(function(pr){ if(pr.user_id) parentIds[pr.user_id]=1; });
+    (state.members||[]).filter(function(m){ return m.role==='viewer'; }).forEach(function(m){
+      var me=m.user_id===state.userId;
+      h+='<div class="famRow"><div class="famAv">'+esc((m.display_name||'?').charAt(0))+'</div>'
+        +'<div class="famMain"><div class="famName">'+esc(m.display_name||'Family viewer')+(me?' <span style="color:var(--muted);font-weight:600">(you)</span>':'')+'</div>'
+        +'<div class="famSub">Family viewer · read-only</div></div>'
+        +(state.canEdit&&!me?'<a class="x" data-rm="'+esc(m.id)+'" style="color:var(--muted);cursor:pointer;text-decoration:underline dotted;font-size:12px">Remove</a>':'<span class="claimTag claimed">Viewing</span>')+'</div>';
     });
     (state.coaches||[]).forEach(function(c){
       var claimed=c.claim_status==='claimed';
@@ -1582,10 +1818,23 @@
         +'<div class="famAv coachAv">'+(c.photo_url?'<img src="'+esc(c.photo_url)+'" alt="">':esc((c.first_name||'?').charAt(0)+(c.last_name||'').charAt(0)))+'</div>'
         +'<div class="famMain"><div class="famName">'+esc(c.first_name+' '+c.last_name)+'</div>'
         +'<div class="famSub">'+esc(c.role+' · '+c.club+' · '+(c.teams||[]).join(' & '))+'</div></div>'
-        +'<span class="claimTag '+(claimed?'claimed':'unclaimed')+'">'+(claimed?'Card claimed':'Card not claimed')+'</span></div>';
+        +'<span class="claimTag '+(claimed?'claimed':'unclaimed')+'">'+claimText(c)+'</span></div>';
     });
-    h+='<div class="meta" style="margin-top:14px">Every player, parent and coach has a card. “Claim your card” lets a coach keep their own card and post schedules directly; “Invite a parent” adds the other parent of a family. Both open once each person gets their own private space in the app.</div>';
-    h+='<div class="btnrow"><a class="gcal inviteGate" href="#">Invite your coach</a><a class="gcal inviteGate" href="#">Invite a parent</a></div><div class="ok" id="famGate"></div>';
+    if(state.canEdit){
+      var live=(state.invites||[]).filter(liveInvite);
+      if(live.length){
+        h+='<div class="meta" style="margin-top:14px;font-weight:800;color:var(--txt)">Open invite codes</div>';
+        live.forEach(function(i){
+          h+='<div class="invRow"><span>'+esc(inviteKindLabel(i.kind))+(i.label?' · '+esc(i.label):'')+'</span><code data-show="'+esc(i.id)+'" title="Tap to show and share">'+esc(i.code)+'</code><a class="x" data-rev="'+esc(i.id)+'">Cancel</a></div>';
+        });
+      }
+      h+='<div class="meta" style="margin-top:14px">Invites are one-time codes you pass on yourself — the app never emails anyone. The other parent gets full parent rights; a family viewer (grandparents, close family) sees everything read-only; a coach claims their card and sees only their team\'s schedule.</div>';
+      var unclaimed=(state.coaches||[]).filter(function(c){ return c.claim_status!=='claimed'; });
+      h+='<div class="btnrow">'+(unclaimed.length?'<a class="gcal" href="#" data-inv="coach">Invite your coach</a>':'')+'<a class="gcal" href="#" data-inv="parent">Invite the other parent</a><a class="gcal" href="#" data-inv="viewer">Invite a family viewer</a></div>';
+    } else {
+      h+='<div class="meta" style="margin-top:14px">You are a family viewer: everything a parent sees, nothing to edit. Ask a parent if something needs changing.</div>';
+    }
+    h+='<div class="ok" id="famGate"></div>';
     el.innerHTML=h;
     el.querySelectorAll('[data-coachrow]').forEach(function(rw){
       rw.addEventListener('click', function(){ openCoach(coachById(rw.dataset.coachrow)); });
@@ -1593,9 +1842,31 @@
     el.querySelectorAll('[data-player]').forEach(function(a){
       a.addEventListener('click', function(e){ e.stopPropagation(); openPlayer(playerById(a.dataset.player)); });
     });
-    el.querySelectorAll('.inviteGate').forEach(function(a){
-      a.addEventListener('click', function(e){ e.preventDefault(); inviteGate(document.getElementById('famGate')); });
+    el.querySelectorAll('[data-inv]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        var k=a.dataset.inv, g=document.getElementById('famGate');
+        if(k==='coach'){
+          var unclaimed=(state.coaches||[]).filter(function(c){ return c.claim_status!=='claimed'; });
+          if(unclaimed.length===1){ createInvite('coach', unclaimed[0].id, unclaimed[0].first_name+' '+unclaimed[0].last_name, g); }
+          else { g.textContent='Open the coach\'s card (tap their row above) and use “Invite your coach” there.'; }
+        } else if(k==='parent'){ createInvite('parent', null, 'Other parent', g); }
+        else {
+          var who=prompt('Who is this viewer for? (e.g. Grandma) — shown on the invite only');
+          if(who===null) return;
+          createInvite('viewer', null, who.trim()||null, g);
+        }
+      });
     });
+    el.querySelectorAll('[data-rev]').forEach(function(a){ a.addEventListener('click', function(){ if(confirm('Cancel this invite code?')) revokeInvite(a.dataset.rev, document.getElementById('famGate')); }); });
+    el.querySelectorAll('[data-show]').forEach(function(a){ a.addEventListener('click', function(){ var i=(state.invites||[]).filter(function(x){ return x.id===a.dataset.show; })[0]; if(i) openInvite(i); }); });
+    el.querySelectorAll('[data-rm]').forEach(function(a){ a.addEventListener('click', function(){
+      if(!confirm('Remove this viewer from the family? They lose access immediately.')) return;
+      sb.from('memberships').delete().eq('id', a.dataset.rm).then(function(r){
+        if(r.error){ document.getElementById('famGate').textContent=r.error.message; return; }
+        state.members=state.members.filter(function(m){ return m.id!==a.dataset.rm; }); renderFamily();
+      });
+    }); });
     var meAv=el.querySelector('.meAv');
     if(meAv) meAv.addEventListener('click', function(){ $('famFile').click(); });
   }
@@ -1605,7 +1876,7 @@
     document.body.appendChild(inp);
     inp.addEventListener('change', function(){
       var f=this.files[0]; this.value='';
-      if(!f || !state.userId) return;
+      if(!f || !state.userId || !state.canEdit) return;
       var rd=new FileReader();
       rd.onload=function(){
         var img=new Image();
@@ -1763,6 +2034,7 @@
   /* venue add (parent edit, venue column only) */
   var vmEvId=null;
   function openVenue(evId){
+    if(!state.canEdit) return;
     var e=eventById(evId); if(!e) return;
     vmEvId=evId; $('vmErr').textContent='';
     var p=playerById(e.player_id);
@@ -1787,6 +2059,7 @@
   /* confirm unconfirmed dates from the day header */
   var cfDateIso=null;
   function openConfirm(dayIso){
+    if(!state.canEdit) return;
     cfDateIso=dayIso; $('cfErr').textContent='';
     var n=state.events.filter(function(e){ return e.event_date===dayIso && !e.date_confirmed; }).length;
     $('cfSub').textContent=n+' unconfirmed item'+(n===1?'':'s')+' currently on '+dayIso+'. Pick the real date — keep it unchanged to confirm as-is.';
