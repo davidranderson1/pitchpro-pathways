@@ -188,6 +188,21 @@
   body.ro .scorebtn:not(.has){display:none} body.ro .addVenue{display:none} body.ro .confUnc{text-decoration:none;cursor:default}
   body.coach .tabs button[data-s="stats"],body.coach #notifCard,body.coach #feedCard,body.coach #inboxCard,body.coach #fPlayers,body.coach .fsep{display:none}
   body.viewer #notifCard{display:none}
+  body.child #famCard .btnrow,body.child #feedCard,body.child #inboxCard,body.child #chanWrap,body.child #fPlayers,body.child .fsep,body.child #pwForm{display:none}
+  body.coach .tabs button[data-s="journey"]{display:none}
+  .mo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px}
+  .mo.pending{border-style:dashed;border-color:rgba(255,190,70,.5)}
+  .mo img{max-width:100%;border-radius:10px;margin-top:10px;display:block}
+  .mo .who{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:12px;color:var(--muted)}
+  .mo .body{font-size:15px;line-height:1.45;white-space:pre-wrap}
+  .mo .acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .compose textarea{width:100%;min-height:84px;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 12px;font:15px Inter,sans-serif;resize:vertical}
+  .compose .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .compose input[type=date]{background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:9px 12px;font:14px Inter,sans-serif}
+  .compose .thumb{width:56px;height:56px;border-radius:8px;object-fit:cover;display:none}
+  .pendTag{display:inline-block;background:rgba(255,190,70,.15);color:var(--amber);border-radius:999px;padding:3px 9px;font:800 10px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+  .scout{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:10px}
+  .scout .sc{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
   .roleTag{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font:700 11px Inter,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-left:8px;vertical-align:middle}
   .invCode{font:800 30px/1.1 'Inter',monospace;letter-spacing:.14em;text-align:center;background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:16px 10px;margin:12px 0;user-select:all;color:var(--txt)}
   .invRow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:13px} .invRow code{font:800 14px Inter,monospace;letter-spacing:.08em;color:var(--txt);cursor:pointer}
@@ -312,6 +327,7 @@
       <button role="tab" aria-selected="true" data-s="sched">Schedule</button>
       <button role="tab" aria-selected="false" data-s="tour">Tournaments</button>
       <button role="tab" aria-selected="false" data-s="stats">Stats</button>
+      <button role="tab" aria-selected="false" data-s="journey">Journey</button>
       <button role="tab" aria-selected="false" data-s="msgs">Coach Messages</button>
       <button role="tab" aria-selected="false" data-s="acct">Account</button>
     </nav>
@@ -355,6 +371,26 @@
       <div id="statsBody"></div>
     </section>
 
+    <section class="screen" id="s-journey">
+      <h2 class="scr">Journey — moments and journal</h2>
+      <p class="meta" id="joIntro"></p>
+      <div class="card compose" id="joCompose" style="margin-bottom:14px">
+        <div class="fgroup" id="joWho" style="margin-bottom:8px"></div>
+        <textarea id="joText" placeholder="What happened? A goal, a save, a hard training, a lesson learned…" maxlength="2000"></textarea>
+        <div class="row">
+          <input type="date" id="joDate">
+          <a class="gcal" href="#" id="joPhotoBtn">📷 Add photo</a>
+          <img id="joThumb" class="thumb" alt="">
+          <a class="gcal" href="#" id="joPost" style="margin-left:auto">Post</a>
+        </div>
+        <input type="file" id="joFile" accept="image/*" hidden>
+        <div class="err" id="joErr"></div>
+        <div class="ok" id="joOk"></div>
+      </div>
+      <div id="joPending"></div>
+      <div id="joBody"></div>
+    </section>
+
     <section class="screen" id="s-msgs">
       <h2 class="scr">Coach messages — original and English</h2>
       <div id="msgsBody"></div>
@@ -391,7 +427,7 @@
         </div>
         <div class="ok" id="notifOk"></div>
         <div class="err" id="notifErr"></div>
-        <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
+        <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px" id="chanWrap">
           <p class="meta" style="margin-bottom:6px"><b style="color:var(--txt)">Email &amp; text channels.</b> Push not working on a device, or just prefer email? Pick any mix — these follow your account, not one phone.</p>
           <label style="display:flex;align-items:center;gap:9px;font:700 14px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt);margin:10px 0 6px">
             <input type="checkbox" id="chEmailOn" style="width:18px;height:18px;accent-color:var(--green)"> Email me schedule notifications
@@ -539,7 +575,9 @@
   <div class="meta" id="ppElig"></div>
   <div class="meta" id="ppFav" style="margin-top:8px;cursor:pointer"></div>
   <div id="ppCareer"></div>
-  <div class="meta" style="margin-top:10px">Tap the photo or the favourite-player line to update them (you are signed in as the parent). Full player-profile editing arrives with the player app.</div>
+  <div class="meta" id="ppHint" style="margin-top:10px">Tap the photo or the favourite-player line to update them (you are signed in as the parent).</div>
+  <div class="btnrow" id="ppLoginRow" style="margin-top:8px"><a class="gcal" href="#" id="ppLogin">Give this player their own login</a></div>
+  <div class="ok" id="ppLoginMsg"></div>
   <input type="file" id="ppFile" accept="image/*" hidden>
   <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
 </div></div>
@@ -592,7 +630,7 @@
 
   var $ = function(id){ return document.getElementById(id); };
   var state = { players:[], events:[], msgs:[], tours:[], fixtures:[], feedToken:null,
-                results:[], pstats:[], userEmail:'', ctx:null, mode:null, familyId:null, familyName:'', role:null, canEdit:false, members:[], invites:[],
+                results:[], pstats:[], userEmail:'', ctx:null, mode:null, familyId:null, familyName:'', role:null, canEdit:false, canPost:false, childPlayerId:null, members:[], invites:[], moments:[],
                 view:'week', weekStart:null, monthStart:null, selDay:null,
                 fPlayer:'all', fClub:'all' };
 
@@ -674,12 +712,16 @@
     state.ctx=ctx;
     var fams=ctx.families||[], teams=ctx.coach_teams||[];
     document.body.classList.remove('ro','coach','viewer');
+    document.body.classList.remove('child');
     if(fams.length){
       state.mode='family'; state.familyId=fams[0].id; state.familyName=fams[0].name; state.role=fams[0].role;
+      state.childPlayerId = fams[0].player_id || null;
       state.canEdit = state.role==='parent';
-      if(!state.canEdit){ document.body.classList.add('ro','viewer'); }
-      $('acctRole').textContent = state.role==='parent' ? 'Parent' : 'Family viewer';
-      $('acctFam').textContent = state.familyName + (state.role==='parent' ? '' : ' · read-only: you can see everything, parents make the changes');
+      state.canPost = state.role==='parent' || state.role==='child';
+      if(state.role==='viewer'){ document.body.classList.add('ro','viewer'); }
+      if(state.role==='child'){ document.body.classList.add('ro','child'); }
+      $('acctRole').textContent = state.role==='parent' ? 'Parent' : (state.role==='child' ? 'Player' : 'Family viewer');
+      $('acctFam').textContent = state.familyName + (state.role==='parent' ? '' : (state.role==='child' ? ' · your own schedule, stats and journey. Moments you post go to your parents first.' : ' · read-only: you can see everything, parents make the changes'));
       $('join').style.display='none'; $('app').style.display='block';
       loadAll(); loadChannels();
     } else if(teams.length){
@@ -757,7 +799,8 @@
       sb.from('coaches').select('*').order('sort_order'),
       sb.from('parents').select('*').order('sort_order'),
       sb.from('memberships').select('*'),
-      state.canEdit ? sb.from('invites').select('*').order('created_at',{ascending:false}) : Promise.resolve({data:[]})
+      state.canEdit ? sb.from('invites').select('*').order('created_at',{ascending:false}) : Promise.resolve({data:[]}),
+      sb.from('moments').select('*').order('moment_date',{ascending:false}).order('created_at',{ascending:false})
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
@@ -772,6 +815,7 @@
       state.parents=(r[13]&&r[13].data)||[];
       state.members=(r[14]&&r[14].data)||[];
       state.invites=(r[15]&&r[15].data)||[];
+      state.moments=(r[16]&&r[16].data)||[];
       loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
@@ -783,7 +827,7 @@
       state.weekStart = pickInitialWeek();
       state.monthStart = firstOf(state.weekStart);
       buildFilters(); renderFeed(); syncViewSeg();
-      renderSchedule(); renderTournaments(); renderMessages(); renderStats(); renderFamily();
+      renderSchedule(); renderTournaments(); renderMessages(); renderStats(); renderFamily(); renderJourney();
       applyHash();
     }).catch(function(){ showLoadError('network error'); });
   }
@@ -1336,6 +1380,20 @@
     return out;
   }
 
+  function scoutingCard(){
+    var h='<div class="card" style="margin-top:16px"><h2 class="scr" style="margin-top:0">Scouting view — by nationality</h2><div class="meta">Which national-team pathways each player is eligible for, with this season\u2019s totals. For talking to clubs and federations; nothing here is shared unless you share it.</div><div class="scout">';
+    state.players.forEach(function(p){
+      var nats=[]; try{ nats=(typeof p.nationalities==='string')?JSON.parse(p.nationalities):(p.nationalities||[]); }catch(e){ nats=[]; }
+      var g=0,a=0,games=0;
+      state.pstats.forEach(function(s){ if(s.player_id===p.id){ g+=s.goals||0; a+=s.assists||0; games++; } });
+      h+='<div class="sc"><div style="font-weight:800">'+esc(fullName(p))+(p.shirt_number?' · #'+esc(String(p.shirt_number)):'')+'</div>'
+        +'<div class="meta">'+esc(p.club)+' · '+esc(p.team_label)+' generation</div>'
+        +'<div style="font-size:22px;letter-spacing:3px;margin:6px 0">'+nats.map(function(n){ return n.flag; }).join(' ')+'</div>'
+        +'<div class="meta">'+(nats.length?nats.map(function(n){ return esc(n.name); }).join(' · '):'Eligibility not recorded')+'</div>'
+        +'<div class="meta" style="margin-top:6px;color:var(--txt)">'+games+' games · '+g+' goals · '+a+' assists</div></div>';
+    });
+    return h+'</div></div>';
+  }
   function renderStats(){
     var selP = state.statPlayer && state.statPlayer!=='all' ? playerById(state.statPlayer) : null;
     var frs = !selP ? state.results : state.results.filter(function(r){
@@ -1380,6 +1438,7 @@
         h+='<button class="scorebtn has" data-res="'+esc(r.id)+'" type="button">Edit</button></div>';
       });
     }
+    if(state.mode==='family' && !state.childPlayerId) h+=scoutingCard();
     $('statsBody').innerHTML=h;
     $('statsBody').querySelectorAll('.scorebtn').forEach(function(b){
       b.addEventListener('click', function(){
@@ -1641,6 +1700,12 @@
     $('ppFlags').textContent=nats.map(function(n){ return n.flag; }).join(' ');
     $('ppElig').textContent=nats.length?('National-team eligibility (when older): '+nats.map(function(n){ return n.name; }).join(', ')):'';
     $('ppFav').innerHTML= state.mode==='coach' ? '' : 'Favourite player: '+(p.favorite_player?('<b style="color:var(--txt)">'+esc(p.favorite_player)+'</b>'):(state.canEdit?'<a class="addVenue">not set — tap to set</a>':'not set'));
+    var hasLogin=(state.members||[]).some(function(m){ return m.role==='child' && m.player_id===p.id; });
+    var pendingInv=(state.invites||[]).filter(function(i){ return i.kind==='child' && i.player_id===p.id && liveInvite(i); })[0];
+    $('ppLoginRow').style.display=(state.canEdit && state.mode==='family' && !hasLogin)?'':'none';
+    $('ppLogin').textContent=pendingInv?'Show '+p.first_name+'\u2019s login code again':'Give '+p.first_name+' their own login';
+    $('ppLoginMsg').textContent=hasLogin?p.first_name+' has their own login (player role: own schedule, stats and journey; moments need your approval).':'';
+    $('ppHint').style.display=state.canEdit?'':'none';
     // Career — like a resume.
     var hist=(state.history||[]).filter(function(x){ return x.player_id===p.id; });
     var ch='<div class="meta" style="margin-top:14px;font-weight:800;color:var(--txt)">Career</div>';
@@ -1655,6 +1720,13 @@
     mOpen('playerModal');
   }
   $('ppAvatar').addEventListener('click', function(){ if(ppCurrent && state.canEdit) $('ppFile').click(); });
+  $('ppLogin').addEventListener('click', function(e){
+    e.preventDefault(); if(!ppCurrent || !state.canEdit) return;
+    var p=ppCurrent;
+    var pendingInv=(state.invites||[]).filter(function(i){ return i.kind==='child' && i.player_id===p.id && liveInvite(i); })[0];
+    if(pendingInv){ openInvite(pendingInv); return; }
+    createInvite('child', null, p.first_name, $('ppLoginMsg'), p.id);
+  });
   $('ppFile').addEventListener('change', function(){
     var f=this.files[0]; this.value='';
     if(!f||!ppCurrent) return;
@@ -1711,14 +1783,14 @@
      nothing is emailed by the app. The invitee creates an account and enters the code on the Join screen. */
   var invCur=null;
   function inviteGate(el){ el.textContent='Only a parent of the family can create invites.'; }
-  function inviteKindLabel(k){ return k==='coach'?'Coach':(k==='parent'?'Parent':'Family viewer'); }
-  function createInvite(kind, coachId, label, errEl){
+  function inviteKindLabel(k){ return k==='coach'?'Coach':(k==='parent'?'Parent':(k==='child'?'Player login':'Family viewer')); }
+  function createInvite(kind, coachId, label, errEl, playerId){
     if(!state.canEdit){ inviteGate(errEl); return; }
     errEl.textContent='Creating code…';
-    sb.rpc('create_invite',{ p_kind:kind, p_family_id:state.familyId, p_coach_id:coachId||null, p_label:label||null }).then(function(r){
+    sb.rpc('create_invite',{ p_kind:kind, p_family_id:state.familyId, p_coach_id:coachId||null, p_label:label||null, p_player_id:playerId||null }).then(function(r){
       if(r.error){ errEl.textContent=r.error.message; return; }
       errEl.textContent='';
-      var inv={ id:r.data.id, code:r.data.code, kind:kind, label:label, expires_at:r.data.expires_at, created_at:new Date().toISOString() };
+      var inv={ id:r.data.id, code:r.data.code, kind:kind, label:label, player_id:playerId||null, coach_id:coachId||null, expires_at:r.data.expires_at, created_at:new Date().toISOString() };
       state.invites.unshift(inv);
       if(kind==='coach'){ (state.coaches||[]).forEach(function(c){ if(c.id===coachId && c.claim_status==='unclaimed') c.claim_status='invited'; }); }
       openInvite(inv); renderFamily();
@@ -1729,6 +1801,7 @@
     $('invTitle').textContent=inviteKindLabel(inv.kind)+' invite code';
     $('invSub').textContent= inv.kind==='coach'
       ? 'Give this code to '+(inv.label||'your coach')+'. They open the app, create an account with their own email, and enter the code to claim their card. They will see the team schedule, squads and messages — never family details.'
+      : inv.kind==='child' ? 'Set up '+(inv.label||'your player')+'\u2019s account together: create it on their device with an email you control, then enter this code. They get their own schedule, stats and journey; every moment they post waits for a parent\u2019s approval before anyone else in the family sees it.'
       : (inv.kind==='parent' ? 'Give this code to the other parent. They create an account and enter it to join the family with full parent rights.'
                              : 'Give this code to '+(inv.label||'a family viewer')+'. They create an account and enter it to see the family schedule read-only.');
     $('invCodeBox').textContent=inv.code;
@@ -1895,6 +1968,120 @@
       rd.readAsDataURL(f);
     });
   })();
+
+  /* ---------- R2 Journey: moments with parent approval ---------- */
+  var joPhoto=null, joWho=null;
+  function momentPlayers(){ return state.mode==='family' ? (state.childPlayerId ? state.players.filter(function(p){ return p.id===state.childPlayerId; }) : state.players) : []; }
+  function renderJourney(){
+    var el=$('joBody'); if(!el) return;
+    var ps=momentPlayers();
+    $('joIntro').textContent = state.role==='child'
+      ? 'Your football story, one moment at a time. Post a note or a photo — a parent approves it, then it is part of your journey.'
+      : (state.canEdit ? 'Moments and notes for each player. What the children post waits here for your approval; what you post appears straight away.' : 'Approved moments from the family journey.');
+    $('joCompose').style.display=state.canPost?'':'none';
+    if(state.canPost){
+      if(!joWho || !ps.some(function(p){ return p.id===joWho; })) joWho=(state.fPlayer!=='all' && ps.some(function(p){ return p.id===state.fPlayer; }))?state.fPlayer:(ps[0]?ps[0].id:null);
+      var w='<span class="flabel">For</span>';
+      ps.forEach(function(p){ w+='<button class="fchip'+(p.id===joWho?' on':'')+'" data-jw="'+esc(p.id)+'" type="button">'+esc(p.first_name)+'</button>'; });
+      $('joWho').innerHTML=w; $('joWho').style.display=ps.length>1?'':'none';
+      $('joWho').querySelectorAll('[data-jw]').forEach(function(b){ b.addEventListener('click', function(){ joWho=b.dataset.jw; renderJourney(); }); });
+      if(!$('joDate').value) $('joDate').value=iso(new Date());
+    }
+    var pend=(state.moments||[]).filter(function(m){ return m.status==='pending'; });
+    var ph='';
+    if(pend.length){
+      ph+='<div class="meta" style="margin:4px 0 8px;font-weight:800;color:var(--txt)">'+(state.canEdit?'Waiting for your approval ('+pend.length+')':'Waiting for a parent ('+pend.length+')')+'</div>';
+      pend.forEach(function(m){ ph+=momentCard(m); });
+    }
+    $('joPending').innerHTML=ph;
+    var appr=(state.moments||[]).filter(function(m){ return m.status==='approved'; });
+    var h='';
+    if(!appr.length) h='<div class="empty">No moments yet'+(state.canPost?' — post the first one above.':'.')+'</div>';
+    var lastMonth='';
+    appr.forEach(function(m){
+      var d=parseISO(m.moment_date), mk=MONF[d.getMonth()]+' '+d.getFullYear();
+      if(mk!==lastMonth){ h+='<div class="dayhead" style="margin:14px 0 8px"><b>'+esc(mk)+'</b></div>'; lastMonth=mk; }
+      h+=momentCard(m);
+    });
+    el.innerHTML=h;
+    bindMomentActs($('joPending')); bindMomentActs(el);
+  }
+  function momentCard(m){
+    var p=playerById(m.player_id);
+    var d=parseISO(m.moment_date);
+    var h='<div class="mo'+(m.status==='pending'?' pending':'')+'" data-mo="'+esc(m.id)+'"><div class="who">';
+    if(p) h+='<span class="chip p'+pIdx(m.player_id)+'">'+esc(p.first_name)+'</span>';
+    h+='<span>'+DOWS[(d.getDay()+6)%7]+' '+fmtShort(d)+'</span><span>· by '+(m.author_role==='child'?esc(p?p.first_name:'player'):'a parent')+'</span>';
+    if(m.status==='pending') h+='<span class="pendTag">Awaiting approval</span>';
+    h+='</div>';
+    if(m.body) h+='<div class="body">'+esc(m.body)+'</div>';
+    if(m.photo_url) h+='<img src="'+esc(m.photo_url)+'" alt="">';
+    var acts=[];
+    if(state.canEdit && m.status==='pending'){ acts.push('<a class="gcal" href="#" data-approve="'+esc(m.id)+'">Approve</a>'); acts.push('<a class="gcal" href="#" data-reject="'+esc(m.id)+'">Reject</a>'); }
+    if(state.canEdit && m.status==='approved') acts.push('<a class="x" href="#" data-del="'+esc(m.id)+'" style="font-size:12px;color:var(--muted)">Remove</a>');
+    if(state.role==='child' && m.status==='pending' && m.author_user_id===state.userId) acts.push('<a class="x" href="#" data-del="'+esc(m.id)+'" style="font-size:12px;color:var(--muted)">Delete</a>');
+    if(acts.length) h+='<div class="acts">'+acts.join('')+'</div>';
+    return h+'</div>';
+  }
+  function bindMomentActs(root){
+    root.querySelectorAll('[data-approve],[data-reject]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        var id=a.dataset.approve||a.dataset.reject, st=a.dataset.approve?'approved':'rejected';
+        sb.from('moments').update({status:st, reviewed_by:state.userId, reviewed_at:new Date().toISOString()}).eq('id', id).then(function(r){
+          if(r.error){ $('joErr').textContent=r.error.message; return; }
+          state.moments.forEach(function(m){ if(m.id===id) m.status=st; });
+          renderJourney();
+        });
+      });
+    });
+    root.querySelectorAll('[data-del]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault(); if(!confirm('Remove this moment?')) return;
+        var id=a.dataset.del;
+        sb.from('moments').delete().eq('id', id).then(function(r){
+          if(r.error){ $('joErr').textContent=r.error.message; return; }
+          state.moments=state.moments.filter(function(m){ return m.id!==id; }); renderJourney();
+        });
+      });
+    });
+  }
+  $('joPhotoBtn').addEventListener('click', function(e){ e.preventDefault(); $('joFile').click(); });
+  $('joFile').addEventListener('change', function(){
+    var f=this.files[0]; this.value=''; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      var img=new Image();
+      img.onload=function(){
+        var max=640, sc=Math.min(1, max/Math.max(img.width,img.height));
+        var c=document.createElement('canvas'); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        joPhoto=c.toDataURL('image/jpeg',0.78);
+        $('joThumb').src=joPhoto; $('joThumb').style.display='';
+        $('joPhotoBtn').textContent='📷 Change photo';
+      };
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(f);
+  });
+  $('joPost').addEventListener('click', function(e){
+    e.preventDefault(); $('joErr').textContent=''; $('joOk').textContent='';
+    var body=$('joText').value.trim();
+    if(!body && !joPhoto){ $('joErr').textContent='Write something or add a photo first.'; return; }
+    if(!joWho){ $('joErr').textContent='Pick the player first.'; return; }
+    var isChild=state.role==='child';
+    var row={ family_id:state.familyId, player_id:joWho, author_user_id:state.userId, author_role:isChild?'child':'parent',
+              moment_date:$('joDate').value||iso(new Date()), body:body, photo_url:joPhoto, status:isChild?'pending':'approved' };
+    $('joPost').textContent='Posting…';
+    sb.from('moments').insert(row).select().single().then(function(r){
+      $('joPost').textContent='Post';
+      if(r.error){ $('joErr').textContent=r.error.message; return; }
+      state.moments.unshift(r.data);
+      $('joText').value=''; joPhoto=null; $('joThumb').style.display='none'; $('joPhotoBtn').textContent='📷 Add photo';
+      $('joOk').textContent= isChild ? 'Posted — your parents will see it first and approve it.' : 'Posted.';
+      renderJourney();
+    }).catch(function(){ $('joPost').textContent='Post'; $('joErr').textContent='Network error — try again.'; });
+  });
 
   /* calendar chooser (Google / Outlook / Apple .ics; whole tournament by team) */
   var calCtx=null;
