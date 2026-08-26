@@ -157,6 +157,17 @@
   .rosterGrid{display:flex;flex-wrap:wrap;gap:7px}
   .rosterChip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:600 12.5px/1 Inter,sans-serif;color:var(--txt)}
   .rosterChip b{color:var(--green);font-weight:900;margin-right:5px}
+  .rosterChip.ours{border-color:var(--green-dim);cursor:pointer}
+  .pmod{position:fixed;inset:0;z-index:82;display:none;align-items:flex-start;justify-content:center;padding:24px 14px;background:rgba(6,10,8,.88);overflow-y:auto}
+  .pmod.on{display:flex}
+  tr.dateRow td{background:rgba(46,224,138,.08);color:var(--green);font:800 11px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:8px 10px}
+  .teamLink{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+  td .teamLink{color:var(--txt)}
+  .srcTgl{display:inline-block;margin-top:8px;font:800 11px/1 Inter,sans-serif;color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px}
+  .confUnc{color:var(--amber);font-weight:800;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+  .addVenue{color:var(--blue);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+  #clubBadge{cursor:pointer}
+  .stTile[data-player]{cursor:pointer}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -274,6 +285,10 @@
 
     <section class="screen" id="s-tour">
       <h2 class="scr">Tournaments</h2>
+      <div class="seg" id="tourSeg" style="margin-bottom:14px">
+        <button data-t="up" class="on" type="button">Upcoming</button>
+        <button data-t="past" type="button">Past</button>
+      </div>
       <div id="tourBody"></div>
     </section>
 
@@ -415,6 +430,69 @@
   </div>
 </div>
 
+<div id="calModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <h3 id="calTitle">Add to Calendar</h3>
+  <div class="sub" id="calSub"></div>
+  <div class="privChips" id="calTeamSeg" hidden>
+    <button data-scope="ours" class="on" type="button">Our club's games</button>
+    <button data-scope="all" type="button">All games</button>
+  </div>
+  <div class="btnrow" style="flex-direction:column;align-items:stretch;gap:8px;margin-top:10px">
+    <a class="gcal" href="#" id="calGoogle">Google Calendar</a>
+    <a class="gcal" href="#" id="calOutlook">Outlook</a>
+    <a class="gcal" href="#" id="calApple">Apple / other (.ics file)</a>
+  </div>
+  <div class="smBtns"><button class="ghost" id="calClose" type="button">Close</button></div>
+</div></div>
+
+<div id="clubModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="clubEmoji" style="font-size:34px"></div>
+    <div><h3 id="clubName" style="margin:0"></h3><div class="sub" id="clubTown" style="margin:0"></div></div>
+  </div>
+  <p class="meta" id="clubInfo" style="margin-top:12px"></p>
+  <div class="btnrow"><a class="gcal" id="clubMap" target="_blank" rel="noopener" href="#">Open in Google Maps</a></div>
+  <div class="smBtns"><button class="ghost" id="clubClose" type="button">Close</button></div>
+</div></div>
+
+<div id="playerModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div id="ppAvatar" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green),#17b06a);display:flex;align-items:center;justify-content:center;font:900 26px Archivo,Inter,sans-serif;color:#06130c;overflow:hidden;flex:none"></div>
+    <div><h3 id="ppName" style="margin:0"></h3><div class="sub" id="ppTeam" style="margin:0"></div></div>
+  </div>
+  <div class="meta" id="ppShirt" style="margin-top:12px"></div>
+  <div id="ppFlags" style="font-size:26px;margin-top:8px;letter-spacing:4px"></div>
+  <div class="meta" id="ppElig"></div>
+  <div class="meta" id="ppFav" style="margin-top:8px"></div>
+  <div class="meta" style="margin-top:10px">Photo and favourite player will be editable in the player profile — for now, tell Claude and it updates.</div>
+  <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
+</div></div>
+
+<div id="venueModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <h3>Add venue</h3>
+  <div class="sub" id="vmSub"></div>
+  <label for="vmInput">Venue name or address</label>
+  <input id="vmInput" type="text" placeholder="Stadium or address">
+  <div class="btnrow"><a class="gcal" id="vmMaps" href="#" target="_blank" rel="noopener">Find it on Google Maps</a></div>
+  <div class="smBtns">
+    <button class="primary" id="vmSave" type="button">Save venue</button>
+    <button class="ghost" id="vmCancel" type="button">Cancel</button>
+  </div>
+  <div class="err" id="vmErr"></div>
+</div></div>
+
+<div id="confModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <h3>Confirm the date</h3>
+  <div class="sub" id="cfSub"></div>
+  <label for="cfDate">Confirmed date</label>
+  <input id="cfDate" type="date">
+  <div class="smBtns">
+    <button class="primary" id="cfSave" type="button">Confirm</button>
+    <button class="ghost" id="cfCancel" type="button">Cancel</button>
+  </div>
+  <div class="err" id="cfErr"></div>
+</div></div>
+
 <script src="supabase.js"></script>
 <script>
 (function(){
@@ -515,7 +593,8 @@
       sb.from('app_settings').select('*'),
       sb.from('game_results').select('*'),
       sb.from('player_game_stats').select('*'),
-      sb.from('rosters').select('*')
+      sb.from('rosters').select('*'),
+      sb.from('clubs').select('*')
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
@@ -524,6 +603,7 @@
       state.settings={}; (r[6].data||[]).forEach(function(s){ state.settings[s.key]=s.value; });
       state.results=r[7].data||[]; state.pstats=r[8].data||[];
       state.rosters=(r[9]&&r[9].data)||[];
+      state.clubs=(r[10]&&r[10].data)||[];
       loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
@@ -661,7 +741,6 @@
     if(p) h+='<span class="chip p'+pIdx(e.player_id)+'">'+esc(p.first_name)+' · '+esc(p.team_label)+'</span>';
     h+='<span class="chip t-'+esc(e.event_type)+'">'+ (TYPE_LABEL[e.event_type]||esc(e.event_type)) +'</span>';
     if(multiClub && e.club) h+='<span class="chip clubc">'+esc(e.club)+'</span>';
-    if(!e.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
     h+='</div>';
     h+='<h3>'+esc(e.title)+'</h3>';
     var t='';
@@ -669,11 +748,10 @@
     if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?'Kick-off ':'')+hm(e.start_time)+'</span>';
     if(t) h+='<div class="times">'+t+'</div>';
     var m=[];
-    if(e.venue) m.push('📍 '+mapLink(e.venue)); else if(e.event_type!=='no_session') m.push('📍 venue not stated');
+    if(e.venue) m.push('📍 '+mapLink(e.venue)); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">add venue</a>');
     if(e.details) m.push(esc(e.details));
     if(m.length) h+='<div class="meta">'+m.join(' — ')+'</div>';
-    var g=gcalEventLink(e);
-    if(g) h+='<a class="gcal" href="'+g+'" target="_blank" rel="noopener">＋ Add to Google Calendar</a>';
+    if(e.event_type!=='no_session' && e.event_date) h+='<a class="gcal calAdd" data-ev="'+esc(e.id)+'" href="#">＋ Add to Calendar</a>';
     if(e.event_type==='match'){
       var res=resultFor('event_id', e.id);
       h+=' <button class="scorebtn'+(res?' has':'')+'" data-ev="'+esc(e.id)+'" type="button" style="margin-top:9px">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res)+' · edit' : '＋ score & stats')+'</button>';
@@ -715,7 +793,8 @@
       var day=addDays(ws,i), dayIso=iso(day);
       var de=inWeek.filter(function(e){ return e.event_date===dayIso; });
       if(!de.length) continue;
-      html+='<div class="day"><div class="dayhead"><b>'+DOW[i]+'</b> · '+fmtShort(day)+'</div>';
+      var unc=de.some(function(e){ return !e.date_confirmed; });
+      html+='<div class="day"><div class="dayhead"><b>'+DOW[i]+'</b> · '+fmtShort(day)+(unc?' · <a class="confUnc" data-date="'+dayIso+'">(UNCONFIRMED — tap to set)</a>':'')+'</div>';
       html+=tripNote(de);
       de.forEach(function(e){ html+=evCard(e); });
       html+='</div>';
@@ -723,6 +802,7 @@
     if(!html) html='<div class="empty">Nothing scheduled this week for this selection. Use the arrows or the filters above.</div>';
     $('wDays').innerHTML=html;
     bindEvScoreBtns($('wDays'));
+    bindEvExtras($('wDays'));
   }
 
   /* ---------- month view ---------- */
@@ -768,7 +848,8 @@
     if(state.selDay){
       var de2=byDay[state.selDay]||[];
       var sd=parseISO(state.selDay);
-      dh+='<div class="dayhead" style="margin-top:4px"><b>'+DOW[(sd.getDay()+6)%7]+'</b> · '+fmtShort(sd)+' '+sd.getFullYear()+'</div>';
+      var unc2=de2.some(function(e){ return !e.date_confirmed; });
+      dh+='<div class="dayhead" style="margin-top:4px"><b>'+DOW[(sd.getDay()+6)%7]+'</b> · '+fmtShort(sd)+' '+sd.getFullYear()+(unc2?' · <a class="confUnc" data-date="'+esc(state.selDay)+'">(UNCONFIRMED — tap to set)</a>':'')+'</div>';
       if(de2.length){ dh+=tripNote(de2); de2.forEach(function(e){ dh+=evCard(e); }); }
       else dh+='<div class="empty">Nothing on this day for this selection.</div>';
     } else {
@@ -776,33 +857,44 @@
     }
     $('mDetail').innerHTML=dh;
     bindEvScoreBtns($('mDetail'));
+    bindEvExtras($('mDetail'));
   }
 
   /* ---------- tournaments ---------- */
+  function tourMaxDate(t){
+    var m=t.event_date||null;
+    state.fixtures.forEach(function(f){ if(f.tournament_id===t.id && f.match_date && (!m || f.match_date>m)) m=f.match_date; });
+    return m;
+  }
+  function fmtDayLong(dIso){ var d=parseISO(dIso); return DOW[(d.getDay()+6)%7]+' · '+fmtShort(d); }
   function renderTournaments(){
+    var today=iso(new Date());
     var ts=state.tours.filter(function(t){ return state.fClub==='all' || t.club===state.fClub; });
-    if(!ts.length){ $('tourBody').innerHTML='<div class="empty">No tournaments on file'+(state.fClub!=='all'?' for '+esc(state.fClub):'')+'.</div>'; return; }
-    ts.sort(function(a,b){ return (a.event_date||'9999') < (b.event_date||'9999') ? -1 : 1; });
+    ts=ts.filter(function(t){
+      var m=tourMaxDate(t);
+      var end=m ? iso(addDays(parseISO(m),2)) : null; // weekend tournaments span a few days
+      var isPast = end ? (end < today) : false;       // undated = upcoming
+      return state.tourView==='past' ? isPast : !isPast;
+    });
+    if(!ts.length){ $('tourBody').innerHTML='<div class="empty">No '+(state.tourView==='past'?'past':'upcoming')+' tournaments'+(state.fClub!=='all'?' for '+esc(state.fClub):'')+' — try the Upcoming/Past toggle above.</div>'; return; }
+    ts.sort(function(a,b){ var x=a.event_date||'9999', y=b.event_date||'9999'; return state.tourView==='past' ? (x<y?1:-1) : (x<y?-1:1); });
     var multiClub = clubs().length>1;
     var h='';
     ts.forEach(function(t){
       h+='<div class="card msg"><div class="evrow">';
       h+='<span class="chip t-tournament">Tournament</span>';
-      if(multiClub && t.club) h+='<span class="chip clubc">'+esc(t.club)+'</span>';
+      if(multiClub && t.club) h+='<span class="chip clubc teamLink" data-club="'+esc(t.club)+'">'+esc(t.club)+'</span>';
       if(t.event_date && !t.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
       if(!t.event_date) h+='<span class="chip unconfb">date not announced</span>';
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
       var meta=[];
-      if(t.event_date) meta.push('Date: '+esc(t.event_date));
+      if(t.event_date) meta.push('📅 '+esc(t.event_date));
       if(t.venue) meta.push('📍 '+mapLink(t.venue));
-      if(t.team_label) meta.push('Our team: '+esc(t.team_label));
-      if(!t.event_date) meta.push('Date, venue and which of our teams is playing are not on the schedule sheet — ask the coach.');
+      if(t.team_label) meta.push(esc(t.team_label));
+      if(!t.event_date) meta.push('Date, venue and which of our teams plays are not announced yet.');
       h+='<div class="meta">'+meta.join(' · ')+'</div>';
-      if(t.format_notes) h+='<div class="meta" style="margin-top:6px">'+esc(t.format_notes)+'</div>';
-      if(t.event_date){
-        var d=t.event_date.replace(/-/g,''), nd=iso(addDays(parseISO(t.event_date),1)).replace(/-/g,'');
-        h+='<a class="gcal" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t.name+' ('+t.club+')')+'&dates='+d+'/'+nd+'&ctz=Europe/Zagreb'+(t.venue?'&location='+encodeURIComponent(t.venue):'')+'" target="_blank" rel="noopener">＋ Add to Google Calendar</a>';
-      }
+      if(t.format_notes) h+='<a href="#" class="srcTgl" data-tg="tn-'+esc(t.id)+'">ⓘ Details &amp; source</a><div class="meta" id="tn-'+esc(t.id)+'" hidden style="margin-top:6px">'+esc(t.format_notes)+'</div>';
+      if(t.event_date) h+='<div style="margin-top:4px"><a class="gcal calAdd" data-tour="'+esc(t.id)+'" href="#">＋ Add to Calendar</a></div>';
       h+='</div>';
       var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
       if(fx.length){
@@ -814,8 +906,16 @@
           if(Object.keys(B).length) h+='<span class="grpB"><b>Group B'+(Object.keys(pB).length?' (Pitch '+Object.keys(pB).join('/')+')':'')+':</b> '+Object.keys(B).map(esc).join(', ')+'</span>';
           h+='</div></div>';
         }
+        fx=fx.slice().sort(function(a,b){
+          var x=(a.match_date||'9999')+String(a.sort_order).padStart(4,'0');
+          var y=(b.match_date||'9999')+String(b.sort_order).padStart(4,'0');
+          return x<y?-1:1;
+        });
         h+='<div class="tw" style="margin-bottom:18px"><table><thead><tr><th>Time</th><th>Pitch</th><th>Group</th><th>Fixture</th><th>Score</th></tr></thead><tbody>';
+        var lastD='__';
         fx.forEach(function(f){
+          var dKey=f.match_date||'tba';
+          if(dKey!==lastD){ lastD=dKey; h+='<tr class="dateRow"><td colspan="5">'+(f.match_date?fmtDayLong(f.match_date):'Date to be announced')+'</td></tr>'; }
           var knock=f.stage!=='group';
           var ours=t.club && ((f.home+' '+f.away).indexOf(t.club)>=0);
           var cls=[knock?'knock':'',ours?'ours':''].join(' ').trim();
@@ -826,11 +926,13 @@
           } else {
             scoreCell = res ? '<b>'+res.our_score+'–'+res.opp_score+'</b>' : '—';
           }
-          h+='<tr'+(cls?' class="'+cls+'"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+esc(f.home)+(f.away&&f.away!=='—'?' – '+esc(f.away):'')+'</td><td>'+scoreCell+'</td></tr>';
+          var homeH='<span class="teamLink" data-club="'+esc(f.home)+'">'+esc(f.home)+'</span>';
+          var awayH=(f.away&&f.away!=='—')?' – <span class="teamLink" data-club="'+esc(f.away)+'">'+esc(f.away)+'</span>':'';
+          h+='<tr'+(cls?' class="'+cls+'"':'')+'><td class="slot">'+esc(f.time_slot)+'</td><td>'+(f.pitch||'—')+'</td><td>'+(f.grp?'<span class="grp'+esc(f.grp)+'">'+esc(f.grp)+'</span>':'—')+'</td><td>'+homeH+awayH+'</td><td>'+scoreCell+'</td></tr>';
         });
         h+='</tbody></table></div>';
       }
-      // Roster card: match the tournament's age-group year against rosters from the coach.
+      // Roster card (list position is meaningless — shirt numbers shown only when known).
       var yr=((t.name||'')+' '+(t.team_label||'')).match(/20\d{2}/);
       if(yr && state.rosters && state.rosters.length){
         var ros=null;
@@ -838,9 +940,13 @@
         if(ros){
           var pl=[]; try{ pl=(typeof ros.players==='string')?JSON.parse(ros.players):(ros.players||[]); }catch(e){ pl=[]; }
           if(pl.length){
-            h+='<div class="card" style="margin:0 0 18px"><div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · from the coach'+(ros.updated_on?', '+esc(ros.updated_on):'')+'</div>';
+            h+='<div class="card" style="margin:0 0 18px"><div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · shirt numbers shown when known</div>';
             h+='<div class="rosterGrid">';
-            pl.forEach(function(p){ h+='<span class="rosterChip"><b>'+esc(String(p.n||''))+'</b>'+esc(p.name||'')+'</span>'; });
+            pl.forEach(function(p){
+              var our=null; state.players.forEach(function(sp){ if((p.name||'').indexOf(sp.first_name)===0) our=sp; });
+              var shirt=p.shirt||(our&&our.shirt_number)||null;
+              h+='<span class="rosterChip'+(our?' ours':'')+'"'+(our?' data-player="'+esc(our.id)+'" role="button" tabindex="0"':'')+'>'+(shirt?'<b>#'+esc(String(shirt))+'</b>':'')+esc(p.name||'')+'</span>';
+            });
             h+='</div></div>';
           }
         }
@@ -850,6 +956,7 @@
     $('tourBody').querySelectorAll('.scorebtn').forEach(function(b){
       b.addEventListener('click', function(){ openStatModal({fixture_id:b.dataset.fx}); });
     });
+    bindEvExtras($('tourBody'));
   }
 
   /* ---------- stats ---------- */
@@ -871,6 +978,9 @@
       title=f.home+(f.away&&f.away!=='—'?' – '+f.away:'');
       sub=(t?t.name+' · ':'')+f.time_slot+(clubName?' · scores are for '+clubName:'');
       existing=resultFor('fixture_id', ed.fixture_id);
+      // Pre-tick the child whose age-group this tournament is — per-player stats were being missed.
+      var yrX=t?((t.name+' '+(t.team_label||'')).match(/20\d{2}/)):null;
+      if(yrX){ state.players.forEach(function(sp){ if(sp.team_label===yrX[0]) defPlayer=sp.id; }); }
     } else {
       var ev=eventById(ed.event_id); if(!ev) return;
       clubName=ev.club||'';
@@ -961,14 +1071,21 @@
     return { label:'Game', sub:'', date:null };
   }
   /* ---------- recaps (auto-generated) ---------- */
-  function computeRecaps(){
+  function computeRecaps(baseResults, player){
     var recs=[];
     state.tours.forEach(function(t){
-      var rs=state.results.filter(function(r){ var f=r.fixture_id?fixtureById(r.fixture_id):null; return !!(f&&f.tournament_id===t.id); });
-      if(rs.length) recs.push(makeRecap('Tournament recap', t.name, t.club, t.event_date, rs));
+      var rs=baseResults.filter(function(r){ var f=r.fixture_id?fixtureById(r.fixture_id):null; return !!(f&&f.tournament_id===t.id); });
+      if(rs.length){ var rec=makeRecap('Tournament recap', t.name, t.club, t.event_date, rs); rec.player=player||null; recs.push(rec); }
     });
-    if(state.results.length>=2) recs.push(makeRecap('Season so far', 'All games to date', null, null, state.results));
+    if(baseResults.length>=2){ var rec2=makeRecap('Season so far', 'All games to date', null, null, baseResults); rec2.player=player||null; recs.push(rec2); }
     return recs;
+  }
+  function resultTeamPlayer(r){
+    if(r.event_id){ var ev=eventById(r.event_id); return ev?ev.player_id:null; }
+    if(r.fixture_id){ var f=fixtureById(r.fixture_id); var t=f?tourById(f.tournament_id):null;
+      var yr=t?((t.name+' '+(t.team_label||'')).match(/20\d{2}/)):null;
+      if(yr){ var pid=null; state.players.forEach(function(p){ if(p.team_label===yr[0]) pid=p.id; }); return pid; } }
+    return null;
   }
   function makeRecap(kick,title,club,date,rs){
     var w=0,d=0,l=0,gf=0,ga=0,best=null,lines=[];
@@ -1004,17 +1121,26 @@
   }
 
   function renderStats(){
-    var recs=computeRecaps();
-    var h='<div class="statTotals">';
+    var selP = state.statPlayer && state.statPlayer!=='all' ? playerById(state.statPlayer) : null;
+    var frs = !selP ? state.results : state.results.filter(function(r){
+      if(resultTeamPlayer(r)===selP.id) return true;
+      return statsFor(r.id).some(function(s){ return s.player_id===selP.id; });
+    });
+    var recs=computeRecaps(frs, selP);
+    var h='<div class="fgroup" style="margin-bottom:14px"><span class="flabel">Player</span>';
+    h+='<button class="fchip'+(!selP?' on':'')+'" data-sp="all" type="button">All</button>';
+    state.players.forEach(function(p){ h+='<button class="fchip'+(selP&&selP.id===p.id?' on':'')+'" data-sp="'+esc(p.id)+'" type="button">'+esc(p.first_name)+'</button>'; });
+    h+='</div>';
+    h+='<div class="statTotals">';
     state.players.forEach(function(p){
       var mine=state.pstats.filter(function(s){ return s.player_id===p.id; });
       var g=0,a=0; mine.forEach(function(s){ g+=s.goals; a+=s.assists; });
-      h+='<div class="stTile"><div class="who chip p'+pIdx(p.id)+'" style="display:inline-block">'+esc(p.first_name)+'</div>';
+      h+='<div class="stTile" data-player="'+esc(p.id)+'" title="Open player card"><div class="who chip p'+pIdx(p.id)+'" style="display:inline-block">'+esc(p.first_name)+(p.shirt_number?' · #'+p.shirt_number:'')+'</div>';
       h+='<div class="nums">'+mine.length+' <span>games</span> · '+g+' <span>goals</span> · '+a+' <span>assists</span></div></div>';
     });
     h+='</div>';
     recs.forEach(function(rec,i){
-      h+='<div class="recapCard"><div class="rcKick">✦ '+esc(rec.kick)+' · auto-generated</div>';
+      h+='<div class="recapCard"><div class="rcKick">✦ '+(rec.player?esc(rec.player.first_name)+' — ':'')+esc(rec.kick)+' · auto-generated</div>';
       h+='<h3>'+esc(rec.title)+'</h3>';
       h+='<div class="rcSub">'+(rec.club?esc(rec.club)+' · ':'')+(rec.date?esc(rec.date):'updates itself as scores are entered')+'</div>';
       h+='<div class="rcNums"><div><b>'+rec.p+'</b><span>played</span></div><div><b>'+rec.w+'-'+rec.d+'-'+rec.l+'</b><span>W-D-L</span></div><div><b>'+rec.gf+'–'+rec.ga+'</b><span>goals</span></div></div>';
@@ -1022,10 +1148,10 @@
       if(rec.best){ var bd=gameDesc(rec.best); h+='<div class="rcLine">★ Best result <b>'+rec.best.our_score+'–'+rec.best.opp_score+'</b> · '+esc(bd.label)+'</div>'; }
       h+='<button class="sharebtn" data-rec="'+i+'" type="button">📤 Share this recap</button></div>';
     });
-    if(!state.results.length){
+    if(!frs.length){
       h+='<div class="empty">No game results yet. Enter a score from a tournament fixture row (the “＋ score” button) or a match card — parent or coach, anyone signed in can do it.</div>';
     } else {
-      var rs=state.results.slice().sort(function(x,y){ return (gameDesc(y).date||'')<(gameDesc(x).date||'')?-1:1; });
+      var rs=frs.slice().sort(function(x,y){ return (gameDesc(y).date||'')<(gameDesc(x).date||'')?-1:1; });
       rs.forEach(function(r){
         var d=gameDesc(r);
         var scorers=[];
@@ -1048,6 +1174,10 @@
     $('statsBody').querySelectorAll('.sharebtn').forEach(function(b){
       b.addEventListener('click', function(){ openShare(recs[parseInt(b.dataset.rec,10)]); });
     });
+    $('statsBody').querySelectorAll('.fchip[data-sp]').forEach(function(b){
+      b.addEventListener('click', function(){ state.statPlayer=b.dataset.sp; renderStats(); });
+    });
+    bindEvExtras($('statsBody'));
   }
 
   /* ---------- share recap (parent-controlled) ---------- */
@@ -1083,7 +1213,7 @@
     c.fillStyle='#2ee08a'; c.font='900 36px Archivo, Inter, sans-serif';
     c.fillText('PITCHPRO', 70, 64);
     c.fillStyle='#9db3a6'; c.font='800 24px Inter, sans-serif';
-    c.fillText(shRec.kick.toUpperCase(), 70, 112);
+    c.fillText((shRec.player? nameFor(shRec.player, shMode).toUpperCase()+' — ':'')+shRec.kick.toUpperCase(), 70, 112);
     c.fillStyle='#ffffff'; c.font='900 58px Archivo, Inter, sans-serif';
     var words=String(shRec.title).split(' '), line='', y=182;
     words.forEach(function(wd){ var t=line?line+' '+wd:wd;
@@ -1122,7 +1252,7 @@
   });
   $('shCopy').addEventListener('click', function(){
     if(!shRec) return;
-    var t=['🏆 '+shRec.kick+': '+shRec.title];
+    var t=['🏆 '+(shRec.player? nameFor(shRec.player, shMode)+' — ':'')+shRec.kick+': '+shRec.title];
     if(shRec.club||shRec.date) t.push([shRec.club,shRec.date].filter(Boolean).join(' · '));
     t.push('P'+shRec.p+'  W'+shRec.w+' D'+shRec.d+' L'+shRec.l+'  ·  goals '+shRec.gf+'–'+shRec.ga);
     scorerText(shRec,shMode).forEach(function(s){ t.push('⚽ '+s); });
@@ -1207,6 +1337,224 @@
       });
     });
   });
+
+  /* ---------- v10: modals, calendar chooser, club & player cards, parent edits ---------- */
+  state.tourView='up';
+  state.statPlayer='all';
+  $('tourSeg').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    state.tourView=b.dataset.t;
+    $('tourSeg').querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
+    renderTournaments();
+  });
+  function mOpen(id){ $(id).classList.add('on'); }
+  function mClose(id){ $(id).classList.remove('on'); }
+  ['calModal','clubModal','playerModal','venueModal','confModal'].forEach(function(id){
+    $(id).addEventListener('click', function(e){ if(e.target===$(id)) mClose(id); });
+  });
+  $('calClose').addEventListener('click', function(){ mClose('calModal'); });
+  $('clubClose').addEventListener('click', function(){ mClose('clubModal'); });
+  $('ppClose').addEventListener('click', function(){ mClose('playerModal'); });
+  $('vmCancel').addEventListener('click', function(){ mClose('venueModal'); });
+  $('cfCancel').addEventListener('click', function(){ mClose('confModal'); });
+
+  /* club cards */
+  function openClub(name){
+    var c=null; (state.clubs||[]).forEach(function(x){ if(x.name.toLowerCase()===String(name).toLowerCase()) c=x; });
+    $('clubEmoji').textContent=(c&&c.badge)||'⚽';
+    $('clubName').textContent=c?c.name:String(name);
+    $('clubTown').textContent=(c&&c.town)||'';
+    $('clubInfo').textContent=(c&&c.info)||'No details on file for this club yet — it appears in a tournament our teams play in. Ask Claude to add club details.';
+    $('clubMap').href='https://maps.google.com/?q='+encodeURIComponent((c&&c.map_query)||(String(name)+' nogometni klub Hrvatska'));
+    mOpen('clubModal');
+  }
+  $('clubBadge').addEventListener('click', function(){ if($('clubBadge').textContent) openClub($('clubBadge').textContent); });
+
+  /* player cards */
+  function openPlayer(p){
+    if(!p) return;
+    $('ppAvatar').innerHTML = p.photo_url ? '<img src="'+esc(p.photo_url)+'" style="width:100%;height:100%;object-fit:cover" alt="">' : esc((p.first_name||'?').charAt(0));
+    $('ppName').textContent=p.first_name+(p.shirt_number?'  ·  #'+p.shirt_number:'');
+    $('ppTeam').textContent=p.club+' · '+p.team_label+' team';
+    $('ppShirt').textContent=p.shirt_number?('Shirt #'+p.shirt_number+' (provisional until the club confirms)'):'Shirt number: not set yet';
+    var nats=[]; try{ nats=(typeof p.nationalities==='string')?JSON.parse(p.nationalities):(p.nationalities||[]); }catch(e){ nats=[]; }
+    $('ppFlags').textContent=nats.map(function(n){ return n.flag; }).join(' ');
+    $('ppElig').textContent=nats.length?('National-team eligibility (when older): '+nats.map(function(n){ return n.name; }).join(', ')):'';
+    $('ppFav').textContent='Favourite player: '+(p.favorite_player||'not set yet');
+    mOpen('playerModal');
+  }
+
+  /* calendar chooser (Google / Outlook / Apple .ics; whole tournament by team) */
+  var calCtx=null;
+  function icsEsc2(s){ return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n'); }
+  function icsFor(list){
+    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//PitchPro//Family//EN','CALSCALE:GREGORIAN'];
+    var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+    list.forEach(function(ev,i){
+      L.push('BEGIN:VEVENT');
+      L.push('UID:pp-'+stamp+'-'+i+'@pitchpro');
+      L.push('DTSTAMP:'+stamp);
+      var d=ev.date.replace(/-/g,'');
+      if(ev.allDay){
+        L.push('DTSTART;VALUE=DATE:'+d);
+        L.push('DTEND;VALUE=DATE:'+iso(addDays(parseISO(ev.date),1)).replace(/-/g,''));
+      } else {
+        L.push('DTSTART;TZID=Europe/Zagreb:'+d+'T'+ev.start.replace(':','')+'00');
+        L.push('DTEND;TZID=Europe/Zagreb:'+d+'T'+ev.end.replace(':','')+'00');
+      }
+      L.push('SUMMARY:'+icsEsc2(ev.title));
+      if(ev.venue) L.push('LOCATION:'+icsEsc2(ev.venue));
+      if(ev.details) L.push('DESCRIPTION:'+icsEsc2(ev.details));
+      L.push('END:VEVENT');
+    });
+    L.push('END:VCALENDAR');
+    return L.join('\r\n');
+  }
+  function downloadICS(name, text){
+    var a=document.createElement('a');
+    a.href='data:text/calendar;charset=utf-8,'+encodeURIComponent(text);
+    a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function calListFor(ctx){
+    if(ctx.kind==='event'){
+      var e=eventById(ctx.id); if(!e || !e.event_date) return [];
+      var p=playerById(e.player_id);
+      var title=(e.date_confirmed?'':'⚠ ')+(p?p.first_name+' · ':'')+e.title+' ('+e.club+')';
+      var det=[]; if(e.report_time&&e.start_time) det.push('Arrive '+hm(e.report_time)+', kick-off '+hm(e.start_time)+'.'); if(e.details) det.push(e.details);
+      if(e.report_time||e.start_time){
+        var st=hm(e.report_time||e.start_time), en=hm(e.end_time||addMin(e.start_time||e.report_time,90));
+        return [{title:title,date:e.event_date,start:st,end:en,venue:e.venue,details:det.join(' ')}];
+      }
+      return [{title:title,date:e.event_date,allDay:true,venue:e.venue,details:det.join(' ')}];
+    }
+    var t=tourById(ctx.id); if(!t) return [];
+    var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id && f.match_date && f.time_slot; });
+    if(ctx.scope!=='all' && t.club) fx=fx.filter(function(f){ return (f.home+' '+f.away).indexOf(t.club)>=0; });
+    if(!fx.length) return t.event_date?[{title:t.name+' ('+t.club+')',date:t.event_date,allDay:true,venue:t.venue,details:''}]:[];
+    return fx.map(function(f){
+      var st=hm(String(f.time_slot).split('–')[0]); if(st.length===4) st='0'+st;
+      return {title:f.home+' v '+f.away, date:f.match_date, start:st, end:addMin(st,40), venue:t.venue, details:(f.grp?'Group '+f.grp+' · ':'')+t.name};
+    });
+  }
+  function openCal(ctx){
+    calCtx=ctx;
+    var isTour=ctx.kind==='tournament';
+    $('calTeamSeg').hidden=!isTour;
+    if(isTour){
+      ctx.scope='ours';
+      $('calTeamSeg').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.scope==='ours'); });
+    }
+    var t=isTour?tourById(ctx.id):null;
+    $('calSub').textContent=isTour? ((t?t.name:'')+' — pick which games, then your calendar.') : 'Pick your calendar.';
+    mOpen('calModal');
+  }
+  $('calTeamSeg').addEventListener('click', function(e){
+    var b=e.target.closest('button'); if(!b||!calCtx) return;
+    calCtx.scope=b.dataset.scope;
+    $('calTeamSeg').querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
+  });
+  $('calGoogle').addEventListener('click', function(e){
+    e.preventDefault(); if(!calCtx) return;
+    var list=calListFor(calCtx);
+    if(!list.length) return;
+    if(list.length===1){
+      var ev=list[0], d=ev.date.replace(/-/g,''), dates;
+      if(ev.allDay) dates=d+'/'+iso(addDays(parseISO(ev.date),1)).replace(/-/g,'');
+      else dates=d+'T'+ev.start.replace(':','')+'00/'+d+'T'+ev.end.replace(':','')+'00';
+      window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(ev.title)+'&dates='+dates+'&ctz=Europe/Zagreb'+(ev.venue?'&location='+encodeURIComponent(ev.venue):'')+'&details='+encodeURIComponent(ev.details||''),'_blank');
+      mClose('calModal');
+    } else {
+      downloadICS('pitchpro-games.ics', icsFor(list));
+      $('calSub').textContent=list.length+' games downloaded as a calendar file — in Google Calendar: Settings → Import & export → Import.';
+    }
+  });
+  $('calOutlook').addEventListener('click', function(e){
+    e.preventDefault(); if(!calCtx) return;
+    var list=calListFor(calCtx);
+    if(!list.length) return;
+    if(list.length===1){
+      var ev=list[0];
+      var st=ev.allDay ? ev.date+'T00:00:00' : ev.date+'T'+ev.start+':00';
+      var en=ev.allDay ? iso(addDays(parseISO(ev.date),1))+'T00:00:00' : ev.date+'T'+ev.end+':00';
+      window.open('https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&subject='+encodeURIComponent(ev.title)+'&startdt='+encodeURIComponent(st)+'&enddt='+encodeURIComponent(en)+(ev.allDay?'&allday=true':'')+(ev.venue?'&location='+encodeURIComponent(ev.venue):'')+'&body='+encodeURIComponent(ev.details||''),'_blank');
+      mClose('calModal');
+    } else {
+      downloadICS('pitchpro-games.ics', icsFor(list));
+      $('calSub').textContent=list.length+' games downloaded as a calendar file — open it and Outlook adds them.';
+    }
+  });
+  $('calApple').addEventListener('click', function(e){
+    e.preventDefault(); if(!calCtx) return;
+    var list=calListFor(calCtx);
+    if(!list.length) return;
+    downloadICS('pitchpro-games.ics', icsFor(list));
+    $('calSub').textContent=(list.length===1?'Game':list.length+' games')+' downloaded as a calendar file — open it and your calendar app adds it.';
+  });
+
+  /* venue add (parent edit, venue column only) */
+  var vmEvId=null;
+  function openVenue(evId){
+    var e=eventById(evId); if(!e) return;
+    vmEvId=evId; $('vmErr').textContent='';
+    var p=playerById(e.player_id);
+    $('vmSub').textContent=(p?p.first_name+' · ':'')+e.title+' · '+(e.event_date||'');
+    $('vmInput').value='';
+    $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent((e.club||'')+' Croatia');
+    mOpen('venueModal');
+  }
+  $('vmInput').addEventListener('input', function(){
+    $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent($('vmInput').value||'Croatia');
+  });
+  $('vmSave').addEventListener('click', function(){
+    var v=$('vmInput').value.trim();
+    if(!v){ $('vmErr').textContent='Type the venue first — the Google Maps link helps you find the exact name.'; return; }
+    sb.from('events').update({venue:v}).eq('id', vmEvId).then(function(r){
+      if(r.error){ $('vmErr').textContent=r.error.message; return; }
+      var e=eventById(vmEvId); if(e) e.venue=v;
+      mClose('venueModal'); renderSchedule();
+    }).catch(function(err){ $('vmErr').textContent=String(err&&err.message||err); });
+  });
+
+  /* confirm unconfirmed dates from the day header */
+  var cfDateIso=null;
+  function openConfirm(dayIso){
+    cfDateIso=dayIso; $('cfErr').textContent='';
+    var n=state.events.filter(function(e){ return e.event_date===dayIso && !e.date_confirmed; }).length;
+    $('cfSub').textContent=n+' unconfirmed item'+(n===1?'':'s')+' currently on '+dayIso+'. Pick the real date — keep it unchanged to confirm as-is.';
+    $('cfDate').value=dayIso;
+    mOpen('confModal');
+  }
+  $('cfSave').addEventListener('click', function(){
+    var nd=$('cfDate').value;
+    if(!nd){ $('cfErr').textContent='Pick a date first.'; return; }
+    var ids=state.events.filter(function(e){ return e.event_date===cfDateIso && !e.date_confirmed; }).map(function(e){ return e.id; });
+    sb.from('events').update({event_date:nd, date_confirmed:true}).in('id', ids).then(function(r){
+      if(r.error){ $('cfErr').textContent=r.error.message; return; }
+      state.events.forEach(function(e){ if(ids.indexOf(e.id)>=0){ e.event_date=nd; e.date_confirmed=true; } });
+      mClose('confModal'); renderSchedule();
+    }).catch(function(err){ $('cfErr').textContent=String(err&&err.message||err); });
+  });
+
+  function bindEvExtras(root){
+    root.querySelectorAll('.calAdd').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); openCal(a.dataset.tour?{kind:'tournament',id:a.dataset.tour}:{kind:'event',id:a.dataset.ev}); });
+    });
+    root.querySelectorAll('.addVenue').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); openVenue(a.dataset.ev); });
+    });
+    root.querySelectorAll('.confUnc').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); openConfirm(a.dataset.date); });
+    });
+    root.querySelectorAll('.teamLink').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); openClub(a.dataset.club); });
+    });
+    root.querySelectorAll('.srcTgl').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); var el=document.getElementById(a.dataset.tg); if(el) el.hidden=!el.hidden; });
+    });
+    root.querySelectorAll('[data-player]').forEach(function(a){
+      a.addEventListener('click', function(){ openPlayer(playerById(a.dataset.player)); });
+    });
+  }
 
   /* ---------- email / SMS channels (N2) ---------- */
   function loadChannels(){
