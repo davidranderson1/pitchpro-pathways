@@ -171,6 +171,22 @@
   .calIco{text-decoration:none;font-size:15px;margin-left:7px;cursor:pointer}
   a.calIco2{color:var(--txt);text-decoration:none;border-bottom:1px dotted var(--muted);cursor:pointer}
   #clubEmoji img{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;padding:2px}
+  .appsBtn{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:8px 13px;
+    font:800 10.5px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;flex:none}
+  .appsBtn:hover{border-color:var(--green-dim);color:var(--green)}
+  .coachLink{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+  .claimTag{display:inline-block;font:800 9px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:4px 9px;flex:none}
+  .claimTag.unclaimed{background:rgba(255,190,70,.14);color:var(--amber)}
+  .claimTag.claimed{background:rgba(46,224,138,.14);color:var(--green)}
+  .famRow{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+  .famRow.first{border-top:0}
+  .famAv{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--green),#17b06a);display:flex;align-items:center;justify-content:center;font:900 17px Archivo,Inter,sans-serif;color:#06130c;overflow:hidden;flex:none}
+  .famAv.coachAv{background:linear-gradient(135deg,#b79bff,#7a5fd0)}
+  .famAv img{width:100%;height:100%;object-fit:cover}
+  .famAv.meAv{cursor:pointer}
+  .famMain{flex:1;min-width:0}
+  .famName{font:700 14px Inter,sans-serif}
+  .famSub{font-size:12px;color:var(--muted);margin-top:2px}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -233,7 +249,10 @@
 <div class="wrap">
   <header class="top">
     <div class="brand">PitchPro <span>— Family Schedule</span></div>
-    <div class="club" id="clubBadge" style="display:none"></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="club" id="clubBadge" style="display:none"></div>
+      <button class="appsBtn" id="ppNavOpen" type="button" title="Switch between PitchPro apps and pages">◈ Apps</button>
+    </div>
   </header>
 
   <!-- ============ LOGIN ============ -->
@@ -319,6 +338,10 @@
           <div class="ok" id="pwOk"></div>
         </form>
         <button class="ghost" id="signOut" type="button">Sign out</button>
+      </div>
+      <div class="card" style="margin-top:14px" id="famCard">
+        <h2 class="scr" style="margin-top:0">Family &amp; team</h2>
+        <div id="famBody"></div>
       </div>
       <div class="card" style="margin-top:14px" id="notifCard">
         <h2 class="scr" style="margin-top:0">Push notifications</h2>
@@ -452,6 +475,7 @@
   </div>
   <p class="meta" id="clubInfo" style="margin-top:12px"></p>
   <div class="meta" id="clubAddr" style="margin-top:10px"></div>
+  <div class="meta" id="clubCoaches" style="margin-top:8px"></div>
   <div class="smBtns"><button class="ghost" id="clubClose" type="button">Close</button></div>
 </div></div>
 
@@ -468,6 +492,19 @@
   <div class="meta" style="margin-top:10px">Tap the photo or the favourite-player line to update them (you are signed in as the parent). Full player-profile editing arrives with the player app.</div>
   <input type="file" id="ppFile" accept="image/*" hidden>
   <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
+</div></div>
+
+<div id="coachModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div id="ccAvatar" class="famAv coachAv" style="width:64px;height:64px;font-size:24px"></div>
+    <div><h3 id="ccName" style="margin:0"></h3><div class="sub" id="ccRole" style="margin:0"></div></div>
+  </div>
+  <div class="meta" id="ccTeams" style="margin-top:12px"></div>
+  <div style="margin-top:10px"><span class="claimTag" id="ccClaim"></span></div>
+  <p class="meta" style="margin-top:12px">Coach cards work like player cards — career, photo and updates, kept by the coach once claimed. Claiming gives the coach their own login that sees only their team's pages.</p>
+  <div class="btnrow"><a class="gcal inviteGate" href="#" id="ccInvite">Invite your coach to claim this card</a></div>
+  <div class="ok" id="ccGate"></div>
+  <div class="smBtns"><button class="ghost" id="ccClose" type="button">Close</button></div>
 </div></div>
 
 <div id="venueModal" class="pmod"><div class="smBox" style="max-width:420px">
@@ -546,6 +583,7 @@
       $('login').style.display='none'; $('loginNote').style.display='none';
       $('app').style.display='block';
       state.userEmail = (session.user && session.user.email) || '';
+      state.userId = (session.user && session.user.id) || null;
       $('acctEmail').textContent = state.userEmail;
       // Load data only on a real sign-in or page load with a stored session.
       // TOKEN_REFRESHED / USER_UPDATED fire hourly and must NOT wipe the screen mid-use.
@@ -597,7 +635,9 @@
       sb.from('player_game_stats').select('*'),
       sb.from('rosters').select('*'),
       sb.from('clubs').select('*'),
-      sb.from('player_history').select('*').order('sort_order')
+      sb.from('player_history').select('*').order('sort_order'),
+      sb.from('coaches').select('*').order('sort_order'),
+      sb.from('parents').select('*').order('sort_order')
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
@@ -608,6 +648,8 @@
       state.rosters=(r[9]&&r[9].data)||[];
       state.clubs=(r[10]&&r[10].data)||[];
       state.history=(r[11]&&r[11].data)||[];
+      state.coaches=(r[12]&&r[12].data)||[];
+      state.parents=(r[13]&&r[13].data)||[];
       loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
@@ -619,7 +661,7 @@
       state.weekStart = pickInitialWeek();
       state.monthStart = firstOf(state.weekStart);
       buildFilters(); renderFeed(); syncViewSeg();
-      renderSchedule(); renderTournaments(); renderMessages(); renderStats();
+      renderSchedule(); renderTournaments(); renderMessages(); renderStats(); renderFamily();
       applyHash();
     }).catch(function(){ showLoadError('network error'); });
   }
@@ -948,7 +990,9 @@
         if(ros){
           var pl=[]; try{ pl=(typeof ros.players==='string')?JSON.parse(ros.players):(ros.players||[]); }catch(e){ pl=[]; }
           if(pl.length){
-            h+='<div class="card" style="margin:0 0 18px"><div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · shirt numbers shown when known</div>';
+            var rosCo=coachFor(ros.team_label, t.club);
+            h+='<div class="card" style="margin:0 0 18px"><div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · shirt numbers shown when known'
+              +(rosCo?' · Coach <span class="coachLink" data-coach="'+esc(rosCo.id)+'" role="button" tabindex="0" style="color:var(--txt);font-weight:700">'+esc(rosCo.first_name+' '+rosCo.last_name)+'</span>':'')+'</div>';
             h+='<div class="rosterGrid">';
             pl.forEach(function(p){
               var our=null; state.players.forEach(function(sp){ if((p.name||'').indexOf(sp.first_name)===0) our=sp; });
@@ -1376,12 +1420,13 @@
 
   function mOpen(id){ $(id).classList.add('on'); }
   function mClose(id){ $(id).classList.remove('on'); }
-  ['calModal','clubModal','playerModal','venueModal','confModal'].forEach(function(id){
+  ['calModal','clubModal','playerModal','coachModal','venueModal','confModal'].forEach(function(id){
     $(id).addEventListener('click', function(e){ if(e.target===$(id)) mClose(id); });
   });
   $('calClose').addEventListener('click', function(){ mClose('calModal'); });
   $('clubClose').addEventListener('click', function(){ mClose('clubModal'); });
   $('ppClose').addEventListener('click', function(){ mClose('playerModal'); });
+  $('ccClose').addEventListener('click', function(){ mClose('coachModal'); });
   $('vmCancel').addEventListener('click', function(){ mClose('venueModal'); });
   $('cfCancel').addEventListener('click', function(){ mClose('confModal'); });
 
@@ -1399,6 +1444,14 @@
     var q=(c&&c.map_query)||(String(name)+' nogometni klub Hrvatska');
     var addrText=(c&&c.address)||(c&&c.town)||'Find on Google Maps';
     $('clubAddr').innerHTML='📍 <a class="vmap" href="https://maps.google.com/?q='+encodeURIComponent(q)+'" target="_blank" rel="noopener">'+esc(addrText)+'</a>';
+    // Coaches on file at this club — tap through to the coach card.
+    var cs=(state.coaches||[]).filter(function(x){ return c && x.club===c.name; });
+    $('clubCoaches').innerHTML = cs.length
+      ? '🧑‍🏫 '+cs.map(function(x){ return '<span class="coachLink" data-coach="'+esc(x.id)+'" role="button" tabindex="0">'+esc(x.first_name+' '+x.last_name)+'</span>'; }).join(' · ')
+      : '';
+    $('clubCoaches').querySelectorAll('[data-coach]').forEach(function(a){
+      a.addEventListener('click', function(){ mClose('clubModal'); openCoach(coachById(a.dataset.coach)); });
+    });
     mOpen('clubModal');
   }
   $('clubBadge').addEventListener('click', function(){ if($('clubBadge').textContent) openClub($('clubBadge').textContent); });
@@ -1472,6 +1525,105 @@
     });
     document.getElementById('ppFavIn').addEventListener('click', function(e){ e.stopPropagation(); });
   });
+
+  /* coach cards + family & team (build 13).
+     Claim / invite is deliberately UI-only during the beta: nothing is ever sent,
+     and coach logins stay off until the multi-tenancy privacy wall ships. */
+  function coachById(id){ for(var i=0;i<(state.coaches||[]).length;i++) if(state.coaches[i].id===id) return state.coaches[i]; return null; }
+  function coachByName(name){
+    var n=String(name||'').toLowerCase(); if(!n) return null;
+    for(var i=0;i<(state.coaches||[]).length;i++){
+      var c=state.coaches[i];
+      if(n.indexOf(String(c.first_name||'').toLowerCase())>-1 || (c.last_name && n.indexOf(String(c.last_name).toLowerCase())>-1)) return c;
+    }
+    return null;
+  }
+  function coachFor(teamLabel, club){
+    var hit=null;
+    (state.coaches||[]).forEach(function(c){ if((c.teams||[]).indexOf(teamLabel)>-1 && (!hit || !club || c.club===club)) hit=c; });
+    return hit;
+  }
+  function inviteGate(el){
+    el.textContent='Coming soon — invites switch on once coaches and guests get their own private space in the app. During the beta nothing is sent to anyone.';
+  }
+  function openCoach(c){
+    if(!c) return;
+    if(c.photo_url){ $('ccAvatar').innerHTML='<img src="'+esc(c.photo_url)+'" alt="">'; }
+    else { $('ccAvatar').textContent=(c.first_name||'?').charAt(0)+(c.last_name||'').charAt(0); }
+    $('ccName').textContent=c.first_name+' '+c.last_name;
+    $('ccRole').textContent=c.role+' · '+c.club;
+    $('ccTeams').textContent='Teams: '+((c.teams||[]).map(function(t){ return t+' generation'; }).join(' and ')||'—');
+    var claimed=c.claim_status==='claimed';
+    $('ccClaim').className='claimTag '+(claimed?'claimed':'unclaimed');
+    $('ccClaim').textContent=claimed?'Card claimed':'Card not yet claimed';
+    $('ccGate').textContent='';
+    mOpen('coachModal');
+  }
+  $('ccInvite').addEventListener('click', function(e){ e.preventDefault(); inviteGate($('ccGate')); });
+  function renderFamily(){
+    var el=document.getElementById('famBody'); if(!el) return;
+    var h='', first=true;
+    (state.parents||[]).forEach(function(pr){
+      var me=(pr.user_id && pr.user_id===state.userId);
+      var av=pr.photo_url?'<img src="'+esc(pr.photo_url)+'" alt="">':esc((pr.first_name||'?').charAt(0));
+      var kids=(pr.player_ids||[]).map(function(id){
+        var p=playerById(id); if(!p) return '';
+        return '<span class="chip '+(p.team_label==='2016'?'p1':'p2')+'" data-player="'+esc(p.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(p.first_name)+'</span>';
+      }).join(' ');
+      h+='<div class="famRow'+(first?' first':'')+'"><div class="famAv'+(me?' meAv" title="Tap to add or change your photo" role="button" tabindex="0':'')+'">'+av+'</div>'
+        +'<div class="famMain"><div class="famName">'+esc(pr.first_name+' '+pr.last_name)+(me?' <span style="color:var(--muted);font-weight:600">(you)</span>':'')+'</div>'
+        +'<div class="famSub">'+esc(pr.role)+'</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">'+kids+'</div></div>'
+        +'<span class="claimTag claimed">Account active</span></div>';
+      first=false;
+    });
+    (state.coaches||[]).forEach(function(c){
+      var claimed=c.claim_status==='claimed';
+      h+='<div class="famRow" data-coachrow="'+esc(c.id)+'" role="button" tabindex="0" style="cursor:pointer">'
+        +'<div class="famAv coachAv">'+(c.photo_url?'<img src="'+esc(c.photo_url)+'" alt="">':esc((c.first_name||'?').charAt(0)+(c.last_name||'').charAt(0)))+'</div>'
+        +'<div class="famMain"><div class="famName">'+esc(c.first_name+' '+c.last_name)+'</div>'
+        +'<div class="famSub">'+esc(c.role+' · '+c.club+' · '+(c.teams||[]).join(' & '))+'</div></div>'
+        +'<span class="claimTag '+(claimed?'claimed':'unclaimed')+'">'+(claimed?'Card claimed':'Card not claimed')+'</span></div>';
+    });
+    h+='<div class="meta" style="margin-top:14px">Every player, parent and coach has a card. “Claim your card” lets a coach keep their own card and post schedules directly; “Invite a parent” adds the other parent of a family. Both open once each person gets their own private space in the app.</div>';
+    h+='<div class="btnrow"><a class="gcal inviteGate" href="#">Invite your coach</a><a class="gcal inviteGate" href="#">Invite a parent</a></div><div class="ok" id="famGate"></div>';
+    el.innerHTML=h;
+    el.querySelectorAll('[data-coachrow]').forEach(function(rw){
+      rw.addEventListener('click', function(){ openCoach(coachById(rw.dataset.coachrow)); });
+    });
+    el.querySelectorAll('[data-player]').forEach(function(a){
+      a.addEventListener('click', function(e){ e.stopPropagation(); openPlayer(playerById(a.dataset.player)); });
+    });
+    el.querySelectorAll('.inviteGate').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); inviteGate(document.getElementById('famGate')); });
+    });
+    var meAv=el.querySelector('.meAv');
+    if(meAv) meAv.addEventListener('click', function(){ $('famFile').click(); });
+  }
+  // Parent photo: same crop-to-256 flow as player photos, saved to the parent's own row only.
+  (function(){
+    var inp=document.createElement('input'); inp.type='file'; inp.accept='image/*'; inp.hidden=true; inp.id='famFile';
+    document.body.appendChild(inp);
+    inp.addEventListener('change', function(){
+      var f=this.files[0]; this.value='';
+      if(!f || !state.userId) return;
+      var rd=new FileReader();
+      rd.onload=function(){
+        var img=new Image();
+        img.onload=function(){
+          var s=Math.min(img.width,img.height), c=document.createElement('canvas'); c.width=256; c.height=256;
+          c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,256,256);
+          var data=c.toDataURL('image/jpeg',0.82);
+          sb.from('parents').update({photo_url:data}).eq('user_id', state.userId).then(function(r){
+            if(r&&r.error){ var g=document.getElementById('famGate'); if(g) g.textContent='Photo save failed: '+r.error.message; return; }
+            (state.parents||[]).forEach(function(pr){ if(pr.user_id===state.userId) pr.photo_url=data; });
+            renderFamily();
+          });
+        };
+        img.src=rd.result;
+      };
+      rd.readAsDataURL(f);
+    });
+  })();
 
   /* calendar chooser (Google / Outlook / Apple .ics; whole tournament by team) */
   var calCtx=null;
@@ -1671,6 +1823,9 @@
     root.querySelectorAll('[data-player]').forEach(function(a){
       a.addEventListener('click', function(){ openPlayer(playerById(a.dataset.player)); });
     });
+    root.querySelectorAll('[data-coach]').forEach(function(a){
+      a.addEventListener('click', function(e){ e.stopPropagation(); openCoach(coachById(a.dataset.coach)); });
+    });
   }
 
   /* ---------- email / SMS channels (N2) ---------- */
@@ -1717,7 +1872,9 @@
     var h='';
     state.msgs.forEach(function(m){
       h+='<div class="card msg"><div class="head">';
-      h+='<span class="who">'+esc(m.coach_name)+'</span>';
+      var mco=coachByName(m.coach_name);
+      h+= mco ? '<span class="who coachLink" data-coach="'+esc(mco.id)+'" role="button" tabindex="0">'+esc(m.coach_name)+'</span>'
+              : '<span class="who">'+esc(m.coach_name)+'</span>';
       h+='<span class="chip t-training">'+esc(m.team_label)+' team</span>';
       if(m.received_on) h+='<span class="when">received '+esc(m.received_on)+'</span>';
       h+='</div><div class="cols">';
@@ -1728,6 +1885,9 @@
       h+='</div>';
     });
     $('msgsBody').innerHTML=h;
+    $('msgsBody').querySelectorAll('[data-coach]').forEach(function(a){
+      a.addEventListener('click', function(){ openCoach(coachById(a.dataset.coach)); });
+    });
   }
 
   /* ---------- calendar feed ---------- */
