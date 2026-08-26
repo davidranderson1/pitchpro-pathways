@@ -616,6 +616,7 @@
       state.monthStart = firstOf(state.weekStart);
       buildFilters(); renderFeed(); syncViewSeg();
       renderSchedule(); renderTournaments(); renderMessages(); renderStats();
+      applyHash();
     }).catch(function(){ showLoadError('network error'); });
   }
   function showLoadError(m){
@@ -1347,6 +1348,25 @@
     $('tourSeg').querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
     renderTournaments();
   });
+  /* Deep links: notification emails and push clicks land on the right tab/day.
+     Format: #tab=sched|tour|stats|msgs|acct  and optionally  &date=YYYY-MM-DD */
+  function applyHash(){
+    var h=location.hash.replace(/^#/,'');
+    if(!h || h.indexOf('=')<0) return;
+    var q={}; h.split('&').forEach(function(kv){ var p=kv.split('='); if(p[0]) q[p[0]]=decodeURIComponent(p[1]||''); });
+    if(q.date && /^\d{4}-\d{2}-\d{2}$/.test(q.date)){
+      state.weekStart=mondayOf(parseISO(q.date));
+      state.monthStart=firstOf(state.weekStart);
+      state.selDay=q.date;
+      renderSchedule();
+    }
+    if(q.tab){
+      var btn=document.querySelector('.tabs button[data-s="'+q.tab.replace(/[^a-z]/g,'')+'"]');
+      if(btn) btn.click();
+    }
+  }
+  window.addEventListener('hashchange', applyHash);
+
   function mOpen(id){ $(id).classList.add('on'); }
   function mClose(id){ $(id).classList.remove('on'); }
   ['calModal','clubModal','playerModal','venueModal','confModal'].forEach(function(id){
