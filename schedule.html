@@ -168,6 +168,9 @@
   .addVenue{color:var(--blue);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
   #clubBadge{cursor:pointer}
   .stTile[data-player]{cursor:pointer}
+  .calIco{text-decoration:none;font-size:15px;margin-left:7px;cursor:pointer}
+  a.calIco2{color:var(--txt);text-decoration:none;border-bottom:1px dotted var(--muted);cursor:pointer}
+  #clubEmoji img{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;padding:2px}
   .gcal{display:inline-block;margin-top:9px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;color:var(--blue);
     text-decoration:none;border:1px solid rgba(95,180,255,.35);border-radius:999px;padding:7px 12px}
   .gcal:hover{background:rgba(95,180,255,.08)}
@@ -433,10 +436,7 @@
 <div id="calModal" class="pmod"><div class="smBox" style="max-width:420px">
   <h3 id="calTitle">Add to Calendar</h3>
   <div class="sub" id="calSub"></div>
-  <div class="privChips" id="calTeamSeg" hidden>
-    <button data-scope="ours" class="on" type="button">Our club's games</button>
-    <button data-scope="all" type="button">All games</button>
-  </div>
+  <div class="privChips" id="calClubs" hidden style="flex-wrap:wrap"></div>
   <div class="btnrow" style="flex-direction:column;align-items:stretch;gap:8px;margin-top:10px">
     <a class="gcal" href="#" id="calGoogle">Google Calendar</a>
     <a class="gcal" href="#" id="calOutlook">Outlook</a>
@@ -447,7 +447,7 @@
 
 <div id="clubModal" class="pmod"><div class="smBox" style="max-width:420px">
   <div style="display:flex;align-items:center;gap:12px">
-    <div id="clubEmoji" style="font-size:34px"></div>
+    <div id="clubEmoji" style="font-size:34px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:none"></div>
     <div><h3 id="clubName" style="margin:0"></h3><div class="sub" id="clubTown" style="margin:0"></div></div>
   </div>
   <p class="meta" id="clubInfo" style="margin-top:12px"></p>
@@ -751,12 +751,13 @@
     var t='';
     if(e.report_time) t+='<span class="report">⏰ Arrive '+hm(e.report_time)+'</span>';
     if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?'Kick-off ':'')+hm(e.start_time)+'</span>';
-    if(t) h+='<div class="times">'+t+'</div>';
+    var calIco=(e.event_type!=='no_session' && e.event_date)?' <a class="calAdd calIco" data-ev="'+esc(e.id)+'" href="#" title="Add to calendar" aria-label="Add to calendar">📅</a>':'';
+    if(t) h+='<div class="times">'+t+calIco+'</div>';
     var m=[];
     if(e.venue) m.push('📍 '+mapLink(e.venue)); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">add venue</a>');
     if(e.details) m.push(esc(e.details));
-    if(m.length) h+='<div class="meta">'+m.join(' — ')+'</div>';
-    if(e.event_type!=='no_session' && e.event_date) h+='<a class="gcal calAdd" data-ev="'+esc(e.id)+'" href="#">＋ Add to Calendar</a>';
+    if(m.length) h+='<div class="meta">'+m.join(' — ')+(t?'':calIco)+'</div>';
+    else if(!t && calIco) h+='<div class="meta">'+calIco+'</div>';
     if(e.event_type==='match'){
       var res=resultFor('event_id', e.id);
       h+=' <button class="scorebtn'+(res?' has':'')+'" data-ev="'+esc(e.id)+'" type="button" style="margin-top:9px">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res)+' · edit' : '＋ score & stats')+'</button>';
@@ -896,13 +897,12 @@
       if(!t.event_date) h+='<span class="chip unconfb">date not announced</span>';
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
       var meta=[];
-      if(t.event_date) meta.push('📅 '+esc(t.event_date));
+      if(t.event_date) meta.push('<a class="calAdd calIco2" data-tour="'+esc(t.id)+'" href="#" title="Add games to calendar">📅 '+esc(t.event_date)+'</a>');
       if(t.venue) meta.push('📍 '+mapLink(t.venue));
       if(t.team_label) meta.push(esc(t.team_label));
       if(!t.event_date) meta.push('Date, venue and which of our teams plays are not announced yet.');
       h+='<div class="meta">'+meta.join(' · ')+'</div>';
       if(t.format_notes) h+='<a href="#" class="srcTgl" data-tg="tn-'+esc(t.id)+'">ⓘ Details &amp; source</a><div class="meta" id="tn-'+esc(t.id)+'" hidden style="margin-top:6px">'+esc(t.format_notes)+'</div>';
-      if(t.event_date) h+='<div style="margin-top:4px"><a class="gcal calAdd" data-tour="'+esc(t.id)+'" href="#">＋ Add to Calendar</a></div>';
       h+='</div>';
       var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
       if(fx.length){
@@ -1388,7 +1388,11 @@
   /* club cards */
   function openClub(name){
     var c=null; (state.clubs||[]).forEach(function(x){ if(x.name.toLowerCase()===String(name).toLowerCase()) c=x; });
-    $('clubEmoji').textContent=(c&&c.badge)||'⚽';
+    if(c && c.logo_url){
+      $('clubEmoji').innerHTML='<img src="'+esc(c.logo_url)+'" alt="" onerror="this.parentNode.textContent=\''+esc((c.badge)||'⚽')+'\'">';
+    } else {
+      $('clubEmoji').textContent=(c&&c.badge)||'⚽';
+    }
     $('clubName').textContent=c?c.name:String(name);
     $('clubTown').textContent=(c&&c.town)||'';
     $('clubInfo').textContent=(c&&c.info)||'No details on file for this club yet — it appears in a tournament our teams play in. Ask Claude to add club details.';
@@ -1514,29 +1518,55 @@
     }
     var t=tourById(ctx.id); if(!t) return [];
     var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id && f.match_date && f.time_slot; });
-    if(ctx.scope!=='all' && t.club) fx=fx.filter(function(f){ return (f.home+' '+f.away).indexOf(t.club)>=0; });
+    if(ctx.clubs && ctx.clubs.length){
+      fx=fx.filter(function(f){ return ctx.clubs.indexOf(f.home)>=0 || ctx.clubs.indexOf(f.away)>=0; });
+    }
     if(!fx.length) return t.event_date?[{title:t.name+' ('+t.club+')',date:t.event_date,allDay:true,venue:t.venue,details:''}]:[];
     return fx.map(function(f){
       var st=hm(String(f.time_slot).split('–')[0]); if(st.length===4) st='0'+st;
       return {title:f.home+' v '+f.away, date:f.match_date, start:st, end:addMin(st,40), venue:t.venue, details:(f.grp?'Group '+f.grp+' · ':'')+t.name};
     });
   }
+  function calClubsRender(){
+    var box=$('calClubs');
+    box.querySelectorAll('button[data-club]').forEach(function(b){
+      b.classList.toggle('on', calCtx.clubs.indexOf(b.dataset.club)>=0);
+    });
+    var all=box.querySelector('button[data-allclubs]');
+    if(all) all.classList.toggle('on', calCtx.clubs.length===calCtx.allClubs.length);
+  }
   function openCal(ctx){
     calCtx=ctx;
     var isTour=ctx.kind==='tournament';
-    $('calTeamSeg').hidden=!isTour;
+    var box=$('calClubs');
+    box.hidden=!isTour;
     if(isTour){
-      ctx.scope='ours';
-      $('calTeamSeg').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.scope==='ours'); });
+      var t=tourById(ctx.id);
+      var set={};
+      state.fixtures.forEach(function(f){ if(f.tournament_id===ctx.id){ if(f.home) set[f.home]=1; if(f.away&&f.away!=='—') set[f.away]=1; } });
+      ctx.allClubs=Object.keys(set).sort();
+      // default: just our club (when it appears), otherwise everyone
+      ctx.clubs = (t&&t.club&&set[t.club]) ? [t.club] : ctx.allClubs.slice();
+      var bh='<span class="flabel" style="width:100%">Whose games?</span>';
+      bh+='<button data-allclubs="1" type="button">All clubs</button>';
+      ctx.allClubs.forEach(function(cn){ bh+='<button data-club="'+esc(cn)+'" type="button">'+esc(cn)+'</button>'; });
+      box.innerHTML=bh;
+      calClubsRender();
+      $('calSub').textContent=(t?t.name:'')+' — pick one or more clubs, then your calendar.';
+    } else {
+      $('calSub').textContent='Pick your calendar.';
     }
-    var t=isTour?tourById(ctx.id):null;
-    $('calSub').textContent=isTour? ((t?t.name:'')+' — pick which games, then your calendar.') : 'Pick your calendar.';
     mOpen('calModal');
   }
-  $('calTeamSeg').addEventListener('click', function(e){
+  $('calClubs').addEventListener('click', function(e){
     var b=e.target.closest('button'); if(!b||!calCtx) return;
-    calCtx.scope=b.dataset.scope;
-    $('calTeamSeg').querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
+    if(b.dataset.allclubs){
+      calCtx.clubs = (calCtx.clubs.length===calCtx.allClubs.length) ? [] : calCtx.allClubs.slice();
+    } else {
+      var i=calCtx.clubs.indexOf(b.dataset.club);
+      if(i>=0) calCtx.clubs.splice(i,1); else calCtx.clubs.push(b.dataset.club);
+    }
+    calClubsRender();
   });
   $('calGoogle').addEventListener('click', function(e){
     e.preventDefault(); if(!calCtx) return;
@@ -1550,7 +1580,8 @@
       mClose('calModal');
     } else {
       downloadICS('pitchpro-games.ics', icsFor(list));
-      $('calSub').textContent=list.length+' games downloaded as a calendar file — in Google Calendar: Settings → Import & export → Import.';
+      window.open('https://calendar.google.com/calendar/u/0/r/settings/import','_blank');
+      $('calSub').textContent=list.length+' games saved as a calendar file — Google Calendar\'s import page just opened: choose the downloaded file and press Import.';
     }
   });
   $('calOutlook').addEventListener('click', function(e){
@@ -1565,7 +1596,8 @@
       mClose('calModal');
     } else {
       downloadICS('pitchpro-games.ics', icsFor(list));
-      $('calSub').textContent=list.length+' games downloaded as a calendar file — open it and Outlook adds them.';
+      window.open('https://outlook.live.com/calendar/0/addcalendar','_blank');
+      $('calSub').textContent=list.length+' games saved as a calendar file — Outlook\'s "Add calendar" page just opened: choose "Upload from file" and pick the downloaded file.';
     }
   });
   $('calApple').addEventListener('click', function(e){
@@ -1573,7 +1605,7 @@
     var list=calListFor(calCtx);
     if(!list.length) return;
     downloadICS('pitchpro-games.ics', icsFor(list));
-    $('calSub').textContent=(list.length===1?'Game':list.length+' games')+' downloaded as a calendar file — open it and your calendar app adds it.';
+    $('calSub').textContent=(list.length===1?'Game':list.length+' games')+' saved — on Apple devices the file opens straight into Calendar\'s add screen.';
   });
 
   /* venue add (parent edit, venue column only) */
