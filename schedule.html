@@ -451,7 +451,7 @@
     <div><h3 id="clubName" style="margin:0"></h3><div class="sub" id="clubTown" style="margin:0"></div></div>
   </div>
   <p class="meta" id="clubInfo" style="margin-top:12px"></p>
-  <div class="btnrow"><a class="gcal" id="clubMap" target="_blank" rel="noopener" href="#">Open in Google Maps</a></div>
+  <div class="meta" id="clubAddr" style="margin-top:10px"></div>
   <div class="smBtns"><button class="ghost" id="clubClose" type="button">Close</button></div>
 </div></div>
 
@@ -463,8 +463,10 @@
   <div class="meta" id="ppShirt" style="margin-top:12px"></div>
   <div id="ppFlags" style="font-size:26px;margin-top:8px;letter-spacing:4px"></div>
   <div class="meta" id="ppElig"></div>
-  <div class="meta" id="ppFav" style="margin-top:8px"></div>
-  <div class="meta" style="margin-top:10px">Photo and favourite player will be editable in the player profile — for now, tell Claude and it updates.</div>
+  <div class="meta" id="ppFav" style="margin-top:8px;cursor:pointer"></div>
+  <div id="ppCareer"></div>
+  <div class="meta" style="margin-top:10px">Tap the photo or the favourite-player line to update them (you are signed in as the parent). Full player-profile editing arrives with the player app.</div>
+  <input type="file" id="ppFile" accept="image/*" hidden>
   <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
 </div></div>
 
@@ -594,7 +596,8 @@
       sb.from('game_results').select('*'),
       sb.from('player_game_stats').select('*'),
       sb.from('rosters').select('*'),
-      sb.from('clubs').select('*')
+      sb.from('clubs').select('*'),
+      sb.from('player_history').select('*').order('sort_order')
     ]).then(function(r){
       for(var i=0;i<r.length;i++){ if(r[i].error){ showLoadError(r[i].error.message); return; } }
       state.players=r[0].data||[]; state.events=r[1].data||[]; state.msgs=r[2].data||[];
@@ -604,6 +607,7 @@
       state.results=r[7].data||[]; state.pstats=r[8].data||[];
       state.rosters=(r[9]&&r[9].data)||[];
       state.clubs=(r[10]&&r[10].data)||[];
+      state.history=(r[11]&&r[11].data)||[];
       loadTries=0;
       if(state.players.length && state.players[0].club){
         var cb=$('clubBadge'); cb.textContent=state.players[0].club; cb.style.display='';
@@ -885,6 +889,9 @@
       h+='<div class="card msg"><div class="evrow">';
       h+='<span class="chip t-tournament">Tournament</span>';
       if(multiClub && t.club) h+='<span class="chip clubc teamLink" data-club="'+esc(t.club)+'">'+esc(t.club)+'</span>';
+      var yrT=((t.name||'')+' '+(t.team_label||'')).match(/20\d{2}/), tp=null;
+      if(yrT){ state.players.forEach(function(sp){ if(sp.team_label===yrT[0]) tp=sp; }); }
+      if(tp) h+='<span class="chip p'+pIdx(tp.id)+'" data-player="'+esc(tp.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(fullName(tp))+'</span>';
       if(t.event_date && !t.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
       if(!t.event_date) h+='<span class="chip unconfb">date not announced</span>';
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
@@ -1385,24 +1392,82 @@
     $('clubName').textContent=c?c.name:String(name);
     $('clubTown').textContent=(c&&c.town)||'';
     $('clubInfo').textContent=(c&&c.info)||'No details on file for this club yet — it appears in a tournament our teams play in. Ask Claude to add club details.';
-    $('clubMap').href='https://maps.google.com/?q='+encodeURIComponent((c&&c.map_query)||(String(name)+' nogometni klub Hrvatska'));
+    var q=(c&&c.map_query)||(String(name)+' nogometni klub Hrvatska');
+    var addrText=(c&&c.address)||(c&&c.town)||'Find on Google Maps';
+    $('clubAddr').innerHTML='📍 <a class="vmap" href="https://maps.google.com/?q='+encodeURIComponent(q)+'" target="_blank" rel="noopener">'+esc(addrText)+'</a>';
     mOpen('clubModal');
   }
   $('clubBadge').addEventListener('click', function(){ if($('clubBadge').textContent) openClub($('clubBadge').textContent); });
 
   /* player cards */
+  var ppCurrent=null;
+  function fullName(p){ return p.first_name+(p.last_name?' '+p.last_name:''); }
   function openPlayer(p){
     if(!p) return;
-    $('ppAvatar').innerHTML = p.photo_url ? '<img src="'+esc(p.photo_url)+'" style="width:100%;height:100%;object-fit:cover" alt="">' : esc((p.first_name||'?').charAt(0));
-    $('ppName').textContent=p.first_name+(p.shirt_number?'  ·  #'+p.shirt_number:'');
+    ppCurrent=p;
+    if(p.photo_url){
+      $('ppAvatar').innerHTML='<img src="'+esc(p.photo_url)+'" style="width:100%;height:100%;object-fit:cover" alt="">';
+    } else {
+      // Default avatar: initial + shirt number, not just a letter.
+      $('ppAvatar').innerHTML='<div style="text-align:center;line-height:1"><div style="font-size:24px">'+esc((p.first_name||'?').charAt(0))+'</div>'
+        +(p.shirt_number?'<div style="font:800 12px Inter,sans-serif;margin-top:2px">#'+esc(String(p.shirt_number))+'</div>':'')+'</div>';
+    }
+    $('ppAvatar').title='Tap to add or change the photo';
+    $('ppName').textContent=fullName(p)+(p.shirt_number?'  ·  #'+p.shirt_number:'');
     $('ppTeam').textContent=p.club+' · '+p.team_label+' team';
     $('ppShirt').textContent=p.shirt_number?('Shirt #'+p.shirt_number+' (provisional until the club confirms)'):'Shirt number: not set yet';
     var nats=[]; try{ nats=(typeof p.nationalities==='string')?JSON.parse(p.nationalities):(p.nationalities||[]); }catch(e){ nats=[]; }
     $('ppFlags').textContent=nats.map(function(n){ return n.flag; }).join(' ');
     $('ppElig').textContent=nats.length?('National-team eligibility (when older): '+nats.map(function(n){ return n.name; }).join(', ')):'';
-    $('ppFav').textContent='Favourite player: '+(p.favorite_player||'not set yet');
+    $('ppFav').innerHTML='Favourite player: '+(p.favorite_player?('<b style="color:var(--txt)">'+esc(p.favorite_player)+'</b>'):'<a class="addVenue">not set — tap to set</a>');
+    // Career — like a resume.
+    var hist=(state.history||[]).filter(function(x){ return x.player_id===p.id; });
+    var ch='<div class="meta" style="margin-top:14px;font-weight:800;color:var(--txt)">Career</div>';
+    ch+='<div class="meta" style="margin-top:4px">▸ <b style="color:var(--txt)">'+esc(p.club)+'</b> · '+esc(p.team_label)+' team'+(p.shirt_number?' · #'+p.shirt_number:'')+' · current</div>';
+    hist.forEach(function(x){
+      ch+='<div class="meta" style="margin-top:6px">▸ <b style="color:var(--txt)">'+esc(x.club)+'</b>'+(x.team_name?' · “'+esc(x.team_name)+'”':'')+(x.shirt?' · #'+esc(String(x.shirt)):'')
+        +(x.seasons?' · '+esc(String(x.seasons))+' seasons':'')+(x.town?' · '+esc(x.town):'')
+        +(x.coaches?'<br><span style="opacity:.8">Coaches: '+esc(x.coaches)+'</span>':'')
+        +(x.period_note?'<br><span style="opacity:.7">'+esc(x.period_note)+'</span>':'')+'</div>';
+    });
+    $('ppCareer').innerHTML=ch;
     mOpen('playerModal');
   }
+  $('ppAvatar').addEventListener('click', function(){ if(ppCurrent) $('ppFile').click(); });
+  $('ppFile').addEventListener('change', function(){
+    var f=this.files[0]; this.value='';
+    if(!f||!ppCurrent) return;
+    var p=ppCurrent;
+    var rd=new FileReader();
+    rd.onload=function(){
+      var img=new Image();
+      img.onload=function(){
+        var s=Math.min(img.width,img.height), c=document.createElement('canvas'); c.width=256; c.height=256;
+        c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,256,256);
+        var data=c.toDataURL('image/jpeg',0.82);
+        sb.from('players').update({photo_url:data}).eq('id', p.id).then(function(r){
+          if(r&&r.error){ $('ppShirt').textContent='Photo save failed: '+r.error.message; return; }
+          p.photo_url=data; openPlayer(p);
+        });
+      };
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(f);
+  });
+  $('ppFav').addEventListener('click', function(){
+    if(!ppCurrent || document.getElementById('ppFavIn')) return;
+    var p=ppCurrent;
+    $('ppFav').innerHTML='<input id="ppFavIn" type="text" placeholder="e.g. Haaland, Messi, Ronaldo" value="'+esc(p.favorite_player||'')+'" style="margin:4px 0"> <a class="gcal" href="#" id="ppFavSave" style="margin-top:6px">Save</a>';
+    document.getElementById('ppFavSave').addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      var v=document.getElementById('ppFavIn').value.trim()||null;
+      sb.from('players').update({favorite_player:v}).eq('id', p.id).then(function(r){
+        if(r&&r.error){ $('ppFav').textContent='Save failed: '+r.error.message; return; }
+        p.favorite_player=v; openPlayer(p);
+      });
+    });
+    document.getElementById('ppFavIn').addEventListener('click', function(e){ e.stopPropagation(); });
+  });
 
   /* calendar chooser (Google / Outlook / Apple .ics; whole tournament by team) */
   var calCtx=null;
