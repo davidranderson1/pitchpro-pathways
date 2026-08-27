@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — PitchPro Pathways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a120d">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+  :root{
+    --bg:#0a120d; --card:#101a14; --card2:#15211a; --line:rgba(255,255,255,.08);
+    --green:#2ee08a; --green-dim:rgba(46,224,138,.35); --blue:#5fb4ff; --amber:#ffc857;
+    --txt:#f2f7f4; --muted:#9db3a6; --red:#ff7a6e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;min-height:100vh}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 90px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 18px;flex-wrap:wrap}
+  .brand{font:900 15px/1.2 Archivo,Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .brand span{color:var(--txt)}
+  .who{font:700 10.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:7px 12px;white-space:nowrap;display:flex;gap:8px;align-items:center}
+  .who button{background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;padding:0}
+  .who button:hover{color:var(--txt)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+  #login{max-width:400px;margin:8vh auto 0}
+  #login h1{font:900 20px/1.25 Archivo,Inter,sans-serif;margin-bottom:4px}
+  #login p.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  label{display:block;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+  input,select,textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);
+    padding:11px 13px;font:15px Inter,sans-serif}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green-dim)}
+  button.primary{background:var(--green);color:#06130c;border:0;border-radius:10px;
+    padding:12px 16px;font:800 12px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+  button.primary.full{width:100%;margin-top:18px}
+  button.primary:disabled{opacity:.55;cursor:default}
+  button.ghost{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:8px 12px;
+    font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+  button.ghost.danger{color:var(--red)}
+  button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .err{color:var(--red);font-size:13px;margin-top:12px;min-height:18px}
+  .ok{color:var(--green);font-size:13px;margin-top:12px;min-height:18px}
+  #app{display:none}
+  nav.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;position:sticky;top:0;background:var(--bg);z-index:5}
+  nav.tabs button{flex:0 0 auto;background:var(--card);border:1px solid var(--line);color:var(--muted);border-radius:999px;
+    padding:9px 15px;font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;position:relative}
+  nav.tabs button[aria-selected="true"]{color:var(--green);border-color:var(--green-dim);background:var(--card2)}
+  nav.tabs button .n{background:var(--amber);color:#06130c;border-radius:999px;padding:2px 6px;margin-left:6px;font-size:10px}
+  .screen{display:none}.screen.on{display:block}
+  h2.scr{font:900 17px/1.3 Archivo,Inter,sans-serif;margin:6px 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  h3{font:800 12px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;text-align:left;color:var(--txt)}
+  .tile:hover{border-color:var(--green-dim)}
+  .tile .v{font:900 26px/1 Archivo,Inter,sans-serif;font-variant-numeric:tabular-nums}
+  .tile .k{font:800 10px/1.3 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .tile.warn .v{color:var(--amber)} .tile.bad .v{color:var(--red)} .tile.good .v{color:var(--green)}
+  .tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font:800 10px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  tr.row{cursor:pointer} tr.row:hover td{background:var(--card2)}
+  td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .pill{display:inline-block;border-radius:999px;padding:3px 9px;font:800 10px/1.2 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);color:var(--muted)}
+  .pill.g{color:var(--green);border-color:var(--green-dim)} .pill.a{color:var(--amber);border-color:rgba(255,200,87,.5)} .pill.r{color:var(--red);border-color:rgba(255,122,110,.5)} .pill.b{color:var(--blue);border-color:rgba(95,180,255,.5)}
+  .muted{color:var(--muted)} .small{font-size:12px}
+  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .bar input{flex:1;min-width:200px}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
+  .kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:13.5px}
+  .kv b{color:var(--muted);font-weight:600}
+  a{color:var(--blue)}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--card2);border:1px solid var(--green-dim);color:var(--txt);
+    padding:11px 16px;border-radius:12px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
+  .toast.on{opacity:1}
+  details summary{cursor:pointer;color:var(--muted);font-size:12px}
+  pre{white-space:pre-wrap;word-break:break-word;font:12px/1.5 ui-monospace,monospace;background:var(--card2);padding:10px;border-radius:10px;margin-top:6px}
+  .logo{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#fff;vertical-align:middle}
+  .empty{color:var(--muted);padding:18px;text-align:center;font-size:13px}
+  .code{font:900 18px/1 Archivo,monospace;letter-spacing:.12em;color:var(--green)}
+  @media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">PitchPro <span>Admin</span></div>
+    <div class="who" id="who" hidden><span id="whoName"></span><span aria-hidden="true">·</span><button id="signOut" type="button">Sign out</button></div>
+  </header>
+
+  <section id="login" class="card">
+    <h1 id="loginH">Staff sign-in</h1>
+    <p class="sub">The same account you use for the Family Schedule app. Staff access is granted separately by invite.</p>
+    <form id="loginForm">
+      <label for="email">Email</label><input id="email" type="email" autocomplete="username" required>
+      <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required>
+      <button class="primary full" id="loginBtn" type="submit">Sign in</button>
+    </form>
+    <div class="err" id="loginErr" role="alert"></div>
+  </section>
+
+  <section id="join" class="card" style="display:none;max-width:420px;margin:8vh auto 0">
+    <h1 style="font:900 20px/1.25 Archivo,Inter,sans-serif">Not a staff account yet</h1>
+    <p class="sub muted" style="font-size:13px;margin:6px 0 10px">Enter the staff invite code you were given.</p>
+    <form id="joinForm">
+      <label for="joinCode">Invite code</label><input id="joinCode" placeholder="XXXXX-XXXXX" autocomplete="off" required>
+      <label for="joinName">Your name</label><input id="joinName" placeholder="As it should appear in the audit log">
+      <button class="primary full" type="submit">Join the team</button>
+    </form>
+    <div class="err" id="joinErr" role="alert"></div>
+  </section>
+
+  <div id="app">
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-s="overview" aria-selected="true">Overview</button>
+      <button role="tab" data-s="families">Families</button>
+      <button role="tab" data-s="health">System health<span class="n" id="nHealth" hidden></span></button>
+      <button role="tab" data-s="clubs">Clubs</button>
+      <button role="tab" data-s="audit" data-role="owner,admin">Audit log</button>
+      <button role="tab" data-s="staff" data-role="owner,admin">Staff</button>
+    </nav>
+
+    <section class="screen on" id="s-overview">
+      <h2 class="scr">Right now <button class="ghost" id="refreshAll" type="button">Refresh</button></h2>
+      <div class="grid" id="tiles"></div>
+      <div class="split">
+        <div class="card"><h3 style="margin-top:0">Needs attention</h3><div id="attention"></div></div>
+        <div class="card"><h3 style="margin-top:0">Last activity</h3><div id="lastActivity" class="kv"></div></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-families">
+      <h2 class="scr">Families</h2>
+      <div class="bar"><input id="famSearch" placeholder="Search by family, parent email, child, club" aria-label="Search families"><button class="ghost" id="famGo" type="button">Search</button></div>
+      <div class="tw"><table id="famTable"><thead><tr><th>Family</th><th>Parents</th><th>Viewers</th><th>Children</th><th>Players</th><th>Clubs</th><th>Open invites</th><th>Upcoming</th><th>Inbound</th><th>Last sign-in</th></tr></thead><tbody></tbody></table></div>
+      <div id="famDetail" style="margin-top:16px"></div>
+    </section>
+
+    <section class="screen" id="s-health">
+      <h2 class="scr">System health <span class="small muted" id="dbNow"></span></h2>
+      <div class="grid" id="healthTiles"></div>
+      <h3>Inbox queue (coach messages arriving by the instant lane)</h3>
+      <div class="tw"><table id="inboxTable"><thead><tr><th>Received</th><th>Family</th><th>Source</th><th>Sender</th><th>Subject</th><th>Status</th><th>Parse result</th></tr></thead><tbody></tbody></table></div>
+      <h3>Notifications (last 30)</h3>
+      <div class="tw"><table id="notifTable"><thead><tr><th>Created</th><th>Family</th><th>Title</th><th>Processed</th><th>Push</th><th>Text</th></tr></thead><tbody></tbody></table></div>
+      <h3>App settings</h3>
+      <div class="card" id="settingsBox"></div>
+      <h3>Secrets and hosted functions</h3>
+      <div class="card small muted">Edge-function secrets (Anthropic key, Twilio) are not readable from the database and are not shown here. The hosted functions in use are <b>calendar-feed</b>, <b>notify</b> and <b>inbound</b>; the hourly schedule-inbox task runs at :53 through Gmail. Check them in the <a href="https://supabase.com/dashboard/project/egkiovxdijgwkbwkvkgn/functions" target="_blank" rel="noopener">Supabase dashboard</a>.</div>
+    </section>
+
+    <section class="screen" id="s-clubs">
+      <h2 class="scr">Clubs <button class="ghost" id="clubNew" type="button">Add a club</button></h2>
+      <div class="tw"><table id="clubTable"><thead><tr><th>Logo</th><th>Club</th><th>Town</th><th>Players</th><th>Badge</th><th></th></tr></thead><tbody></tbody></table></div>
+      <div class="card" id="clubForm" style="margin-top:16px;display:none">
+        <h3 style="margin-top:0" id="clubFormTitle">Edit club</h3>
+        <div class="split">
+          <div><label for="cName">Name</label><input id="cName"><label for="cTown">Town</label><input id="cTown"><label for="cBadge">Badge (short code)</label><input id="cBadge"></div>
+          <div><label for="cAddress">Address</label><input id="cAddress"><label for="cMap">Map query</label><input id="cMap"><label for="cInfo">Info</label><input id="cInfo"></div>
+        </div>
+        <label for="cLogo">Logo image (PNG or JPEG, resized to 256 px)</label><input id="cLogo" type="file" accept="image/*">
+        <div style="display:flex;gap:8px;margin-top:14px;align-items:center"><button class="primary" id="clubSave" type="button">Save club</button><button class="ghost" id="clubCancel" type="button">Cancel</button><img id="cLogoPreview" class="logo" alt="" hidden></div>
+        <div class="err" id="clubErr"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s-audit">
+      <h2 class="scr">Audit log <button class="ghost" id="auditRefresh" type="button">Refresh</button></h2>
+      <div class="tw"><table id="auditTable"><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Target</th><th>Details</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="screen" id="s-staff">
+      <h2 class="scr">Staff</h2>
+      <div class="tw"><table id="staffTable"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Last sign-in</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div>
+      <div class="card" style="margin-top:16px" id="staffInviteBox">
+        <h3 style="margin-top:0">Invite a staff member</h3>
+        <div class="split">
+          <div><label for="siRole">Role</label><select id="siRole"><option value="admin">Admin — everything except staff management</option><option value="support">Support — families, health, invites</option><option value="analyst">Analyst — read-only</option><option value="guide_manager">Guide manager</option></select></div>
+          <div><label for="siLabel">Who is it for</label><input id="siLabel" placeholder="e.g. Sandro"></div>
+        </div>
+        <button class="primary" id="siCreate" type="button" style="margin-top:14px">Create one-time code</button>
+        <div class="ok" id="siOut"></div>
+        <h3>Open codes</h3>
+        <div id="siList"></div>
+      </div>
+    </section>
+  </div>
+  <p class="private-note muted small" style="text-align:center;margin-top:20px">Every action here is written to the audit log.</p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="supabase.js"></script>
+<script>
+(function(){
+  'use strict';
+  var SUPABASE_URL = 'https://egkiovxdijgwkbwkvkgn.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_GbhUX7aO-GAhb3XuT_o0cQ_ATg-EsTt'; // publishable key; everything is behind row-level security and staff-checked functions
+  var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { ctx:null, role:null, families:[], clubs:[], health:null };
+
+  function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+  function toast(m){ var t=$('toast'); t.textContent=m; t.classList.add('on'); setTimeout(function(){ t.classList.remove('on'); }, 2200); }
+  function ago(ts){ if(!ts) return '—'; var d=(Date.now()-new Date(ts).getTime())/1000; if(d<60) return 'just now'; if(d<3600) return Math.round(d/60)+' min ago'; if(d<86400) return Math.round(d/3600)+' h ago'; return Math.round(d/86400)+' d ago'; }
+  function when(ts){ if(!ts) return '—'; var d=new Date(ts); return d.toLocaleString(undefined,{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); }
+  function rpc(name, args){ return sb.rpc(name, args||{}).then(function(r){ if(r.error) throw r.error; return r.data; }); }
+  function fail(e){ console.error(e); toast((e && e.message) || 'Something went wrong'); }
+
+  /* ---------- auth ---------- */
+  $('loginForm').addEventListener('submit', function(ev){
+    ev.preventDefault(); $('loginErr').textContent=''; $('loginBtn').disabled=true;
+    sb.auth.signInWithPassword({ email:$('email').value.trim(), password:$('pw').value }).then(function(r){
+      $('loginBtn').disabled=false;
+      if(r.error){ $('loginErr').textContent = r.error.message; return; }
+      boot();
+    });
+  });
+  $('signOut').addEventListener('click', function(){ sb.auth.signOut().then(function(){ location.reload(); }); });
+  $('joinForm').addEventListener('submit', function(ev){
+    ev.preventDefault(); $('joinErr').textContent='';
+    rpc('redeem_staff_invite', { p_code:$('joinCode').value, p_display_name:$('joinName').value.trim()||null })
+      .then(function(){ toast('Welcome to the team'); boot(); })
+      .catch(function(e){ $('joinErr').textContent = e.message; });
+  });
+
+  function boot(){
+    sb.auth.getSession().then(function(r){
+      var s = r.data && r.data.session;
+      $('login').style.display = s ? 'none' : '';
+      if(!s) return;
+      return rpc('admin_context').then(function(ctx){
+        state.ctx = ctx;
+        if(!ctx.staff){ $('join').style.display=''; $('who').hidden=false; $('whoName').textContent = s.user.email; return; }
+        state.role = ctx.staff.role;
+        $('join').style.display='none'; $('who').hidden=false;
+        $('whoName').textContent = (ctx.staff.display_name||s.user.email) + ' · ' + ctx.staff.role;
+        document.querySelectorAll('nav.tabs button[data-role]').forEach(function(b){
+          b.style.display = b.dataset.role.split(',').indexOf(state.role)>=0 ? '' : 'none';
+        });
+        $('app').style.display='block';
+        renderOverview(ctx);
+        loadHealth(true);
+        var h = (location.hash.match(/#s=([a-z]+)/)||[])[1]; if(h) show(h);
+      });
+    }).catch(fail);
+  }
+
+  /* ---------- tabs ---------- */
+  document.querySelectorAll('nav.tabs button').forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.s); }); });
+  function show(s){
+    document.querySelectorAll('nav.tabs button').forEach(function(b){ b.setAttribute('aria-selected', b.dataset.s===s ? 'true':'false'); });
+    document.querySelectorAll('.screen').forEach(function(x){ x.classList.toggle('on', x.id==='s-'+s); });
+    history.replaceState(null,'','#s='+s);
+    if(s==='families' && !state.families.length) loadFamilies('');
+    if(s==='health') loadHealth();
+    if(s==='clubs') loadClubs();
+    if(s==='audit') loadAudit();
+    if(s==='staff') loadStaff();
+  }
+
+  /* ---------- overview ---------- */
+  function tile(v,k,cls,target){ return '<button class="tile '+(cls||'')+'" type="button" data-go="'+target+'"><div class="v">'+esc(v)+'</div><div class="k">'+esc(k)+'</div></button>'; }
+  function renderOverview(ctx){
+    var c = ctx.counts;
+    $('tiles').innerHTML =
+      tile(c.families,'families','','families') + tile(c.players,'players','','families') + tile(c.members,'accounts','','families') +
+      tile(c.coaches_claimed,'coaches signed in','','families') + tile(c.open_invites,'open invites',c.open_invites?'':'', 'families') +
+      tile(c.inbox_received,'inbox waiting', c.inbox_received?'warn':'good','health') +
+      tile(c.inbox_held,'inbox held / failed', c.inbox_held?'bad':'good','health') +
+      tile(c.moments_pending,'moments to approve', c.moments_pending?'warn':'','families') +
+      tile(c.notifications_unprocessed,'notifications unsent', c.notifications_unprocessed?'warn':'good','health');
+    document.querySelectorAll('#tiles .tile').forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.go); }); });
+    var att=[];
+    if(c.inbox_held) att.push('<b>'+c.inbox_held+'</b> inbox message(s) held or failed — review under System health.');
+    if(c.inbox_received) att.push('<b>'+c.inbox_received+'</b> inbox message(s) waiting for the hourly parser.');
+    if(c.notifications_unprocessed) att.push('<b>'+c.notifications_unprocessed+'</b> notification(s) not yet sent.');
+    if(c.moments_pending) att.push('<b>'+c.moments_pending+'</b> child moment(s) awaiting a parent.');
+    $('attention').innerHTML = att.length ? '<ul style="padding-left:18px">'+att.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul>' : '<div class="muted">Nothing waiting. Good.</div>';
+    var n = c.inbox_held + c.notifications_unprocessed; $('nHealth').hidden = !n; $('nHealth').textContent = n;
+  }
+  $('refreshAll').addEventListener('click', function(){ rpc('admin_context').then(function(ctx){ state.ctx=ctx; renderOverview(ctx); loadHealth(true); toast('Refreshed'); }).catch(fail); });
+
+  /* ---------- families ---------- */
+  $('famGo').addEventListener('click', function(){ loadFamilies($('famSearch').value.trim()); });
+  $('famSearch').addEventListener('keydown', function(e){ if(e.key==='Enter') loadFamilies($('famSearch').value.trim()); });
+  function loadFamilies(q){
+    rpc('admin_families', { p_search:q||null }).then(function(list){
+      state.families = list;
+      var tb = $('famTable').querySelector('tbody');
+      if(!list.length){ tb.innerHTML='<tr><td colspan="10" class="empty">No families match.</td></tr>'; return; }
+      tb.innerHTML = list.map(function(f){
+        return '<tr class="row" data-id="'+f.id+'" tabindex="0"><td><b>'+esc(f.name)+'</b><div class="small muted">since '+when(f.created_at)+'</div></td>'+
+          '<td class="n">'+f.parents+'</td><td class="n">'+f.viewers+'</td><td class="n">'+f.children+'</td><td class="n">'+f.players+'</td><td>'+esc(f.clubs||'—')+'</td>'+
+          '<td class="n">'+(f.open_invites? '<span class="pill a">'+f.open_invites+'</span>' : '0')+'</td><td class="n">'+f.upcoming_events+'</td>'+
+          '<td>'+(f.inbound_enabled?'<span class="pill g">on</span>':'<span class="pill">off</span>')+'</td><td class="n">'+ago(f.last_sign_in)+'</td></tr>';
+      }).join('');
+      tb.querySelectorAll('tr.row').forEach(function(tr){ var open=function(){ loadFamily(tr.dataset.id); }; tr.addEventListener('click', open); tr.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } }); });
+    }).catch(fail);
+  }
+  function loadFamily(id){
+    rpc('admin_family_detail', { p_family_id:id }).then(function(d){
+      var f=d.family;
+      var members = d.members.map(function(m){
+        var ch = m.channels||{};
+        return '<tr><td><b>'+esc(m.display_name||'—')+'</b><div class="small muted">'+esc(m.email)+'</div></td><td><span class="pill b">'+esc(m.role)+'</span></td>'+
+          '<td>'+(m.confirmed?'<span class="pill g">confirmed</span>':'<span class="pill a">unconfirmed</span>')+'</td><td class="n">'+ago(m.last_sign_in_at)+'</td>'+
+          '<td class="n">'+m.push_devices+'</td><td>'+(ch.email_enabled?'<span class="pill g">email</span> ':'')+(ch.sms_enabled?'<span class="pill g">text</span> ':'')+(!ch.email_enabled&&!ch.sms_enabled?'<span class="muted small">push only</span>':'')+'</td></tr>';
+      }).join('');
+      var players = d.players.map(function(p){ return '<tr><td><b>'+esc(p.first_name)+'</b></td><td>'+esc(p.club)+' · '+esc(p.team_label)+'</td><td class="n">'+(p.shirt_number||'—')+'</td><td>'+(p.has_login?'<span class="pill g">own login</span>':'<span class="muted small">no login</span>')+'</td><td class="n">'+p.upcoming_events+'</td></tr>'; }).join('');
+      var inv = d.invites.map(function(i){
+        var st = i.redeemed_at ? '<span class="pill g">redeemed</span>' : i.revoked_at ? '<span class="pill">revoked</span>' : new Date(i.expires_at)<new Date() ? '<span class="pill">expired</span>' : '<span class="pill a">open</span>';
+        var canRevoke = !i.redeemed_at && !i.revoked_at && new Date(i.expires_at)>new Date() && ['owner','admin','support'].indexOf(state.role)>=0;
+        return '<tr><td>'+esc(i.kind)+'</td><td>'+esc(i.label||'—')+'</td><td class="n">'+when(i.created_at)+'</td><td>'+st+'</td><td>'+(canRevoke?'<button class="ghost danger" data-revoke="'+i.id+'" type="button">Revoke</button>':'')+'</td></tr>';
+      }).join('');
+      var inbox = d.inbox.map(function(r){ return '<tr><td class="n">'+when(r.received_at)+'</td><td>'+esc(r.source)+'</td><td>'+esc(r.sender||'—')+'</td><td>'+pillStatus(r.status)+'</td><td class="small">'+esc(r.body_preview)+'</td></tr>'; }).join('');
+      var notif = d.notifications.map(function(n){ var r=n.result||{}; return '<tr><td class="n">'+when(n.created_at)+'</td><td>'+esc(n.title)+'</td><td>'+(n.processed_at?'<span class="pill g">sent</span>':'<span class="pill a">waiting</span>')+'</td><td class="n small">'+(r.sent||0)+' ok / '+(r.failed||0)+' failed</td></tr>'; }).join('');
+      $('famDetail').innerHTML =
+        '<div class="card"><h2 class="scr" style="margin-top:0">'+esc(f.name)+' <span class="small muted">'+f.id+'</span></h2>'+
+        '<div class="kv"><b>Created</b><span>'+when(f.created_at)+'</span><b>Calendar feeds</b><span>'+d.feeds+'</span><b>Instant inbound</b><span>'+(f.inbound_enabled?'enabled':'off')+'</span><b>Moments</b><span>'+d.moments.approved+' approved · '+d.moments.pending+' pending</span><b>Coaches on their teams</b><span>'+(d.coaches.length? d.coaches.map(function(c){return esc(c.club)+' '+esc(c.team_label)+' ('+esc(c.email)+')';}).join(', ') : 'none signed in yet')+'</span></div>'+
+        '<h3>Accounts</h3><div class="tw"><table><thead><tr><th>Person</th><th>Role</th><th>Email</th><th>Last sign-in</th><th>Push devices</th><th>Extra channels</th></tr></thead><tbody>'+(members||'<tr><td colspan="6" class="empty">No accounts.</td></tr>')+'</tbody></table></div>'+
+        '<h3>Players</h3><div class="tw"><table><thead><tr><th>Player</th><th>Club · team</th><th>Shirt</th><th>Login</th><th>Upcoming</th></tr></thead><tbody>'+(players||'<tr><td colspan="5" class="empty">No players yet.</td></tr>')+'</tbody></table></div>'+
+        '<h3>Invites</h3><div class="tw"><table><thead><tr><th>Kind</th><th>Label</th><th>Created</th><th>Status</th><th></th></tr></thead><tbody>'+(inv||'<tr><td colspan="5" class="empty">No invites created.</td></tr>')+'</tbody></table></div>'+
+        '<h3>Inbox (last 20)</h3><div class="tw"><table><thead><tr><th>Received</th><th>Source</th><th>Sender</th><th>Status</th><th>Preview</th></tr></thead><tbody>'+(inbox||'<tr><td colspan="5" class="empty">Nothing received through the instant lane.</td></tr>')+'</tbody></table></div>'+
+        '<h3>Notifications (last 20)</h3><div class="tw"><table><thead><tr><th>Created</th><th>Title</th><th>State</th><th>Push</th></tr></thead><tbody>'+(notif||'<tr><td colspan="4" class="empty">No notifications yet.</td></tr>')+'</tbody></table></div></div>';
+      $('famDetail').querySelectorAll('[data-revoke]').forEach(function(b){ b.addEventListener('click', function(){
+        if(!confirm('Revoke this invite code? The code stops working immediately.')) return;
+        rpc('admin_revoke_family_invite', { p_id:b.dataset.revoke }).then(function(){ toast('Invite revoked'); loadFamily(id); }).catch(fail);
+      }); });
+      $('famDetail').scrollIntoView({ behavior:'smooth', block:'start' });
+    }).catch(fail);
+  }
+  function pillStatus(s){ var c = s==='parsed'?'g': s==='received'?'a': (s==='held'||s==='failed')?'r':''; return '<span class="pill '+c+'">'+esc(s)+'</span>'; }
+
+  /* ---------- health ---------- */
+  function loadHealth(quiet){
+    rpc('admin_health').then(function(h){
+      state.health = h;
+      $('dbNow').textContent = 'database time '+when(h.db_now);
+      var n24 = h.notifications_24h||{}; var ib = h.inbox||{};
+      $('healthTiles').innerHTML =
+        tile(ib.received||0,'inbox waiting', (ib.received?'warn':'good'),'health') + tile((ib.held||0)+(ib.failed||0),'inbox held / failed', ((ib.held||0)+(ib.failed||0))?'bad':'good','health') +
+        tile(ib.parsed||0,'inbox parsed','','health') + tile(h.notifications_unprocessed,'notifications unsent', h.notifications_unprocessed?'warn':'good','health') +
+        tile(n24.push_sent||0,'push sent, 24 h','good','health') + tile(n24.push_failed||0,'push failed, 24 h', n24.push_failed?'bad':'','health') +
+        tile(n24.sms_sent||0,'texts sent, 24 h','','health') + tile(h.push_subscriptions,'push devices','','health') + tile(h.sms_numbers,'text numbers','','health') + tile(h.email_channels,'email channels','','health');
+      $('lastActivity').innerHTML = '<b>Last sign-in</b><span>'+ago(h.last_sign_in)+'</span><b>Last coach message</b><span>'+ago(h.last_coach_message)+'</span><b>Last event created</b><span>'+ago(h.last_event_created)+'</span><b>Oldest inbox waiting</b><span>'+ago(h.inbox_oldest_received)+'</span>';
+      var tb=$('inboxTable').querySelector('tbody');
+      tb.innerHTML = h.inbox_recent.length ? h.inbox_recent.map(function(r){ return '<tr><td class="n">'+when(r.received_at)+'</td><td class="small">'+famName(r.family_id)+'</td><td>'+esc(r.source)+'</td><td>'+esc(r.sender||'—')+'</td><td>'+esc(r.subject||'—')+'</td><td>'+pillStatus(r.status)+'</td><td>'+(r.parse_result?'<details><summary>show</summary><pre>'+esc(JSON.stringify(r.parse_result,null,1))+'</pre></details>':'—')+'</td></tr>'; }).join('') : '<tr><td colspan="7" class="empty">Nothing has arrived through the instant lane yet.</td></tr>';
+      var nb=$('notifTable').querySelector('tbody');
+      nb.innerHTML = h.notifications_recent.length ? h.notifications_recent.map(function(n){ var r=n.result||{}; return '<tr><td class="n">'+when(n.created_at)+'</td><td class="small">'+famName(n.family_id)+'</td><td>'+esc(n.title)+'</td><td>'+(n.processed_at?'<span class="pill g">'+ago(n.processed_at)+'</span>':'<span class="pill a">waiting</span>')+'</td><td class="n small">'+(r.sent||0)+' ok'+(r.failed?' · <span style="color:var(--red)">'+r.failed+' failed</span>':'')+(r.removed?' · '+r.removed+' removed':'')+'</td><td class="n small">'+(r.sms||0)+' ok'+(r.smsFailed?' · <span style="color:var(--red)">'+r.smsFailed+' failed</span>':'')+'</td></tr>'; }).join('') : '<tr><td colspan="6" class="empty">No notifications yet.</td></tr>';
+      var keys=Object.keys(h.settings||{});
+      $('settingsBox').innerHTML = keys.length ? '<div class="kv">'+keys.map(function(k){ return '<b>'+esc(k)+'</b><span>'+esc(h.settings[k])+(['owner','admin'].indexOf(state.role)>=0?' <button class="ghost" data-setting="'+esc(k)+'" type="button" style="margin-left:8px">Change</button>':'')+'</span>'; }).join('')+'</div>' : '<div class="muted">No settings.</div>';
+      $('settingsBox').querySelectorAll('[data-setting]').forEach(function(b){ b.addEventListener('click', function(){
+        var k=b.dataset.setting; var v=prompt('New value for '+k, h.settings[k]); if(v==null||v===h.settings[k]) return;
+        rpc('admin_setting_set', { p_key:k, p_value:v }).then(function(){ toast('Setting saved'); loadHealth(); }).catch(fail);
+      }); });
+      if(!quiet) toast('Health refreshed');
+    }).catch(fail);
+  }
+  function famName(id){ var f = state.families.filter(function(x){ return x.id===id; })[0]; return f ? esc(f.name) : (id? id.slice(0,8)+'…' : '—'); }
+
+  /* ---------- clubs ---------- */
+  var clubLogo = null;
+  function loadClubs(){
+    rpc('admin_clubs').then(function(list){
+      state.clubs=list; var canEdit=['owner','admin'].indexOf(state.role)>=0;
+      $('clubNew').style.display = canEdit ? '' : 'none';
+      $('clubTable').querySelector('tbody').innerHTML = list.map(function(c){
+        return '<tr><td>'+(c.logo_set?'<img class="logo" src="'+c.logo_url+'" alt="">':'<span class="pill a">no logo</span>')+'</td><td><b>'+esc(c.name)+'</b><div class="small muted">'+esc(c.address||'')+'</div></td><td>'+esc(c.town||'—')+'</td><td class="n">'+c.players+'</td><td>'+esc(c.badge||'—')+'</td><td>'+(canEdit?'<button class="ghost" data-edit="'+esc(c.name)+'" type="button">Edit</button>':'')+'</td></tr>';
+      }).join('');
+      $('clubTable').querySelectorAll('[data-edit]').forEach(function(b){ b.addEventListener('click', function(){ editClub(b.dataset.edit); }); });
+    }).catch(fail);
+  }
+  function editClub(name){
+    var c = state.clubs.filter(function(x){ return x.name===name; })[0] || {};
+    clubLogo=null; $('clubErr').textContent='';
+    $('clubFormTitle').textContent = name ? 'Edit '+name : 'New club';
+    $('cName').value=c.name||''; $('cName').readOnly=!!name; $('cTown').value=c.town||''; $('cBadge').value=c.badge||''; $('cAddress').value=c.address||''; $('cMap').value=c.map_query||''; $('cInfo').value=c.info||'';
+    $('cLogo').value=''; $('cLogoPreview').hidden = !c.logo_url; if(c.logo_url) $('cLogoPreview').src=c.logo_url;
+    $('clubForm').style.display=''; $('clubForm').scrollIntoView({behavior:'smooth'});
+  }
+  $('clubNew').addEventListener('click', function(){ editClub(''); });
+  $('clubCancel').addEventListener('click', function(){ $('clubForm').style.display='none'; });
+  $('cLogo').addEventListener('change', function(){
+    var f=this.files[0]; if(!f) return;
+    var img=new Image(); var url=URL.createObjectURL(f);
+    img.onload=function(){ var s=256, cv=document.createElement('canvas'); var r=Math.min(s/img.width, s/img.height, 1); cv.width=Math.round(img.width*r); cv.height=Math.round(img.height*r);
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height); clubLogo=cv.toDataURL('image/png'); $('cLogoPreview').src=clubLogo; $('cLogoPreview').hidden=false; URL.revokeObjectURL(url); };
+    img.src=url;
+  });
+  $('clubSave').addEventListener('click', function(){
+    var name=$('cName').value.trim(); if(!name){ $('clubErr').textContent='A club needs a name.'; return; }
+    rpc('admin_club_upsert', { p_name:name, p_town:$('cTown').value.trim()||null, p_info:$('cInfo').value.trim()||null, p_map_query:$('cMap').value.trim()||null, p_badge:$('cBadge').value.trim()||null, p_address:$('cAddress').value.trim()||null, p_logo_url:clubLogo })
+      .then(function(){ toast('Club saved'); $('clubForm').style.display='none'; loadClubs(); }).catch(function(e){ $('clubErr').textContent=e.message; });
+  });
+
+  /* ---------- audit ---------- */
+  function loadAudit(){
+    rpc('admin_audit', { p_limit:300 }).then(function(list){
+      $('auditTable').querySelector('tbody').innerHTML = list.length ? list.map(function(a){
+        return '<tr><td class="n">'+when(a.at)+'</td><td>'+esc(a.actor||'system')+'<div class="small muted">'+esc(a.actor_role||'')+'</div></td><td><b>'+esc(a.action)+'</b></td><td class="small">'+esc(a.target_type||'')+(a.target_id?' · '+esc(a.target_id):'')+(a.family_id?'<div class="muted">'+famName(a.family_id)+'</div>':'')+'</td><td class="small muted">'+(a.details?esc(JSON.stringify(a.details)):'')+'</td></tr>';
+      }).join('') : '<tr><td colspan="5" class="empty">Empty.</td></tr>';
+    }).catch(fail);
+  }
+  $('auditRefresh').addEventListener('click', loadAudit);
+
+  /* ---------- staff ---------- */
+  function loadStaff(){
+    rpc('admin_staff_list').then(function(d){
+      var owner = state.role==='owner';
+      $('staffTable').querySelector('tbody').innerHTML = d.staff.map(function(s){
+        return '<tr><td><b>'+esc(s.display_name||'—')+'</b></td><td>'+esc(s.email)+'</td><td><span class="pill b">'+esc(s.role)+'</span></td><td class="n">'+ago(s.last_sign_in_at)+'</td><td>'+(s.active?'<span class="pill g">active</span>':'<span class="pill r">disabled</span>')+'</td><td>'+(owner&&s.role!=='owner'?'<button class="ghost'+(s.active?' danger':'')+'" data-toggle="'+s.user_id+'" data-active="'+(!s.active)+'" type="button">'+(s.active?'Disable':'Enable')+'</button>':'')+'</td></tr>';
+      }).join('');
+      $('staffTable').querySelectorAll('[data-toggle]').forEach(function(b){ b.addEventListener('click', function(){
+        rpc('admin_set_staff_active', { p_user_id:b.dataset.toggle, p_active:b.dataset.active==='true' }).then(function(){ toast('Updated'); loadStaff(); }).catch(fail);
+      }); });
+      $('staffInviteBox').style.display = owner ? '' : 'none';
+      var open = d.invites.filter(function(i){ return !i.redeemed_at && !i.revoked_at && new Date(i.expires_at)>new Date(); });
+      $('siList').innerHTML = open.length ? open.map(function(i){ return '<div style="display:flex;gap:12px;align-items:center;margin:8px 0;flex-wrap:wrap"><span class="code">'+esc(i.code)+'</span><span class="pill b">'+esc(i.role)+'</span><span class="muted small">'+esc(i.label||'')+' · expires '+when(i.expires_at)+'</span><button class="ghost danger" data-si="'+i.id+'" type="button">Cancel</button></div>'; }).join('') : '<div class="muted small">No open codes.</div>';
+      $('siList').querySelectorAll('[data-si]').forEach(function(b){ b.addEventListener('click', function(){ rpc('admin_revoke_staff_invite', { p_id:b.dataset.si }).then(function(){ toast('Code cancelled'); loadStaff(); }).catch(fail); }); });
+    }).catch(fail);
+  }
+  $('siCreate').addEventListener('click', function(){
+    rpc('admin_create_staff_invite', { p_role:$('siRole').value, p_label:$('siLabel').value.trim()||null }).then(function(r){
+      $('siOut').innerHTML = 'Code <span class="code">'+esc(r.code)+'</span> — give it to them in person or by phone. It works once and expires in 14 days.'; loadStaff();
+    }).catch(fail);
+  });
+
+  boot();
+})();
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>
