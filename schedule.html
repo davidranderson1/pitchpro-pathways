@@ -198,7 +198,7 @@
   .mo .acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
   .compose textarea{width:100%;min-height:84px;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 12px;font:15px Inter,sans-serif;resize:vertical}
   .compose .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
-  .compose input[type=date]{background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:9px 12px;font:14px Inter,sans-serif}
+  .compose input[type=date]{width:auto;flex:0 0 auto;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:9px 12px;font:14px Inter,sans-serif}
   .compose .thumb{width:56px;height:56px;border-radius:8px;object-fit:cover;display:none}
   .pendTag{display:inline-block;background:rgba(255,190,70,.15);color:var(--amber);border-radius:999px;padding:3px 9px;font:800 10px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
   .scout{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:10px}
@@ -434,10 +434,12 @@
           </label>
           <input id="chEmail" type="email" autocomplete="email" placeholder="you@example.com">
           <label style="display:flex;align-items:center;gap:9px;font:700 14px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt);margin:14px 0 6px">
-            <input type="checkbox" id="chSmsOn" style="width:18px;height:18px;accent-color:var(--green)"> Text me (Canadian mobile, sent via your carrier's email-to-text gateway)
+            <input type="checkbox" id="chSmsOn" style="width:18px;height:18px;accent-color:var(--green)"> Text me
           </label>
+          <input id="chSmsE164" type="tel" inputmode="tel" autocomplete="tel" placeholder="Mobile in international format, e.g. +385 91 234 5678 or +1 403 555 0199">
+          <p class="meta" style="margin:6px 0 8px">Any Croatian or Canadian mobile once the text-message service is switched on. Until then, Canadian numbers can still use the carrier gateway below (optional).</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <input id="chSmsNum" type="tel" inputmode="numeric" placeholder="10-digit number" style="flex:1;min-width:150px">
+            <input id="chSmsNum" type="tel" inputmode="numeric" placeholder="10-digit Canadian number (gateway)" style="flex:1;min-width:150px">
             <select id="chSmsCarrier" style="background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 12px;font:14px Inter,sans-serif">
               <option value="txt.bell.ca">Bell</option>
               <option value="msg.telus.com">Telus</option>
@@ -478,6 +480,13 @@
           <p><b>Email:</b> forward it as-is.</p>
           <p><b>WhatsApp:</b> long-press the message → Forward/Share → Gmail (or your mail app) → send to this address.</p>
           <p><b>Text or paper schedule:</b> email a screenshot or photo to the same address.</p>
+        </div>
+        <div id="instantWrap" hidden style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
+          <p class="meta" style="margin-bottom:6px"><b style="color:var(--txt)">Instant lane.</b> Paste a coach message here and it is parsed straight away (when the instant parser is switched on) — otherwise it is saved and picked up within the hour. Only messages sent from a parent's own login email are trusted; this box counts as yours.</p>
+          <textarea id="instantText" placeholder="Paste the coach's message…" style="width:100%;min-height:84px;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 12px;font:15px Inter,sans-serif;resize:vertical"></textarea>
+          <div class="btnrow" style="margin-top:8px"><a class="gcal" href="#" id="instantSend">Send to the schedule</a><a class="gcal" href="#" id="copyInstant">Copy the family's inbound address for automations</a></div>
+          <div class="ok" id="instantOk"></div><div class="err" id="instantErr"></div>
+          <div class="meta" id="instantLog" style="margin-top:10px"></div>
         </div>
       </div>
     </section>
@@ -2296,6 +2305,7 @@
       $('chEmailOn').checked=!!d.email_enabled;
       $('chEmail').value=d.email||'';
       $('chSmsOn').checked=!!d.sms_enabled;
+      $('chSmsE164').value=d.sms_number||'';
       if(d.sms_gateway){
         var parts=String(d.sms_gateway).split('@');
         $('chSmsNum').value=parts[0]||'';
@@ -2307,8 +2317,12 @@
     e.preventDefault(); $('chErr').textContent=''; $('chOk').textContent='';
     var emailOn=$('chEmailOn').checked, email=$('chEmail').value.trim();
     var smsOn=$('chSmsOn').checked, num=$('chSmsNum').value.replace(/\D/g,'');
+    var e164=$('chSmsE164').value.replace(/[\s\-()]/g,'');
+    if(e164 && /^00/.test(e164)) e164='+'+e164.slice(2);
+    if(e164 && /^\d{10}$/.test(e164)) e164='+1'+e164;
     if(emailOn && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $('chErr').textContent='Enter a valid email address first.'; return; }
-    if(smsOn && num.length!==10){ $('chErr').textContent='Enter a 10-digit Canadian mobile number for texts.'; return; }
+    if(e164 && !/^\+[1-9]\d{6,14}$/.test(e164)){ $('chErr').textContent='Enter the mobile in international format, starting with + and the country code.'; return; }
+    if(smsOn && !e164 && num.length!==10){ $('chErr').textContent='Enter a mobile number for texts — international format, or a 10-digit Canadian number for the gateway.'; return; }
     sb.auth.getSession().then(function(r){
       var uid=r&&r.data&&r.data.session&&r.data.session.user?r.data.session.user.id:null;
       if(!uid){ $('chErr').textContent='Not signed in.'; return; }
@@ -2318,6 +2332,7 @@
         email:email||null,
         sms_enabled:smsOn,
         sms_gateway:(num.length===10? num+'@'+$('chSmsCarrier').value : null),
+        sms_number:(e164||null),
         updated_at:new Date().toISOString()
       },{onConflict:'user_id'}).then(function(r2){
         if(r2&&r2.error){ $('chErr').textContent=r2.error.message; return; }
@@ -2357,7 +2372,43 @@
     $('feedUrl').textContent = u || 'Feed unavailable — ask for a new feed key.';
     var addr=state.settings && state.settings.schedule_inbox;
     if(addr){ $('inboxCard').hidden=false; $('inboxAddr').textContent=addr; }
+    if(state.canEdit){
+      sb.rpc('my_inbound_token').then(function(r){ state.inboundToken=(r&&r.data)||null; $('instantWrap').hidden=!state.inboundToken; renderInstantLog(); });
+    }
   }
+  function inboundURL(){ return state.inboundToken ? (SUPABASE_URL+'/functions/v1/inbound?token='+state.inboundToken) : null; }
+  function renderInstantLog(){
+    if(!state.canEdit) return;
+    sb.from('inbox_raw').select('id,source,sender,subject,received_at,status,parse_result').order('received_at',{ascending:false}).limit(5).then(function(r){
+      if(r.error || !r.data || !r.data.length){ $('instantLog').innerHTML=''; return; }
+      var h='<b style="color:var(--txt)">Recent</b><br>';
+      r.data.forEach(function(x){
+        var d=new Date(x.received_at); var pr=x.parse_result||{};
+        var st = x.status==='parsed' ? (pr.added||0)+' added'+(pr.questions&&pr.questions.length?' · '+pr.questions.length+' question(s)':'') : (x.status==='held'?'held — unrecognised sender':(x.status==='received'?'waiting for the hourly run':x.status));
+        h+=esc(d.toLocaleString(undefined,{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}))+' · '+esc(x.source)+' · '+esc(st)+'<br>';
+      });
+      $('instantLog').innerHTML=h;
+    });
+  }
+  $('instantSend').addEventListener('click', function(e){
+    e.preventDefault(); $('instantErr').textContent=''; $('instantOk').textContent='';
+    var t=$('instantText').value.trim(); if(!t){ $('instantErr').textContent='Paste the message first.'; return; }
+    var u=inboundURL(); if(!u){ $('instantErr').textContent='Inbound address unavailable.'; return; }
+    $('instantSend').textContent='Sending…';
+    fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sender:state.userEmail,subject:'Pasted in the app',body:t,source:'app'})})
+      .then(function(r){ return r.json(); }).then(function(j){
+        $('instantSend').textContent='Send to the schedule';
+        if(j.error){ $('instantErr').textContent=j.error; return; }
+        $('instantText').value='';
+        $('instantOk').textContent = j.status==='parsed' ? ('Added '+j.added+' item'+(j.added===1?'':'s')+(j.skipped?' ('+j.skipped+' already there)':'')+(j.questions&&j.questions.length?' · question: '+j.questions[0]:'')+'. Reloading…') : (j.status==='held' ? 'Held — the sender was not recognised.' : 'Saved — it will be on the schedule within the hour.');
+        renderInstantLog();
+        if(j.status==='parsed') setTimeout(loadAll, 1200);
+      }).catch(function(){ $('instantSend').textContent='Send to the schedule'; $('instantErr').textContent='Network error — try again.'; });
+  });
+  $('copyInstant').addEventListener('click', function(e){
+    e.preventDefault(); var u=inboundURL(); if(!u) return;
+    navigator.clipboard.writeText(u).then(function(){ $('instantOk').textContent='Copied. Point an email-forwarding rule or a WhatsApp webhook at it (POST, JSON or form: sender, subject, body). Treat it like a password.'; }, function(){ $('instantErr').textContent='Could not copy automatically.'; });
+  });
   $('copyFeed').addEventListener('click', function(e){
     e.preventDefault();
     var u=feedURL(); if(!u) return;
