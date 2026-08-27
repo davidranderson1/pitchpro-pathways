@@ -279,6 +279,7 @@
       <div class="club" id="clubBadge" style="display:none"></div>
       <button class="appsBtn" id="shareApp" type="button" title="Share this app">↗ Share</button>
       <button class="appsBtn" id="ppNavOpen" type="button" title="Switch between PitchPro apps and pages">◈ Apps</button>
+      <button class="appsBtn" id="hdrSignOut" type="button" title="Sign out of this device" aria-label="Sign out" hidden>⏻</button>
     </div>
   </header>
 
@@ -402,7 +403,7 @@
     <section class="screen" id="s-acct">
       <h2 class="scr">Account</h2>
       <div class="card">
-        <div class="acct-row">Signed in as <b id="acctEmail"></b><span class="roleTag" id="acctRole"></span></div>
+        <div class="acct-row">Signed in as <b id="acctEmail"></b><span class="roleTag" id="acctRole"></span> · <a id="acctSignOut" style="color:var(--blue);cursor:pointer;text-decoration:underline">Sign out</a></div>
         <div class="meta" id="acctFam" style="margin:4px 0 10px"></div>
         <form id="pwForm">
           <label for="npw">New password (min 8 characters)</label>
@@ -718,8 +719,17 @@
       })
       .catch(function(){ $('loginBtn').disabled=false; $('loginErr').textContent='Network error — try again.'; });
   });
-  $('signOut').addEventListener('click', function(){ sb.auth.signOut(); });
-  $('joinSignOut').addEventListener('click', function(){ sb.auth.signOut(); });
+  /* Sign out (build 19) — local-first so it works even when the server session has
+     already expired or been revoked, then a clean reload wipes in-memory state. */
+  function doSignOut(){
+    Promise.resolve().then(function(){ return sb.auth.signOut({ scope:'local' }); })
+      .catch(function(){ /* still signed out locally */ })
+      .then(function(){ location.replace(location.pathname); });
+  }
+  $('signOut').addEventListener('click', doSignOut);
+  $('joinSignOut').addEventListener('click', doSignOut);
+  $('hdrSignOut').addEventListener('click', doSignOut);
+  $('acctSignOut').addEventListener('click', doSignOut);
 
   sb.auth.onAuthStateChange(function(_ev, session){
     if(session){
@@ -727,6 +737,7 @@
       state.userEmail = (session.user && session.user.email) || '';
       state.userId = (session.user && session.user.id) || null;
       $('acctEmail').textContent = state.userEmail; $('joinEmail').textContent = state.userEmail;
+      $('hdrSignOut').hidden = false;
       // Load data only on a real sign-in or page load with a stored session.
       // TOKEN_REFRESHED / USER_UPDATED fire hourly and must NOT wipe the screen mid-use.
       if(_ev==='SIGNED_IN' || _ev==='INITIAL_SESSION'){ loadTries=0; loadContext(); }
@@ -735,6 +746,7 @@
     } else {
       $('app').style.display='none'; $('join').style.display='none';
       $('clubBadge').style.display='none';
+      $('hdrSignOut').hidden = true;
       document.body.classList.remove('ro','coach','viewer');
       $('login').style.display='block'; $('loginNote').style.display='block';
     }
