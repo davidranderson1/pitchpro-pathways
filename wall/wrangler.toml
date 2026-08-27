@@ -1,0 +1,13 @@
+name = "pitchpro-preview-wall"
+main = "worker.js"
+compatibility_date = "2026-08-27"
+workers_dev = false
+keep_vars = true
+
+routes = [
+  { pattern = "pitchpropathways.com/*", zone_name = "pitchpropathways.com" },
+  { pattern = "www.pitchpropathways.com/*", zone_name = "pitchpropathways.com" }
+]
+
+[observability]
+enabled = true
