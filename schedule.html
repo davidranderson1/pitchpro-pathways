@@ -294,6 +294,7 @@
       <button class="primary" id="loginBtn" type="submit">Sign in</button>
       <div class="err" id="loginErr"></div>
       <div class="ok" id="loginOk"></div>
+      <a class="addVenue" id="forgotLink" href="#" style="display:inline-block;margin-top:12px;font-size:13px">Forgot password?</a>
     </form>
     <div class="authTgl" id="authTgl">Got an invite code but no account yet? <a id="authSwap">Create an account</a></div>
   </div>
@@ -593,6 +594,18 @@
   <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
 </div></div>
 
+<div id="recovModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <h3>Set a new password</h3>
+  <div class="sub">You followed a password-reset link, so you are signed in. Choose a new password to finish.</div>
+  <label for="rnpw">New password (min 8 characters)</label>
+  <input id="rnpw" type="password" autocomplete="new-password" minlength="8">
+  <label for="rnpw2">Repeat new password</label>
+  <input id="rnpw2" type="password" autocomplete="new-password" minlength="8">
+  <div class="smBtns"><button class="primary" id="rnSave" type="button">Save new password</button><button class="ghost" id="rnCancel" type="button">Not now</button></div>
+  <div class="err" id="rnErr"></div>
+  <div class="ok" id="rnOk"></div>
+</div></div>
+
 <div id="shareAppModal" class="pmod"><div class="smBox" style="max-width:420px">
   <h3>Share this app</h3>
   <div class="sub">Send the link, or let someone scan the code with their phone camera. The app itself is public — family data only appears after a sign-in, and accounts are created for family members only.</div>
@@ -717,6 +730,8 @@
       // Load data only on a real sign-in or page load with a stored session.
       // TOKEN_REFRESHED / USER_UPDATED fire hourly and must NOT wipe the screen mid-use.
       if(_ev==='SIGNED_IN' || _ev==='INITIAL_SESSION'){ loadTries=0; loadContext(); }
+      // Arrived via a password-reset email link: take them straight to setting a new password.
+      if(_ev==='PASSWORD_RECOVERY'){ setTimeout(showRecovery, 400); }
     } else {
       $('app').style.display='none'; $('join').style.display='none';
       $('clubBadge').style.display='none';
@@ -790,6 +805,45 @@
       if(r.error){ $('pwErr').textContent=r.error.message; return; }
       $('pwOk').textContent='Password changed.'; $('npw').value=''; $('npw2').value='';
     }).catch(function(){ $('pwBtn').disabled=false; $('pwErr').textContent='Network error — try again.'; });
+  });
+
+  /* forgot password (build 18) — Supabase recovery email; the link signs the
+     person in here and PASSWORD_RECOVERY routes them to the new-password form. */
+  $('forgotLink').addEventListener('click', function(e){
+    e.preventDefault();
+    $('loginErr').textContent=''; $('loginOk').textContent='';
+    var em=$('email').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){
+      $('loginErr').textContent='Type your account email above first, then tap “Forgot password?” again.';
+      $('email').focus(); return;
+    }
+    $('forgotLink').style.pointerEvents='none';
+    sb.auth.resetPasswordForEmail(em, { redirectTo:'https://davidranderson1.github.io/pitchpro-pathways/schedule.html' }).then(function(r){
+      $('forgotLink').style.pointerEvents='';
+      if(r && r.error){ $('loginErr').textContent=r.error.message; return; }
+      $('loginOk').textContent='If that address has an account, a reset link is on its way — check spam too. Opening the link signs you in here and asks for a new password.';
+    }).catch(function(){ $('forgotLink').style.pointerEvents=''; $('loginErr').textContent='Network error — try again.'; });
+  });
+  function showRecovery(){
+    // A modal, not the Account tab — it must work from every screen (app, join, any role).
+    $('rnErr').textContent=''; $('rnOk').textContent='';
+    mOpen('recovModal');
+    setTimeout(function(){ $('rnpw').focus(); }, 250);
+  }
+  $('rnCancel').addEventListener('click', function(){ mClose('recovModal'); });
+  $('rnSave').addEventListener('click', function(){
+    $('rnErr').textContent=''; $('rnOk').textContent='';
+    var a=$('rnpw').value, c=$('rnpw2').value;
+    if(a.length<8){ $('rnErr').textContent='Use at least 8 characters.'; return; }
+    if(a!==c){ $('rnErr').textContent='The two passwords do not match.'; return; }
+    $('rnSave').disabled=true;
+    sb.auth.updateUser({ password:a }).then(function(r){
+      $('rnSave').disabled=false;
+      if(r && r.error){ $('rnErr').textContent=r.error.message; return; }
+      $('rnpw').value=''; $('rnpw2').value='';
+      $('rnOk').textContent='Password changed — you are signed in.';
+      setTimeout(function(){ mClose('recovModal'); }, 1400);
+    }).catch(function(){ $('rnSave').disabled=false; $('rnErr').textContent='Network error — try again.'; });
   });
 
   /* ---------- tabs ---------- */
