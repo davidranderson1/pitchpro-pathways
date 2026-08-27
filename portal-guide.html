@@ -145,6 +145,21 @@
   .seg2 button.on{background:var(--lock);color:#170f2b;}
   .nav-item:focus-visible,.child-chip:focus-visible,.pilldot:focus-visible,.seg button:focus-visible,.seg2 button:focus-visible,.lang button:focus-visible,.btn:focus-visible,.btn-sm:focus-visible,.aud-opt:focus-visible{outline:2px solid var(--grass);outline-offset:2px;}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}}
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#1b2a21;color:var(--white);border:1px solid rgba(46,224,138,.4);border-radius:12px;padding:12px 18px;font-size:13.5px;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:300;max-width:calc(100vw - 32px);}
+  #toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+  .earn-hero{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-bottom:16px;}
+  @media(max-width:700px){.earn-hero{grid-template-columns:1fr;}}
+  .earn-hero .s{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .earn-hero .s.big{background:linear-gradient(135deg,rgba(46,224,138,.12),rgba(23,176,106,.05));border-color:rgba(46,224,138,.35);}
+  .earn-hero .s b{display:block;font-family:var(--head);font-size:28px;font-weight:900;}
+  .earn-hero .s span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .earn-hero .s small{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;}
+  .bar{height:8px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden;margin-top:10px;}
+  .bar i{display:block;height:100%;background:var(--grass);}
+  .split{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-top:8px;flex-wrap:wrap;}
+  .split b{color:var(--white);}
+  .filt{width:100%;background:var(--pitch);border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--white);font-family:var(--body);font-size:13.5px;margin-bottom:12px;}
+  .tag.pay{background:rgba(46,224,138,.14);color:var(--grass);} .tag.hold{background:rgba(255,184,77,.14);color:var(--warn);}
 </style>
 </head>
 <body>
@@ -167,11 +182,12 @@
     <div class="side-brand"><span class="crest">🏆</span> PITCHPRO<br>GUIDE</div>
     <div class="side-me"><b>Coach Nick</b>Soccer Agility Guide · Calgary</div>
     <div class="nav-item active" data-s="today" data-i18n="gToday">Today</div>
-    <div class="nav-item" data-s="moments">Player Moments <span class="badge-dot">2</span></div>
+    <div class="nav-item" data-s="moments">Player Moments <span class="badge-dot" id="momBadge">2</span></div>
     <div class="nav-item" data-s="players" data-i18n="gNotes">Player Notes</div>
     <div class="nav-item" data-s="avail" data-i18n="gAvail">Availability</div>
     <div class="nav-item" data-s="showcase" data-i18n="gShowcase">My Showcase</div>
     <div class="nav-item" data-s="views">Who Viewed You <span class="badge-dot" style="background:var(--lock);color:#170f2b;">PLUS</span></div>
+    <div class="nav-item" data-s="earnings" data-i18n="gEarn">My Earnings</div>
     <div class="nav-item" data-s="record" data-i18n="gRecord">My Record</div>
     <div class="side-foot"><b style="color:var(--lock);">Everything you write is on the record.</b><br>Comments, reactions and notes are copied to the parent and stored in the safeguarding log.</div>
   </aside>
@@ -189,15 +205,15 @@
       <div class="note-strip"><b>Reminder:</b> there is no private channel to a player anywhere on PitchPro. Direct messages go to parents. If a player shares a moment with you, you can react and comment on that moment — and every word is copied to the parent as you write it and kept in the safeguarding log.</div>
       <div class="card">
         <h3 data-i18n="gSessions">Today's Sessions</h3>
-        <div class="row"><div><div class="who">4:30 PM · Elle (U12)</div><div class="meta">Agility · Total Athlete wk 5 · focus: COD under pressure · note: mild left-hip asymmetry (see report)</div></div><span class="tag">Confirmed</span></div>
+        <div class="row"><div><div class="who">4:30 PM · Nora (U12)</div><div class="meta">Agility · Total Athlete wk 5 · focus: COD under pressure · note: mild left-hip asymmetry (see report)</div></div><span class="tag">Confirmed</span></div>
         <div class="row"><div><div class="who">5:30 PM · Small group (U10 ×4)</div><div class="meta">Footwork circuit · parents pitchside</div></div><span class="tag">Confirmed</span></div>
         <div class="row"><div><div class="who">6:30 PM · Ava (U14)</div><div class="meta">First session — meet &amp; move · intake notes in profile</div></div><span class="tag amber">New Player</span></div>
       </div>
       <div class="card">
         <h3 data-i18n="gAttention">Needs Your Attention</h3>
-        <div class="row"><div><div class="who">2 new moments from your players</div><div class="meta">Elle ×1 · Ava ×1 · shared with you by the player</div></div><span class="tag" style="cursor:pointer;" onclick="go('moments')">Open</span></div>
-        <div class="row"><div><div class="who">Post-session note due — Elle (Aug 13)</div><div class="meta">Parents see notes within 24h of session</div></div><span class="tag amber">Due</span></div>
-        <div class="row"><div><div class="who">Reassessment input — Elle</div><div class="meta">Add your agility section to the Player Report before Sep 11 (Sandro's screening same day)</div></div><span class="tag amber">Sep 07</span></div>
+        <div class="row"><div><div class="who">2 new moments from your players</div><div class="meta">Nora ×1 · Ava ×1 · shared with you by the player</div></div><span class="tag" style="cursor:pointer;" onclick="go('moments')">Open</span></div>
+        <div class="row"><div><div class="who">Post-session note due — Nora (Aug 13)</div><div class="meta">Parents see notes within 24h of session</div></div><span class="tag amber">Due</span></div>
+        <div class="row"><div><div class="who">Reassessment input — Nora</div><div class="meta">Add your agility section to the Player Report before Sep 11 (Sandro's screening same day)</div></div><span class="tag amber">Sep 07</span></div>
       </div>
     </div>
 
@@ -213,7 +229,7 @@
       <div class="moment">
         <div class="m-head">
           <span class="avatar">E</span>
-          <span><span class="who">Elle · U12</span><br><span class="when">Sat 16 Aug, 11:20 AM · tagged: match day</span></span>
+          <span><span class="who">Nora · U12</span><br><span class="when">Sat 16 Aug, 11:20 AM · tagged: match day</span></span>
           <span class="right"><span class="tag">Your player · 14 sessions</span></span>
         </div>
         <div class="m-media"><span>Photo</span></div>
@@ -221,13 +237,13 @@
           <p>First start in midfield. We lost 2–1 but I completed my first proper switch of play.</p>
         </div>
         <div class="m-comment">
-          <div class="cm"><b>You</b><span class="stamp">Sat 2:10 PM · copied to Alma · logged</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div>
+          <div class="cm"><b>You</b><span class="stamp">Sat 2:10 PM · copied to Marta · logged</span><br>That switch is exactly what we drilled Thursday. Do it again on Tuesday and we'll add the first-time option.</div>
         </div>
         <div class="m-foot">
           <button class="btn btn-ghost btn-sm2" data-i18n="gApplaud">👏 Applaud</button>
           <button class="btn btn-ghost btn-sm2" data-i18n="gComment">💬 Comment</button>
-          <button class="btn btn-ghost btn-sm2" data-i18n="gAttach">📎 Attach to Elle's report</button>
-          <span style="margin-left:auto;font-size:12px;color:var(--muted);">Parent: Alma · sees everything here</span>
+          <button class="btn btn-ghost btn-sm2" data-i18n="gAttach">📎 Attach to Nora's report</button>
+          <span style="margin-left:auto;font-size:12px;color:var(--muted);">Parent: Marta · sees everything here</span>
         </div>
       </div>
 
@@ -252,8 +268,8 @@
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Every comment you have ever written to a player, oldest retained for 7 years. You cannot edit or delete these — neither can we, without a logged safeguarding action.</p>
         <div class="tw"><table>
           <tr><th>When</th><th>Player</th><th>Moment</th><th>Parent copy</th><th>Status</th></tr>
-          <tr><td>Sat 2:10 PM</td><td>Elle</td><td>First start in midfield</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
-          <tr><td>Aug 9</td><td>Elle</td><td>Shuttle PB</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+          <tr><td>Sat 2:10 PM</td><td>Nora</td><td>First start in midfield</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
+          <tr><td>Aug 9</td><td>Nora</td><td>Shuttle PB</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
           <tr><td>Aug 01</td><td>Sofia</td><td>Weak-foot drill</td><td>Delivered ✓</td><td><span class="tag">Clear</span></td></tr>
         </table></div>
       </div>
@@ -263,7 +279,7 @@
       <h2 data-i18n="gNotes">Player Notes</h2>
       <div class="sub">Your section of the standardized PitchPro Player Report. Notes are visible to parents — write to them.</div>
       <div class="card">
-        <h3>Elle · U12 · Total Athlete wk 5</h3>
+        <h3>Nora · U12 · Total Athlete wk 5</h3>
         <div class="row"><div><div class="who">Aug 13 — Session note</div><div class="meta">"First step off the left foot noticeably quicker. Testing under pressure next session."</div></div><span class="tag">Posted</span></div>
         <div class="row"><div><div class="who">Aug 11 — Session note</div><div class="meta">"Great energy. 5-10-5 at 5.9s — best yet. Left-foot work continues."</div></div><span class="tag">Posted</span></div>
         <div class="row"><div><div class="who">Aug 16 — Attached from a player moment</div><div class="meta">"First start in midfield" · switch of play · evidence for the agility section</div></div><span class="tag blue">Attached</span></div>
@@ -273,7 +289,7 @@
       </div>
       <div class="card">
         <h3>Report Contribution — due Sep 07</h3>
-        <div class="row"><div><div class="who">Agility &amp; Speed section · Elle</div><div class="meta">Your standardized metrics: 5-10-5, 10m sprint, COD rating + summary paragraph</div></div><span class="tag amber">Open</span></div>
+        <div class="row"><div><div class="who">Agility &amp; Speed section · Nora</div><div class="meta">Your standardized metrics: 5-10-5, 10m sprint, COD rating + summary paragraph</div></div><span class="tag amber">Open</span></div>
       </div>
     </div>
 
@@ -391,9 +407,9 @@
 
       <!-- DEMO ONLY: this control must not ship. In the product a guide sees one tier,
            decided server-side. It exists here so the free and paid states can be compared. -->
-      <div class="seg2" data-demo-only="true">
-        <button class="on" onclick="tier('free',this)" data-i18n="gFree">Free — what you see today</button>
-        <button onclick="tier('plus',this)" data-i18n="gPlusPrev">PitchPro Plus — preview</button>
+      <div class="seg2" data-demo-only="true" role="group" aria-label="Tier preview (demo only)">
+        <button class="on" aria-pressed="true" onclick="tier('free',this)" data-i18n="gFree">Free — what you see today</button>
+        <button aria-pressed="false" onclick="tier('plus',this)" data-i18n="gPlusPrev">PitchPro Plus — preview</button>
       </div>
       <p style="font-size:12px;color:var(--muted);margin:-6px 0 16px;"><b style="color:var(--warn);">Demo control.</b> Real guides see one tier, decided on the server. This switch exists so you can compare the two states.</p>
 
@@ -424,10 +440,11 @@
 
       <div id="plus-view" style="display:none;">
         <div class="note-strip lock"><b>PitchPro Plus preview.</b> Names shown for every viewer who is identifiable. Viewers who chose to browse privately stay private — a subscription buys you information, not other people's privacy.</div>
+        <input class="filt" id="vwFilter" type="search" placeholder="Filter viewers by name, role or town…" aria-label="Filter viewers">
         <div class="card">
           <h3>Identified · 12 of 31</h3>
           <div class="vw"><span class="av2" style="background:rgba(255,184,77,.18);color:var(--warn);">MK</span><span class="txt"><b>Martin Kovač</b><span>Academy scout · Hajduk Split youth setup · first view 1 Sep, most recent yesterday · watched your featured video to the end</span></span><span class="end"><span class="n">4</span><span class="l">Views</span></span></div>
-          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">JW</span><span class="txt"><b>Jen Whitfield</b><span>Parent of Ava, U14 · your player since 18 Aug · revealed her name when she enquired</span></span><span class="end"><span class="n">2</span><span class="l">Views</span></span></div>
+          <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">JW</span><span class="txt"><b>Jen Whitfield</b><span>Parent of Ava, U14 · first session with you today · revealed her name when she enquired</span></span><span class="end"><span class="n">2</span><span class="l">Views</span></span></div>
           <div class="vw"><span class="av2" style="background:rgba(77,159,255,.18);color:var(--blue);">RD</span><span class="txt"><b>Rob Delaney</b><span>Parent of Sofia, U12 · enquired 30 Jul</span></span><span class="end"><span class="n">3</span><span class="l">Views</span></span></div>
           <div class="vw"><span class="av2" style="background:linear-gradient(135deg,#2f6b4a,#17b06a);">SR</span><span class="txt"><b>Sandro Rajic</b><span>Guide on the platform · guides are always identifiable to each other</span></span><span class="end"><span class="n">1</span><span class="l">View</span></span></div>
         </div>
@@ -454,6 +471,56 @@
       </div>
     </div>
 
+    <!-- MY EARNINGS — design. Sample figures. Money flows through PitchPro: families pay PitchPro, PitchPro pays the guide. -->
+    <div class="screen" id="s-earnings">
+      <h2 data-i18n="gEarn">My Earnings</h2>
+      <div class="sub">What you have earned, what is on its way, and exactly how each session was priced. Families pay PitchPro; PitchPro pays you — you never chase a payment.</div>
+
+      <div class="earn-hero">
+        <div class="s big"><span>Next payout · Fri 22 Aug</span><b>$612.00</b><small>9 sessions cleared · goes to your bank ending 4471 · usually lands the same day</small></div>
+        <div class="s"><span>August so far</span><b>$1,084.00</b><small>16 sessions · 14 delivered · 2 booked</small>
+          <div class="bar" aria-hidden="true"><i style="width:68%"></i></div><small>68% of your July total</small></div>
+        <div class="s"><span>Pending clearance</span><b>$136.00</b><small>2 sessions · clears 24 h after each session is marked complete</small></div>
+      </div>
+
+      <div class="card">
+        <h3>How a session is priced</h3>
+        <div class="row"><div><div class="who">Your rate · 1:1 agility (60 min)</div><div class="meta">Set by you in Availability · families see the full price before they book</div></div><b>$85.00</b></div>
+        <div class="row"><div><div class="who">PitchPro fee</div><div class="meta">Booking, payment, insurance, safeguarding record, calendar sync · 20% of your rate</div></div><span style="color:var(--muted)">− $17.00</span></div>
+        <div class="row"><div><div class="who">You receive</div><div class="meta">Paid out every Friday for sessions completed and cleared by Thursday midnight</div></div><b style="color:var(--grass)">$68.00</b></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Small groups are priced per player (U10 ×4 at $32 each = $128 gross, $102.40 to you). Cancellations inside 24 hours pay you 50%; no-shows pay you in full. The fee percentage is a placeholder for the design — see the pricing questions P1–P5.</p>
+      </div>
+
+      <div class="card">
+        <h3>This month, session by session</h3>
+        <input class="filt" id="earnFilter" type="search" placeholder="Filter by player, date or status…" aria-label="Filter sessions">
+        <div class="tw"><table id="earnTable">
+          <tr><th>Date</th><th>Session</th><th>Gross</th><th>Fee</th><th>To you</th><th>Status</th></tr>
+          <tr><td>Aug 18</td><td>Nora · U12 · 1:1 agility</td><td>$85.00</td><td>$17.00</td><td>$68.00</td><td><span class="tag hold">Clears Aug 19</span></td></tr>
+          <tr><td>Aug 18</td><td>Small group U10 ×4 · footwork</td><td>$128.00</td><td>$25.60</td><td>$102.40</td><td><span class="tag hold">Clears Aug 19</span></td></tr>
+          <tr><td>Aug 18</td><td>Ava · U14 · first session</td><td>$85.00</td><td>$17.00</td><td>$68.00</td><td><span class="tag grey">Booked</span></td></tr>
+          <tr><td>Aug 16</td><td>Sofia · U12 · 1:1 agility</td><td>$85.00</td><td>$17.00</td><td>$68.00</td><td><span class="tag">In Fri payout</span></td></tr>
+          <tr><td>Aug 13</td><td>Nora · U12 · 1:1 agility</td><td>$85.00</td><td>$17.00</td><td>$68.00</td><td><span class="tag">In Fri payout</span></td></tr>
+          <tr><td>Aug 11</td><td>Nora · U12 · 1:1 agility</td><td>$85.00</td><td>$17.00</td><td>$68.00</td><td><span class="tag">In Fri payout</span></td></tr>
+          <tr><td>Aug 09</td><td>Small group U10 ×3 · footwork</td><td>$96.00</td><td>$19.20</td><td>$76.80</td><td><span class="tag">In Fri payout</span></td></tr>
+          <tr><td>Aug 08</td><td>Sofia · U12 · cancelled &lt; 24 h</td><td>$42.50</td><td>$8.50</td><td>$34.00</td><td><span class="tag">In Fri payout</span></td></tr>
+          <tr><td>Aug 08</td><td>Payout · 7 sessions</td><td></td><td></td><td>$476.00</td><td><span class="tag pay">Paid Aug 08</span></td></tr>
+          <tr><td>Aug 01</td><td>Payout · 6 sessions</td><td></td><td></td><td>$408.00</td><td><span class="tag pay">Paid Aug 01</span></td></tr>
+        </table></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Every line matches a booking the family can see on their side, so there is never a figure here that a parent cannot check against theirs.</p>
+      </div>
+
+      <div class="card">
+        <h3>Payout details</h3>
+        <div class="row"><div><div class="who">Bank account</div><div class="meta">•••• 4471 · verified 3 Mar 2026</div></div><button class="btn btn-ghost btn-sm2" data-inert="Bank details are changed in the real product, not in this preview.">Change</button></div>
+        <div class="row"><div><div class="who">Payout schedule</div><div class="meta">Weekly on Friday · minimum $20 · nothing to do on your side</div></div><span class="tag">Weekly</span></div>
+        <div class="row"><div><div class="who">Statements</div><div class="meta">Monthly PDF for your records · annual summary for tax in January</div></div><button class="btn btn-ghost btn-sm2" data-inert="Statements download in the real product.">Download July</button></div>
+        <div class="row"><div><div class="who">Year to date</div><div class="meta">Jan – Aug 2026 · 118 sessions · $8,024.00 to you</div></div><span class="tag blue">2026</span></div>
+      </div>
+
+      <div class="warnbox"><b>What this screen deliberately does not do.</b> No leaderboard against other guides, no "earn more by…" nudges, no per-player revenue ranking. A guide should know their own money to the cent and never be shown a child as a revenue line.</div>
+    </div>
+
     <div class="screen" id="s-record">
       <h2 data-i18n="gRecord">My Record</h2>
       <div class="sub">What PitchPro holds about you, and what families see before they book.</div>
@@ -466,7 +533,7 @@
       </div>
       <div class="card">
         <h3 data-i18n="gPlayers">Players who include you</h3>
-        <div class="row"><div><div class="who">Elle · U12</div><div class="meta">Parent approved 12 May · player has you on by default</div></div><span class="tag">Comment + react</span></div>
+        <div class="row"><div><div class="who">Nora · U12</div><div class="meta">Parent approved 12 May · player has you on by default</div></div><span class="tag">Comment + react</span></div>
         <div class="row"><div><div class="who">Sofia · U12</div><div class="meta">Parent approved 30 Jul · react only</div></div><span class="tag blue">React only</span></div>
         <div class="row"><div><div class="who">Ava · U14</div><div class="meta">Pending first completed session</div></div><span class="tag grey">View only</span></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You cannot change anything on this list. Parents grant it and players narrow it.</p>
@@ -475,7 +542,7 @@
         <h3 data-i18n="gLinks">Promotion links shared with you</h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">When you stop training a player, your access to their moments ends with the working relationship. If the family wants you to keep following along — or wants your opinion on a trial — they send you a private link with an expiry date on it. Your name is printed across it. Do not forward one.</p>
         <div class="row"><div><div class="who">Marco · U13 · former player</div><div class="meta">Sent by the parent 30 Aug · expires 29 Sep · 5 moments · no report</div></div><span class="tag">Open</span></div>
-        <div class="row"><div><div class="who">Elle · U12</div><div class="meta">Not needed — you are in her circle and see her moments directly</div></div><span class="tag grey">n/a</span></div>
+        <div class="row"><div><div class="who">Nora · U12</div><div class="meta">Not needed — you are in her circle and see her moments directly</div></div><span class="tag grey">n/a</span></div>
         <div class="row"><div><div class="who">Jonah · U15 · former player</div><div class="meta">Link expired 2 Jul · ask the parent if you would like another</div></div><span class="tag grey">Expired</span></div>
         <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">You cannot request a link from a player, only from a parent, and every time you open one the parent and the player both see it.</p>
       </div>
@@ -486,19 +553,50 @@
 </div>
 
 <script>
-function go(s){
+function toast(msg){
+  var t=document.getElementById('toast'); if(!t){ t=document.createElement('div'); t.id='toast'; t.setAttribute('role','status'); document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('on'); },2600);
+}
+function go(s, silent){
+  if(!document.getElementById('s-'+s)) return;
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   var n=document.querySelector('.nav-item[data-s="'+s+'"]'); if(n) n.classList.add('active');
   document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
   document.getElementById('s-'+s).classList.add('on');
+  if(s==='moments'){ var b=document.getElementById('momBadge'); if(b) b.remove(); }   // unread badge clears once seen
+  if(!silent) history.replaceState(null,'','#s='+s);                                  // deep link: portal-guide.html#s=earnings
   window.scrollTo(0,0);
 }
 document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>go(n.dataset.s)));
 function tier(t,btn){
-  document.querySelectorAll('.seg2 button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('.seg2 button').forEach(b=>{ b.classList.remove('on'); b.setAttribute('aria-pressed','false'); });
+  btn.classList.add('on'); btn.setAttribute('aria-pressed','true');
   document.getElementById('free-view').style.display = (t==='free')?'block':'none';
   document.getElementById('plus-view').style.display = (t==='plus')?'block':'none';
 }
+/* deep links: #s=<screen> opens that screen (and skips the demo login) */
+(function(){
+  var m=location.hash.match(/s=([a-z]+)/);
+  if(m && document.getElementById('s-'+m[1])){
+    document.getElementById('login').style.display='none'; document.getElementById('app').style.display='block'; go(m[1], true);
+  }
+  window.addEventListener('hashchange', function(){ var m2=location.hash.match(/s=([a-z]+)/); if(m2) go(m2[1], true); });
+})();
+/* inert controls say so instead of doing nothing */
+document.querySelectorAll('button').forEach(function(b){
+  if(b.closest('.lang') || b.closest('.seg2') || b.closest('.login-card') || b.getAttribute('onclick')) return;
+  b.addEventListener('click', function(){ toast(b.dataset.inert || 'Not wired up in this preview — "'+b.textContent.trim()+'" works in the real product.'); });
+});
+/* simple filters */
+function wireFilter(inputId, rowSel){
+  var inp=document.getElementById(inputId); if(!inp) return;
+  inp.addEventListener('input', function(){
+    var q=inp.value.trim().toLowerCase();
+    document.querySelectorAll(rowSel).forEach(function(r){ r.style.display = (!q || r.textContent.toLowerCase().indexOf(q)>-1) ? '' : 'none'; });
+  });
+}
+wireFilter('vwFilter', '#plus-view .vw');
+wireFilter('earnFilter', '#earnTable tr:not(:first-child)');
 
 /* keyboard access for the div-based controls in this mockup */
 document.querySelectorAll('.nav-item,.child-chip,.pilldot,.aud-opt').forEach(function(el){
@@ -515,9 +613,10 @@ document.querySelectorAll('.pilldot').forEach(function(p){
 
 const i18n={en:{},hr:{
  gApplaud:'👏 Pljesak',
- gAttach:'📎 Priloži uz Ellin izvještaj',
+ gAttach:'📎 Priloži uz Norin izvještaj',
  gAttention:'Traži vašu pozornost',
  gAvail:'Dostupnost',
+ gEarn:'Moja zarada',
  gComment:'💬 Komentiraj',
  gFree:'Besplatno — što danas vidite',
  gHistory:'Povijest vaših komentara',
