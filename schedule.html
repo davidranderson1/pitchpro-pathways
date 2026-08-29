@@ -455,6 +455,18 @@
           <div class="ok" id="chOk"></div>
           <div class="err" id="chErr"></div>
         </div>
+        <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px" id="nudgeWrap">
+          <p class="meta" style="margin-bottom:6px"><b style="color:var(--txt)">Reminders.</b> A gentle nudge after a session or game if nothing has been captured yet — at most one that evening and one the next morning, and they stop the moment something is posted.</p>
+          <label style="display:flex;align-items:center;gap:9px;font:700 14px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt);margin:10px 0 6px">
+            <input type="checkbox" id="ngMoments" checked style="width:18px;height:18px;accent-color:var(--green)"> Remind us to post a moment after each session
+          </label>
+          <label style="display:flex;align-items:center;gap:9px;font:700 14px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt);margin:10px 0 6px">
+            <input type="checkbox" id="ngStats" checked style="width:18px;height:18px;accent-color:var(--green)"> Remind us to enter match scores &amp; stats
+          </label>
+          <div class="btnrow" style="margin-top:12px"><a class="gcal" href="#" id="ngSave">Save reminders</a></div>
+          <div class="ok" id="ngOk"></div>
+          <div class="err" id="ngErr"></div>
+        </div>
       </div>
       <div class="card" style="margin-top:14px" id="feedCard">
         <h2 class="scr" style="margin-top:0">Sync with Google Calendar</h2>
@@ -2418,8 +2430,27 @@
         $('chSmsNum').value=parts[0]||'';
         if(parts[1]){ var sel=$('chSmsCarrier'); for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===parts[1]) sel.value=parts[1]; } }
       }
+      /* engagement nudges (default ON — unchecked only if explicitly saved off) */
+      $('ngMoments').checked = d.nudge_moments !== false;
+      $('ngStats').checked = d.nudge_stats !== false;
     }).catch(function(){});
   }
+  $('ngSave').addEventListener('click', function(e){
+    e.preventDefault(); $('ngErr').textContent=''; $('ngOk').textContent='';
+    sb.auth.getSession().then(function(r){
+      var uid=r&&r.data&&r.data.session&&r.data.session.user?r.data.session.user.id:null;
+      if(!uid){ $('ngErr').textContent='Not signed in.'; return; }
+      return sb.from('notification_channels').upsert({
+        user_id:uid,
+        nudge_moments:$('ngMoments').checked,
+        nudge_stats:$('ngStats').checked,
+        updated_at:new Date().toISOString()
+      },{onConflict:'user_id'}).then(function(r2){
+        if(r2&&r2.error){ $('ngErr').textContent=r2.error.message; return; }
+        $('ngOk').textContent='Saved — reminders '+($('ngMoments').checked||$('ngStats').checked?'on':'off')+' for your account.';
+      });
+    }).catch(function(err){ $('ngErr').textContent='Could not save: '+(err&&err.message?err.message:err); });
+  });
   $('chSave').addEventListener('click', function(e){
     e.preventDefault(); $('chErr').textContent=''; $('chOk').textContent='';
     var emailOn=$('chEmailOn').checked, email=$('chEmail').value.trim();
