@@ -604,6 +604,7 @@
   <div class="btnrow" id="ppLoginRow" style="margin-top:8px"><a class="gcal" href="#" id="ppLogin">Give this player their own login</a></div>
   <div class="ok" id="ppLoginMsg"></div>
   <input type="file" id="ppFile" accept="image/*" hidden>
+  <input type="file" id="teamPhotoFile" accept="image/*" hidden>
   <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
 </div></div>
 
@@ -1299,7 +1300,13 @@
           var pl=[]; try{ pl=(typeof ros.players==='string')?JSON.parse(ros.players):(ros.players||[]); }catch(e){ pl=[]; }
           if(pl.length){
             var rosCo=coachFor(ros.team_label, t.club);
-            h+='<div class="card" style="margin:0 0 18px"><div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · shirt numbers shown when known'
+            h+='<div class="card" style="margin:0 0 18px">';
+            if(ros.photo_url){
+              h+='<img class="teamPhoto" data-roster="'+esc(ros.id)+'" src="'+esc(ros.photo_url)+'" alt="Team photo" style="width:100%;border-radius:12px;margin-bottom:10px;display:block'+(state.canEdit?';cursor:pointer':'')+'"'+(state.canEdit?' title="Tap to change the team photo" role="button" tabindex="0"':'')+'>';
+            } else if(state.canEdit){
+              h+='<div class="teamPhoto" data-roster="'+esc(ros.id)+'" role="button" tabindex="0" style="border:1px dashed var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px;color:var(--muted);font:600 12.5px Inter,sans-serif;cursor:pointer">📷 Add a team photo</div>';
+            }
+            h+='<div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · shirt numbers shown when known'
               +(rosCo?' · Coach <span class="coachLink" data-coach="'+esc(rosCo.id)+'" role="button" tabindex="0" style="color:var(--txt);font-weight:700">'+esc(rosCo.first_name+' '+rosCo.last_name)+'</span>':'')+'</div>';
             h+='<div class="rosterGrid">';
             pl.forEach(function(p){
@@ -1316,8 +1323,34 @@
     $('tourBody').querySelectorAll('.scorebtn').forEach(function(b){
       b.addEventListener('click', function(){ openStatModal({fixture_id:b.dataset.fx}); });
     });
+    $('tourBody').querySelectorAll('.teamPhoto').forEach(function(el){
+      el.addEventListener('click', function(){ if(!state.canEdit) return; teamPhotoTarget=el.dataset.roster; $('teamPhotoFile').click(); });
+    });
     bindEvExtras($('tourBody'));
   }
+  var teamPhotoTarget=null;
+  $('teamPhotoFile').addEventListener('change', function(){
+    var f=this.files[0]; this.value='';
+    if(!f||!teamPhotoTarget||!state.canEdit) return;
+    var rid=teamPhotoTarget; teamPhotoTarget=null;
+    var rd=new FileReader();
+    rd.onload=function(){
+      var img=new Image();
+      img.onload=function(){
+        var w=Math.min(img.width,900), c=document.createElement('canvas');
+        c.width=w; c.height=Math.round(img.height*(w/img.width))||1;
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        var data=c.toDataURL('image/jpeg',0.8);
+        sb.from('rosters').update({photo_url:data}).eq('id', rid).then(function(r){
+          if(r&&r.error) return;
+          (state.rosters||[]).forEach(function(rr){ if(rr.id===rid) rr.photo_url=data; });
+          renderTournaments();
+        });
+      };
+      img.src=rd.result;
+    };
+    rd.readAsDataURL(f);
+  });
 
   /* ---------- stats ---------- */
   function resultFor(key,id){ for(var i=0;i<state.results.length;i++){ if(state.results[i][key]===id) return state.results[i]; } return null; }
