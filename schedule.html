@@ -187,9 +187,9 @@
   .famAv.meAv{cursor:pointer}
   body.ro .scorebtn,body.ro .addVenue,body.ro .confUnc,body.ro #ppFav a,body.ro .famAv.meAv,body.ro #ppAvatar{pointer-events:none}
   body.ro .scorebtn:not(.has){display:none} body.ro .addVenue{display:none} body.ro .confUnc{text-decoration:none;cursor:default}
-  body.coach .tabs button[data-s="stats"],body.coach #notifCard,body.coach #feedCard,body.coach #inboxCard,body.coach #fPlayers,body.coach .fsep{display:none}
+  body.coach .tabs button[data-s="stats"],body.coach #notifCard,body.coach #feedCard,body.coach #inboxCard,body.coach #fPlayers,body.coach #tfPlayers,body.coach .fsep{display:none}
   body.viewer #notifCard{display:none}
-  body.child #famCard .btnrow,body.child #feedCard,body.child #inboxCard,body.child #chanWrap,body.child #fPlayers,body.child .fsep,body.child #pwForm{display:none}
+  body.child #famCard .btnrow,body.child #feedCard,body.child #inboxCard,body.child #chanWrap,body.child #fPlayers,body.child #tfPlayers,body.child .fsep,body.child #pwForm{display:none}
   body.coach .tabs button[data-s="journey"]{display:none}
   .mo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px}
   .mo.pending{border-style:dashed;border-color:rgba(255,190,70,.5)}
@@ -244,7 +244,8 @@
   tr:last-child td{border-bottom:0}
   td.slot{white-space:nowrap;font-weight:700}
   tr.knock td{color:var(--green);font-weight:700}
-  .grpA{color:var(--green)} .grpB{color:var(--blue)}
+  .grpA{color:var(--green)} .grpB{color:var(--blue)} .grpC{color:var(--amber)} .grpD{color:#d9a5ff}
+  .chip.live{background:rgba(46,224,138,.16);color:var(--green)} .tfx{margin:10px 0 8px}
   /* messages */
   .msg{margin-bottom:14px}
   .msg .head{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
@@ -367,6 +368,7 @@
         <button data-t="up" class="on" type="button">Upcoming</button>
         <button data-t="past" type="button">Past</button>
       </div>
+      <div class="filters" id="tourFilters"><div class="fgroup" id="tfPlayers"><span class="flabel">Player</span></div></div>
       <div id="tourBody"></div>
     </section>
 
@@ -1010,7 +1012,8 @@
     var ch='<span class="flabel">Club</span><button class="fchip blue" data-f="all">All</button>';
     clubs().forEach(function(c){ ch+='<button class="fchip blue" data-f="'+esc(c)+'">'+esc(c)+'</button>'; });
     $('fClubs').innerHTML=ch;
-    $('fPlayers').querySelectorAll('.fchip').forEach(function(b){
+    if($('tfPlayers')) $('tfPlayers').innerHTML=ph;
+    document.querySelectorAll('#fPlayers .fchip, #tfPlayers .fchip').forEach(function(b){
       b.addEventListener('click', function(){ state.fPlayer=b.dataset.f; store('fPlayer',state.fPlayer); paintFilters(); renderSchedule(); renderTournaments(); });
     });
     $('fClubs').querySelectorAll('.fchip').forEach(function(b){
@@ -1019,7 +1022,7 @@
     paintFilters();
   }
   function paintFilters(){
-    $('fPlayers').querySelectorAll('.fchip').forEach(function(b){ b.classList.toggle('on', b.dataset.f===state.fPlayer); });
+    document.querySelectorAll('#fPlayers .fchip, #tfPlayers .fchip').forEach(function(b){ b.classList.toggle('on', b.dataset.f===state.fPlayer); });
     $('fClubs').querySelectorAll('.fchip').forEach(function(b){ b.classList.toggle('on', b.dataset.f===state.fClub); });
   }
   function visibleEvents(){
@@ -1223,17 +1226,32 @@
     state.fixtures.forEach(function(f){ if(f.tournament_id===t.id && f.match_date && (!m || f.match_date>m)) m=f.match_date; });
     return m;
   }
+  function tourMinDate(t){
+    var m=t.event_date||null;
+    state.fixtures.forEach(function(f){ if(f.tournament_id===t.id && f.match_date && (!m || f.match_date<m)) m=f.match_date; });
+    return m;
+  }
+  /* "Today" in the club's time zone, so a phone abroad still flips Upcoming→Past on the Croatian morning after the last game. */
+  function todayZagreb(){ try{ return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()); }catch(e){ return iso(new Date()); } }
+  function tourPlayer(t){
+    var m=((t.generation||'')+' '+(t.name||'')+' '+(t.team_label||'')).match(/20\d{2}/); if(!m) return null;
+    var tp=null; state.players.forEach(function(sp){ if(sp.team_label===m[0]) tp=sp; }); return tp;
+  }
+  state.tourFx = state.tourFx || {};
   function fmtDayLong(dIso){ var d=parseISO(dIso); return DOW[(d.getDay()+6)%7]+' · '+fmtShort(d); }
   function renderTournaments(){
-    var today=iso(new Date());
+    var today=todayZagreb();
     var ts=state.tours.filter(function(t){ return state.fClub==='all' || t.club===state.fClub; });
+    if(state.fPlayer!=='all') ts=ts.filter(function(t){ var tp=tourPlayer(t); return !tp || tp.id===state.fPlayer; });
     ts=ts.filter(function(t){
-      var m=tourMaxDate(t);
-      var end=m ? iso(addDays(parseISO(m),2)) : null; // weekend tournaments span a few days
-      var isPast = end ? (end < today) : false;       // undated = upcoming
+      var end=tourMaxDate(t);                    // last known day: latest fixture date, else the announced date
+      var isPast = end ? (end < today) : false;  // past from the morning after the last game; undated = upcoming
       return state.tourView==='past' ? isPast : !isPast;
     });
-    if(!ts.length){ $('tourBody').innerHTML='<div class="empty">No '+(state.tourView==='past'?'past':'upcoming')+' tournaments'+(state.fClub!=='all'?' for '+esc(state.fClub):'')+' — try the Upcoming/Past toggle above.</div>'; return; }
+    if(!ts.length){
+      var who=null; if(state.fPlayer!=='all') state.players.forEach(function(sp){ if(sp.id===state.fPlayer) who=sp.first_name; });
+      $('tourBody').innerHTML='<div class="empty">No '+(state.tourView==='past'?'past':'upcoming')+' tournaments'+(who?' for '+esc(who):'')+(state.fClub!=='all'?' at '+esc(state.fClub):'')+' — try the Upcoming/Past toggle or the filters above.</div>'; return;
+    }
     ts.sort(function(a,b){ var x=a.event_date||'9999', y=b.event_date||'9999'; return state.tourView==='past' ? (x<y?1:-1) : (x<y?-1:1); });
     var multiClub = clubs().length>1;
     var h='';
@@ -1241,9 +1259,11 @@
       h+='<div class="card msg"><div class="evrow">';
       h+='<span class="chip t-tournament">Tournament</span>';
       if(multiClub && t.club) h+='<span class="chip clubc teamLink" data-club="'+esc(t.club)+'">'+esc(t.club)+'</span>';
-      var yrT=((t.name||'')+' '+(t.team_label||'')).match(/20\d{2}/), tp=null;
-      if(yrT){ state.players.forEach(function(sp){ if(sp.team_label===yrT[0]) tp=sp; }); }
+      var tp=tourPlayer(t);
       if(tp) h+='<span class="chip p'+pIdx(tp.id)+'" data-player="'+esc(tp.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(fullName(tp))+'</span>';
+      var tStart=tourMinDate(t), tEnd=tourMaxDate(t);
+      if(tStart && tEnd && tStart<=today && today<=tEnd) h+='<span class="chip live">● In progress</span>';
+      else if(tStart && tStart>today){ var dIn=Math.round((parseISO(tStart)-parseISO(today))/86400000); if(dIn<=30) h+='<span class="chip clubc">'+(dIn===1?'tomorrow':'in '+dIn+' days')+'</span>'; }
       if(t.event_date && !t.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
       if(!t.event_date) h+='<span class="chip unconfb">date not announced</span>';
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
@@ -1257,14 +1277,33 @@
       h+='</div>';
       var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
       if(fx.length){
-        var A={},B={},pA={},pB={};
-        fx.forEach(function(f){ if(f.stage==='group' && f.grp){ (f.grp==='A'?A:B)[f.home]=1; (f.grp==='A'?A:B)[f.away]=1; if(f.pitch){ (f.grp==='A'?pA:pB)[f.pitch]=1; } } });
-        if(Object.keys(A).length||Object.keys(B).length){
+        var groups={}, pitches={};
+        fx.forEach(function(f){ if(f.stage==='group' && f.grp){ groups[f.grp]=groups[f.grp]||{}; groups[f.grp][f.home]=1; if(f.away&&f.away!=='—') groups[f.grp][f.away]=1; if(f.pitch){ pitches[f.grp]=pitches[f.grp]||{}; pitches[f.grp][f.pitch]=1; } } });
+        var gKeys=Object.keys(groups).sort();
+        if(gKeys.length){
           h+='<div class="card" style="margin:14px 0"><div class="meta">';
-          if(Object.keys(A).length) h+='<span class="grpA"><b>Group A'+(Object.keys(pA).length?' (Pitch '+Object.keys(pA).join('/')+')':'')+':</b> '+Object.keys(A).map(esc).join(', ')+'</span><br>';
-          if(Object.keys(B).length) h+='<span class="grpB"><b>Group B'+(Object.keys(pB).length?' (Pitch '+Object.keys(pB).join('/')+')':'')+':</b> '+Object.keys(B).map(esc).join(', ')+'</span>';
+          gKeys.forEach(function(g,i){ var pk=Object.keys(pitches[g]||{}); h+='<span class="grp'+esc(g)+'"><b>Group '+esc(g)+(pk.length?' (Pitch '+pk.map(esc).join('/')+')':'')+':</b> '+Object.keys(groups[g]).map(esc).join(', ')+'</span>'+(i<gKeys.length-1?'<br>':''); });
           h+='</div></div>';
         }
+        /* Fixture filters like the tournament site: all games · our games · one group · knockout (remembered per tournament while the app is open). */
+        var isOurs=function(f){ return !!(t.club && ((f.home+' '+f.away).indexOf(t.club)>=0)); };
+        var hasKnock=fx.some(function(f){ return f.stage!=='group'; });
+        var oursN=fx.filter(isOurs).length;
+        var sel=state.tourFx[t.id]||'all';
+        if(fx.length>3 && (gKeys.length>1 || hasKnock || (oursN && oursN<fx.length))){
+          h+='<div class="fgroup tfx" data-tour="'+esc(t.id)+'">';
+          h+='<button class="fchip'+(sel==='all'?' on':'')+'" data-g="all" type="button">All games</button>';
+          if(oursN && oursN<fx.length) h+='<button class="fchip'+(sel==='ours'?' on':'')+'" data-g="ours" type="button">Our games</button>';
+          gKeys.forEach(function(g){ h+='<button class="fchip blue'+(sel==='g:'+g?' on':'')+'" data-g="g:'+esc(g)+'" type="button">Group '+esc(g)+'</button>'; });
+          if(hasKnock) h+='<button class="fchip blue'+(sel==='knock'?' on':'')+'" data-g="knock" type="button">Knockout</button>';
+          h+='</div>';
+        } else sel='all';
+        fx=fx.filter(function(f){
+          if(sel==='ours') return isOurs(f);
+          if(sel==='knock') return f.stage!=='group';
+          if(sel.indexOf('g:')===0) return f.stage==='group' && f.grp===sel.slice(2);
+          return true;
+        });
         fx=fx.slice().sort(function(a,b){
           var x=(a.match_date||'9999')+String(a.sort_order).padStart(4,'0');
           var y=(b.match_date||'9999')+String(b.sort_order).padStart(4,'0');
@@ -1325,6 +1364,9 @@
     });
     $('tourBody').querySelectorAll('.teamPhoto').forEach(function(el){
       el.addEventListener('click', function(){ if(!state.canEdit) return; teamPhotoTarget=el.dataset.roster; $('teamPhotoFile').click(); });
+    });
+    $('tourBody').querySelectorAll('.tfx .fchip').forEach(function(b){
+      b.addEventListener('click', function(){ state.tourFx[b.closest('.tfx').dataset.tour]=b.dataset.g; renderTournaments(); });
     });
     bindEvExtras($('tourBody'));
   }
@@ -1757,6 +1799,8 @@
     $('tourSeg').querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
     renderTournaments();
   });
+  /* Timely Upcoming→Past: an app left open overnight re-renders when the Croatian date changes. */
+  (function(){ var d0=todayZagreb(); setInterval(function(){ var d=todayZagreb(); if(d!==d0){ d0=d; try{ renderTournaments(); renderSchedule(); }catch(e){} } }, 60000); })();
   /* Deep links: notification emails and push clicks land on the right tab/day.
      Format: #tab=sched|tour|stats|msgs|acct  and optionally  &date=YYYY-MM-DD */
   function applyHash(){
