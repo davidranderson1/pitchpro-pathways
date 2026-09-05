@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Family Schedule;PitchPro;;;
+FN:PitchPro — Family Schedule
+ORG:PitchPro Pathways
+EMAIL;TYPE=INTERNET,PREF:david@pitchpropathways.com
+URL:https://pitchpropathways.com/schedule.html
+NOTE:Schedule updates and replies to forwarded coach messages.
+END:VCARD

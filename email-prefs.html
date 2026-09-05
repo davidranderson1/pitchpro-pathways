@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PitchPro — e-mail obavijesti · Email notifications</title>
+<style>
+body{margin:0;background:#f5f7f3;color:#17211b;font:16px/1.5 -apple-system,Segoe UI,Inter,sans-serif}
+.c{max-width:480px;margin:10vh auto;padding:28px 22px;background:#fff;border:1px solid #dfe5df;border-radius:14px}
+h1{font-size:22px;margin:0 0 8px}p{margin:0 0 18px;color:#444}
+.b{display:inline-block;padding:11px 16px;border-radius:8px;text-decoration:none;font-weight:600;margin:0 8px 8px 0;border:0;font:inherit;cursor:pointer}
+.p{background:#1f8a4c;color:#fff}.s{background:#fff;color:#17211b;border:1px solid #dfe5df}
+.f{color:#888;font-size:12px;margin-top:22px}.hidden{display:none}
+.spin{width:22px;height:22px;border:3px solid #dfe5df;border-top-color:#1f8a4c;border-radius:50%;animation:r 1s linear infinite}@keyframes r{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="c">
+  <div id="load"><div class="spin"></div></div>
+  <div id="view" class="hidden"><h1 id="title"></h1><p id="msg"></p><div id="acts"></div></div>
+  <p class="f">PitchPro — Family Schedule · david@pitchpropathways.com</p>
+</div>
+<script>
+(function(){
+  var API="https://egkiovxdijgwkbwkvkgn.supabase.co/functions/v1/email-prefs";
+  var APP="https://pitchpropathways.com/schedule.html#tab=acct";
+  var q=new URLSearchParams(location.search), t=(q.get("t")||"").trim(), a=q.get("a");
+  var S={
+    hr:{offT:"Odjavljeni ste",off:function(e){return "E-mail obavijesti o rasporedu više se neće slati na "+e+". Push obavijesti u aplikaciji nisu promijenjene."},undo:"Poništi — nastavi slati e-mailove",acct:"Otvori karticu Račun",
+        onT:"E-mailovi su ponovno uključeni",on:function(e){return "Ažuriranja rasporeda ponovno se šalju na "+e+"."},
+        askT:"Zaustaviti e-mailove o rasporedu?",ask:function(e,has){return e+" trenutno "+(has?"prima":"ne prima")+" PitchPro e-mailove o rasporedu. Push obavijesti u aplikaciji su odvojene."},unsub:"Odjavi se",keep:"Zadrži — otvori karticu Račun",back:"Ponovno uključi e-mailove",
+        badT:"Poveznica nije prepoznata",bad:"Ova poveznica za odjavu nije valjana — obavijesti promijenite u aplikaciji.",errT:"Nešto je pošlo po zlu",err:"Pokušaj ponovno za trenutak ili promijeni obavijesti u aplikaciji."},
+    en:{offT:"You're unsubscribed",off:function(e){return "No more schedule emails will be sent to "+e+". Push notifications in the app are not affected."},undo:"Undo — keep sending emails",acct:"Open the Account tab",
+        onT:"Emails are back on",on:function(e){return "Schedule updates will be emailed to "+e+" again."},
+        askT:"Stop schedule emails?",ask:function(e,has){return e+" currently "+(has?"receives":"does not receive")+" PitchPro schedule emails. Push notifications in the app are separate."},unsub:"Unsubscribe",keep:"Keep — open the Account tab",back:"Turn emails back on",
+        badT:"Link not recognised",bad:"This unsubscribe link is not valid — change email notifications in the app instead.",errT:"Something went wrong",err:"Try again in a moment, or change notifications in the app."}
+  };
+  var L=S.hr;
+  function show(title,msg,acts){document.getElementById("load").className="hidden";var v=document.getElementById("view");v.className="";document.getElementById("title").textContent=title;document.getElementById("msg").textContent=msg;var box=document.getElementById("acts");box.innerHTML="";acts.forEach(function(x){var el;if(x.href){el=document.createElement("a");el.href=x.href;}else{el=document.createElement("button");el.type="button";el.onclick=x.onclick;}el.className="b "+(x.primary?"p":"s");el.textContent=x.label;box.appendChild(el);box.appendChild(document.createTextNode(" "));});}
+  function acct(primary){return {label:L.acct,href:APP,primary:primary};}
+  function call(action){var u=API+"?json=1&t="+encodeURIComponent(t)+(action?"&a="+action:"");return fetch(u,{headers:{"Accept":"application/json"}}).then(function(r){return r.json().then(function(j){j._status=r.status;return j;});});}
+  function render(j){
+    if(!j||!j.ok){var bothT=S.hr.badT+" · "+S.en.badT;show(bothT,S.hr.bad+" · "+S.en.bad,[{label:"Račun · Account",href:APP,primary:true}]);return;}
+    L=S[j.lang==="en"?"en":"hr"];document.documentElement.lang=j.lang==="en"?"en":"hr";
+    if(j.action==="off"){show(L.offT,L.off(j.email),[{label:L.undo,onclick:function(){run("on");}},acct(true)]);}
+    else if(j.action==="on"){show(L.onT,L.on(j.email),[acct(true)]);}
+    else if(j.email_enabled){show(L.askT,L.ask(j.email,true),[{label:L.unsub,onclick:function(){run("off");},primary:true},{label:L.keep,href:APP}]);}
+    else{show(L.askT,L.ask(j.email,false),[{label:L.back,onclick:function(){run("on");},primary:true},acct(false)]);}
+  }
+  function run(action){document.getElementById("view").className="hidden";document.getElementById("load").className="";call(action).then(render).catch(function(){show(L.errT,L.err,[acct(true)]);});}
+  if(!/^[0-9a-f]{32}$/.test(t)){render({ok:false});return;}
+  run(a==="off"?"off":a==="on"?"on":null);
+})();
+</script>
+</body>
+</html>
