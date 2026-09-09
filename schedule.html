@@ -310,6 +310,14 @@
   .orImg{max-width:100%;border-radius:10px;display:block;margin:6px 0;border:1px solid var(--line)}
   .orPdf iframe{width:100%;height:60vh;border:1px solid var(--line);border-radius:10px;background:#fff}
   .orText{white-space:pre-wrap;font:13.5px/1.5 Inter,sans-serif;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;color:var(--txt)}
+  .plList{border:1px solid var(--line);border-radius:10px;margin-top:6px;overflow:hidden;background:var(--card2)}
+  .plItem{display:block;width:100%;text-align:left;padding:8px 10px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--txt);font:13.5px/1.35 Inter,sans-serif;cursor:pointer}.plItem:last-child{border-bottom:0}.plItem:hover,.plItem:focus{background:var(--card)}
+  .plItem b{display:block;font-weight:700}.plItem span{font-size:12px;color:var(--muted)}
+  .plNote,.plStatus{font-size:12.5px;color:var(--muted);padding:6px 2px}.plPick{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}.plPick b{color:var(--txt)}.plPick a{color:var(--blue)}
+  .plTag{font:800 9.5px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}
+  .plHint{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+  .dayChips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}.dayChip{font:800 11px/1 Inter,sans-serif;letter-spacing:.04em;border:1px solid var(--line);background:var(--card2);color:var(--txt);border-radius:999px;padding:7px 11px;cursor:pointer}.dayChip.on{background:var(--green);color:#0b130e;border-color:var(--green)}
+  .aeGrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px}@media(max-width:480px){.aeGrid3{grid-template-columns:1fr 1fr}}
   .viewbar .addBtn{background:var(--green);color:#06130c;border:0;border-radius:999px;padding:9px 14px;font:800 11px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 </style>
 </head>
@@ -706,7 +714,8 @@
   <div class="sub" id="vmSub"></div>
   <label for="vmInput">Venue name or address</label>
   <input id="vmInput" type="text" placeholder="Stadium or address">
-  <div class="btnrow"><a class="gcal" id="vmMaps" href="#" target="_blank" rel="noopener">Find it on Google Maps</a></div>
+  <div class="btnrow"><a class="gcal" id="vmMaps" href="#" target="_blank" rel="noopener">Look it up on Google Maps ↗</a></div>
+  <div class="plHint">Found it there? Tap Share → Copy link and paste the link here — the pin comes with it.</div>
   <div id="vmBulk" hidden></div>
   <label id="vmDefaultWrap" style="display:flex;align-items:center;gap:8px;margin-top:12px;font:700 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)" hidden><input type="checkbox" id="vmDefault" style="width:18px;height:18px;accent-color:var(--green)"> <span>Save as the team default venue and field</span></label>
   <div class="smBtns">
@@ -732,20 +741,25 @@
     <div><label for="aeType">Type</label><select id="aeType" class="sel"><option value="training">Training</option><option value="match">Match</option><option value="tournament">Tournament</option><option value="duty">Duty</option><option value="no_session">No session</option></select></div>
     <div><label for="aeDate">Date</label><input id="aeDate" type="date"></div>
   </div>
+  <div id="aeDays" class="dayChips"></div>
   <label for="aeTitle">Title</label>
-  <input id="aeTitle" type="text" maxlength="120">
-  <div class="aeGrid">
-    <div><label for="aeReport">Arrive</label><input id="aeReport" type="time"></div>
+  <input id="aeTitle" type="text" maxlength="120" autocomplete="off">
+  <div class="aeGrid3">
     <div><label for="aeStart">Start</label><input id="aeStart" type="time"></div>
+    <div><label for="aeReport">Arrive</label><input id="aeReport" type="time"></div>
+    <div><label for="aeEnd">Ends</label><input id="aeEnd" type="time"></div>
   </div>
+  <div class="btnrow" style="margin-top:0"><a class="gcal" id="aeUsual" href="#" onclick="return false" style="margin-top:4px"></a><span class="plHint" id="aeTimeHint" style="align-self:center"></span></div>
+  <label for="aeVenue">Venue</label>
+  <input id="aeVenue" type="text" autocomplete="off">
+  <div class="plHint">Found it on Google Maps? Tap Share → Copy link and paste the link here — the pin comes with it.</div>
   <div class="aeGrid">
-    <div><label for="aeVenue">Venue</label><input id="aeVenue" type="text"></div>
-    <div><label for="aeField">Field</label><input id="aeField" type="text" placeholder="1"></div>
+    <div><label for="aeField">Field</label><input id="aeField" type="text" placeholder="1" autocomplete="off"></div>
+    <div></div>
   </div>
   <label for="aeDetails">Details</label>
-  <input id="aeDetails" type="text" maxlength="300">
+  <input id="aeDetails" type="text" maxlength="300" autocomplete="off">
   <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font:700 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)"><input type="checkbox" id="aeDefault" style="width:18px;height:18px;accent-color:var(--green)"> <span>Save as the team default venue and field</span></label>
-  <input id="aeEnd" type="hidden">
   <div class="smBtns"><button class="primary" id="aeSave" type="button">Save</button><button class="ghost" id="aeCancel" type="button">Cancel</button></div>
   <div class="ok" id="aeOk"></div><div class="err" id="aeErr"></div>
 </div></div>
@@ -883,6 +897,7 @@
     'Share…':'Podijeli…','Copy link':'Kopiraj poveznicu','Link copied.':'Poveznica kopirana.','↗ Share':'↗ Podijeli','◈ Apps':'◈ Aplikacije','Share this app':'Podijeli ovu aplikaciju','Switch between PitchPro apps and pages':'Prebaci se između PitchPro aplikacija i stranica',
     'Coach cards work like player cards — career, photo and updates, kept by the coach once claimed. Claiming gives the coach their own login that sees only their team\'s pages.':'Kartice trenera rade kao kartice igrača — karijera, fotografija i novosti, koje trener sam održava nakon preuzimanja. Preuzimanjem trener dobiva vlastitu prijavu koja vidi samo stranice svoje momčadi.',
     'Invite your coach to claim this card':'Pozovi trenera da preuzme ovu karticu','Only a parent of the family can create invites.':'Samo roditelj u obitelji može stvarati pozivnice.','Creating code…':'Stvaram kod…',
+    'Found it on Google Maps? Tap Share → Copy link and paste the link here — the pin comes with it.':'Našao/la si je na Google kartama? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.','Look it up on Google Maps ↗':'Potraži na Google kartama ↗','Found it there? Tap Share → Copy link and paste the link here — the pin comes with it.':'Našao/la si je tamo? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.',
     'Add venue':'Dodaj lokaciju','add venue':'dodaj lokaciju','Venue name or address':'Naziv lokacije ili adresa','Stadium or address':'Stadion ili adresa','Find it on Google Maps':'Pronađi na Google kartama','Save venue':'Spremi lokaciju',
     'Type the venue first — the Google Maps link helps you find the exact name.':'Najprije upiši lokaciju — poveznica na Google karte pomaže pronaći točan naziv.',
     'Confirm the date':'Potvrdi datum','Confirmed date':'Potvrđeni datum','Pick a date first.':'Najprije odaberi datum.',
@@ -1396,7 +1411,7 @@
   }
 
   /* ---------- shared card ---------- */
-  function mapLink(v){ return '<a class="vmap" href="https://maps.google.com/?q='+encodeURIComponent(v)+'" target="_blank" rel="noopener">'+esc(v)+'</a>'; }
+  function mapLink(v, m){ return '<a class="vmap" href="'+esc(placeMapHref(v, m))+'" target="_blank" rel="noopener">'+esc(v)+'</a>'; }
   function playerById(id){ for(var i=0;i<state.players.length;i++) if(state.players[i].id===id) return state.players[i]; return null; }
   function pIdx(id){ var p=playerById(id); return p ? (state.players.indexOf(p)%2)+1 : 1; }
   function gcalEventLink(e){
@@ -1440,7 +1455,7 @@
     var calIco=(e.event_type!=='no_session' && e.event_date)?' <a class="calAdd calIco" data-ev="'+esc(e.id)+'" href="#" title="Add to calendar" aria-label="Add to calendar">📅</a>':'';
     if(t) h+='<div class="times">'+t+calIco+'</div>';
     var m=[];
-    if(e.venue) m.push('📍 '+mapLink(e.venue)+(e.field?' · '+tr('Field')+' '+esc(e.field):'')); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">'+tr('add venue')+'</a>'+(e.field?' · '+tr('Field')+' '+esc(e.field):''));
+    if(e.venue) m.push('📍 '+mapLink(e.venue, e.venue_map)+(e.field?' · '+tr('Field')+' '+esc(e.field):'')); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">'+tr('add venue')+'</a>'+(e.field?' · '+tr('Field')+' '+esc(e.field):''));
     if(e.details) m.push(esc(e.details));
     if(m.length) h+='<div class="meta">'+m.join(' — ')+(t?'':calIco)+'</div>';
     else if(!t && calIco) h+='<div class="meta">'+calIco+'</div>';
@@ -2760,6 +2775,163 @@
     $('calSub').textContent=(list.length===1?'Game':list.length+' games')+' saved — on Apple devices the file opens straight into Calendar\'s add screen.';
   });
 
+  /* ---------- build 27: place picker (search a venue, pick it, keep the map pin) + smart Add-event fields ---------- */
+  HR['Search a stadium, pitch or address…']='Pretraži stadion, igralište ili adresu…'; HR['Searching…']='Pretražujem…'; HR['No places found — keep typing, or paste a Google Maps link.']='Nema rezultata — nastavi tipkati ili zalijepi poveznicu Google karata.';
+  HR['Saved venue']='Spremljena lokacija'; HR['On the map']='Na karti'; HR['Open in Google Maps']='Otvori u Google kartama'; HR['change']='promijeni'; HR['Look it up on Google Maps']='Potraži na Google kartama';
+  HR['Found it there? Tap Share → Copy link and paste the link here — the pin comes with it.']='Našao/la si je tamo? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.';
+  HR['Reading the Google Maps link…']='Čitam poveznicu Google karata…'; HR['Could not read that link — type the place name instead.']='Poveznicu nije bilo moguće pročitati — upiši naziv mjesta.';
+  HR['Pinned from Google Maps']='Označeno iz Google karata'; HR['Search could not reach the map service — type the name and save; the map link will search for it.']='Pretraga nije uspjela doseći kartografski servis — upiši naziv i spremi; poveznica na kartu će ga potražiti.';
+  HR['Today']='Danas'; HR['Tomorrow']='Sutra'; HR['Ends']='Završava'; HR['Match v …']='Utakmica protiv …'; HR['Opponent or title']='Protivnik ili naziv';
+  HR['Usual time']='Uobičajeno vrijeme'; HR['arrive 30 min before']='dolazak 30 min prije'; HR['arrive 15 min before']='dolazak 15 min prije';
+
+  var PLACE_API='https://nominatim.openstreetmap.org/search';
+  function placeMapHref(name, map){
+    var m=String(map||'').trim();
+    if(/^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/.test(m)) return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(m.replace(/\s+/g,''));
+    if(/^https?:\/\//i.test(m)) return m;
+    return 'https://maps.google.com/?q='+encodeURIComponent(m||name||'');
+  }
+  function placeAddr(a){
+    if(!a) return '';
+    var street=[a.road||a.pedestrian||a.footway||'', a.house_number||''].join(' ').trim();
+    var town=a.city||a.town||a.village||a.municipality||a.suburb||'';
+    var parts=[street, town]; if(a.country_code && a.country_code!=='hr') parts.push(a.country||'');
+    return parts.filter(Boolean).join(', ');
+  }
+  function placeFetch(q, cc){
+    var u=PLACE_API+'?format=jsonv2&addressdetails=1&limit=6&accept-language='+(LANG==='hr'?'hr,en':'en,hr')+(cc?'&countrycodes='+cc:'')+'&q='+encodeURIComponent(q);
+    return fetch(u,{headers:{'Accept':'application/json'}}).then(function(r){ if(!r.ok) throw new Error('search '+r.status); return r.json(); });
+  }
+  function placeSearch(q){
+    return placeFetch(q,'hr').then(function(a){ if(a.length>=3) return a; return placeFetch(q,'').then(function(b){ var seen={}; return a.concat(b).filter(function(x){ if(seen[x.osm_type+x.osm_id]) return false; seen[x.osm_type+x.osm_id]=true; return true; }); }); })
+      .then(function(rows){ return rows.map(function(r){ var name=r.name||String(r.display_name||'').split(',')[0]; return { name:name, addr:placeAddr(r.address), map:(+r.lat).toFixed(6)+','+(+r.lon).toFixed(6), kind:'map' }; }); });
+  }
+  function savedVenues(q){
+    var seen={}, out=[], ql=String(q||'').toLowerCase();
+    var push=function(name, map){ if(!name) return; var k=name.toLowerCase(); if(seen[k]) return; if(ql && k.indexOf(ql)<0) return; seen[k]=true; out.push({name:name, addr:'', map:map||'', kind:'saved'}); };
+    Object.keys(state.teamSettings||{}).forEach(function(k){ var t=state.teamSettings[k]; push(t.default_venue, t.default_venue_map); });
+    (state.events||[]).slice().reverse().forEach(function(e){ push(e.venue, e.venue_map); });
+    return out.slice(0,4);
+  }
+  /* a pasted Google Maps link → {name, map}; short links are expanded by the maps-link function */
+  function parseMapsUrl(u){
+    var m, name='', map='';
+    if((m=u.match(/\/maps\/place\/([^\/@?]+)/))) name=decodeURIComponent(m[1].replace(/\+/g,' '));
+    if((m=u.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/))) map=m[1]+','+m[2];
+    else if((m=u.match(/[?&](?:q|query|ll|destination)=(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/))) map=m[1]+','+m[2];
+    else if((m=u.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/))) map=m[1]+','+m[2];
+    if(!name && (m=u.match(/[?&](?:q|query)=([^&]+)/))){ var qv=decodeURIComponent(m[1].replace(/\+/g,' ')); if(!/^-?\d+\.\d+,/.test(qv)) name=qv; }
+    if(!name && (m=u.match(/\/maps\/search\/([^\/@?]+)/))) name=decodeURIComponent(m[1].replace(/\+/g,' '));
+    if(!name && !map) return null;
+    return { name:name, map: map || u, kind:'pin' };
+  }
+  function expandMapsUrl(u){
+    return sb.auth.getSession().then(function(s){
+      var tok=s&&s.data&&s.data.session&&s.data.session.access_token;
+      return fetch(SUPABASE_URL+'/functions/v1/maps-link?u='+encodeURIComponent(u),{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+(tok||SUPABASE_KEY)}}).then(function(r){ return r.json(); }).then(function(j){ return (j&&j.url)||u; });
+    });
+  }
+  function isMapsLink(t){ return /^https?:\/\/(maps\.app\.goo\.gl|goo\.gl\/maps|g\.co\/kgs|maps\.google\.|www\.google\.[a-z.]+\/maps|google\.[a-z.]+\/maps)/i.test(String(t||'').trim()); }
+
+  /* attach to any text input: live suggestions under it, a picked place with its map pin, pasted Google Maps links understood */
+  function attachPlacePicker(input, opts){
+    opts=opts||{};
+    if(input._picker) return input._picker;
+    var list=document.createElement('div'); list.className='plList'; list.hidden=true;
+    var pick=document.createElement('div'); pick.className='plPick'; pick.hidden=true;
+    var status=document.createElement('div'); status.className='plStatus'; status.hidden=true;
+    input.insertAdjacentElement('afterend', status); input.insertAdjacentElement('afterend', pick); input.insertAdjacentElement('afterend', list);
+    input.setAttribute('autocomplete','off'); if(!input.placeholder) input.placeholder=tr('Search a stadium, pitch or address…');
+    var picker={ place:null, timer:null, seq:0 };
+    function show(el, on){ el.hidden=!on; }
+    function renderPick(){
+      if(!picker.place){ show(pick,false); return; }
+      var p=picker.place, tag=p.kind==='saved'?tr('Saved venue'):(p.kind==='pin'?tr('Pinned from Google Maps'):tr('On the map'));
+      pick.innerHTML='✓ <b>'+esc(p.name||input.value)+'</b>'+(p.addr?' · '+esc(p.addr):'')+' <span class="plTag">'+esc(tag)+'</span> · <a href="'+esc(placeMapHref(p.name,p.map))+'" target="_blank" rel="noopener">'+tr('Open in Google Maps')+' ↗</a> · <a href="#" class="plClear">'+tr('change')+'</a>';
+      pick.querySelector('.plClear').addEventListener('click', function(e){ e.preventDefault(); picker.set(null); input.value=''; input.focus(); });
+      show(pick,true);
+    }
+    picker.set=function(place){ picker.place=place||null; if(place&&place.name) input.value=place.name; show(list,false); list.innerHTML=''; show(status,false); renderPick(); if(opts.onPick) opts.onPick(picker.place); };
+    picker.get=function(){ var v=input.value.trim(); if(!v) return {venue:null, map:null}; return {venue:v, map:(picker.place && picker.place.name===v && picker.place.map)||null}; };
+    picker.setValue=function(name, map){ if(!name){ picker.set(null); input.value=''; return; } picker.set({name:name, addr:'', map:map||'', kind: map?'saved':'saved'}); };
+    function renderList(items, note){
+      if(!items.length){ list.innerHTML= note?'<div class="plNote">'+esc(note)+'</div>':''; show(list, !!note); return; }
+      list.innerHTML=items.map(function(p,i){ return '<button type="button" class="plItem" data-i="'+i+'"><b>'+esc(p.name)+'</b><span>'+(p.kind==='saved'?'📌 '+tr('Saved venue'):'🌍 '+esc(p.addr||''))+'</span></button>'; }).join('');
+      list.querySelectorAll('.plItem').forEach(function(b){ b.addEventListener('click', function(){ picker.set(items[+b.dataset.i]); }); });
+      show(list,true);
+    }
+    function search(q){
+      var my=++picker.seq, saved=savedVenues(q);
+      renderList(saved, null); status.textContent=tr('Searching…'); show(status,true);
+      placeSearch(q).then(function(rows){ if(my!==picker.seq) return; show(status,false); var names={}; saved.forEach(function(s){ names[s.name.toLowerCase()]=1; }); var all=saved.concat(rows.filter(function(r){ return !names[r.name.toLowerCase()]; })); renderList(all, all.length?null:tr('No places found — keep typing, or paste a Google Maps link.')); })
+        .catch(function(){ if(my!==picker.seq) return; status.textContent=tr('Search could not reach the map service — type the name and save; the map link will search for it.'); show(status,true); });
+    }
+    function fromLink(u){
+      status.textContent=tr('Reading the Google Maps link…'); show(status,true); show(list,false);
+      var my=++picker.seq;
+      var p=parseMapsUrl(u);
+      var done=function(full){ if(my!==picker.seq) return; var q=parseMapsUrl(full)||p; show(status,false); if(!q){ status.textContent=tr('Could not read that link — type the place name instead.'); show(status,true); input.value=''; return; } if(!q.name){ q.name=input._preLink||''; } picker.set(q); if(!q.name){ input.value=''; input.placeholder=tr('Search a stadium, pitch or address…'); input.focus(); } };
+      if(/maps\.app\.goo\.gl|goo\.gl|g\.co/i.test(u) || !p || !p.name) expandMapsUrl(u).then(done).catch(function(){ done(u); }); else done(u);
+    }
+    input.addEventListener('input', function(){
+      var v=input.value.trim();
+      if(picker.place && picker.place.name!==v){ picker.place=null; renderPick(); }
+      clearTimeout(picker.timer);
+      if(isMapsLink(v)){ fromLink(v); return; }
+      if(v.length<3){ show(status,false); renderList(savedVenues(v), null); return; }
+      picker.timer=setTimeout(function(){ search(v); }, 450);
+    });
+    input.addEventListener('focus', function(){ if(!picker.place && input.value.trim().length<3) renderList(savedVenues(input.value.trim()), null); });
+    input.addEventListener('keydown', function(e){ if(e.key==='Escape'){ show(list,false); } if(e.key==='Enter'){ var b=list.querySelector('.plItem'); if(b && !list.hidden){ e.preventDefault(); b.click(); } } });
+    input.addEventListener('paste', function(e){ var t=(e.clipboardData||window.clipboardData); var s=t?t.getData('text'):''; if(isMapsLink(s)){ e.preventDefault(); input._preLink=input.value.trim(); input.value=s; fromLink(s.trim()); } });
+    document.addEventListener('click', function(e){ if(!list.contains(e.target) && e.target!==input) show(list,false); });
+    input._picker=picker; return picker;
+  }
+
+  /* ----- venue modal: picker + a real Google Maps hand-off ----- */
+  var vmPicker=attachPlacePicker($('vmInput'));
+  /* ----- add event: smart fields ----- */
+  var aePicker=attachPlacePicker($('aeVenue'));
+  function aeHistory(club, team, type){ return (state.events||[]).filter(function(e){ return e.club===club && e.event_type===type && (!team || (playerById(e.player_id)||{}).team_label===team); }); }
+  function topValues(rows, key, n){ var c={}; rows.forEach(function(r){ var v=r[key]; if(!v) return; v=String(v).trim(); if(!v) return; c[v]=(c[v]||0)+1; }); return Object.keys(c).sort(function(a,b){ return c[b]-c[a]; }).slice(0,n||6); }
+  function setList(id, values){ var dl=$(id); if(!dl){ dl=document.createElement('datalist'); dl.id=id; document.body.appendChild(dl); } dl.innerHTML=values.map(function(v){ return '<option value="'+esc(v)+'">'; }).join(''); }
+  function aeSmartLists(){
+    var t=aeTeam(), type=$('aeType').value, hist=aeHistory(t.club, t.team, type);
+    var titles=topValues(hist,'title',8);
+    if(type==='match'){ var opp={}; (state.clubs||[]).forEach(function(c){ if(c.name && c.name!==t.club) opp[c.name]=1; }); (state.fixtures||[]).forEach(function(f){ [f.home,f.away].forEach(function(n){ if(n && n!==t.club) opp[n]=1; }); }); titles=titles.concat(Object.keys(opp).sort().map(function(n){ return 'v '+n; })); }
+    setList('aeTitleList', titles); $('aeTitle').setAttribute('list','aeTitleList');
+    setList('aeStartList', topValues(hist.map(function(e){ return {v:hm(e.start_time)}; }),'v',6)); $('aeStart').setAttribute('list','aeStartList');
+    setList('aeFieldList', topValues(hist,'field',6)); $('aeField').setAttribute('list','aeFieldList');
+    setList('aeDetailsList', topValues(hist,'details',6)); $('aeDetails').setAttribute('list','aeDetailsList');
+    $('aeTitle').placeholder = type==='match' ? tr('Match v …') : ({training:tr('Training'),tournament:tr('Tournament'),duty:tr('Duty'),no_session:tr('No session')}[type]||'');
+    var usual=topValues(hist.map(function(e){ return {v:hm(e.start_time)}; }),'v',1)[0];
+    $('aeUsual').textContent = usual ? tr('Usual time')+' '+usual : '';
+    $('aeUsual').dataset.t=usual||'';
+    aeDayChips();
+  }
+  function aeDayChips(){
+    var t=aeTeam(), type=$('aeType').value, hist=aeHistory(t.club, t.team, type);
+    var dows={}; hist.forEach(function(e){ if(!e.event_date) return; var d=new Date(e.event_date+'T12:00:00'); dows[d.getDay()]=(dows[d.getDay()]||0)+1; });
+    var today=todayZagreb(), base=new Date(today+'T12:00:00'), chips=[{l:tr('Today'),d:today},{l:tr('Tomorrow'),d:isoAdd(today,1)}];
+    var usualDays=Object.keys(dows).sort(function(a,b){ return dows[b]-dows[a]; }).slice(0,3).map(Number);
+    for(var i=2;i<9 && usualDays.length;i++){ var d=new Date(base.getTime()+i*864e5); if(usualDays.indexOf(d.getDay())>=0) chips.push({l:d.toLocaleDateString(LANG==='hr'?'hr-HR':'en-GB',{weekday:'short',day:'numeric'}),d:isoAdd(today,i)}); }
+    var host=$('aeDays'); host.innerHTML=chips.map(function(c){ return '<button type="button" class="dayChip'+($('aeDate').value===c.d?' on':'')+'" data-d="'+c.d+'">'+esc(c.l)+'</button>'; }).join('');
+    host.querySelectorAll('.dayChip').forEach(function(b){ b.addEventListener('click', function(){ $('aeDate').value=b.dataset.d; aeDayChips(); }); });
+  }
+  function isoAdd(iso, days){ var d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+days); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function aeAutoTimes(){
+    var st=$('aeStart').value, type=$('aeType').value; if(!st) return;
+    var before = type==='training' ? 15 : 30, dur = type==='training' ? 90 : (type==='match' ? 60 : 0);
+    if(!$('aeReport').value || $('aeReport').dataset.auto==='1'){ $('aeReport').value=addMin(st,-before); $('aeReport').dataset.auto='1'; }
+    if(dur && (!$('aeEnd').value || $('aeEnd').dataset.auto==='1')){ $('aeEnd').value=addMin(st,dur); $('aeEnd').dataset.auto='1'; }
+    $('aeTimeHint').textContent = $('aeReport').dataset.auto==='1' ? tr(type==='training'?'arrive 15 min before':'arrive 30 min before') : '';
+  }
+  $('aeStart').addEventListener('change', aeAutoTimes); $('aeStart').addEventListener('input', aeAutoTimes);
+  $('aeReport').addEventListener('input', function(){ $('aeReport').dataset.auto='0'; $('aeTimeHint').textContent=''; });
+  $('aeEnd').addEventListener('input', function(){ $('aeEnd').dataset.auto='0'; });
+  $('aeUsual').addEventListener('click', function(){ if($('aeUsual').dataset.t){ $('aeStart').value=$('aeUsual').dataset.t; aeAutoTimes(); } });
+  $('aeDate').addEventListener('change', aeDayChips);
+
   /* venue add (parent edit, venue column only) */
   var vmEvId=null;
   function openVenue(evId){
@@ -2769,7 +2941,7 @@
     var p=playerById(e.player_id);
     $('vmSub').textContent=(p?p.first_name+' · ':'')+e.title+' · '+(e.event_date||'');
     var d=teamDefaults(e.club, p?p.team_label:null);
-    $('vmInput').value=(d&&d.default_venue)||'';
+    vmPicker.setValue((d&&d.default_venue)||'', (d&&d.default_venue_map)||'');
     $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent((e.club||'')+' Croatia');
     var others=state.events.filter(function(x){ return x.id!==e.id && !x.venue && x.club===e.club && x.event_type===e.event_type && x.event_type!=='no_session' && x.event_date && x.event_date>=todayZagreb(); })
       .sort(function(a,b){ return (a.event_date+(a.start_time||'')).localeCompare(b.event_date+(b.start_time||'')); }).slice(0,30);
@@ -2783,13 +2955,13 @@
   $('vmSave').addEventListener('click', function(){
     var v=$('vmInput').value.trim();
     if(!v){ $('vmErr').textContent='Type the venue first — the Google Maps link helps you find the exact name.'; return; }
-    var ids=[vmEvId].concat(bulkIds('vmBulk'));
-    sb.from('events').update({venue:v}).in('id', ids).then(function(r){
+    var ids=[vmEvId].concat(bulkIds('vmBulk')), vmap=vmPicker.get().map;
+    sb.from('events').update({venue:v, venue_map:vmap}).in('id', ids).then(function(r){
       if(r.error){ $('vmErr').textContent=r.error.message; return; }
-      state.events.forEach(function(x){ if(ids.indexOf(x.id)>=0) x.venue=v; });
+      state.events.forEach(function(x){ if(ids.indexOf(x.id)>=0){ x.venue=v; x.venue_map=vmap; } });
       var e=eventById(vmEvId), p=e?playerById(e.player_id):null;
       var after=function(){ mClose('venueModal'); renderSchedule(); };
-      if($('vmDefault').checked && e && p){ saveTeamDefaults(e.club, p.team_label, v, (teamDefaults(e.club,p.team_label)||{}).default_field||null, null, $('vmErr')).then(function(){ renderTeamDefaults(); after(); }); } else after();
+      if($('vmDefault').checked && e && p){ saveTeamDefaults(e.club, p.team_label, v, (teamDefaults(e.club,p.team_label)||{}).default_field||null, null, $('vmErr'), vmap).then(function(){ renderTeamDefaults(); after(); }); } else after();
     }).catch(function(err){ $('vmErr').textContent=String(err&&err.message||err); });
   });
 
@@ -3143,15 +3315,16 @@
     teams.forEach(function(t){
       var d=teamDefaults(t.club,t.team)||{};
       h+='<div class="tdRow" data-club="'+esc(t.club)+'" data-team="'+esc(t.team)+'"><div class="famName" style="margin:10px 0 4px">'+esc(t.club)+' · '+esc(t.team)+'</div>'
-        +'<div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" class="tdVenue" placeholder="'+tr('Default venue')+'" value="'+esc(d.default_venue||'')+'" style="flex:2;min-width:160px"><input type="text" class="tdField" placeholder="'+tr('Default field')+'" value="'+esc(d.default_field||'')+'" style="flex:1;min-width:90px"><a class="gcal tdSave" href="#" style="margin-top:0;align-self:center">'+tr('Save')+'</a></div></div>';
+        +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start"><div style="flex:2;min-width:160px"><input type="text" class="tdVenue" placeholder="'+tr('Default venue')+'" value="'+esc(d.default_venue||'')+'" style="width:100%" data-map="'+esc(d.default_venue_map||'')+'"></div><input type="text" class="tdField" placeholder="'+tr('Default field')+'" value="'+esc(d.default_field||'')+'" style="flex:1;min-width:90px"><a class="gcal tdSave" href="#" style="margin-top:0;align-self:center">'+tr('Save')+'</a></div></div>';
     });
     h+='<div class="ok" id="tdOk"></div><div class="err" id="tdErr"></div>';
     host.innerHTML=h; host.hidden=false;
-    host.querySelectorAll('.tdSave').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var row=a.closest('.tdRow'); saveTeamDefaults(row.dataset.club,row.dataset.team,row.querySelector('.tdVenue').value.trim()||null,row.querySelector('.tdField').value.trim()||null,$('tdOk'),$('tdErr')); }); });
+    host.querySelectorAll('.tdVenue').forEach(function(inp){ var pk=attachPlacePicker(inp); if(inp.value) pk.setValue(inp.value, inp.dataset.map||''); });
+    host.querySelectorAll('.tdSave').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var row=a.closest('.tdRow'), pk=row.querySelector('.tdVenue')._picker.get(); saveTeamDefaults(row.dataset.club,row.dataset.team,pk.venue,row.querySelector('.tdField').value.trim()||null,$('tdOk'),$('tdErr'),pk.map); }); });
   }
-  function saveTeamDefaults(club, team, venue, field, okEl, errEl){
+  function saveTeamDefaults(club, team, venue, field, okEl, errEl, map){
     var me=(state.parents||[]).filter(function(p){ return p.user_id===state.userId; }).map(function(p){ return p.first_name; })[0] || (state.ctx&&state.ctx.coach?state.ctx.coach.first_name:null) || state.userEmail;
-    return sb.from('team_settings').upsert({ club:club, team_label:team, default_venue:venue, default_field:field, updated_by:state.userId, updated_by_name:me, updated_at:new Date().toISOString() },{onConflict:'club,team_label'}).select().single().then(function(r){
+    return sb.from('team_settings').upsert({ club:club, team_label:team, default_venue:venue, default_venue_map:(venue?(map||null):null), default_field:field, updated_by:state.userId, updated_by_name:me, updated_at:new Date().toISOString() },{onConflict:'club,team_label'}).select().single().then(function(r){
       if(r.error){ if(errEl) errEl.textContent=r.error.message; return false; }
       state.teamSettings[teamKeyOf(club,team)]=r.data; if(okEl) okEl.textContent=tr('Saved.'); return true;
     });
@@ -3164,12 +3337,12 @@
     var sel=$('aeTeam'); sel.innerHTML=teams.map(function(t){ return '<option value="'+esc(teamKeyOf(t.club,t.team))+'">'+esc(t.club+' · '+t.team)+'</option>'; }).join('');
     $('aeScopeWrap').style.display = state.mode==='coach' ? 'none' : '';
     $('aeDate').value=state.selDay||todayZagreb(); $('aeTitle').value=''; $('aeReport').value=''; $('aeStart').value=''; $('aeEnd').value=''; $('aeDetails').value=''; $('aeErr').textContent=''; $('aeOk').textContent='';
-    $('aeType').value='training'; $('aeDefault').checked=false;
+    $('aeType').value='training'; $('aeDefault').checked=false; $('aeReport').dataset.auto='1'; $('aeEnd').dataset.auto='1'; $('aeTimeHint').textContent='';
     aeApplyDefaults(); aeCheckScope();
     mOpen('addEvModal');
   }
   function aeTeam(){ var v=$('aeTeam').value.split('|'); return {club:v[0], team:v[1]}; }
-  function aeApplyDefaults(){ var t=aeTeam(), d=teamDefaults(t.club,t.team)||{}; $('aeVenue').value=d.default_venue||''; $('aeField').value=d.default_field||''; var lbl={training:tr('Training'),match:tr('Match'),tournament:tr('Tournament'),duty:tr('Duty'),no_session:tr('No session')}; if(!$('aeTitle').value) $('aeTitle').placeholder=lbl[$('aeType').value]||''; }
+  function aeApplyDefaults(){ var t=aeTeam(), d=teamDefaults(t.club,t.team)||{}; aePicker.setValue(d.default_venue||'', d.default_venue_map||''); $('aeField').value=d.default_field||''; aeSmartLists(); aeAutoTimes(); var lbl={training:tr('Training'),match:tr('Match'),tournament:tr('Tournament'),duty:tr('Duty'),no_session:tr('No session')}; if(!$('aeTitle').value) $('aeTitle').placeholder=lbl[$('aeType').value]||''; }
   function aeCheckScope(){
     var t=aeTeam(), k=teamKeyOf(t.club,t.team), hint=$('aeHint');
     if(state.mode==='coach'){ aeCan[k]=true; hint.textContent=tr('Every family in the team gets the event and a notification; parents confirm attendance here.'); return; }
@@ -3186,13 +3359,13 @@
     var t=aeTeam(), type=$('aeType').value, date=$('aeDate').value, title=$('aeTitle').value.trim()||$('aeTitle').placeholder||TYPE_LABEL[type];
     if(!date){ $('aeErr').textContent=tr('Pick a date first.'); return; }
     if(!title){ $('aeErr').textContent=tr('Type a title first.'); return; }
-    var rep=$('aeReport').value||null, st=$('aeStart').value||null, en=$('aeEnd').value||null, venue=$('aeVenue').value.trim()||null, field=$('aeField').value.trim()||null, det=$('aeDetails').value.trim()||null;
+    var rep=$('aeReport').value||null, st=$('aeStart').value||null, en=$('aeEnd').value||null, pk=aePicker.get(), venue=pk.venue, vmap=pk.map, field=$('aeField').value.trim()||null, det=$('aeDetails').value.trim()||null;
     var team = state.mode==='coach' || $('aeScopeTeam').checked;
     $('aeSave').disabled=true;
-    var pre = $('aeDefault').checked ? saveTeamDefaults(t.club, t.team, venue, field, null, $('aeErr')) : Promise.resolve(true);
+    var pre = $('aeDefault').checked ? saveTeamDefaults(t.club, t.team, venue, field, null, $('aeErr'), vmap) : Promise.resolve(true);
     Promise.resolve(pre).then(function(){
-      if(team) return sb.rpc('team_add_event',{ p_club:t.club, p_team:t.team, p_type:type, p_title:title, p_date:date, p_report:rep, p_start:st, p_end:en, p_venue:venue, p_field:field, p_details:det, p_confirmed:true });
-      var rows=state.players.filter(function(p){ return p.club===t.club && p.team_label===t.team; }).map(function(p){ return { player_id:p.id, event_type:type, title:title, event_date:date, date_confirmed:true, report_time:rep, start_time:st, end_time:en, venue:venue, field:field, details:det, club:t.club, family_id:state.familyId, source:'parent' }; });
+      if(team) return sb.rpc('team_add_event',{ p_club:t.club, p_team:t.team, p_type:type, p_title:title, p_date:date, p_report:rep, p_start:st, p_end:en, p_venue:venue, p_field:field, p_details:det, p_confirmed:true, p_venue_map:vmap });
+      var rows=state.players.filter(function(p){ return p.club===t.club && p.team_label===t.team; }).map(function(p){ return { player_id:p.id, event_type:type, title:title, event_date:date, date_confirmed:true, report_time:rep, start_time:st, end_time:en, venue:venue, venue_map:vmap, field:field, details:det, club:t.club, family_id:state.familyId, source:'parent' }; });
       return sb.from('events').insert(rows);
     }).then(function(r){
       $('aeSave').disabled=false;
