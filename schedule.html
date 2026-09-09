@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Family Schedule — PitchPro</title>
+<title>Obiteljski raspored — PitchPro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="manifest.json">
@@ -270,6 +270,47 @@
   .steps b{color:var(--txt)}
   .steps p{margin-bottom:6px}
   .foot{font-size:11.5px;color:var(--muted);margin-top:26px;text-align:center}
+  /* build 24: language switch, attendance, lineups */
+  .langSw{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none}
+  .langSw button{background:none;border:0;color:var(--muted);padding:8px 10px;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.1em;cursor:pointer}
+  .langSw button.on{color:#06130c;background:var(--green)}
+  .attWrap{margin-top:10px;border-top:1px dashed var(--line);padding-top:9px}
+  .attRow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+  .attWho{font:800 11px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:44px}
+  .attBtn{background:var(--card2);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font:800 11px/1 Inter,sans-serif;cursor:pointer}
+  .attBtn.on.going{background:rgba(46,224,138,.18);border-color:var(--green);color:var(--green)}
+  .attBtn.on.maybe{background:rgba(255,200,87,.16);border-color:var(--amber);color:var(--amber)}
+  .attBtn.on.not_going{background:rgba(255,122,110,.16);border-color:var(--red);color:var(--red)}
+  .attBtn:disabled{opacity:.6;cursor:default}
+  .attTeam{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+  .attTeam .attTgl{color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px}
+  .luPitch{position:relative;width:100%;aspect-ratio:68/96;max-height:540px;margin:10px 0;border-radius:12px;background:linear-gradient(180deg,#1f7f47,#1a6b3d);border:2px solid rgba(255,255,255,.35);overflow:hidden}
+  .luPitch:before{content:'';position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.35)}
+  .luPitch:after{content:'';position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.35);border-radius:50%}
+  .luBox{position:absolute;left:22%;width:56%;height:15%;border:2px solid rgba(255,255,255,.35)} .luBox.t{top:-2px;border-top:0} .luBox.b{bottom:-2px;border-bottom:0}
+  .luSlot{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:pointer;width:68px;z-index:2}
+  .luDot{width:36px;height:36px;margin:0 auto;border-radius:50%;background:rgba(255,255,255,.18);border:2px dashed rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font:900 14px Inter,sans-serif;color:#fff}
+  .luSlot.filled .luDot{background:#fff;color:#06130c;border:2px solid #fff}
+  .luSlot.sel .luDot{box-shadow:0 0 0 3px var(--amber)}
+  .luSlot.warn .luDot{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,122,110,.6)}
+  .luPos{font:800 9px Inter,sans-serif;letter-spacing:.06em}
+  .luName{font:700 10.5px/1.2 Inter,sans-serif;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .luPool{display:flex;flex-wrap:wrap;gap:6px}
+  .luChip{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:7px 11px;font:600 12.5px/1 Inter,sans-serif;cursor:pointer}
+  .luChip b{color:var(--green)} .luChip.placed{opacity:.45} .luChip.no{border-color:rgba(255,122,110,.5)} .luChip:disabled{cursor:default}
+  #prefsPage h1{font:900 20px/1.25 Archivo,Inter,sans-serif;margin-bottom:6px}
+  /* build 25 */
+  .qRow{border-top:1px solid var(--line);padding:10px 0}.qRow:first-of-type{border-top:0}.qText{font:600 14px/1.45 Inter,sans-serif}
+  .qLine{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}.qLine input{flex:1;min-width:180px}.qLine .gcal{margin-top:0}
+  .aeGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}@media(max-width:480px){.aeGrid{grid-template-columns:1fr}}
+  select.sel{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:12px 13px;font:15px Inter,sans-serif}
+  .radioRow{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 4px}.radioRow label{display:flex;align-items:center;gap:6px;margin:0;font:700 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)}
+  .radioRow input{width:18px;height:18px;accent-color:var(--green)}
+  .msgSum{margin-top:6px}.msgLine{font-size:13.5px;margin:4px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.msgLine a{color:var(--blue);text-decoration:underline dotted;text-underline-offset:3px}
+  .orImg{max-width:100%;border-radius:10px;display:block;margin:6px 0;border:1px solid var(--line)}
+  .orPdf iframe{width:100%;height:60vh;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .orText{white-space:pre-wrap;font:13.5px/1.5 Inter,sans-serif;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;color:var(--txt)}
+  .viewbar .addBtn{background:var(--green);color:#06130c;border:0;border-radius:999px;padding:9px 14px;font:800 11px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 </style>
 </head>
 <body>
@@ -278,6 +319,7 @@
     <div class="brand">PitchPro <span>— Family Schedule</span></div>
     <div style="display:flex;align-items:center;gap:10px">
       <div class="club" id="clubBadge" style="display:none"></div>
+      <div class="langSw" id="langSw" title="Language"><button type="button" data-lang="hr">HR</button><button type="button" data-lang="en">EN</button></div>
       <button class="appsBtn" id="shareApp" type="button" title="Share this app">↗ Share</button>
       <button class="appsBtn" id="ppNavOpen" type="button" title="Switch between PitchPro apps and pages">◈ Apps</button>
       <button class="appsBtn" id="hdrSignOut" type="button" title="Sign out of this device" aria-label="Sign out" hidden>⏻</button>
@@ -324,6 +366,12 @@
     </form>
     <div class="acct-row" style="margin-top:14px">Signed in as <b id="joinEmail"></b> · <a id="joinSignOut" style="color:var(--blue);cursor:pointer;text-decoration:underline">Sign out</a></div>
   </div>
+  <div id="prefsPage" class="card" style="display:none;max-width:480px;margin:8vh auto 0">
+    <h1 id="pfTitle"></h1>
+    <p class="sub" id="pfMsg" style="color:var(--muted);font-size:14px;margin-bottom:14px"></p>
+    <div class="btnrow" id="pfActs"></div>
+    <div class="err" id="pfErr"></div>
+  </div>
   <p class="private-note" id="loginNote">Schedules, names and venues are stored in a private database and are only visible after sign-in.</p>
 
   <!-- ============ APP ============ -->
@@ -338,6 +386,7 @@
     </nav>
 
     <section class="screen on" id="s-sched">
+      <div class="card" id="qCard" hidden style="margin-bottom:14px"></div>
       <div class="filters">
         <div class="fgroup" id="fPlayers"><span class="flabel">Player</span></div>
         <div class="fsep"></div>
@@ -345,9 +394,11 @@
       </div>
       <div class="viewbar">
         <div class="seg" id="viewSeg">
-          <button data-v="week" class="on">Week</button>
+          <button data-v="up">Upcoming</button>
+          <button data-v="week">Week</button>
           <button data-v="month">Month</button>
         </div>
+        <button class="addBtn" id="addEvBtn" type="button" hidden>＋ Add event</button>
         <div class="weeknav">
           <button id="wPrev" aria-label="Previous">‹</button>
           <div class="wlabel" id="wLabel"></div>
@@ -407,6 +458,7 @@
       <div class="card">
         <div class="acct-row">Signed in as <b id="acctEmail"></b><span class="roleTag" id="acctRole"></span> · <a id="acctSignOut" style="color:var(--blue);cursor:pointer;text-decoration:underline">Sign out</a></div>
         <div class="meta" id="acctFam" style="margin:4px 0 10px"></div>
+        <div class="acct-row" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px"><span>Language</span><div class="langSw"><button type="button" data-lang="hr">Hrvatski</button><button type="button" data-lang="en">English</button></div><span class="meta" style="flex-basis:100%">App language. Notifications by push, text and email follow it too.</span></div>
         <form id="pwForm">
           <label for="npw">New password (min 8 characters)</label>
           <input id="npw" type="password" autocomplete="new-password" minlength="8" required>
@@ -422,6 +474,7 @@
         <h2 class="scr" style="margin-top:0">Family &amp; team</h2>
         <div id="famBody"></div>
       </div>
+      <div class="card" style="margin-top:14px" id="teamDefaults" hidden></div>
       <div class="card" style="margin-top:14px" id="notifCard">
         <h2 class="scr" style="margin-top:0">Push notifications</h2>
         <p class="meta">Get a ping on this device when a forwarded schedule has been processed, something changes, or a question needs an answer. Applies to this device only — enable it on each phone.</p>
@@ -654,6 +707,8 @@
   <label for="vmInput">Venue name or address</label>
   <input id="vmInput" type="text" placeholder="Stadium or address">
   <div class="btnrow"><a class="gcal" id="vmMaps" href="#" target="_blank" rel="noopener">Find it on Google Maps</a></div>
+  <div id="vmBulk" hidden></div>
+  <label id="vmDefaultWrap" style="display:flex;align-items:center;gap:8px;margin-top:12px;font:700 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)" hidden><input type="checkbox" id="vmDefault" style="width:18px;height:18px;accent-color:var(--green)"> <span>Save as the team default venue and field</span></label>
   <div class="smBtns">
     <button class="primary" id="vmSave" type="button">Save venue</button>
     <button class="ghost" id="vmCancel" type="button">Cancel</button>
@@ -661,11 +716,61 @@
   <div class="err" id="vmErr"></div>
 </div></div>
 
+<div id="origModal" class="pmod"><div class="smBox" style="max-width:640px">
+  <h3 id="orTitle"></h3>
+  <div id="orBody"></div>
+  <div class="smBtns"><button class="ghost" id="orClose" type="button">Close</button></div>
+</div></div>
+
+<div id="addEvModal" class="pmod"><div class="smBox" style="max-width:460px">
+  <h3>Add event</h3>
+  <div class="sub" id="aeHint"></div>
+  <label for="aeTeam">Team</label>
+  <select id="aeTeam" class="sel"></select>
+  <div id="aeScopeWrap"><div class="radioRow"><label><input type="radio" name="aeScope" id="aeScopeTeam" value="team" checked> Whole team</label><label><input type="radio" name="aeScope" id="aeScopeFam" value="fam"> Only my family</label></div></div>
+  <div class="aeGrid">
+    <div><label for="aeType">Type</label><select id="aeType" class="sel"><option value="training">Training</option><option value="match">Match</option><option value="tournament">Tournament</option><option value="duty">Duty</option><option value="no_session">No session</option></select></div>
+    <div><label for="aeDate">Date</label><input id="aeDate" type="date"></div>
+  </div>
+  <label for="aeTitle">Title</label>
+  <input id="aeTitle" type="text" maxlength="120">
+  <div class="aeGrid">
+    <div><label for="aeReport">Arrive</label><input id="aeReport" type="time"></div>
+    <div><label for="aeStart">Start</label><input id="aeStart" type="time"></div>
+  </div>
+  <div class="aeGrid">
+    <div><label for="aeVenue">Venue</label><input id="aeVenue" type="text"></div>
+    <div><label for="aeField">Field</label><input id="aeField" type="text" placeholder="1"></div>
+  </div>
+  <label for="aeDetails">Details</label>
+  <input id="aeDetails" type="text" maxlength="300">
+  <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font:700 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)"><input type="checkbox" id="aeDefault" style="width:18px;height:18px;accent-color:var(--green)"> <span>Save as the team default venue and field</span></label>
+  <input id="aeEnd" type="hidden">
+  <div class="smBtns"><button class="primary" id="aeSave" type="button">Save</button><button class="ghost" id="aeCancel" type="button">Cancel</button></div>
+  <div class="ok" id="aeOk"></div><div class="err" id="aeErr"></div>
+</div></div>
+
+<div id="lineupModal" class="pmod"><div class="smBox" style="max-width:520px">
+  <h3 id="luTitle"></h3>
+  <div class="sub" id="luSub"></div>
+  <div class="privChips" id="luVariant"><button type="button" data-v="1" class="on">Lineup 1</button><button type="button" data-v="2">Lineup 2</button></div>
+  <div class="privChips" id="luSize"></div>
+  <div class="privChips" id="luForm"></div>
+  <div class="luPitch" id="luPitch"></div>
+  <div class="meta" id="luHint"></div>
+  <div class="luPool" id="luPool" style="margin-top:8px"></div>
+  <input id="luNotes" type="text" placeholder="Notes (optional)" style="margin-top:10px">
+  <div class="meta" id="luSetBy" style="margin-top:6px"></div>
+  <div class="smBtns"><button class="primary" id="luSave" type="button">Save</button><button class="ghost" id="luClear" type="button">Clear</button><button class="ghost" id="luClose" type="button">Close</button></div>
+  <div class="ok" id="luMsg"></div><div class="err" id="luErr"></div>
+</div></div>
+
 <div id="confModal" class="pmod"><div class="smBox" style="max-width:420px">
   <h3>Confirm the date</h3>
   <div class="sub" id="cfSub"></div>
   <label for="cfDate">Confirmed date</label>
   <input id="cfDate" type="date">
+  <div id="cfBulk" hidden></div>
   <div class="smBtns">
     <button class="primary" id="cfSave" type="button">Confirm</button>
     <button class="ghost" id="cfCancel" type="button">Cancel</button>
@@ -706,6 +811,227 @@
   function store(k,v){ try{ localStorage.setItem('pp-'+k, v); }catch(e){} }
   function recall(k){ try{ return localStorage.getItem('pp-'+k); }catch(e){ return null; } }
 
+  /* ---------- build 24: language (Croatian / English) ----------
+     One dictionary, two ways in: tr() for strings built in code, and a DOM translator that swaps every text node,
+     placeholder, title and aria-label it recognises (a MutationObserver keeps re-rendered markup translated).
+     Default is Croatian for everyone; the choice is kept on this device and, once signed in, on the account
+     (notification_channels.lang) so push, SMS and email follow it too. */
+  var HR = {
+    'Sign in':'Prijava','Create an account':'Otvori račun','Create account':'Otvori račun','Already have an account?':'Već imaš račun?',
+    'Got an invite code but no account yet?':'Imaš pozivni kod, ali još nemaš račun?','Email':'E-mail','Password':'Lozinka','Forgot password?':'Zaboravljena lozinka?',
+    'Private family schedule. Every account belongs to a family or a coach — you need an invite code from a parent to join.':'Privatni obiteljski raspored. Svaki račun pripada obitelji ili treneru — za pridruživanje treba ti pozivni kod od roditelja.',
+    'Join with your invite code':'Pridruži se pozivnim kodom',
+    'A parent gives you a code — for the other parent, a family viewer (grandparents and close family), or a coach claiming their card. Nothing is emailed; the code is passed on in person or by message.':'Roditelj ti daje kod — za drugog roditelja, obiteljskog gledatelja (bake, djedovi i bliža obitelj) ili trenera koji preuzima svoju karticu. Ništa se ne šalje e-mailom; kod se predaje osobno ili porukom.',
+    'Invite code':'Pozivni kod','First name':'Ime','Last name':'Prezime','Join':'Pridruži se','or':'ili',
+    'Start a new family (you become its first parent)':'Otvori novu obitelj (postaješ njezin prvi roditelj)','e.g. Kovač family':'npr. obitelj Kovač','Create family':'Otvori obitelj',
+    'Signed in as':'Prijava:','Sign out':'Odjava','Sign out of this device':'Odjavi se s ovog uređaja',
+    'Schedules, names and venues are stored in a private database and are only visible after sign-in.':'Rasporedi, imena i lokacije čuvaju se u privatnoj bazi i vidljivi su tek nakon prijave.',
+    'Schedule':'Raspored','Tournaments':'Turniri','Stats':'Statistika','Journey':'Putovanje','Coach Messages':'Poruke trenera','Account':'Račun',
+    'Player':'Igrač','Club':'Klub','All':'Svi','Week':'Tjedan','Month':'Mjesec','Previous':'Prethodno','Next':'Sljedeće','Upcoming':'Nadolazeći','Past':'Prošli',
+    'Journey — moments and journal':'Putovanje — trenuci i dnevnik','What happened? A goal, a save, a hard training, a lesson learned…':'Što se dogodilo? Gol, obrana, težak trening, naučena lekcija…',
+    '📷 Add photo':'📷 Dodaj fotografiju','📷 Change photo':'📷 Promijeni fotografiju','Post':'Objavi','Posting…':'Objavljujem…','Posted.':'Objavljeno.',
+    'Posted — your parents will see it first and approve it.':'Objavljeno — roditelji će to prvo vidjeti i odobriti.','Write something or add a photo first.':'Najprije nešto napiši ili dodaj fotografiju.','Pick the player first.':'Najprije odaberi igrača.',
+    'Coach messages — original and English':'Poruke trenera — izvornik i engleski','Hrvatski — original':'Hrvatski — izvornik','English':'Engleski','No messages on file yet.':'Još nema poruka.',
+    'New password (min 8 characters)':'Nova lozinka (najmanje 8 znakova)','Repeat new password':'Ponovi novu lozinku','Change password':'Promijeni lozinku','Password changed.':'Lozinka promijenjena.',
+    'The two passwords do not match.':'Lozinke se ne podudaraju.','Use at least 8 characters.':'Upiši najmanje 8 znakova.','Password changed — you are signed in.':'Lozinka promijenjena — prijavljen/a si.',
+    'Family & team':'Obitelj i momčad','Push notifications':'Push obavijesti',
+    'Get a ping on this device when a forwarded schedule has been processed, something changes, or a question needs an answer. Applies to this device only — enable it on each phone.':'Dobij obavijest na ovom uređaju kad je proslijeđeni raspored obrađen, kad se nešto promijeni ili kad pitanje treba odgovor. Vrijedi samo za ovaj uređaj — uključi na svakom telefonu.',
+    'add this app to your Home Screen first (Share button →':'najprije dodaj aplikaciju na početni zaslon (gumb Dijeli →','Add to Home Screen':'Dodaj na početni zaslon',
+    '), then open it from the new PitchPro icon and tap Enable — iOS only allows notifications for installed web apps.':'), zatim je otvori s nove PitchPro ikone i dodirni Uključi — iOS dopušta obavijesti samo instaliranim web-aplikacijama.',
+    'Enable notifications on this device':'Uključi obavijesti na ovom uređaju','Refresh notification setup':'Osvježi postavke obavijesti','Notifications are on for this device.':'Obavijesti su uključene na ovom uređaju.',
+    'Done — this device now gets family schedule notifications.':'Gotovo — ovaj uređaj sada prima obavijesti o obiteljskom rasporedu.','This browser does not support push notifications.':'Ovaj preglednik ne podržava push obavijesti.',
+    'Not supported in this browser.':'Nije podržano u ovom pregledniku.','Push service busy — retrying…':'Push usluga zauzeta — pokušavam ponovno…',
+    'Permission was not granted — allow notifications for this site in the browser settings, then try again.':'Dopuštenje nije dano — dopusti obavijesti za ovu stranicu u postavkama preglednika i pokušaj ponovno.',
+    'Email & text channels.':'E-mail i SMS kanali.','Push not working on a device, or just prefer email? Pick any mix — these follow your account, not one phone.':'Push ne radi na uređaju ili više voliš e-mail? Odaberi bilo koju kombinaciju — vrijedi za tvoj račun, ne za jedan telefon.',
+    'Email me schedule notifications':'Šalji mi obavijesti o rasporedu e-mailom','you@example.com':'ti@primjer.hr','Text me':'Šalji mi SMS',
+    'Mobile in international format, e.g. +385 91 234 5678 or +1 403 555 0199':'Mobitel u međunarodnom formatu, npr. +385 91 234 5678',
+    'Any Croatian or Canadian mobile once the text-message service is switched on. Until then, Canadian numbers can still use the carrier gateway below (optional).':'Bilo koji hrvatski ili kanadski mobitel čim se uključi SMS usluga. Do tada kanadski brojevi mogu koristiti operaterov pristupnik ispod (neobavezno).',
+    '10-digit Canadian number (gateway)':'10-znamenkasti kanadski broj (pristupnik)','Save channels':'Spremi kanale','Saved — future notifications will use these channels.':'Spremljeno — buduće obavijesti koristit će ove kanale.',
+    'Enter a valid email address first.':'Najprije upiši valjanu e-mail adresu.','Not signed in.':'Nisi prijavljen/a.',
+    'Enter the mobile in international format, starting with + and the country code.':'Upiši mobitel u međunarodnom formatu, s + i pozivnim brojem države.',
+    'Enter a mobile number for texts — international format, or a 10-digit Canadian number for the gateway.':'Upiši broj mobitela za SMS — međunarodni format ili 10-znamenkasti kanadski broj za pristupnik.',
+    'Reminders.':'Podsjetnici.','A gentle nudge after a session or game if nothing has been captured yet — at most one that evening and one the next morning, and they stop the moment something is posted.':'Blagi podsjetnik nakon treninga ili utakmice ako još ništa nije zabilježeno — najviše jedan te večeri i jedan sljedećeg jutra, a prestaju čim se nešto objavi.',
+    'Remind us to post a moment after each session':'Podsjeti nas da objavimo trenutak nakon svakog treninga','Remind us to enter match scores & stats':'Podsjeti nas da unesemo rezultate i statistiku','Save reminders':'Spremi podsjetnike',
+    'Sync with Google Calendar':'Sinkronizacija s Google kalendarom',
+    'Subscribe once and every schedule change lands in your Google Calendar automatically (Google refreshes subscribed calendars a few times a day). The link below is a private key — share it only with family.':'Pretplati se jednom i svaka promjena rasporeda automatski stiže u tvoj Google kalendar (Google osvježava pretplaćene kalendare nekoliko puta dnevno). Poveznica ispod je privatni ključ — podijeli je samo s obitelji.',
+    'Loading…':'Učitavanje…','Copy calendar link':'Kopiraj poveznicu kalendara','Open Google Calendar → From URL':'Otvori Google kalendar → Putem URL-a',
+    'Tap “Copy calendar link”.':'Dodirni „Kopiraj poveznicu kalendara”.','Open the “From URL” page (second button — easiest on a computer), paste the link, press':'Otvori stranicu „Putem URL-a” (drugi gumb — najlakše na računalu), zalijepi poveznicu i pritisni','Add calendar':'Dodaj kalendar',
+    '“Family Football” appears in your calendar list, and syncs to the Google Calendar app on your phone automatically.':'„Family Football” pojavljuje se na popisu kalendara i automatski se sinkronizira s aplikacijom Google kalendar na telefonu.',
+    'Prefer a one-off? Every event card also has its own “Add to Google Calendar” button.':'Radije jednokratno? Svaka kartica događaja ima i svoj gumb za dodavanje u kalendar.',
+    'Copied. Now paste it into Google Calendar → From URL.':'Kopirano. Zalijepi u Google kalendar → Putem URL-a.','Could not copy automatically — long-press the link text above to copy it.':'Automatsko kopiranje nije uspjelo — dugo pritisni poveznicu iznad da je kopiraš.',
+    'Forward coach messages':'Proslijedi poruke trenera',
+    'Got a schedule from a coach — email, WhatsApp, or a photo of a noticeboard? Send it to the family schedule inbox. It is read every hour, translated, and added to this app and the synced calendar automatically; inferred dates arrive with the amber flag, and anything unclear comes back as a question instead of a guess.':'Stigao ti je raspored od trenera — e-mail, WhatsApp ili fotografija oglasne ploče? Pošalji ga u obiteljski sandučić rasporeda. Čita se svaki sat, prevodi i automatski dodaje u ovu aplikaciju i sinkronizirani kalendar; pretpostavljeni datumi stižu s narančastom oznakom, a sve nejasno vraća se kao pitanje umjesto nagađanja.',
+    'Copy address':'Kopiraj adresu','Copied.':'Kopirano.','Could not copy automatically — long-press the address above.':'Automatsko kopiranje nije uspjelo — dugo pritisni adresu iznad.',
+    'Email:':'E-mail:','forward it as-is.':'proslijedi ga kakav jest.','long-press the message → Forward/Share → Gmail (or your mail app) → send to this address.':'dugo pritisni poruku → Proslijedi/Podijeli → Gmail (ili tvoja aplikacija za poštu) → pošalji na ovu adresu.',
+    'Text or paper schedule:':'Tekst ili raspored na papiru:','email a screenshot or photo to the same address.':'pošalji snimku zaslona ili fotografiju na istu adresu.',
+    'Instant lane.':'Brza traka.','Paste a coach message here and it is parsed straight away (when the instant parser is switched on) — otherwise it is saved and picked up within the hour. Only messages sent from a parent\'s own login email are trusted; this box counts as yours.':'Zalijepi poruku trenera ovdje i obrađuje se odmah (kad je brzi parser uključen) — inače se sprema i obrađuje unutar sat vremena. Vjeruje se samo porukama s roditeljeve prijavne adrese; ovaj okvir vrijedi kao tvoj.',
+    'Paste the coach\'s message…':'Zalijepi poruku trenera…','Send to the schedule':'Pošalji u raspored','Sending…':'Šaljem…','Copy the family\'s inbound address for automations':'Kopiraj obiteljsku ulaznu adresu za automatizacije',
+    'Paste the message first.':'Najprije zalijepi poruku.','Inbound address unavailable.':'Ulazna adresa nije dostupna.','Held — the sender was not recognised.':'Zadržano — pošiljatelj nije prepoznat.','Saved — it will be on the schedule within the hour.':'Spremljeno — bit će u rasporedu unutar sat vremena.',
+    'Recent':'Nedavno','Schedule data is entered from the coaches\' messages. Amber dashed cards mean the date is inferred, not confirmed — check with the coach.':'Podaci rasporeda unose se iz poruka trenera. Narančaste isprekidane kartice znače da je datum pretpostavljen, ne potvrđen — provjeri s trenerom.',
+    'Us':'Mi','Them':'Oni','Line-up / who played (optional)':'Postava / tko je igrao (neobavezno)','Game notes (optional)':'Bilješke o utakmici (neobavezno)','e.g. great second half':'npr. odlično drugo poluvrijeme',
+    'Save':'Spremi','Cancel':'Odustani','Close':'Zatvori','Edit':'Uredi','Remove':'Ukloni','Delete':'Obriši','Approve':'Odobri','Reject':'Odbij','Confirm':'Potvrdi','Not now':'Ne sada',
+    'Share this recap':'Podijeli ovaj sažetak','Nothing leaves this page until you send the image or text yourself. Pick how names appear first.':'Ništa ne napušta ovu stranicu dok sam/a ne pošalješ sliku ili tekst. Najprije odaberi kako se prikazuju imena.',
+    'First names':'Imena','Initials':'Inicijali','No names':'Bez imena','Download image':'Preuzmi sliku','Copy as text':'Kopiraj kao tekst','Copied ✓':'Kopirano ✓',
+    'Could not create the image on this device.':'Sliku nije bilo moguće izraditi na ovom uređaju.','Copy failed on this device.':'Kopiranje nije uspjelo na ovom uređaju.',
+    'Copy code':'Kopiraj kod','Code copied.':'Kod kopiran.','Select the code and copy it.':'Označi kod i kopiraj ga.','Share the code and app link…':'Podijeli kod i poveznicu aplikacije…','Invitation text copied — paste it into a message.':'Tekst pozivnice kopiran — zalijepi ga u poruku.',
+    'Add to Calendar':'Dodaj u kalendar','Add to calendar':'Dodaj u kalendar','Google Calendar':'Google kalendar','Apple / other (.ics file)':'Apple / drugo (.ics datoteka)','Pick your calendar.':'Odaberi svoj kalendar.','Whose games?':'Čije utakmice?','All clubs':'Svi klubovi',
+    'Tap the photo or the favourite-player line to update them (you are signed in as the parent).':'Dodirni fotografiju ili redak omiljenog igrača da ih promijeniš (prijavljen/a si kao roditelj).','Give this player their own login':'Daj ovom igraču vlastitu prijavu',
+    'Tap to add or change the photo':'Dodirni za dodavanje ili promjenu fotografije','Tap to add or change your photo':'Dodirni za dodavanje ili promjenu svoje fotografije','Career':'Karijera','current':'trenutno','Coaches:':'Treneri:',
+    'Shirt number: not set yet':'Broj dresa: još nije postavljen','Favourite player:':'Omiljeni igrač:','not set — tap to set':'nije postavljen — dodirni za unos','not set':'nije postavljen','e.g. Haaland, Messi, Ronaldo':'npr. Modrić, Messi, Ronaldo',
+    'Set a new password':'Postavi novu lozinku','You followed a password-reset link, so you are signed in. Choose a new password to finish.':'Došao/la si preko poveznice za ponovno postavljanje lozinke i prijavljen/a si. Odaberi novu lozinku za kraj.','Save new password':'Spremi novu lozinku',
+    'Share this app':'Podijeli ovu aplikaciju','Send the link, or let someone scan the code with their phone camera. The app itself is public — family data only appears after a sign-in, and accounts are created for family members only.':'Pošalji poveznicu ili neka netko skenira kod kamerom telefona. Sama aplikacija je javna — obiteljski podaci vide se tek nakon prijave, a računi se otvaraju samo članovima obitelji.',
+    'Share…':'Podijeli…','Copy link':'Kopiraj poveznicu','Link copied.':'Poveznica kopirana.','↗ Share':'↗ Podijeli','◈ Apps':'◈ Aplikacije','Share this app':'Podijeli ovu aplikaciju','Switch between PitchPro apps and pages':'Prebaci se između PitchPro aplikacija i stranica',
+    'Coach cards work like player cards — career, photo and updates, kept by the coach once claimed. Claiming gives the coach their own login that sees only their team\'s pages.':'Kartice trenera rade kao kartice igrača — karijera, fotografija i novosti, koje trener sam održava nakon preuzimanja. Preuzimanjem trener dobiva vlastitu prijavu koja vidi samo stranice svoje momčadi.',
+    'Invite your coach to claim this card':'Pozovi trenera da preuzme ovu karticu','Only a parent of the family can create invites.':'Samo roditelj u obitelji može stvarati pozivnice.','Creating code…':'Stvaram kod…',
+    'Add venue':'Dodaj lokaciju','add venue':'dodaj lokaciju','Venue name or address':'Naziv lokacije ili adresa','Stadium or address':'Stadion ili adresa','Find it on Google Maps':'Pronađi na Google kartama','Save venue':'Spremi lokaciju',
+    'Type the venue first — the Google Maps link helps you find the exact name.':'Najprije upiši lokaciju — poveznica na Google karte pomaže pronaći točan naziv.',
+    'Confirm the date':'Potvrdi datum','Confirmed date':'Potvrđeni datum','Pick a date first.':'Najprije odaberi datum.',
+    'Training':'Trening','Duty':'Dežurstvo','Match':'Utakmica','Tournament':'Turnir','No session':'Nema treninga',
+    'Week of':'Tjedan','⏰ Arrive':'⏰ Dolazak','Kick-off':'Početak','＋ score & stats':'＋ rezultat i statistika','· edit':'· uredi','＋ score':'＋ rezultat',
+    '⚠ Some dates this week are inferred from the coach saying “next week”, not confirmed. Check with the coach before relying on them.':'⚠ Neki datumi ovog tjedna pretpostavljeni su iz trenerovog „sljedeći tjedan”, nisu potvrđeni. Provjeri s trenerom prije nego se osloniš na njih.',
+    '⚠ Amber-ringed days hold dates inferred from “next week”, not confirmed.':'⚠ Dani s narančastim okvirom sadrže datume pretpostavljene iz „sljedeći tjedan”, nepotvrđene.',
+    '(UNCONFIRMED — tap to set)':'(NEPOTVRĐENO — dodirni za postavljanje)','Nothing scheduled this week for this selection. Use the arrows or the filters above.':'Ništa nije zakazano ovog tjedna za ovaj odabir. Koristi strelice ili filtre iznad.',
+    'Nothing on this day for this selection.':'Ništa na ovaj dan za ovaj odabir.','Tap a day to see its details.':'Dodirni dan za detalje.','off':'slob.','day':'dan','more':'više',
+    'Both at':'Oboje u','— one trip if the venue is shared':'— jedna vožnja ako je lokacija ista','(venue not stated)':'(lokacija nije navedena)','— different venues: two drop-offs.':'— različite lokacije: dva odvoza.',
+    'Both children have commitments today — check the times below.':'Oboje djece danas ima obveze — provjeri vremena ispod.',
+    '● In progress':'● U tijeku','tomorrow':'sutra','date unconfirmed':'datum nepotvrđen','date not announced':'datum nije objavljen','Add games to calendar':'Dodaj utakmice u kalendar',
+    'Date, venue and which of our teams plays are not announced yet.':'Datum, lokacija i koja naša momčad igra još nisu objavljeni.','ⓘ Details & source':'ⓘ Detalji i izvor',
+    'Group':'Skupina','Pitch':'Teren','All games':'Sve utakmice','Our games':'Naše utakmice','Knockout':'Nokaut','Time':'Vrijeme','Fixture':'Utakmica','Score':'Rezultat','Date to be announced':'Datum će biti objavljen',
+    'Team photo':'Fotografija momčadi','Tap to change the team photo':'Dodirni za promjenu fotografije momčadi','📷 Add a team photo':'📷 Dodaj fotografiju momčadi','Squad —':'Momčad —','players · shirt numbers shown when known':'igrača · brojevi dresova kad su poznati','· Coach':'· Trener',
+    'No upcoming tournaments':'Nema nadolazećih turnira','No past tournaments':'Nema prošlih turnira','— try the Upcoming/Past toggle or the filters above.':'— probaj prekidač Nadolazeći/Prošli ili filtre iznad.','for':'za','at':'u',
+    'played':'odigrano','Goals':'Golovi','Assists':'Asistencije','games':'utakmica','goals':'golova','assists':'asistencija','W-D-L':'P-N-I','★ Best result':'★ Najbolji rezultat','📤 Share this recap':'📤 Podijeli sažetak',
+    'Tournament recap':'Sažetak turnira','Season so far':'Sezona dosad','All games to date':'Sve utakmice dosad','· auto-generated':'· automatski','updates itself as scores are entered':'ažurira se kako se unose rezultati',
+    'No game results yet. Enter a score from a tournament fixture row (the “＋ score” button) or a match card — parent or coach, anyone signed in can do it.':'Još nema rezultata. Unesi rezultat iz retka turnirske utakmice (gumb „＋ rezultat”) ili s kartice utakmice.',
+    'Line-up:':'Postava:','Open player card':'Otvori karticu igrača','Game':'Utakmica','Our player':'Naš igrač',
+    'Scouting view — by nationality':'Skautski pregled — po državljanstvu','Which national-team pathways each player is eligible for, with this season’s totals. For talking to clubs and federations; nothing here is shared unless you share it.':'Za koje reprezentacije svaki igrač ima pravo nastupa, s ukupnim brojkama ove sezone. Za razgovore s klubovima i savezima; ništa se ne dijeli dok to sam/a ne učiniš.',
+    'generation':'generacija','Eligibility not recorded':'Pravo nastupa nije zabilježeno','team':'momčad','received':'primljeno',
+    'Parent':'Roditelj','Coach':'Trener','Family viewer':'Obiteljski gledatelj','Player login':'Prijava igrača','Family':'Obitelj','(you)':'(ti)','Account active':'Račun aktivan','Family viewer · read-only':'Obiteljski gledatelj · samo čitanje','Viewing':'Gleda',
+    'Card claimed':'Kartica preuzeta','Invite code issued':'Pozivni kod izdan','Card not claimed':'Kartica nije preuzeta','Open invite codes':'Otvoreni pozivni kodovi','Tap to show and share':'Dodirni za prikaz i dijeljenje',
+    'Invites are one-time codes you pass on yourself — the app never emails anyone. The other parent gets full parent rights; a family viewer (grandparents, close family) sees everything read-only; a coach claims their card and sees only their team\'s schedule.':'Pozivnice su jednokratni kodovi koje sam/a predaješ — aplikacija nikome ne šalje e-mail. Drugi roditelj dobiva puna roditeljska prava; obiteljski gledatelj (bake, djedovi, bliža obitelj) sve vidi bez uređivanja; trener preuzima svoju karticu i vidi samo raspored svoje momčadi.',
+    'Invite your coach':'Pozovi trenera','Invite the other parent':'Pozovi drugog roditelja','Invite a family viewer':'Pozovi obiteljskog gledatelja','Other parent':'Drugi roditelj',
+    'You are a family viewer: everything a parent sees, nothing to edit. Ask a parent if something needs changing.':'Obiteljski si gledatelj: vidiš sve što i roditelj, bez uređivanja. Ako nešto treba promijeniti, obrati se roditelju.',
+    'Your players in the app':'Tvoji igrači u aplikaciji','Coach accounts are read-only in this version. Schedules still arrive through the families\' inbox; posting directly from here is the next step.':'Trenerski računi u ovoj verziji samo čitaju. Rasporedi i dalje stižu kroz obiteljski sandučić; izravno objavljivanje odavde sljedeći je korak.',
+    'Cancel this invite code?':'Poništiti ovaj pozivni kod?','Remove this viewer from the family? They lose access immediately.':'Ukloniti ovog gledatelja iz obitelji? Odmah gubi pristup.','Remove this moment?':'Ukloniti ovaj trenutak?',
+    'Who is this viewer for? (e.g. Grandma) — shown on the invite only':'Za koga je ovaj gledatelj? (npr. Baka) — piše samo na pozivnici',
+    'Your football story, one moment at a time. Post a note or a photo — a parent approves it, then it is part of your journey.':'Tvoja nogometna priča, trenutak po trenutak. Objavi bilješku ili fotografiju — roditelj je odobri i postaje dio tvog putovanja.',
+    'Moments and notes for each player. What the children post waits here for your approval; what you post appears straight away.':'Trenuci i bilješke za svakog igrača. Ono što djeca objave čeka ovdje tvoje odobrenje; ono što ti objaviš pojavljuje se odmah.','Approved moments from the family journey.':'Odobreni trenuci iz obiteljskog putovanja.',
+    'For':'Za','Awaiting approval':'Čeka odobrenje','· by':'· objavio/la','a parent':'roditelj','player':'igrač',
+    'Network error — try again.':'Mrežna greška — pokušaj ponovno.','Tap to retry':'Dodirni za ponovni pokušaj','Feed unavailable — ask for a new feed key.':'Kalendar nije dostupan — zatraži novi ključ.',
+    'Type your account email above first, then tap “Forgot password?” again.':'Najprije upiši e-mail računa iznad, pa ponovno dodirni „Zaboravljena lozinka?”.',
+    'If that address has an account, a reset link is on its way — check spam too. Opening the link signs you in here and asks for a new password.':'Ako ta adresa ima račun, poveznica za novu lozinku je na putu — provjeri i neželjenu poštu. Otvaranje poveznice prijavljuje te ovdje i traži novu lozinku.',
+    'Account created — check your email for a confirmation link, then sign in and enter your invite code.':'Račun otvoren — provjeri e-mail za poveznicu potvrde, zatim se prijavi i upiši pozivni kod.',
+    'Sign-in failed:':'Prijava nije uspjela:','Could not create the account:':'Račun nije bilo moguće otvoriti:',
+    'Language':'Jezik','Croatian':'Hrvatski','App language. Notifications by push, text and email follow it too.':'Jezik aplikacije. Prate ga i push, SMS i e-mail obavijesti.','Saved.':'Spremljeno.',
+    /* build 24: attendance + lineup */
+    'Going':'Dolazim','Maybe':'Možda','Not going':'Ne dolazim','going':'dolazi','maybe':'možda','out':'ne dolazi','no reply':'bez odgovora','Who\'s going':'Tko dolazi','Team':'Momčad','Attendance':'Dolazak',
+    '🧩 Lineup':'🧩 Postava','Lineup':'Postava','Lineup 1':'Postava 1','Lineup 2':'Postava 2','a-side':'igrača','Formation':'Formacija','Bench':'Klupa','Empty':'Prazno','Tap a spot on the pitch, then a player.':'Dodirni mjesto na terenu, zatim igrača.',
+    'No lineup set yet.':'Postava još nije postavljena.','Set by':'Postavio/la','Only the coach can change the lineup.':'Postavu može mijenjati samo trener.','Until the coach claims their card, a parent can keep the lineup.':'Dok trener ne preuzme svoju karticu, postavu može voditi roditelj.',
+    'Lineup saved.':'Postava spremljena.','Clear':'Očisti','GK':'GK','DEF':'OBR','MID':'VEZ','FWD':'NAP','marked not going':'javio/la da ne dolazi',
+    /* build 24: email preferences page (?prefs=) */
+    'Stop schedule emails?':'Zaustaviti e-mailove o rasporedu?','You\'re unsubscribed':'Odjavljeni ste','Emails are back on':'E-mailovi su ponovno uključeni','Undo — keep sending emails':'Poništi — nastavi slati e-mailove',
+    'Unsubscribe':'Odjavi se','Turn emails back on':'Ponovno uključi e-mailove','Open the Account tab':'Otvori karticu Račun','Link not recognised':'Poveznica nije prepoznata','Something went wrong':'Nešto je pošlo po zlu',
+    'Contact card downloaded — open it to save PitchPro in your contacts.':'Kontakt kartica preuzeta — otvori je da spremiš PitchPro u kontakte.'
+  };
+  var DOW_EN=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], DOW_HR=['Ponedjeljak','Utorak','Srijeda','Četvrtak','Petak','Subota','Nedjelja'];
+  var DOWS_EN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], DOWS_HR=['Pon','Uto','Sri','Čet','Pet','Sub','Ned'];
+  var MON_EN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], MON_HR=['sij','velj','ožu','tra','svi','lip','srp','kol','ruj','lis','stu','pro'];
+  var MONF_EN=['January','February','March','April','May','June','July','August','September','October','November','December'], MONF_HR=['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
+  var LANG = (function(){ var q=new URLSearchParams(location.search).get('lang'); if(q==='en'||q==='hr') return q; var s=null; try{ s=localStorage.getItem('pp-lang'); }catch(e){} return s==='en'?'en':'hr'; })();
+  function tr(s){ return (LANG==='hr' && Object.prototype.hasOwnProperty.call(HR,s)) ? HR[s] : s; }
+  /* Croatian plural: 1 / 2–4 / 5+ (11–14 → many). */
+  function hrN(n, one, few, many){ var m10=n%10, m100=n%100; return (m10===1&&m100!==11)?one:(m10>=2&&m10<=4&&!(m100>=12&&m100<=14))?few:many; }
+  function nWord(n, en1, enN, hr1, hr2, hr5){ return n+' '+(LANG==='hr'?hrN(n,hr1,hr2,hr5):(n===1?en1:enN)); }
+  var I18N_ATTRS=['placeholder','title','aria-label'];
+  function trNode(node){
+    if(node.nodeType===3){
+      var raw = node.__en!=null ? node.__en : node.nodeValue;
+      var key = raw.trim(); if(!key) return;
+      var to = (LANG==='hr' && Object.prototype.hasOwnProperty.call(HR,key)) ? HR[key] : null;
+      if(to){ if(node.__en==null) node.__en=raw; var v=raw.replace(key,to); if(node.nodeValue!==v){ node.__i18n=1; node.nodeValue=v; } }
+      else if(node.__en!=null && node.nodeValue!==node.__en){ node.__i18n=1; node.nodeValue=node.__en; }
+      return;
+    }
+    if(node.nodeType!==1) return;
+    if(node.tagName==='SCRIPT'||node.tagName==='STYLE') return;
+    I18N_ATTRS.forEach(function(a){
+      if(!node.hasAttribute(a)) return;
+      var k='__en_'+a, raw = node[k]!=null ? node[k] : node.getAttribute(a);
+      var to = (LANG==='hr' && Object.prototype.hasOwnProperty.call(HR,raw)) ? HR[raw] : null;
+      if(to){ if(node[k]==null) node[k]=raw; if(node.getAttribute(a)!==to) node.setAttribute(a,to); }
+      else if(node[k]!=null && node.getAttribute(a)!==node[k]) node.setAttribute(a,node[k]);
+    });
+    var w=document.createTreeWalker(node, NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT, null);
+    var cur; while((cur=w.nextNode())){ if(cur.nodeType===3) trNode(cur); else { if(cur.tagName==='SCRIPT'||cur.tagName==='STYLE') continue; I18N_ATTRS.forEach(function(a){ if(!cur.hasAttribute(a)) return; var k='__en_'+a, raw = cur[k]!=null ? cur[k] : cur.getAttribute(a); var to=(LANG==='hr' && Object.prototype.hasOwnProperty.call(HR,raw))?HR[raw]:null; if(to){ if(cur[k]==null) cur[k]=raw; if(cur.getAttribute(a)!==to) cur.setAttribute(a,to); } else if(cur[k]!=null && cur.getAttribute(a)!==cur[k]) cur.setAttribute(a,cur[k]); }); } }
+  }
+  function applyLangTables(){
+    DOW = LANG==='hr'?DOW_HR:DOW_EN; DOWS = LANG==='hr'?DOWS_HR:DOWS_EN; MON = LANG==='hr'?MON_HR:MON_EN; MONF = LANG==='hr'?MONF_HR:MONF_EN;
+    TYPE_LABEL = { training:tr('Training'), duty:tr('Duty'), match:tr('Match'), tournament:tr('Tournament'), no_session:tr('No session') };
+    document.documentElement.lang = LANG;
+    document.title = LANG==='hr' ? 'Obiteljski raspored — PitchPro' : 'Family Schedule — PitchPro';
+    document.querySelectorAll('[data-lang]').forEach(function(b){ b.classList.toggle('on', b.dataset.lang===LANG); b.setAttribute('aria-pressed', b.dataset.lang===LANG?'true':'false'); });
+  }
+  function setLang(l, save){
+    if(l!=='en' && l!=='hr') return;
+    LANG=l; try{ localStorage.setItem('pp-lang', l); }catch(e){}
+    applyLangTables(); trNode(document.body);
+    if(state.userId && save!==false){
+      sb.from('notification_channels').upsert({ user_id:state.userId, lang:l, updated_at:new Date().toISOString() },{onConflict:'user_id'}).then(function(){}).catch(function(){});
+    }
+    if(typeof rerenderAll==='function') rerenderAll();
+  }
+  document.querySelectorAll('[data-lang]').forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.lang); }); });
+  applyLangTables(); trNode(document.body);
+  new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      if(m.type==='characterData'){ var n=m.target; if(n.__i18n){ n.__i18n=0; return; } n.__en=null; trNode(n); }
+      else m.addedNodes.forEach(function(n){ trNode(n); });
+    });
+  }).observe(document.body, { childList:true, subtree:true, characterData:true });
+  function rerenderAll(){
+    if(!state.mode || state.mode==='none') return;
+    try{ buildFilters(); renderSchedule(); renderTournaments(); renderMessages(); if(state.mode==='family'){ renderStats(); renderJourney(); } renderFamily(); renderQuestions(); renderTeamDefaults(); if(state.ctx) applyContext(state.ctx, true); }catch(e){}
+  }
+  HR['Notes (optional)']='Bilješke (neobavezno)'; HR['Team']='Momčad'; HR['Played']='Igrao/la'; HR['Language']='Jezik';
+  /* ---------- build 24: email preferences page (?prefs=TOKEN[&a=off|on]) and contact card (?vcf=1) ----------
+     Lives inside the app because Supabase serves function HTML as text/plain and the rest of the site sits behind
+     the preview wall; schedule.html is the one open page. The email-prefs function is the JSON API behind it. */
+  var PREFS_MODE=(function(){ var q=new URLSearchParams(location.search); return (q.get('prefs')||q.get('vcf'))?q:null; })();
+  if(PREFS_MODE){ (function(){
+    var API=SUPABASE_URL+'/functions/v1/email-prefs', ACCT=location.pathname+'#tab=acct';
+    $('login').style.display='none'; $('loginNote').style.display='none'; $('app').style.display='none'; $('join').style.display='none';
+    $('prefsPage').style.display='block';
+    function show(title,msg,acts){
+      $('pfTitle').textContent=title; $('pfMsg').textContent=msg; var box=$('pfActs'); box.innerHTML='';
+      acts.forEach(function(x){ var el=document.createElement('a'); el.className='gcal'; el.href=x.href||'#'; el.textContent=x.label; if(x.onclick) el.addEventListener('click', function(ev){ ev.preventDefault(); x.onclick(); }); box.appendChild(el); });
+    }
+    if(PREFS_MODE.get('vcf')){
+      var vcf=['BEGIN:VCARD','VERSION:3.0','N:Family Schedule;PitchPro;;;','FN:PitchPro — Family Schedule','ORG:PitchPro Pathways','EMAIL;TYPE=INTERNET,PREF:david@pitchpropathways.com','URL:https://pitchpropathways.com/schedule.html','END:VCARD'].join('\r\n');
+      var dl=function(){ var a=document.createElement('a'); a.href='data:text/vcard;charset=utf-8,'+encodeURIComponent(vcf); a.download='PitchPro-Family-Schedule.vcf'; document.body.appendChild(a); a.click(); a.remove(); };
+      show('PitchPro — Family Schedule', tr('Contact card downloaded — open it to save PitchPro in your contacts.'), [{label:'⬇ .vcf', onclick:dl},{label:tr('Open the Account tab'), href:ACCT}]);
+      setTimeout(dl, 300);
+      return;
+    }
+    var t=(PREFS_MODE.get('prefs')||'').trim(), a=PREFS_MODE.get('a');
+    var acct=function(){ return {label:tr('Open the Account tab'), href:ACCT}; };
+    function bad(){ show(tr('Link not recognised'), LANG==='hr'?'Ova poveznica za odjavu nije valjana — obavijesti promijeni u aplikaciji.':'This unsubscribe link is not valid — change email notifications in the app instead.', [acct()]); }
+    function call(action){
+      $('pfErr').textContent='';
+      return fetch(API+'?json=1&t='+encodeURIComponent(t)+(action?'&a='+action:''),{headers:{'Accept':'application/json'}}).then(function(r){ return r.json(); });
+    }
+    function render(j){
+      if(!j||!j.ok){ bad(); return; }
+      if((j.lang==='en'||j.lang==='hr') && j.lang!==LANG) setLang(j.lang, false);
+      var hr=LANG==='hr', e=j.email;
+      if(j.action==='off') show(tr("You're unsubscribed"), hr?'E-mail obavijesti o rasporedu više se neće slati na '+e+'. Push obavijesti u aplikaciji nisu promijenjene.':'No more schedule emails will be sent to '+e+'. Push notifications in the app are not affected.', [{label:tr('Undo — keep sending emails'), onclick:function(){ run('on'); }}, acct()]);
+      else if(j.action==='on') show(tr('Emails are back on'), hr?'Ažuriranja rasporeda ponovno se šalju na '+e+'.':'Schedule updates will be emailed to '+e+' again.', [acct()]);
+      else if(j.email_enabled) show(tr('Stop schedule emails?'), hr?e+' trenutno prima PitchPro e-mailove o rasporedu. Push obavijesti u aplikaciji su odvojene.':e+' currently receives PitchPro schedule emails. Push notifications in the app are separate.', [{label:tr('Unsubscribe'), onclick:function(){ run('off'); }}, acct()]);
+      else show(tr('Stop schedule emails?'), hr?e+' trenutno ne prima PitchPro e-mailove o rasporedu.':e+' currently does not receive PitchPro schedule emails.', [{label:tr('Turn emails back on'), onclick:function(){ run('on'); }}, acct()]);
+    }
+    function run(action){ call(action).then(render).catch(function(){ show(tr('Something went wrong'), LANG==='hr'?'Pokušaj ponovno za trenutak ili promijeni obavijesti u aplikaciji.':'Try again in a moment, or change notifications in the app.', [acct()]); }); }
+    if(!/^[0-9a-f]{32}$/.test(t)){ bad(); return; }
+    run(a==='off'?'off':(a==='on'?'on':null));
+  })(); }
+
   /* ---------- auth ---------- */
   var authMode='in';
   function swapAuth(){
@@ -727,7 +1053,7 @@
     var call = authMode==='in' ? sb.auth.signInWithPassword(creds) : sb.auth.signUp(creds);
     call.then(function(r){
         $('loginBtn').disabled=false;
-        if(r.error){ $('loginErr').textContent = (authMode==='in'?'Sign-in failed: ':'Could not create the account: ')+r.error.message; return; }
+        if(r.error){ $('loginErr').textContent = (authMode==='in'?tr('Sign-in failed:'):tr('Could not create the account:'))+' '+r.error.message; return; }
         if(authMode==='up' && r.data && !r.data.session){
           $('loginOk').textContent='Account created — check your email for a confirmation link, then sign in and enter your invite code.';
         }
@@ -747,6 +1073,7 @@
   $('acctSignOut').addEventListener('click', doSignOut);
 
   sb.auth.onAuthStateChange(function(_ev, session){
+    if(PREFS_MODE) return;
     if(session){
       $('login').style.display='none'; $('loginNote').style.display='none';
       state.userEmail = (session.user && session.user.email) || '';
@@ -774,7 +1101,7 @@
       applyContext(r.data||{});
     }).catch(function(){ showLoadError('network error'); });
   }
-  function applyContext(ctx){
+  function applyContext(ctx, relabel){
     state.ctx=ctx;
     var fams=ctx.families||[], teams=ctx.coach_teams||[];
     document.body.classList.remove('ro','coach','viewer');
@@ -787,17 +1114,17 @@
       if(state.role==='viewer'){ document.body.classList.add('ro','viewer'); }
       if(state.role==='child'){ document.body.classList.add('ro','child'); }
       $('acctRole').textContent = state.role==='parent' ? 'Parent' : (state.role==='child' ? 'Player' : 'Family viewer');
-      $('acctFam').textContent = state.familyName + (state.role==='parent' ? '' : (state.role==='child' ? ' · your own schedule, stats and journey. Moments you post go to your parents first.' : ' · read-only: you can see everything, parents make the changes'));
+      $('acctFam').textContent = state.familyName + (state.role==='parent' ? '' : (state.role==='child' ? (LANG==='hr'?' · tvoj raspored, statistika i putovanje. Trenuci koje objaviš prvo idu roditeljima.':' · your own schedule, stats and journey. Moments you post go to your parents first.') : (LANG==='hr'?' · samo čitanje: vidiš sve, promjene rade roditelji':' · read-only: you can see everything, parents make the changes')));
       $('join').style.display='none'; $('app').style.display='block';
-      loadAll(); loadChannels();
+      if(!relabel){ loadAll(); loadChannels(); }
     } else if(teams.length){
       state.mode='coach'; state.familyId=null; state.role='coach'; state.canEdit=false;
       document.body.classList.add('ro','coach');
       var c=ctx.coach||{};
       $('acctRole').textContent='Coach';
-      $('acctFam').textContent=(c.club||teams[0].club)+' · '+teams.map(function(t){ return t.team_label+' generation'; }).join(', ')+' · you see your team\'s schedule, squads and messages; no family details.';
+      $('acctFam').textContent=(c.club||teams[0].club)+' · '+teams.map(function(t){ return t.team_label+' '+tr('generation'); }).join(', ')+(LANG==='hr'?' · vidiš raspored, momčadi i poruke svoje momčadi; bez obiteljskih podataka.':' · you see your team\'s schedule, squads and messages; no family details.');
       $('join').style.display='none'; $('app').style.display='block';
-      loadCoach();
+      if(!relabel){ loadCoach(); loadChannels(); }
     } else {
       state.mode='none'; state.canEdit=false;
       $('app').style.display='none'; $('join').style.display='block';
@@ -928,12 +1255,12 @@
       state.fPlayer = recall('fPlayer') || 'all';
       state.fClub = recall('fClub') || 'all';
       if(state.fPlayer!=='all' && !state.players.some(function(p){return p.id===state.fPlayer;})) state.fPlayer='all';
-      state.view = recall('view')==='month' ? 'month' : 'week';
+      state.view = recall('view')||'up'; if(['up','week','month'].indexOf(state.view)<0) state.view='up';
       state.weekStart = pickInitialWeek();
       state.monthStart = firstOf(state.weekStart);
       buildFilters(); renderFeed(); syncViewSeg();
       renderSchedule(); renderTournaments(); renderMessages(); renderStats(); renderFamily(); renderJourney();
-      applyHash();
+      applyHash(); loadAttendance(); loadExtras(); loadInboxMeta(); $('addEvBtn').hidden = !(state.canEdit);
     }).catch(function(){ showLoadError('network error'); });
   }
   /* Coach mode: team-scoped, read-only. Players come through team_players() (names + shirts only). */
@@ -957,11 +1284,11 @@
       loadTries=0;
       var cb=$('clubBadge'); if(state.ctx&&state.ctx.coach&&state.ctx.coach.club){ cb.textContent=state.ctx.coach.club; cb.style.display=''; }
       state.fPlayer='all'; state.fClub=recall('fClub')||'all';
-      state.view = recall('view')==='month' ? 'month' : 'week';
+      state.view = recall('view')||'up'; if(['up','week','month'].indexOf(state.view)<0) state.view='up';
       state.weekStart = pickInitialWeek(); state.monthStart = firstOf(state.weekStart);
       buildFilters(); syncViewSeg();
       renderSchedule(); renderTournaments(); renderMessages(); renderFamily();
-      applyHash();
+      applyHash(); loadAttendance(); loadExtras(); $('addEvBtn').hidden = false;
     }).catch(function(){ showLoadError('network error'); });
   }
   // Several families can hold the same training row (one per child). A coach sees it once, with every player named.
@@ -979,11 +1306,11 @@
     // It clears itself within seconds — so retry automatically before bothering anyone.
     loadTries++;
     if(loadTries<=3){
-      $('wDays').innerHTML='<div class="empty">Connecting… (attempt '+loadTries+' of 3)</div>';
+      $('wDays').innerHTML='<div class="empty">'+(LANG==='hr'?'Povezivanje… (pokušaj '+loadTries+' od 3)':'Connecting… (attempt '+loadTries+' of 3)')+'</div>';
       setTimeout(loadAll, 2500*loadTries);
       return;
     }
-    $('wDays').innerHTML='<div class="banner">Could not load the schedule ('+esc(m)+'). '
+    $('wDays').innerHTML='<div class="banner">'+(LANG==='hr'?'Raspored nije bilo moguće učitati':'Could not load the schedule')+' ('+esc(m)+'). '
       +'<a href="#" id="retryLoad" style="color:var(--amber);font-weight:800;text-decoration:underline">Tap to retry</a></div>';
     var rl=document.getElementById('retryLoad');
     if(rl) rl.addEventListener('click', function(e){ e.preventDefault(); loadTries=0; loadAll(); });
@@ -1041,19 +1368,24 @@
     b.addEventListener('click', function(){
       state.view=b.dataset.v; store('view',state.view);
       if(state.view==='month'){ state.monthStart=firstOf(state.weekStart); }
+      if(state.view==='up'){ state.upStart=null; }
       syncViewSeg(); renderSchedule();
     });
   });
   $('wPrev').addEventListener('click', function(){
-    if(state.view==='week'){ state.weekStart=addDays(state.weekStart,-7); } else { state.monthStart=addMonths(state.monthStart,-1); state.selDay=null; }
+    if(state.view==='up'){ state.upStart=iso(addDays(parseISO(state.upStart||todayZagreb()),-14)); } else if(state.view==='week'){ state.weekStart=addDays(state.weekStart,-7); } else { state.monthStart=addMonths(state.monthStart,-1); state.selDay=null; }
     renderSchedule();
   });
   $('wNext').addEventListener('click', function(){
-    if(state.view==='week'){ state.weekStart=addDays(state.weekStart,7); } else { state.monthStart=addMonths(state.monthStart,1); state.selDay=null; }
+    if(state.view==='up'){ state.upStart=iso(addDays(parseISO(state.upStart||todayZagreb()),14)); } else if(state.view==='week'){ state.weekStart=addDays(state.weekStart,7); } else { state.monthStart=addMonths(state.monthStart,1); state.selDay=null; }
     renderSchedule();
   });
 
   function renderSchedule(){
+    if(state.view==='up'){
+      $('wDays').style.display=''; $('mWrap').style.display='none';
+      renderUpcoming(); return;
+    }
     if(state.view==='week'){
       $('wDays').style.display=''; $('mWrap').style.display='none';
       renderWeek();
@@ -1103,20 +1435,20 @@
     h+='</div>';
     h+='<h3>'+esc(e.title)+'</h3>';
     var t='';
-    if(e.report_time) t+='<span class="report">⏰ Arrive '+hm(e.report_time)+'</span>';
-    if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?'Kick-off ':'')+hm(e.start_time)+'</span>';
+    if(e.report_time) t+='<span class="report">'+tr('⏰ Arrive')+' '+hm(e.report_time)+'</span>';
+    if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?tr('Kick-off')+' ':'')+hm(e.start_time)+'</span>';
     var calIco=(e.event_type!=='no_session' && e.event_date)?' <a class="calAdd calIco" data-ev="'+esc(e.id)+'" href="#" title="Add to calendar" aria-label="Add to calendar">📅</a>':'';
     if(t) h+='<div class="times">'+t+calIco+'</div>';
     var m=[];
-    if(e.venue) m.push('📍 '+mapLink(e.venue)); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">add venue</a>');
+    if(e.venue) m.push('📍 '+mapLink(e.venue)+(e.field?' · '+tr('Field')+' '+esc(e.field):'')); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">'+tr('add venue')+'</a>'+(e.field?' · '+tr('Field')+' '+esc(e.field):''));
     if(e.details) m.push(esc(e.details));
     if(m.length) h+='<div class="meta">'+m.join(' — ')+(t?'':calIco)+'</div>';
     else if(!t && calIco) h+='<div class="meta">'+calIco+'</div>';
     if(e.event_type==='match'){
       var res=resultFor('event_id', e.id);
-      h+=' <button class="scorebtn'+(res?' has':'')+'" data-ev="'+esc(e.id)+'" type="button" style="margin-top:9px">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res)+' · edit' : '＋ score & stats')+'</button>';
+      h+=' <button class="scorebtn'+(res?' has':'')+'" data-ev="'+esc(e.id)+'" type="button" style="margin-top:9px">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res)+' '+tr('· edit') : tr('＋ score & stats'))+'</button>';
     }
-    return h+'</div>';
+    return h+attBlock(e)+'</div>';
   }
   function bindEvScoreBtns(root){
     root.querySelectorAll('.scorebtn[data-ev]').forEach(function(b){
@@ -1131,7 +1463,7 @@
     var a=kids[ids[0]], b=kids[ids[1]];
     if(hm(a.start_time)===hm(b.start_time)){
       var sameVenue = (a.venue||'')===(b.venue||'');
-      return '<div class="trip">Both at '+hm(a.start_time)+(sameVenue?' — one trip if the venue is shared'+((a.venue)?'':' (venue not stated)')+'.':' — different venues: two drop-offs.')+'</div>';
+      return '<div class="trip">'+tr('Both at')+' '+hm(a.start_time)+(sameVenue?' '+tr('— one trip if the venue is shared')+((a.venue)?'':' '+tr('(venue not stated)'))+'.':' '+tr('— different venues: two drop-offs.'))+'</div>';
     }
     return '<div class="trip">Both children have commitments today — check the times below.</div>';
   }
@@ -1139,7 +1471,7 @@
   /* ---------- week view ---------- */
   function renderWeek(){
     var ws=state.weekStart, we=addDays(ws,6);
-    $('wLabel').textContent='Week of '+fmtShort(ws)+' – '+fmtShort(we)+' '+we.getFullYear();
+    $('wLabel').textContent=tr('Week of')+' '+fmtShort(ws)+' – '+fmtShort(we)+' '+we.getFullYear();
     var evs=visibleEvents();
     var inWeek=evs.filter(function(e){
       if(!e.event_date) return false;
@@ -1195,7 +1527,7 @@
         var d1='d'+pIdx(e.player_id);
         h+='<div class="pill'+(e.date_confirmed?'':' warned')+'"><span class="dot '+d1+'"></span>'+(e.start_time||e.report_time ? hm(e.report_time||e.start_time) : (e.event_type==='no_session'?'off':'day'))+'</div>';
       });
-      if(de.length>3) h+='<div class="more">+'+(de.length-3)+' more</div>';
+      if(de.length>3) h+='<div class="more">+'+(de.length-3)+' '+tr('more')+'</div>';
       h+='</div>';
     }
     $('mGrid').innerHTML=h;
@@ -1250,7 +1582,7 @@
     });
     if(!ts.length){
       var who=null; if(state.fPlayer!=='all') state.players.forEach(function(sp){ if(sp.id===state.fPlayer) who=sp.first_name; });
-      $('tourBody').innerHTML='<div class="empty">No '+(state.tourView==='past'?'past':'upcoming')+' tournaments'+(who?' for '+esc(who):'')+(state.fClub!=='all'?' at '+esc(state.fClub):'')+' — try the Upcoming/Past toggle or the filters above.</div>'; return;
+      $('tourBody').innerHTML='<div class="empty">'+tr(state.tourView==='past'?'No past tournaments':'No upcoming tournaments')+(who?' '+tr('for')+' '+esc(who):'')+(state.fClub!=='all'?' '+tr('at')+' '+esc(state.fClub):'')+' '+tr('— try the Upcoming/Past toggle or the filters above.')+'</div>'; return;
     }
     ts.sort(function(a,b){ var x=a.event_date||'9999', y=b.event_date||'9999'; return state.tourView==='past' ? (x<y?1:-1) : (x<y?-1:1); });
     var multiClub = clubs().length>1;
@@ -1263,7 +1595,7 @@
       if(tp) h+='<span class="chip p'+pIdx(tp.id)+'" data-player="'+esc(tp.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(fullName(tp))+'</span>';
       var tStart=tourMinDate(t), tEnd=tourMaxDate(t);
       if(tStart && tEnd && tStart<=today && today<=tEnd) h+='<span class="chip live">● In progress</span>';
-      else if(tStart && tStart>today){ var dIn=Math.round((parseISO(tStart)-parseISO(today))/86400000); if(dIn<=30) h+='<span class="chip clubc">'+(dIn===1?'tomorrow':'in '+dIn+' days')+'</span>'; }
+      else if(tStart && tStart>today){ var dIn=Math.round((parseISO(tStart)-parseISO(today))/86400000); if(dIn<=30) h+='<span class="chip clubc">'+(dIn===1?tr('tomorrow'):(LANG==='hr'?'za '+nWord(dIn,'day','days','dan','dana','dana'):'in '+dIn+' days'))+'</span>'; }
       if(t.event_date && !t.date_confirmed) h+='<span class="chip unconfb">date unconfirmed</span>';
       if(!t.event_date) h+='<span class="chip unconfb">date not announced</span>';
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
@@ -1282,7 +1614,7 @@
         var gKeys=Object.keys(groups).sort();
         if(gKeys.length){
           h+='<div class="card" style="margin:14px 0"><div class="meta">';
-          gKeys.forEach(function(g,i){ var pk=Object.keys(pitches[g]||{}); h+='<span class="grp'+esc(g)+'"><b>Group '+esc(g)+(pk.length?' (Pitch '+pk.map(esc).join('/')+')':'')+':</b> '+Object.keys(groups[g]).map(esc).join(', ')+'</span>'+(i<gKeys.length-1?'<br>':''); });
+          gKeys.forEach(function(g,i){ var pk=Object.keys(pitches[g]||{}); h+='<span class="grp'+esc(g)+'"><b>'+tr('Group')+' '+esc(g)+(pk.length?' ('+tr('Pitch')+' '+pk.map(esc).join('/')+')':'')+':</b> '+Object.keys(groups[g]).map(esc).join(', ')+'</span>'+(i<gKeys.length-1?'<br>':''); });
           h+='</div></div>';
         }
         /* Fixture filters like the tournament site: all games · our games · one group · knockout (remembered per tournament while the app is open). */
@@ -1294,7 +1626,7 @@
           h+='<div class="fgroup tfx" data-tour="'+esc(t.id)+'">';
           h+='<button class="fchip'+(sel==='all'?' on':'')+'" data-g="all" type="button">All games</button>';
           if(oursN && oursN<fx.length) h+='<button class="fchip'+(sel==='ours'?' on':'')+'" data-g="ours" type="button">Our games</button>';
-          gKeys.forEach(function(g){ h+='<button class="fchip blue'+(sel==='g:'+g?' on':'')+'" data-g="g:'+esc(g)+'" type="button">Group '+esc(g)+'</button>'; });
+          gKeys.forEach(function(g){ h+='<button class="fchip blue'+(sel==='g:'+g?' on':'')+'" data-g="g:'+esc(g)+'" type="button">'+tr('Group')+' '+esc(g)+'</button>'; });
           if(hasKnock) h+='<button class="fchip blue'+(sel==='knock'?' on':'')+'" data-g="knock" type="button">Knockout</button>';
           h+='</div>';
         } else sel='all';
@@ -1320,7 +1652,7 @@
           var res=resultFor('fixture_id', f.id);
           var scoreCell;
           if(ours){
-            scoreCell='<button class="scorebtn'+(res?' has':'')+'" data-fx="'+esc(f.id)+'" type="button">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res) : '＋ score')+'</button>';
+            scoreCell='<button class="scorebtn'+(res?' has':'')+'" data-fx="'+esc(f.id)+'" type="button">'+(res? res.our_score+'–'+res.opp_score+' '+wdl(res) : tr('＋ score'))+'</button>';
           } else {
             scoreCell = res ? '<b>'+res.our_score+'–'+res.opp_score+'</b>' : '—';
           }
@@ -1345,8 +1677,8 @@
             } else if(state.canEdit){
               h+='<div class="teamPhoto" data-roster="'+esc(ros.id)+'" role="button" tabindex="0" style="border:1px dashed var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px;color:var(--muted);font:600 12.5px Inter,sans-serif;cursor:pointer">📷 Add a team photo</div>';
             }
-            h+='<div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||('Squad — '+ros.team_label))+'</b> · '+pl.length+' players · shirt numbers shown when known'
-              +(rosCo?' · Coach <span class="coachLink" data-coach="'+esc(rosCo.id)+'" role="button" tabindex="0" style="color:var(--txt);font-weight:700">'+esc(rosCo.first_name+' '+rosCo.last_name)+'</span>':'')+'</div>';
+            h+='<div class="meta" style="margin-bottom:9px"><b style="color:var(--txt)">'+esc(ros.title||(tr('Squad —')+' '+ros.team_label))+'</b> · '+pl.length+' '+tr('players · shirt numbers shown when known')
+              +(rosCo?' '+tr('· Coach')+' <span class="coachLink" data-coach="'+esc(rosCo.id)+'" role="button" tabindex="0" style="color:var(--txt);font-weight:700">'+esc(rosCo.first_name+' '+rosCo.last_name)+'</span>':'')+'</div>';
             h+='<div class="rosterGrid">';
             pl.forEach(function(p){
               var our=null; state.players.forEach(function(sp){ if((p.name||'').indexOf(sp.first_name)===0) our=sp; });
@@ -1412,7 +1744,7 @@
       var t=tourById(f.tournament_id);
       clubName=t?t.club:'';
       title=f.home+(f.away&&f.away!=='—'?' – '+f.away:'');
-      sub=(t?t.name+' · ':'')+f.time_slot+(clubName?' · scores are for '+clubName:'');
+      sub=(t?t.name+' · ':'')+f.time_slot+(clubName?(LANG==='hr'?' · rezultat za ':' · scores are for ')+clubName:'');
       existing=resultFor('fixture_id', ed.fixture_id);
       // Pre-tick the child whose age-group this tournament is — per-player stats were being missed.
       var yrX=t?((t.name+' '+(t.team_label||'')).match(/20\d{2}/)):null;
@@ -1421,13 +1753,13 @@
       var ev=eventById(ed.event_id); if(!ev) return;
       clubName=ev.club||'';
       title=ev.title;
-      sub=(ev.event_date||'')+(clubName?' · scores are for '+clubName:'');
+      sub=(ev.event_date||'')+(clubName?(LANG==='hr'?' · rezultat za ':' · scores are for ')+clubName:'');
       existing=resultFor('event_id', ed.event_id);
       defPlayer=ev.player_id;
     }
     $('smTitle').textContent=title;
     $('smSub').textContent=sub;
-    $('smUs').textContent=clubName||'Us';
+    $('smUs').textContent=clubName||tr('Us');
     $('smOur').value=existing?existing.our_score:0;
     $('smOpp').value=existing?existing.opp_score:0;
     $('smLineup').value=existing&&existing.lineup_notes?existing.lineup_notes:'';
@@ -1438,7 +1770,7 @@
       var row=null; rows.forEach(function(s){ if(s.player_id===p.id) row=s; });
       var checked=row?true:(defPlayer===p.id);
       ph+='<div class="pRow" data-p="'+esc(p.id)+'">';
-      ph+='<label class="inline"><input type="checkbox" class="pPlayed"'+(checked?' checked':'')+'> '+esc(p.first_name)+' played</label>';
+      ph+='<label class="inline"><input type="checkbox" class="pPlayed"'+(checked?' checked':'')+'> '+esc(p.first_name)+' '+tr('Played').toLowerCase()+'</label>';
       ph+='<span class="lbl">Goals</span><input type="number" class="pGoals" min="0" max="99" inputmode="numeric" value="'+(row?row.goals:0)+'">';
       ph+='<span class="lbl">Assists</span><input type="number" class="pAssists" min="0" max="99" inputmode="numeric" value="'+(row?row.assists:0)+'">';
       ph+='</div>';
@@ -1505,16 +1837,16 @@
       var ev=eventById(r.event_id);
       if(ev) return { label:ev.title, sub:(ev.club||''), date:ev.event_date };
     }
-    return { label:'Game', sub:'', date:null };
+    return { label:tr('Game'), sub:'', date:null };
   }
   /* ---------- recaps (auto-generated) ---------- */
   function computeRecaps(baseResults, player){
     var recs=[];
     state.tours.forEach(function(t){
       var rs=baseResults.filter(function(r){ var f=r.fixture_id?fixtureById(r.fixture_id):null; return !!(f&&f.tournament_id===t.id); });
-      if(rs.length){ var rec=makeRecap('Tournament recap', t.name, t.club, t.event_date, rs); rec.player=player||null; recs.push(rec); }
+      if(rs.length){ var rec=makeRecap(tr('Tournament recap'), t.name, t.club, t.event_date, rs); rec.player=player||null; recs.push(rec); }
     });
-    if(baseResults.length>=2){ var rec2=makeRecap('Season so far', 'All games to date', null, null, baseResults); rec2.player=player||null; recs.push(rec2); }
+    if(baseResults.length>=2){ var rec2=makeRecap(tr('Season so far'), tr('All games to date'), null, null, baseResults); rec2.player=player||null; recs.push(rec2); }
     return recs;
   }
   function resultTeamPlayer(r){
@@ -1540,19 +1872,19 @@
     return {kick:kick,title:title,club:club,date:date,p:rs.length,w:w,d:d,l:l,gf:gf,ga:ga,best:best,per:per,lines:lines};
   }
   function nameFor(p,mode){
-    if(!p) return 'Player';
+    if(!p) return tr('Player');
     if(mode==='first') return p.first_name;
     if(mode==='init') return p.first_name.charAt(0)+'.';
-    return 'Our player';
+    return tr('Our player');
   }
   function scorerText(rec,mode){
     var out=[];
     state.players.forEach(function(p){
       var s=rec.per[p.id]; if(!s) return;
       var bits=[];
-      if(s.g) bits.push(s.g+(s.g===1?' goal':' goals'));
-      if(s.a) bits.push(s.a+(s.a===1?' assist':' assists'));
-      out.push(nameFor(p,mode)+' — '+(bits.length?bits.join(', '):s.games+' played'));
+      if(s.g) bits.push(nWord(s.g,'goal','goals','gol','gola','golova'));
+      if(s.a) bits.push(nWord(s.a,'assist','assists','asistencija','asistencije','asistencija'));
+      out.push(nameFor(p,mode)+' — '+(bits.length?bits.join(', '):s.games+' '+tr('played')));
     });
     return out;
   }
@@ -1564,10 +1896,10 @@
       var g=0,a=0,games=0;
       state.pstats.forEach(function(s){ if(s.player_id===p.id){ g+=s.goals||0; a+=s.assists||0; games++; } });
       h+='<div class="sc"><div style="font-weight:800">'+esc(fullName(p))+(p.shirt_number?' · #'+esc(String(p.shirt_number)):'')+'</div>'
-        +'<div class="meta">'+esc(p.club)+' · '+esc(p.team_label)+' generation</div>'
+        +'<div class="meta">'+esc(p.club)+' · '+esc(p.team_label)+' '+tr('generation')+'</div>'
         +'<div style="font-size:22px;letter-spacing:3px;margin:6px 0">'+nats.map(function(n){ return n.flag; }).join(' ')+'</div>'
         +'<div class="meta">'+(nats.length?nats.map(function(n){ return esc(n.name); }).join(' · '):'Eligibility not recorded')+'</div>'
-        +'<div class="meta" style="margin-top:6px;color:var(--txt)">'+games+' games · '+g+' goals · '+a+' assists</div></div>';
+        +'<div class="meta" style="margin-top:6px;color:var(--txt)">'+nWord(games,'game','games','utakmica','utakmice','utakmica')+' · '+nWord(g,'goal','goals','gol','gola','golova')+' · '+nWord(a,'assist','assists','asistencija','asistencije','asistencija')+'</div></div>';
     });
     return h+'</div></div>';
   }
@@ -1591,9 +1923,9 @@
     });
     h+='</div>';
     recs.forEach(function(rec,i){
-      h+='<div class="recapCard"><div class="rcKick">✦ '+(rec.player?esc(rec.player.first_name)+' — ':'')+esc(rec.kick)+' · auto-generated</div>';
+      h+='<div class="recapCard"><div class="rcKick">✦ '+(rec.player?esc(rec.player.first_name)+' — ':'')+esc(rec.kick)+' '+tr('· auto-generated')+'</div>';
       h+='<h3>'+esc(rec.title)+'</h3>';
-      h+='<div class="rcSub">'+(rec.club?esc(rec.club)+' · ':'')+(rec.date?esc(rec.date):'updates itself as scores are entered')+'</div>';
+      h+='<div class="rcSub">'+(rec.club?esc(rec.club)+' · ':'')+(rec.date?esc(rec.date):tr('updates itself as scores are entered'))+'</div>';
       h+='<div class="rcNums"><div><b>'+rec.p+'</b><span>played</span></div><div><b>'+rec.w+'-'+rec.d+'-'+rec.l+'</b><span>W-D-L</span></div><div><b>'+rec.gf+'–'+rec.ga+'</b><span>goals</span></div></div>';
       scorerText(rec,'first').forEach(function(s){ h+='<div class="rcLine"><b>⚽ '+esc(s)+'</b></div>'; });
       if(rec.best){ var bd=gameDesc(rec.best); h+='<div class="rcLine">★ Best result <b>'+rec.best.our_score+'–'+rec.best.opp_score+'</b> · '+esc(bd.label)+'</div>'; }
@@ -1611,7 +1943,7 @@
           if(p && (s.goals||s.assists)) scorers.push(esc(p.first_name)+(s.goals?' ⚽×'+s.goals:'')+(s.assists?' 🅰×'+s.assists:''));
         });
         h+='<div class="resRow"><span class="chip wdl-'+wdl(r)+'">'+wdl(r)+'</span><span class="score">'+r.our_score+'–'+r.opp_score+'</span>';
-        h+='<span class="desc"><b>'+esc(d.label)+'</b><br>'+esc(d.sub)+(d.date?' · '+esc(d.date):'')+(scorers.length?'<br>'+scorers.join(' · '):'')+(r.lineup_notes?'<br>Line-up: '+esc(r.lineup_notes):'')+(r.notes?'<br>'+esc(r.notes):'')+'</span>';
+        h+='<span class="desc"><b>'+esc(d.label)+'</b><br>'+esc(d.sub)+(d.date?' · '+esc(d.date):'')+(scorers.length?'<br>'+scorers.join(' · '):'')+(r.lineup_notes?'<br>'+tr('Line-up:')+' '+esc(r.lineup_notes):'')+(r.notes?'<br>'+esc(r.notes):'')+'</span>';
         h+='<button class="scorebtn has" data-res="'+esc(r.id)+'" type="button">Edit</button></div>';
       });
     }
@@ -1811,6 +2143,7 @@
       state.weekStart=mondayOf(parseISO(q.date));
       state.monthStart=firstOf(state.weekStart);
       state.selDay=q.date;
+      if(state.view==='up'){ state.upStart=q.date; }
       renderSchedule();
     }
     if(q.tab){
@@ -1873,26 +2206,26 @@
     }
     $('ppAvatar').title=state.canEdit?'Tap to add or change the photo':'';
     $('ppName').textContent=fullName(p)+(p.shirt_number?'  ·  #'+p.shirt_number:'');
-    $('ppTeam').textContent=p.club+' · '+p.team_label+' team';
-    $('ppShirt').textContent=p.shirt_number?('Shirt #'+p.shirt_number+' (provisional until the club confirms)'):'Shirt number: not set yet';
+    $('ppTeam').textContent=p.club+' · '+p.team_label+' '+tr('team');
+    $('ppShirt').textContent=p.shirt_number?(LANG==='hr'?'Dres #'+p.shirt_number+' (privremeno dok klub ne potvrdi)':'Shirt #'+p.shirt_number+' (provisional until the club confirms)'):tr('Shirt number: not set yet');
     var nats=[]; try{ nats=(typeof p.nationalities==='string')?JSON.parse(p.nationalities):(p.nationalities||[]); }catch(e){ nats=[]; }
     $('ppFlags').textContent=nats.map(function(n){ return n.flag; }).join(' ');
-    $('ppElig').textContent=nats.length?('National-team eligibility (when older): '+nats.map(function(n){ return n.name; }).join(', ')):'';
-    $('ppFav').innerHTML= state.mode==='coach' ? '' : 'Favourite player: '+(p.favorite_player?('<b style="color:var(--txt)">'+esc(p.favorite_player)+'</b>'):(state.canEdit?'<a class="addVenue">not set — tap to set</a>':'not set'));
+    $('ppElig').textContent=nats.length?((LANG==='hr'?'Pravo nastupa za reprezentaciju (kad odraste): ':'National-team eligibility (when older): ')+nats.map(function(n){ return n.name; }).join(', ')):'';
+    $('ppFav').innerHTML= state.mode==='coach' ? '' : tr('Favourite player:')+' '+(p.favorite_player?('<b style="color:var(--txt)">'+esc(p.favorite_player)+'</b>'):(state.canEdit?'<a class="addVenue">'+tr('not set — tap to set')+'</a>':tr('not set')));
     var hasLogin=(state.members||[]).some(function(m){ return m.role==='child' && m.player_id===p.id; });
     var pendingInv=(state.invites||[]).filter(function(i){ return i.kind==='child' && i.player_id===p.id && liveInvite(i); })[0];
     $('ppLoginRow').style.display=(state.canEdit && state.mode==='family' && !hasLogin)?'':'none';
-    $('ppLogin').textContent=pendingInv?'Show '+p.first_name+'\u2019s login code again':'Give '+p.first_name+' their own login';
-    $('ppLoginMsg').textContent=hasLogin?p.first_name+' has their own login (player role: own schedule, stats and journey; moments need your approval).':'';
+    $('ppLogin').textContent=pendingInv?(LANG==='hr'?'Ponovno prikaži kod za prijavu — '+p.first_name:'Show '+p.first_name+'\u2019s login code again'):(LANG==='hr'?'Daj vlastitu prijavu — '+p.first_name:'Give '+p.first_name+' their own login');
+    $('ppLoginMsg').textContent=hasLogin?(LANG==='hr'?p.first_name+' ima vlastitu prijavu (uloga igrača: svoj raspored, statistika i putovanje; trenuci trebaju tvoje odobrenje).':p.first_name+' has their own login (player role: own schedule, stats and journey; moments need your approval).'):'';
     $('ppHint').style.display=state.canEdit?'':'none';
     // Career — like a resume.
     var hist=(state.history||[]).filter(function(x){ return x.player_id===p.id; });
-    var ch='<div class="meta" style="margin-top:14px;font-weight:800;color:var(--txt)">Career</div>';
-    ch+='<div class="meta" style="margin-top:4px">▸ <b style="color:var(--txt)">'+esc(p.club)+'</b> · '+esc(p.team_label)+' team'+(p.shirt_number?' · #'+p.shirt_number:'')+' · current</div>';
+    var ch='<div class="meta" style="margin-top:14px;font-weight:800;color:var(--txt)">'+tr('Career')+'</div>';
+    ch+='<div class="meta" style="margin-top:4px">▸ <b style="color:var(--txt)">'+esc(p.club)+'</b> · '+esc(p.team_label)+' '+tr('team')+(p.shirt_number?' · #'+p.shirt_number:'')+' · '+tr('current')+'</div>';
     hist.forEach(function(x){
       ch+='<div class="meta" style="margin-top:6px">▸ <b style="color:var(--txt)">'+esc(x.club)+'</b>'+(x.team_name?' · “'+esc(x.team_name)+'”':'')+(x.shirt?' · #'+esc(String(x.shirt)):'')
-        +(x.seasons?' · '+esc(String(x.seasons))+' seasons':'')+(x.town?' · '+esc(x.town):'')
-        +(x.coaches?'<br><span style="opacity:.8">Coaches: '+esc(x.coaches)+'</span>':'')
+        +(x.seasons?' · '+(LANG==='hr'?nWord(+x.seasons||0,'season','seasons','sezona','sezone','sezona'):esc(String(x.seasons))+' seasons'):'')+(x.town?' · '+esc(x.town):'')
+        +(x.coaches?'<br><span style="opacity:.8">'+tr('Coaches:')+' '+esc(x.coaches)+'</span>':'')
         +(x.period_note?'<br><span style="opacity:.7">'+esc(x.period_note)+'</span>':'')+'</div>';
     });
     $('ppCareer').innerHTML=ch;
@@ -1988,7 +2321,7 @@
      nothing is emailed by the app. The invitee creates an account and enters the code on the Join screen. */
   var invCur=null;
   function inviteGate(el){ el.textContent='Only a parent of the family can create invites.'; }
-  function inviteKindLabel(k){ return k==='coach'?'Coach':(k==='parent'?'Parent':(k==='child'?'Player login':'Family viewer')); }
+  function inviteKindLabel(k){ return tr(k==='coach'?'Coach':(k==='parent'?'Parent':(k==='child'?'Player login':'Family viewer'))); }
   function createInvite(kind, coachId, label, errEl, playerId){
     if(!state.canEdit){ inviteGate(errEl); return; }
     errEl.textContent='Creating code…';
@@ -2003,14 +2336,18 @@
   }
   function openInvite(inv){
     invCur=inv;
-    $('invTitle').textContent=inviteKindLabel(inv.kind)+' invite code';
-    $('invSub').textContent= inv.kind==='coach'
+    $('invTitle').textContent=inviteKindLabel(inv.kind)+(LANG==='hr'?' — pozivni kod':' invite code');
+    $('invSub').textContent= LANG==='hr' ? (inv.kind==='coach'
+      ? 'Daj ovaj kod treneru ('+(inv.label||'')+'). Otvori aplikaciju, otvara račun sa svojom e-mail adresom i upisuje kod da preuzme karticu. Vidjet će raspored momčadi, sastave i poruke — nikad obiteljske podatke.'
+      : inv.kind==='child' ? 'Otvorite račun zajedno ('+(inv.label||'igrač')+'): na njegovom/njezinom uređaju s e-mailom koji ti kontroliraš, zatim upišite ovaj kod. Dobiva svoj raspored, statistiku i putovanje; svaki objavljeni trenutak čeka odobrenje roditelja.'
+      : (inv.kind==='parent' ? 'Daj ovaj kod drugom roditelju. Otvara račun i upisuje ga da se pridruži obitelji s punim roditeljskim pravima.'
+                             : 'Daj ovaj kod obiteljskom gledatelju ('+(inv.label||'')+'). Otvara račun i upisuje ga da vidi obiteljski raspored (samo čitanje).')) : inv.kind==='coach'
       ? 'Give this code to '+(inv.label||'your coach')+'. They open the app, create an account with their own email, and enter the code to claim their card. They will see the team schedule, squads and messages — never family details.'
       : inv.kind==='child' ? 'Set up '+(inv.label||'your player')+'\u2019s account together: create it on their device with an email you control, then enter this code. They get their own schedule, stats and journey; every moment they post waits for a parent\u2019s approval before anyone else in the family sees it.'
       : (inv.kind==='parent' ? 'Give this code to the other parent. They create an account and enter it to join the family with full parent rights.'
                              : 'Give this code to '+(inv.label||'a family viewer')+'. They create an account and enter it to see the family schedule read-only.');
     $('invCodeBox').textContent=inv.code;
-    $('invExp').textContent='One use only · expires '+new Date(inv.expires_at).toLocaleDateString(undefined,{day:'numeric',month:'short'})+' · you can cancel it from the Family & team card.';
+    $('invExp').textContent=(LANG==='hr'?'Jednokratno · vrijedi do ':'One use only · expires ')+new Date(inv.expires_at).toLocaleDateString(LANG==='hr'?'hr-HR':undefined,{day:'numeric',month:'short'})+(LANG==='hr'?' · možeš ga poništiti na kartici Obitelj i momčad.':' · you can cancel it from the Family & team card.');
     $('invOk').textContent='';
     mOpen('invModal');
   }
@@ -2041,7 +2378,7 @@
     else { $('ccAvatar').textContent=(c.first_name||'?').charAt(0)+(c.last_name||'').charAt(0); }
     $('ccName').textContent=c.first_name+' '+c.last_name;
     $('ccRole').textContent=c.role+' · '+c.club;
-    $('ccTeams').textContent='Teams: '+((c.teams||[]).map(function(t){ return t+' generation'; }).join(' and ')||'—');
+    $('ccTeams').textContent=(LANG==='hr'?'Momčadi: ':'Teams: ')+((c.teams||[]).map(function(t){ return t+' '+tr('generation'); }).join(LANG==='hr'?' i ':' and ')||'—');
     var claimed=c.claim_status==='claimed';
     $('ccClaim').className='claimTag '+(claimed?'claimed':'unclaimed');
     $('ccClaim').textContent=claimText(c);
@@ -2061,7 +2398,7 @@
         +'<div class="famMain"><div class="famName">'+esc((c.first_name||'')+' '+(c.last_name||''))+' <span style="color:var(--muted);font-weight:600">(you)</span></div>'
         +'<div class="famSub">'+esc((c.role||'Coach')+' · '+(c.club||''))+'</div></div><span class="claimTag claimed">Card claimed</span></div>';
       var tp=state.players||[];
-      h+='<div class="meta" style="margin-top:12px"><b style="color:var(--txt)">Your players in the app</b> — '+tp.length+' registered by their families. Tap a name for the card (name, shirt and team only).</div>';
+      h+='<div class="meta" style="margin-top:12px"><b style="color:var(--txt)">'+tr('Your players in the app')+'</b> — '+tp.length+(LANG==='hr'?' prijavljenih od obitelji. Dodirni ime za karticu (samo ime, dres i momčad).':' registered by their families. Tap a name for the card (name, shirt and team only).')+'</div>';
       h+='<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">'+tp.map(function(p){ return '<span class="chip '+(p.team_label==='2016'?'p1':'p2')+'" data-player="'+esc(p.id)+'" role="button" tabindex="0" style="cursor:pointer">'+esc(p.first_name)+(p.shirt_number?' #'+esc(String(p.shirt_number)):'')+' · '+esc(p.team_label)+'</span>'; }).join(' ')+'</div>';
       h+='<div class="meta" style="margin-top:14px">Coach accounts are read-only in this version. Schedules still arrive through the families\' inbox; posting directly from here is the next step.</div>';
       el.innerHTML=h;
@@ -2127,19 +2464,19 @@
         if(k==='coach'){
           var unclaimed=(state.coaches||[]).filter(function(c){ return c.claim_status!=='claimed'; });
           if(unclaimed.length===1){ createInvite('coach', unclaimed[0].id, unclaimed[0].first_name+' '+unclaimed[0].last_name, g); }
-          else { g.textContent='Open the coach\'s card (tap their row above) and use “Invite your coach” there.'; }
-        } else if(k==='parent'){ createInvite('parent', null, 'Other parent', g); }
+          else { g.textContent=LANG==='hr'?'Otvori karticu trenera (dodirni njegov redak iznad) i tamo koristi „Pozovi trenera”.':'Open the coach\'s card (tap their row above) and use “Invite your coach” there.'; }
+        } else if(k==='parent'){ createInvite('parent', null, tr('Other parent'), g); }
         else {
-          var who=prompt('Who is this viewer for? (e.g. Grandma) — shown on the invite only');
+          var who=prompt(tr('Who is this viewer for? (e.g. Grandma) — shown on the invite only'));
           if(who===null) return;
           createInvite('viewer', null, who.trim()||null, g);
         }
       });
     });
-    el.querySelectorAll('[data-rev]').forEach(function(a){ a.addEventListener('click', function(){ if(confirm('Cancel this invite code?')) revokeInvite(a.dataset.rev, document.getElementById('famGate')); }); });
+    el.querySelectorAll('[data-rev]').forEach(function(a){ a.addEventListener('click', function(){ if(confirm(tr('Cancel this invite code?'))) revokeInvite(a.dataset.rev, document.getElementById('famGate')); }); });
     el.querySelectorAll('[data-show]').forEach(function(a){ a.addEventListener('click', function(){ var i=(state.invites||[]).filter(function(x){ return x.id===a.dataset.show; })[0]; if(i) openInvite(i); }); });
     el.querySelectorAll('[data-rm]').forEach(function(a){ a.addEventListener('click', function(){
-      if(!confirm('Remove this viewer from the family? They lose access immediately.')) return;
+      if(!confirm(tr('Remove this viewer from the family? They lose access immediately.'))) return;
       sb.from('memberships').delete().eq('id', a.dataset.rm).then(function(r){
         if(r.error){ document.getElementById('famGate').textContent=r.error.message; return; }
         state.members=state.members.filter(function(m){ return m.id!==a.dataset.rm; }); renderFamily();
@@ -2195,13 +2532,13 @@
     var pend=(state.moments||[]).filter(function(m){ return m.status==='pending'; });
     var ph='';
     if(pend.length){
-      ph+='<div class="meta" style="margin:4px 0 8px;font-weight:800;color:var(--txt)">'+(state.canEdit?'Waiting for your approval ('+pend.length+')':'Waiting for a parent ('+pend.length+')')+'</div>';
+      ph+='<div class="meta" style="margin:4px 0 8px;font-weight:800;color:var(--txt)">'+(state.canEdit?(LANG==='hr'?'Čeka tvoje odobrenje (':'Waiting for your approval (')+pend.length+')':(LANG==='hr'?'Čeka roditelja (':'Waiting for a parent (')+pend.length+')')+'</div>';
       pend.forEach(function(m){ ph+=momentCard(m); });
     }
     $('joPending').innerHTML=ph;
     var appr=(state.moments||[]).filter(function(m){ return m.status==='approved'; });
     var h='';
-    if(!appr.length) h='<div class="empty">No moments yet'+(state.canPost?' — post the first one above.':'.')+'</div>';
+    if(!appr.length) h='<div class="empty">'+(LANG==='hr'?'Još nema trenutaka':'No moments yet')+(state.canPost?(LANG==='hr'?' — objavi prvi iznad.':' — post the first one above.'):'.')+'</div>';
     var lastMonth='';
     appr.forEach(function(m){
       var d=parseISO(m.moment_date), mk=MONF[d.getMonth()]+' '+d.getFullYear();
@@ -2216,7 +2553,7 @@
     var d=parseISO(m.moment_date);
     var h='<div class="mo'+(m.status==='pending'?' pending':'')+'" data-mo="'+esc(m.id)+'"><div class="who">';
     if(p) h+='<span class="chip p'+pIdx(m.player_id)+'">'+esc(p.first_name)+'</span>';
-    h+='<span>'+DOWS[(d.getDay()+6)%7]+' '+fmtShort(d)+'</span><span>· by '+(m.author_role==='child'?esc(p?p.first_name:'player'):'a parent')+'</span>';
+    h+='<span>'+DOWS[(d.getDay()+6)%7]+' '+fmtShort(d)+'</span><span>'+tr('· by')+' '+(m.author_role==='child'?esc(p?p.first_name:tr('player')):tr('a parent'))+'</span>';
     if(m.status==='pending') h+='<span class="pendTag">Awaiting approval</span>';
     h+='</div>';
     if(m.body) h+='<div class="body">'+esc(m.body)+'</div>';
@@ -2242,7 +2579,7 @@
     });
     root.querySelectorAll('[data-del]').forEach(function(a){
       a.addEventListener('click', function(e){
-        e.preventDefault(); if(!confirm('Remove this moment?')) return;
+        e.preventDefault(); if(!confirm(tr('Remove this moment?'))) return;
         var id=a.dataset.del;
         sb.from('moments').delete().eq('id', id).then(function(r){
           if(r.error){ $('joErr').textContent=r.error.message; return; }
@@ -2263,7 +2600,7 @@
         c.getContext('2d').drawImage(img,0,0,c.width,c.height);
         joPhoto=c.toDataURL('image/jpeg',0.78);
         $('joThumb').src=joPhoto; $('joThumb').style.display='';
-        $('joPhotoBtn').textContent='📷 Change photo';
+        $('joPhotoBtn').textContent=tr('📷 Change photo');
       };
       img.src=rd.result;
     };
@@ -2277,15 +2614,15 @@
     var isChild=state.role==='child';
     var row={ family_id:state.familyId, player_id:joWho, author_user_id:state.userId, author_role:isChild?'child':'parent',
               moment_date:$('joDate').value||iso(new Date()), body:body, photo_url:joPhoto, status:isChild?'pending':'approved' };
-    $('joPost').textContent='Posting…';
+    $('joPost').textContent=tr('Posting…');
     sb.from('moments').insert(row).select().single().then(function(r){
-      $('joPost').textContent='Post';
+      $('joPost').textContent=tr('Post');
       if(r.error){ $('joErr').textContent=r.error.message; return; }
       state.moments.unshift(r.data);
-      $('joText').value=''; joPhoto=null; $('joThumb').style.display='none'; $('joPhotoBtn').textContent='📷 Add photo';
+      $('joText').value=''; joPhoto=null; $('joThumb').style.display='none'; $('joPhotoBtn').textContent=tr('📷 Add photo');
       $('joOk').textContent= isChild ? 'Posted — your parents will see it first and approve it.' : 'Posted.';
       renderJourney();
-    }).catch(function(){ $('joPost').textContent='Post'; $('joErr').textContent='Network error — try again.'; });
+    }).catch(function(){ $('joPost').textContent=tr('Post'); $('joErr').textContent=tr('Network error — try again.'); });
   });
 
   /* calendar chooser (Google / Outlook / Apple .ics; whole tournament by team) */
@@ -2367,7 +2704,7 @@
       ctx.allClubs.forEach(function(cn){ bh+='<button data-club="'+esc(cn)+'" type="button">'+esc(cn)+'</button>'; });
       box.innerHTML=bh;
       calClubsRender();
-      $('calSub').textContent=(t?t.name:'')+' — pick one or more clubs, then your calendar.';
+      $('calSub').textContent=(t?t.name:'')+' '+(LANG==='hr'?'— odaberi jedan ili više klubova, zatim svoj kalendar.':'— pick one or more clubs, then your calendar.');
     } else {
       $('calSub').textContent='Pick your calendar.';
     }
@@ -2431,8 +2768,13 @@
     vmEvId=evId; $('vmErr').textContent='';
     var p=playerById(e.player_id);
     $('vmSub').textContent=(p?p.first_name+' · ':'')+e.title+' · '+(e.event_date||'');
-    $('vmInput').value='';
+    var d=teamDefaults(e.club, p?p.team_label:null);
+    $('vmInput').value=(d&&d.default_venue)||'';
     $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent((e.club||'')+' Croatia');
+    var others=state.events.filter(function(x){ return x.id!==e.id && !x.venue && x.club===e.club && x.event_type===e.event_type && x.event_type!=='no_session' && x.event_date && x.event_date>=todayZagreb(); })
+      .sort(function(a,b){ return (a.event_date+(a.start_time||'')).localeCompare(b.event_date+(b.start_time||'')); }).slice(0,30);
+    bulkList('vmBulk', tr('Also set this venue on these events without one:'), others.map(function(x){ return {id:x.id,label:evLabel(x)}; }), true);
+    $('vmDefaultWrap').hidden = !(p && (e.event_type==='training'||e.event_type==='match')); $('vmDefault').checked=false;
     mOpen('venueModal');
   }
   $('vmInput').addEventListener('input', function(){
@@ -2441,10 +2783,13 @@
   $('vmSave').addEventListener('click', function(){
     var v=$('vmInput').value.trim();
     if(!v){ $('vmErr').textContent='Type the venue first — the Google Maps link helps you find the exact name.'; return; }
-    sb.from('events').update({venue:v}).eq('id', vmEvId).then(function(r){
+    var ids=[vmEvId].concat(bulkIds('vmBulk'));
+    sb.from('events').update({venue:v}).in('id', ids).then(function(r){
       if(r.error){ $('vmErr').textContent=r.error.message; return; }
-      var e=eventById(vmEvId); if(e) e.venue=v;
-      mClose('venueModal'); renderSchedule();
+      state.events.forEach(function(x){ if(ids.indexOf(x.id)>=0) x.venue=v; });
+      var e=eventById(vmEvId), p=e?playerById(e.player_id):null;
+      var after=function(){ mClose('venueModal'); renderSchedule(); };
+      if($('vmDefault').checked && e && p){ saveTeamDefaults(e.club, p.team_label, v, (teamDefaults(e.club,p.team_label)||{}).default_field||null, null, $('vmErr')).then(function(){ renderTeamDefaults(); after(); }); } else after();
     }).catch(function(err){ $('vmErr').textContent=String(err&&err.message||err); });
   });
 
@@ -2454,18 +2799,27 @@
     if(!state.canEdit) return;
     cfDateIso=dayIso; $('cfErr').textContent='';
     var n=state.events.filter(function(e){ return e.event_date===dayIso && !e.date_confirmed; }).length;
-    $('cfSub').textContent=n+' unconfirmed item'+(n===1?'':'s')+' currently on '+dayIso+'. Pick the real date — keep it unchanged to confirm as-is.';
+    $('cfSub').textContent=LANG==='hr'?(nWord(n,'item','items','nepotvrđena stavka','nepotvrđene stavke','nepotvrđenih stavki')+' trenutno na '+dayIso+'. Odaberi pravi datum — ostavi nepromijenjeno da potvrdiš kako jest.'):(n+' unconfirmed item'+(n===1?'':'s')+' currently on '+dayIso+'. Pick the real date — keep it unchanged to confirm as-is.');
     $('cfDate').value=dayIso;
+    var others=state.events.filter(function(x){ return !x.date_confirmed && x.event_date && x.event_date!==dayIso && x.event_date>=todayZagreb(); })
+      .sort(function(a,b){ return (a.event_date+(a.start_time||'')).localeCompare(b.event_date+(b.start_time||'')); }).slice(0,30);
+    bulkList('cfBulk', tr('Also confirm these unconfirmed items as they are:'), others.map(function(x){ return {id:x.id,label:evLabel(x)}; }), true);
     mOpen('confModal');
   }
   $('cfSave').addEventListener('click', function(){
     var nd=$('cfDate').value;
     if(!nd){ $('cfErr').textContent='Pick a date first.'; return; }
     var ids=state.events.filter(function(e){ return e.event_date===cfDateIso && !e.date_confirmed; }).map(function(e){ return e.id; });
+    var more=bulkIds('cfBulk');
     sb.from('events').update({event_date:nd, date_confirmed:true}).in('id', ids).then(function(r){
       if(r.error){ $('cfErr').textContent=r.error.message; return; }
       state.events.forEach(function(e){ if(ids.indexOf(e.id)>=0){ e.event_date=nd; e.date_confirmed=true; } });
-      mClose('confModal'); renderSchedule();
+      var chain = more.length ? sb.from('events').update({date_confirmed:true}).in('id', more) : Promise.resolve({});
+      Promise.resolve(chain).then(function(r2){
+        if(r2&&r2.error){ $('cfErr').textContent=r2.error.message; return; }
+        state.events.forEach(function(e){ if(more.indexOf(e.id)>=0) e.date_confirmed=true; });
+        mClose('confModal'); renderSchedule();
+      });
     }).catch(function(err){ $('cfErr').textContent=String(err&&err.message||err); });
   });
 
@@ -2491,13 +2845,383 @@
     root.querySelectorAll('[data-coach]').forEach(function(a){
       a.addEventListener('click', function(e){ e.stopPropagation(); openCoach(coachById(a.dataset.coach)); });
     });
+    bindAtt(root);
   }
+
+  /* ---------- build 24: attendance (Going / Maybe / Not going) + coach lineups ----------
+     Attendance is per player per event row (a family's own row); the team view joins families through the event key
+     (date|start|report|title|club|type) via the team_attendance() function — names and shirts only.
+     Lineups are per (club, team, event key, variant 1|2): pitch sizes 5/7/9/11 with formation presets; the coach of the
+     team sets them, or a parent until the coach has claimed their card (can_manage_lineup()). */
+  state.att={}; state.teamAtt={}; state.lineups={}; state.lineupCan={}; state.rosterCache={};
+  function evKey(e){ return [e.event_date||'', e.start_time||'', e.report_time||'', e.title||'', e.club||'', e.event_type||''].join('|'); }
+  function evTeam(e){
+    if(e._players && e._players.length){ var q=playerById(e._players[0]); if(q) return q.team_label; }
+    var p=playerById(e.player_id); return p ? p.team_label : null;
+  }
+  function attEligible(e){ return !!(e.event_date && e.event_type!=='no_session'); }
+  function loadAttendance(){
+    var evs=state.events.filter(attEligible);
+    var keys={}; evs.forEach(function(e){ keys[evKey(e)]=1; });
+    var ks=Object.keys(keys);
+    var own = state.mode==='family' ? sb.from('event_attendance').select('*') : Promise.resolve({data:[]});
+    return Promise.all([
+      own,
+      ks.length ? sb.rpc('team_attendance',{ p_event_keys:ks }) : Promise.resolve({data:[]}),
+      sb.from('lineups').select('*')
+    ]).then(function(r){
+      state.att={}; ((r[0]&&r[0].data)||[]).forEach(function(a){ state.att[a.event_id+'|'+a.player_id]=a; });
+      state.teamAtt={}; ((r[1]&&r[1].data)||[]).forEach(function(a){ (state.teamAtt[a.event_key]=state.teamAtt[a.event_key]||[]).push(a); });
+      state.lineups={}; ((r[2]&&r[2].data)||[]).forEach(function(l){ state.lineups[l.club+'|'+l.team_label+'|'+l.event_key+'|'+l.variant]=l; });
+      renderSchedule();
+    }).catch(function(){});
+  }
+  var ATT_ICON={going:'✅',maybe:'❔',not_going:'❌'};
+  function attSummary(key, team, club){
+    var rows=(state.teamAtt[key]||[]).filter(function(a){ return (!team || a.team_label===team) && (!club || a.club===club); });
+    var by={going:[],maybe:[],not_going:[]}; rows.forEach(function(a){ if(by[a.status]) by[a.status].push(a); });
+    return by;
+  }
+  function attNames(list){ return list.map(function(a){ return (a.shirt_number?'#'+a.shirt_number+' ':'')+esc(a.first_name); }).join(', '); }
+  /* the block under an event card */
+  function attBlock(e){
+    if(!attEligible(e)) return '';
+    var key=evKey(e), team=evTeam(e), by=attSummary(key, team, e.club);
+    var h='<div class="attWrap" data-key="'+esc(key)+'">';
+    if(state.mode==='family'){
+      var mine = e._players && e._players.length ? e._players : [e.player_id];
+      mine.forEach(function(pid){
+        var p=playerById(pid); if(!p) return;
+        if(state.role==='child' && pid!==state.childPlayerId) return;
+        var a=state.att[e.id+'|'+pid], st=a?a.status:null;
+        h+='<div class="attRow"><span class="attWho">'+esc(p.first_name)+'</span>';
+        ['going','maybe','not_going'].forEach(function(s){
+          var lbl=s==='going'?tr('Going'):(s==='maybe'?tr('Maybe'):tr('Not going'));
+          h+='<button type="button" class="attBtn '+s+(st===s?' on':'')+'" data-att="'+s+'" data-ev="'+esc(e.id)+'" data-p="'+esc(pid)+'"'+(state.canPost?'':' disabled')+'>'+ATT_ICON[s]+' '+lbl+'</button>';
+        });
+        h+='</div>';
+      });
+    }
+    var tot=by.going.length+by.maybe.length+by.not_going.length;
+    var isGame = e.event_type==='match' || e.event_type==='tournament';
+    h+='<div class="attTeam">';
+    if(tot || state.mode==='coach'){
+      h+='<a href="#" class="attTgl" data-tg="att-'+esc(e.id)+'">👥 '+tr('Team')+': ✅ '+by.going.length+' · ❔ '+by.maybe.length+' · ❌ '+by.not_going.length+'</a>';
+      h+='<div class="meta" id="att-'+esc(e.id)+'" hidden style="margin-top:4px">'
+        +(by.going.length?'<div>✅ '+attNames(by.going)+'</div>':'')+(by.maybe.length?'<div>❔ '+attNames(by.maybe)+'</div>':'')+(by.not_going.length?'<div>❌ '+attNames(by.not_going)+'</div>':'')
+        +(tot?'':'<div>'+tr('no reply')+'</div>')+'</div>';
+    }
+    if(isGame && team){
+      var has=state.lineups[e.club+'|'+team+'|'+key+'|1'] || state.lineups[e.club+'|'+team+'|'+key+'|2'];
+      h+='<button type="button" class="scorebtn luBtn'+(has?' has':'')+'" data-lu="'+esc(e.id)+'">'+tr('🧩 Lineup')+(has?' ✓':'')+'</button>';
+    }
+    h+='</div></div>';
+    return h;
+  }
+  function bindAtt(root){
+    root.querySelectorAll('.attBtn[data-att]').forEach(function(b){
+      b.addEventListener('click', function(){
+        if(!state.canPost) return;
+        var evId=b.dataset.ev, pid=b.dataset.p, st=b.dataset.att, e=eventById(evId); if(!e) return;
+        var cur=state.att[evId+'|'+pid];
+        var row={ family_id:state.familyId, event_id:evId, player_id:pid, status:st, updated_by:state.userId, updated_at:new Date().toISOString() };
+        b.closest('.attRow').querySelectorAll('.attBtn').forEach(function(x){ x.classList.toggle('on', x===b); });
+        var q = (cur && cur.status===st) ? sb.from('event_attendance').delete().eq('id', cur.id) : sb.from('event_attendance').upsert(row,{onConflict:'event_id,player_id'}).select().single();
+        q.then(function(r){
+          if(r&&r.error){ alert(r.error.message); return; }
+          if(cur && cur.status===st){ delete state.att[evId+'|'+pid]; } else { state.att[evId+'|'+pid]=(r&&r.data)||row; }
+          sb.rpc('team_attendance',{ p_event_keys:[evKey(e)] }).then(function(rr){ state.teamAtt[evKey(e)]=(rr&&rr.data)||[]; renderSchedule(); });
+        });
+      });
+    });
+    root.querySelectorAll('.attTgl').forEach(function(a){ a.addEventListener('click', function(ev){ ev.preventDefault(); var el=document.getElementById(a.dataset.tg); if(el) el.hidden=!el.hidden; }); });
+    root.querySelectorAll('.luBtn').forEach(function(b){ b.addEventListener('click', function(){ openLineup(b.dataset.lu); }); });
+  }
+
+  /* ---------- lineup modal ---------- */
+  var FORMS={5:['1-2-1','2-2','1-1-2'],7:['2-3-1','3-2-1','2-2-2','3-3'],9:['3-3-2','3-2-3','2-4-2','4-3-1'],11:['4-3-3','4-4-2','4-2-3-1','3-5-2','3-4-3']};
+  var lu=null; // {e, key, club, team, variant, size, formation, slots:[{pos,name,shirt,player_id}], sel, can, pool:[], notes}
+  function slotCoords(formation){
+    var lines=formation.split('-').map(Number), out=[{pos:'GK',x:50,y:91}];
+    var n=lines.length;
+    lines.forEach(function(k,i){
+      var y = n===1 ? 45 : 74 - i*(58/(n-1));
+      var pos = i===0?'DEF':(i===n-1?'FWD':'MID');
+      for(var j=0;j<k;j++) out.push({pos:pos, x:Math.round((j+1)*100/(k+1)), y:Math.round(y)});
+    });
+    return out;
+  }
+  function luKey(v){ return lu.club+'|'+lu.team+'|'+lu.key+'|'+(v||lu.variant); }
+  function luLoadVariant(v){
+    lu.variant=v;
+    var row=state.lineups[luKey(v)];
+    lu.size=row?row.size:(lu.size||7); lu.formation=row?row.formation:(FORMS[lu.size][0]);
+    if(FORMS[lu.size].indexOf(lu.formation)<0) lu.formation=FORMS[lu.size][0];
+    var coords=slotCoords(lu.formation);
+    lu.slots=coords.map(function(c,i){ var s=(row&&row.slots&&row.slots[i])||{}; return {pos:c.pos,x:c.x,y:c.y,name:s.name||null,shirt:s.shirt||null,player_id:s.player_id||null}; });
+    lu.notes=row?(row.notes||''):''; lu.setBy=row?row.set_by_name:null; lu.sel=null;
+  }
+  function luPool(){
+    var reg=state.rosterCache[lu.club+'|'+lu.team]||[];
+    var pool=reg.map(function(p){ return {player_id:p.id, name:p.first_name, shirt:p.shirt_number||null}; });
+    (state.rosters||[]).forEach(function(rr){
+      if(rr.team_label!==lu.team || (rr.club && rr.club!==lu.club)) return;
+      var pl=[]; try{ pl=(typeof rr.players==='string')?JSON.parse(rr.players):(rr.players||[]); }catch(e){ pl=[]; }
+      pl.forEach(function(p){ if(!p.name) return; var hit=pool.some(function(x){ return p.name.indexOf(x.name)===0 || x.name.indexOf(p.name)===0; }); if(!hit) pool.push({player_id:null,name:p.name,shirt:p.shirt||null}); });
+    });
+    var by=attSummary(lu.key, lu.team, lu.club), stat={};
+    ['going','maybe','not_going'].forEach(function(s){ by[s].forEach(function(a){ stat[a.player_id]=s; }); });
+    pool.forEach(function(p){ p.att = p.player_id ? (stat[p.player_id]||null) : null; });
+    var rank={going:0,maybe:1,null:2,not_going:3};
+    pool.sort(function(a,b){ var d=rank[a.att]-rank[b.att]; if(d) return d; return (a.shirt||99)-(b.shirt||99) || a.name.localeCompare(b.name); });
+    return pool;
+  }
+  function openLineup(evId){
+    var e=eventById(evId); if(!e) return;
+    var team=evTeam(e); if(!team) return;
+    lu={ e:e, key:evKey(e), club:e.club, team:team, variant:1, can:false, size:7 };
+    $('luTitle').textContent=tr('Lineup')+' — '+e.title;
+    $('luSub').textContent=(e.event_date?fmtDayLong(e.event_date):'')+(e.start_time?' · '+hm(e.start_time):'')+' · '+e.club+' '+team;
+    $('luMsg').textContent=''; $('luErr').textContent='';
+    var canP = state.mode==='coach' ? Promise.resolve({data:(state.ctx.coach_teams||[]).some(function(t){ return t.club===e.club && t.team_label===team; })}) : sb.rpc('can_manage_lineup',{ p_club:e.club, p_team:team });
+    var rosP = state.rosterCache[e.club+'|'+team] ? Promise.resolve({data:state.rosterCache[e.club+'|'+team]}) : sb.rpc('team_roster_players',{ p_club:e.club, p_team:team });
+    Promise.all([canP, rosP]).then(function(r){
+      lu.can=!!(r[0]&&r[0].data); state.rosterCache[e.club+'|'+team]=(r[1]&&r[1].data)||[];
+      luLoadVariant(1); renderLineup(); mOpen('lineupModal');
+    }).catch(function(){ luLoadVariant(1); renderLineup(); mOpen('lineupModal'); });
+  }
+  function renderLineup(){
+    if(!lu) return;
+    var ro=!lu.can;
+    $('luVariant').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', +b.dataset.v===lu.variant); var has=!!state.lineups[luKey(+b.dataset.v)]; b.textContent=(b.dataset.v==='1'?tr('Lineup 1'):tr('Lineup 2'))+(has?' ✓':''); });
+    var sh=''; [5,7,9,11].forEach(function(n){ sh+='<button type="button" data-size="'+n+'"'+(lu.size===n?' class="on"':'')+(ro?' disabled':'')+'>'+n+'</button>'; });
+    $('luSize').innerHTML='<span class="flabel">'+tr('a-side')+'</span>'+sh;
+    var fh=''; FORMS[lu.size].forEach(function(f){ fh+='<button type="button" data-form="'+f+'"'+(lu.formation===f?' class="on"':'')+(ro?' disabled':'')+'>'+f+'</button>'; });
+    $('luForm').innerHTML='<span class="flabel">'+tr('Formation')+'</span>'+fh;
+    var by=attSummary(lu.key, lu.team, lu.club), notGoing={}; by.not_going.forEach(function(a){ notGoing[a.player_id]=1; });
+    var ph='';
+    lu.slots.forEach(function(s,i){
+      var filled=!!s.name, warn=s.player_id&&notGoing[s.player_id];
+      ph+='<div class="luSlot'+(filled?' filled':'')+(lu.sel===i?' sel':'')+(warn?' warn':'')+'" data-i="'+i+'" style="left:'+s.x+'%;top:'+s.y+'%" role="button" tabindex="0" title="'+(warn?tr('marked not going'):'')+'">'
+        +'<div class="luDot">'+(filled?(s.shirt?esc(String(s.shirt)):'•'):'<span class="luPos">'+tr(s.pos)+'</span>')+'</div>'
+        +'<div class="luName">'+(filled?esc(s.name):'')+'</div></div>';
+    });
+    $('luPitch').innerHTML='<div class="luBox t"></div><div class="luBox b"></div>'+ph;
+    var placed={}; lu.slots.forEach(function(s){ if(s.name) placed[s.player_id||s.name]=1; });
+    var pool=luPool(), bh='';
+    pool.forEach(function(p){
+      var on=placed[p.player_id||p.name];
+      bh+='<button type="button" class="luChip'+(on?' placed':'')+(p.att==='not_going'?' no':'')+'" data-pid="'+esc(p.player_id||'')+'" data-name="'+esc(p.name)+'" data-shirt="'+esc(String(p.shirt||''))+'"'+(ro?' disabled':'')+'>'+(p.att?ATT_ICON[p.att]+' ':'')+(p.shirt?'<b>#'+esc(String(p.shirt))+'</b> ':'')+esc(p.name)+'</button>';
+    });
+    $('luPool').innerHTML=(pool.length?'<div class="flabel" style="margin-bottom:6px">'+tr('Bench')+' · '+tr('Who\'s going')+'</div>'+bh:'<div class="meta">—</div>');
+    $('luHint').textContent = ro ? (state.mode==='coach'?'':(tr('Only the coach can change the lineup.'))) : tr('Tap a spot on the pitch, then a player.');
+    $('luSetBy').textContent = lu.setBy ? tr('Set by')+' '+lu.setBy : (state.lineups[luKey()]?'':tr('No lineup set yet.'));
+    $('luNotes').value=lu.notes||''; $('luNotes').disabled=ro;
+    $('luSave').style.display=ro?'none':''; $('luClear').style.display=ro?'none':'';
+    /* bindings */
+    $('luVariant').querySelectorAll('button').forEach(function(b){ b.onclick=function(){ luLoadVariant(+b.dataset.v); renderLineup(); }; });
+    $('luSize').querySelectorAll('button[data-size]').forEach(function(b){ b.onclick=function(){ if(ro) return; var keep=lu.slots; lu.size=+b.dataset.size; lu.formation=FORMS[lu.size][0]; lu.slots=slotCoords(lu.formation).map(function(c,i){ var s=keep[i]||{}; return {pos:c.pos,x:c.x,y:c.y,name:s.name||null,shirt:s.shirt||null,player_id:s.player_id||null}; }); lu.sel=null; renderLineup(); }; });
+    $('luForm').querySelectorAll('button[data-form]').forEach(function(b){ b.onclick=function(){ if(ro) return; var keep=lu.slots; lu.formation=b.dataset.form; lu.slots=slotCoords(lu.formation).map(function(c,i){ var s=keep[i]||{}; return {pos:c.pos,x:c.x,y:c.y,name:s.name||null,shirt:s.shirt||null,player_id:s.player_id||null}; }); renderLineup(); }; });
+    $('luPitch').querySelectorAll('.luSlot').forEach(function(s){
+      var pick=function(){ if(ro) return; var i=+s.dataset.i; if(lu.sel===i && lu.slots[i].name){ lu.slots[i].name=null; lu.slots[i].shirt=null; lu.slots[i].player_id=null; lu.sel=null; } else lu.sel=i; renderLineup(); };
+      s.onclick=pick; s.onkeydown=function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); pick(); } };
+    });
+    $('luPool').querySelectorAll('.luChip').forEach(function(c){
+      c.onclick=function(){
+        if(ro) return;
+        var i=lu.sel; if(i==null){ i=-1; for(var k=0;k<lu.slots.length;k++){ if(!lu.slots[k].name){ i=k; break; } } if(i<0) return; }
+        lu.slots.forEach(function(s){ if((c.dataset.pid && s.player_id===c.dataset.pid) || (!c.dataset.pid && s.name===c.dataset.name)){ s.name=null; s.shirt=null; s.player_id=null; } });
+        lu.slots[i].name=c.dataset.name; lu.slots[i].shirt=c.dataset.shirt?+c.dataset.shirt:null; lu.slots[i].player_id=c.dataset.pid||null;
+        lu.sel=null; for(var k2=0;k2<lu.slots.length;k2++){ if(!lu.slots[k2].name){ lu.sel=k2; break; } }
+        renderLineup();
+      };
+    });
+  }
+  $('luClose').addEventListener('click', function(){ mClose('lineupModal'); });
+  $('lineupModal').addEventListener('click', function(e){ if(e.target===$('lineupModal')) mClose('lineupModal'); });
+  $('luClear').addEventListener('click', function(){ if(!lu||!lu.can) return; lu.slots.forEach(function(s){ s.name=null; s.shirt=null; s.player_id=null; }); lu.sel=null; renderLineup(); });
+  $('luSave').addEventListener('click', function(){
+    if(!lu||!lu.can) return;
+    $('luErr').textContent=''; $('luMsg').textContent=''; $('luSave').disabled=true;
+    var me=(state.mode==='coach' && state.ctx.coach) ? (state.ctx.coach.first_name+' '+(state.ctx.coach.last_name||'')).trim() : ((state.parents||[]).filter(function(p){ return p.user_id===state.userId; }).map(function(p){ return p.first_name; })[0] || state.userEmail);
+    var row={ club:lu.club, team_label:lu.team, event_key:lu.key, variant:lu.variant, size:lu.size, formation:lu.formation,
+              slots:lu.slots.map(function(s){ return {pos:s.pos,name:s.name,shirt:s.shirt,player_id:s.player_id}; }), notes:$('luNotes').value.trim()||null,
+              set_by:state.userId, set_by_name:me, updated_at:new Date().toISOString() };
+    sb.from('lineups').upsert(row,{onConflict:'club,team_label,event_key,variant'}).select().single().then(function(r){
+      $('luSave').disabled=false;
+      if(r.error){ $('luErr').textContent=r.error.message; return; }
+      state.lineups[luKey()]=r.data; lu.setBy=me; $('luMsg').textContent=tr('Lineup saved.'); renderLineup(); renderSchedule();
+    }).catch(function(){ $('luSave').disabled=false; $('luErr').textContent=tr('Network error — try again.'); });
+  });
+
+  /* ---------- build 25: Upcoming view, add event, team defaults (venue + field), bulk venue / bulk confirm, open questions ---------- */
+  HR['Upcoming']='Nadolazeće'; HR['Today']='Danas'; HR['Next 14 days']='Sljedećih 14 dana'; HR['Nothing coming up in this window for this selection.']='Ništa nadolazeće u ovom razdoblju za ovaj odabir.';
+  HR['＋ Add event']='＋ Dodaj događaj'; HR['Add event']='Dodaj događaj'; HR['For']='Za'; HR['Whole team']='Cijela momčad'; HR['Only my family']='Samo moja obitelj'; HR['Type']='Vrsta'; HR['Title']='Naziv'; HR['Date']='Datum';
+  HR['Arrive']='Dolazak'; HR['Start']='Početak'; HR['End']='Kraj'; HR['Venue']='Lokacija'; HR['Field']='Teren'; HR['Details']='Detalji'; HR['Save as the team default venue and field']='Spremi kao zadanu lokaciju i teren momčadi';
+  HR['Every family in the team gets the event and a notification; parents confirm attendance here.']='Svaka obitelj u momčadi dobiva događaj i obavijest; roditelji ovdje potvrđuju dolazak.';
+  HR['Only the coach can add for the whole team (a parent can until the coach claims their card).']='Za cijelu momčad dodaje trener (roditelj može dok trener ne preuzme svoju karticu).';
+  HR['Added.']='Dodano.'; HR['Pick a date first.']='Najprije odaberi datum.'; HR['Type a title first.']='Najprije upiši naziv.';
+  HR['Team defaults']='Zadane postavke momčadi'; HR['Default venue']='Zadana lokacija'; HR['Default field']='Zadani teren'; HR['Used for every new training when the coach or the message does not say otherwise.']='Koristi se za svaki novi trening kad trener ili poruka ne kažu drukčije.';
+  HR['Also set this venue on these events without one:']='Postavi ovu lokaciju i na ove događaje bez lokacije:'; HR['Also confirm these unconfirmed items as they are:']='Potvrdi i ove nepotvrđene stavke kakve jesu:';
+  HR['All']='Svi'; HR['None']='Nijedan'; HR['Open questions']='Otvorena pitanja'; HR['The schedule parser could not decide these. Answer here — Claude applies the answer within the hour and the same question closes on the Open Items board.']='Čitač rasporeda ovo nije mogao odlučiti. Odgovori ovdje — Claude primjenjuje odgovor unutar sat vremena, a isto se pitanje zatvara na ploči otvorenih stavki.';
+  HR['Your answer…']='Tvoj odgovor…'; HR['Send answer']='Pošalji odgovor'; HR['Answered — being applied']='Odgovoreno — primjenjuje se'; HR['Answer sent.']='Odgovor poslan.'; HR['Type an answer first.']='Najprije upiši odgovor.';
+  HR['Session cancelled']='Termin otkazan'; HR['Game']='Utakmica'; HR['Field']='Teren';
+  state.teamSettings={}; state.questions=[];
+  function teamKeyOf(club, team){ return club+'|'+team; }
+  function teamDefaults(club, team){ return state.teamSettings[teamKeyOf(club, team)]||null; }
+  function myTeams(){
+    var m={};
+    if(state.mode==='coach'){ (state.ctx.coach_teams||[]).forEach(function(t){ m[teamKeyOf(t.club,t.team_label)]={club:t.club,team:t.team_label,players:[]}; }); }
+    state.players.forEach(function(p){ var k=teamKeyOf(p.club,p.team_label); (m[k]=m[k]||{club:p.club,team:p.team_label,players:[]}).players.push(p); });
+    return Object.keys(m).map(function(k){ return m[k]; });
+  }
+  function loadExtras(){
+    var qs = state.mode==='family' ? sb.from('schedule_questions').select('*').neq('status','closed').order('created_at',{ascending:false}) : Promise.resolve({data:[]});
+    return Promise.all([ sb.from('team_settings').select('*'), qs ]).then(function(r){
+      state.teamSettings={}; ((r[0]&&r[0].data)||[]).forEach(function(t){ state.teamSettings[teamKeyOf(t.club,t.team_label)]=t; });
+      state.questions=(r[1]&&r[1].data)||[];
+      renderQuestions(); renderTeamDefaults();
+    }).catch(function(){});
+  }
+
+  /* ----- Upcoming view (default): today onward, 14 days per page ----- */
+  function renderUpcoming(){
+    if(!state.upStart) state.upStart=todayZagreb();
+    var s=parseISO(state.upStart), e=addDays(s,13), sIso=iso(s), eIso=iso(e), today=todayZagreb();
+    $('wLabel').textContent=(sIso===today?tr('Next 14 days'):tr('Upcoming'))+' · '+fmtShort(s)+' – '+fmtShort(e);
+    var evs=visibleEvents().filter(function(x){ return x.event_date && x.event_date>=sIso && x.event_date<=eIso; });
+    var anyUnconf=evs.some(function(x){ return !x.date_confirmed; });
+    $('wBanner').innerHTML = anyUnconf ? '<div class="banner">'+tr('⚠ Some dates this week are inferred from the coach saying “next week”, not confirmed. Check with the coach before relying on them.')+'</div>' : '';
+    var html='';
+    for(var i=0;i<14;i++){
+      var day=addDays(s,i), dayIso=iso(day);
+      var de=evs.filter(function(x){ return x.event_date===dayIso; });
+      if(!de.length) continue;
+      var unc=de.some(function(x){ return !x.date_confirmed; });
+      html+='<div class="day"><div class="dayhead"><b>'+(dayIso===today?tr('Today')+' · ':'')+DOW[(day.getDay()+6)%7]+'</b> · '+fmtShort(day)+(unc?' · <a class="confUnc" data-date="'+dayIso+'">'+tr('(UNCONFIRMED — tap to set)')+'</a>':'')+'</div>';
+      html+=tripNote(de);
+      de.forEach(function(x){ html+=evCard(x); });
+      html+='</div>';
+    }
+    if(!html) html='<div class="empty">'+tr('Nothing coming up in this window for this selection.')+'</div>';
+    $('wDays').innerHTML=html;
+    bindEvScoreBtns($('wDays')); bindEvExtras($('wDays'));
+  }
+
+  /* ----- open questions (item 31) ----- */
+  function renderQuestions(){
+    var card=$('qCard'); if(!card) return;
+    var qs=(state.questions||[]).filter(function(q){ return q.status!=='closed'; });
+    if(!qs.length || state.mode!=='family'){ card.hidden=true; card.innerHTML=''; return; }
+    var h='<h2 class="scr" style="margin-top:0">❓ '+tr('Open questions')+' · '+qs.length+'</h2><p class="meta" style="margin-bottom:8px">'+tr('The schedule parser could not decide these. Answer here — Claude applies the answer within the hour and the same question closes on the Open Items board.')+'</p>';
+    qs.forEach(function(q){
+      h+='<div class="qRow" data-q="'+esc(q.id)+'"><div class="qText">'+esc(q.question)+(q.board_item?' <span class="chip clubc">#'+q.board_item+'</span>':'')+'</div>';
+      if(q.status==='answered') h+='<div class="meta">✅ '+tr('Answered — being applied')+': '+esc(q.answer||'')+'</div>';
+      else if(state.canEdit) h+='<div class="qLine"><input type="text" class="qIn" placeholder="'+tr('Your answer…')+'"><a class="gcal qSend" href="#">'+tr('Send answer')+'</a></div>';
+      h+='</div>';
+    });
+    h+='<div class="ok" id="qOk" style="margin-top:4px;min-height:0"></div><div class="err" id="qErr" style="margin-top:0;min-height:0"></div>';
+    card.innerHTML=h; card.hidden=false;
+    card.querySelectorAll('.qSend').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault(); var row=a.closest('.qRow'), id=row.dataset.q, v=row.querySelector('.qIn').value.trim();
+        if(!v){ $('qErr').textContent=tr('Type an answer first.'); return; }
+        sb.from('schedule_questions').update({ status:'answered', answer:v, answered_by:state.userId, answered_at:new Date().toISOString() }).eq('id', id).then(function(r){
+          if(r.error){ $('qErr').textContent=r.error.message; return; }
+          state.questions.forEach(function(q){ if(q.id===id){ q.status='answered'; q.answer=v; } });
+          renderQuestions(); var ok=$('qOk'); if(ok) ok.textContent=tr('Answer sent.');
+        });
+      });
+    });
+  }
+
+  /* ----- team defaults (venue + field), set by coach or parent ----- */
+  function renderTeamDefaults(){
+    var host=$('teamDefaults'); if(!host) return;
+    var teams=myTeams(); if(!teams.length || state.role==='viewer' || state.role==='child'){ host.hidden=true; return; }
+    var h='<h2 class="scr" style="margin-top:0">'+tr('Team defaults')+'</h2><p class="meta" style="margin-bottom:6px">'+tr('Used for every new training when the coach or the message does not say otherwise.')+'</p>';
+    teams.forEach(function(t){
+      var d=teamDefaults(t.club,t.team)||{};
+      h+='<div class="tdRow" data-club="'+esc(t.club)+'" data-team="'+esc(t.team)+'"><div class="famName" style="margin:10px 0 4px">'+esc(t.club)+' · '+esc(t.team)+'</div>'
+        +'<div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" class="tdVenue" placeholder="'+tr('Default venue')+'" value="'+esc(d.default_venue||'')+'" style="flex:2;min-width:160px"><input type="text" class="tdField" placeholder="'+tr('Default field')+'" value="'+esc(d.default_field||'')+'" style="flex:1;min-width:90px"><a class="gcal tdSave" href="#" style="margin-top:0;align-self:center">'+tr('Save')+'</a></div></div>';
+    });
+    h+='<div class="ok" id="tdOk"></div><div class="err" id="tdErr"></div>';
+    host.innerHTML=h; host.hidden=false;
+    host.querySelectorAll('.tdSave').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var row=a.closest('.tdRow'); saveTeamDefaults(row.dataset.club,row.dataset.team,row.querySelector('.tdVenue').value.trim()||null,row.querySelector('.tdField').value.trim()||null,$('tdOk'),$('tdErr')); }); });
+  }
+  function saveTeamDefaults(club, team, venue, field, okEl, errEl){
+    var me=(state.parents||[]).filter(function(p){ return p.user_id===state.userId; }).map(function(p){ return p.first_name; })[0] || (state.ctx&&state.ctx.coach?state.ctx.coach.first_name:null) || state.userEmail;
+    return sb.from('team_settings').upsert({ club:club, team_label:team, default_venue:venue, default_field:field, updated_by:state.userId, updated_by_name:me, updated_at:new Date().toISOString() },{onConflict:'club,team_label'}).select().single().then(function(r){
+      if(r.error){ if(errEl) errEl.textContent=r.error.message; return false; }
+      state.teamSettings[teamKeyOf(club,team)]=r.data; if(okEl) okEl.textContent=tr('Saved.'); return true;
+    });
+  }
+
+  /* ----- add event (coach → whole team; parent → own family, or the team while no coach account exists) ----- */
+  var aeCan={};
+  function openAddEvent(){
+    var teams=myTeams(); if(!teams.length) return;
+    var sel=$('aeTeam'); sel.innerHTML=teams.map(function(t){ return '<option value="'+esc(teamKeyOf(t.club,t.team))+'">'+esc(t.club+' · '+t.team)+'</option>'; }).join('');
+    $('aeScopeWrap').style.display = state.mode==='coach' ? 'none' : '';
+    $('aeDate').value=state.selDay||todayZagreb(); $('aeTitle').value=''; $('aeReport').value=''; $('aeStart').value=''; $('aeEnd').value=''; $('aeDetails').value=''; $('aeErr').textContent=''; $('aeOk').textContent='';
+    $('aeType').value='training'; $('aeDefault').checked=false;
+    aeApplyDefaults(); aeCheckScope();
+    mOpen('addEvModal');
+  }
+  function aeTeam(){ var v=$('aeTeam').value.split('|'); return {club:v[0], team:v[1]}; }
+  function aeApplyDefaults(){ var t=aeTeam(), d=teamDefaults(t.club,t.team)||{}; $('aeVenue').value=d.default_venue||''; $('aeField').value=d.default_field||''; var lbl={training:tr('Training'),match:tr('Match'),tournament:tr('Tournament'),duty:tr('Duty'),no_session:tr('No session')}; if(!$('aeTitle').value) $('aeTitle').placeholder=lbl[$('aeType').value]||''; }
+  function aeCheckScope(){
+    var t=aeTeam(), k=teamKeyOf(t.club,t.team), hint=$('aeHint');
+    if(state.mode==='coach'){ aeCan[k]=true; hint.textContent=tr('Every family in the team gets the event and a notification; parents confirm attendance here.'); return; }
+    var apply=function(ok){ aeCan[k]=ok; $('aeScopeTeam').disabled=!ok; if(!ok && $('aeScopeTeam').checked) $('aeScopeFam').checked=true; hint.textContent = ok ? tr('Every family in the team gets the event and a notification; parents confirm attendance here.') : tr('Only the coach can add for the whole team (a parent can until the coach claims their card).'); };
+    if(k in aeCan){ apply(aeCan[k]); return; }
+    sb.rpc('can_manage_lineup',{ p_club:t.club, p_team:t.team }).then(function(r){ apply(!!(r&&r.data)); }).catch(function(){ apply(false); });
+  }
+  $('aeTeam').addEventListener('change', function(){ aeApplyDefaults(); aeCheckScope(); });
+  $('aeType').addEventListener('change', function(){ $('aeTitle').placeholder=''; aeApplyDefaults(); });
+  $('aeCancel').addEventListener('click', function(){ mClose('addEvModal'); });
+  $('addEvModal').addEventListener('click', function(e){ if(e.target===$('addEvModal')) mClose('addEvModal'); });
+  $('aeSave').addEventListener('click', function(){
+    $('aeErr').textContent=''; $('aeOk').textContent='';
+    var t=aeTeam(), type=$('aeType').value, date=$('aeDate').value, title=$('aeTitle').value.trim()||$('aeTitle').placeholder||TYPE_LABEL[type];
+    if(!date){ $('aeErr').textContent=tr('Pick a date first.'); return; }
+    if(!title){ $('aeErr').textContent=tr('Type a title first.'); return; }
+    var rep=$('aeReport').value||null, st=$('aeStart').value||null, en=$('aeEnd').value||null, venue=$('aeVenue').value.trim()||null, field=$('aeField').value.trim()||null, det=$('aeDetails').value.trim()||null;
+    var team = state.mode==='coach' || $('aeScopeTeam').checked;
+    $('aeSave').disabled=true;
+    var pre = $('aeDefault').checked ? saveTeamDefaults(t.club, t.team, venue, field, null, $('aeErr')) : Promise.resolve(true);
+    Promise.resolve(pre).then(function(){
+      if(team) return sb.rpc('team_add_event',{ p_club:t.club, p_team:t.team, p_type:type, p_title:title, p_date:date, p_report:rep, p_start:st, p_end:en, p_venue:venue, p_field:field, p_details:det, p_confirmed:true });
+      var rows=state.players.filter(function(p){ return p.club===t.club && p.team_label===t.team; }).map(function(p){ return { player_id:p.id, event_type:type, title:title, event_date:date, date_confirmed:true, report_time:rep, start_time:st, end_time:en, venue:venue, field:field, details:det, club:t.club, family_id:state.familyId, source:'parent' }; });
+      return sb.from('events').insert(rows);
+    }).then(function(r){
+      $('aeSave').disabled=false;
+      if(r&&r.error){ $('aeErr').textContent=r.error.message; return; }
+      $('aeOk').textContent=tr('Added.');
+      setTimeout(function(){ mClose('addEvModal'); state.upStart=null; state.selDay=date; if(state.mode==='coach') loadCoach(); else loadAll(); }, 500);
+    }).catch(function(err){ $('aeSave').disabled=false; $('aeErr').textContent=String(err&&err.message||err); });
+  });
+  $('addEvBtn').addEventListener('click', openAddEvent);
+
+  /* ----- bulk helpers used by the venue and confirm modals ----- */
+  function bulkList(hostId, label, items, checked){
+    var host=$(hostId); if(!items.length){ host.innerHTML=''; host.hidden=true; return; }
+    var h='<div class="meta" style="margin-top:12px;font-weight:800;color:var(--txt)">'+label+' <a href="#" class="bkAll" style="color:var(--blue);font-weight:600;margin-left:6px">'+tr('All')+'</a> · <a href="#" class="bkNone" style="color:var(--blue);font-weight:600">'+tr('None')+'</a></div>';
+    items.forEach(function(it){ h+='<label style="display:flex;align-items:center;gap:8px;margin:6px 0;font:600 13px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)"><input type="checkbox" class="bk" value="'+esc(it.id)+'"'+(checked?' checked':'')+' style="width:18px;height:18px;accent-color:var(--green)"> '+esc(it.label)+'</label>'; });
+    host.innerHTML=h; host.hidden=false;
+    host.querySelector('.bkAll').addEventListener('click', function(e){ e.preventDefault(); host.querySelectorAll('.bk').forEach(function(c){ c.checked=true; }); });
+    host.querySelector('.bkNone').addEventListener('click', function(e){ e.preventDefault(); host.querySelectorAll('.bk').forEach(function(c){ c.checked=false; }); });
+  }
+  function bulkIds(hostId){ var out=[]; var host=$(hostId); if(host) host.querySelectorAll('.bk:checked').forEach(function(c){ out.push(c.value); }); return out; }
+  function evLabel(x){ var p=playerById(x.player_id); return fmtDayLong(x.event_date)+(x.start_time?' '+hm(x.start_time):'')+' · '+(p?p.first_name+' · ':'')+x.title; }
 
   /* ---------- email / SMS channels (N2) ---------- */
   function loadChannels(){
     sb.from('notification_channels').select('*').maybeSingle().then(function(r){
-      if(r.error || !r.data) return;
+      if(r.error) return;
+      if(!r.data){ if(state.userId) sb.from('notification_channels').upsert({ user_id:state.userId, lang:LANG, updated_at:new Date().toISOString() },{onConflict:'user_id'}).then(function(){}).catch(function(){}); return; }
       var d=r.data;
+      if((d.lang==='en'||d.lang==='hr') && d.lang!==LANG) setLang(d.lang, false);
       $('chEmailOn').checked=!!d.email_enabled;
       $('chEmail').value=d.email||'';
       $('chSmsOn').checked=!!d.sms_enabled;
@@ -2557,28 +3281,102 @@
   });
 
   /* ---------- messages ---------- */
+  /* ---------- build 26: Coach Messages — clean card, the original document behind it, raw text collapsed ---------- */
+  HR['View original']='Pogledaj izvornik'; HR['Original message']='Izvorna poruka'; HR['Photo']='Fotografija'; HR['PDF']='PDF'; HR['Email']='E-mail'; HR['Text']='Tekst'; HR['Pasted in the app']='Zalijepljeno u aplikaciji';
+  HR['Show transcription & translation']='Prikaži prijepis i prijevod'; HR['Hide transcription & translation']='Sakrij prijepis i prijevod'; HR['Original not on file for this message.']='Izvornik ove poruke nije pohranjen.';
+  HR['Added to the schedule:']='Dodano u raspored:'; HR['Nothing was added from this message.']='Iz ove poruke ništa nije dodano.'; HR['Open PDF']='Otvori PDF'; HR['Forwarded by']='Proslijedio/la'; HR['Loading the original…']='Učitavam izvornik…';
+  HR['Could not load the original.']='Izvornik nije bilo moguće učitati.'; HR['Questions']='Pitanja';
+  state.inboxMeta=[];
+  function loadInboxMeta(){
+    if(state.mode!=='family' || state.role==='child') return Promise.resolve();
+    return sb.from('inbox_meta').select('*').not('coach_message_id','is',null).then(function(r){ state.inboxMeta=(r&&r.data)||[]; renderMessages(); }).catch(function(){});
+  }
+  function srcKind(rows){
+    var mimes=[]; rows.forEach(function(r){ (r.att_meta||[]).forEach(function(a){ mimes.push(a.mime||''); }); });
+    if(mimes.some(function(x){ return x.indexOf('image/')===0; })) return {icon:'📷', label:tr('Photo')};
+    if(mimes.some(function(x){ return x==='application/pdf'; })) return {icon:'📄', label:tr('PDF')};
+    var src=rows[0]&&rows[0].source;
+    if(src==='app') return {icon:'📝', label:tr('Pasted in the app')};
+    if(src==='email') return {icon:'✉️', label:tr('Email')};
+    return {icon:'📝', label:tr('Text')};
+  }
+  function msgSummary(m){
+    var evs=state.events.filter(function(e){ return e.source_message_id===m.id; });
+    if(!evs.length) return '<div class="meta">'+tr('Nothing was added from this message.')+'</div>';
+    var by={}; evs.forEach(function(e){ var p=playerById(e.player_id); var k=p?p.first_name:'?'; (by[k]=by[k]||[]).push(e); });
+    var h='<div class="meta" style="margin-top:8px"><b style="color:var(--txt)">'+tr('Added to the schedule:')+'</b></div><div class="msgSum">';
+    Object.keys(by).forEach(function(k){
+      var list=by[k].slice().sort(function(a,b){ return (a.event_date+(a.start_time||'')).localeCompare(b.event_date+(b.start_time||'')); });
+      var types={}; list.forEach(function(e){ types[e.event_type]=(types[e.event_type]||0)+1; });
+      var tl=Object.keys(types).map(function(t){ return types[t]+' '+(TYPE_LABEL[t]||t).toLowerCase(); }).join(', ');
+      var d0=list[0].event_date, d1=list[list.length-1].event_date;
+      h+='<div class="msgLine"><span class="chip p'+pIdx(list[0].player_id)+'">'+esc(k)+'</span> '+esc(tl)+' · <a href="#" class="msgJump" data-date="'+esc(d0)+'">'+esc(fmtDayLong(d0))+(d1!==d0?' – '+esc(fmtDayLong(d1)):'')+'</a></div>';
+    });
+    return h+'</div>';
+  }
   function renderMessages(){
-    if(!state.msgs.length){ $('msgsBody').innerHTML='<div class="empty">No messages on file yet.</div>'; return; }
+    if(!state.msgs.length){ $('msgsBody').innerHTML='<div class="empty">'+tr('No messages on file yet.')+'</div>'; return; }
+    var byMsg={}; (state.inboxMeta||[]).forEach(function(r){ (byMsg[r.coach_message_id]=byMsg[r.coach_message_id]||[]).push(r); });
     var h='';
     state.msgs.forEach(function(m){
-      h+='<div class="card msg"><div class="head">';
+      var rows=byMsg[m.id]||[], kind=rows.length?srcKind(rows):null;
+      h+='<div class="card msg" data-msg="'+esc(m.id)+'"><div class="head">';
       var mco=coachByName(m.coach_name);
-      h+= mco ? '<span class="who coachLink" data-coach="'+esc(mco.id)+'" role="button" tabindex="0">'+esc(m.coach_name)+'</span>'
-              : '<span class="who">'+esc(m.coach_name)+'</span>';
-      h+='<span class="chip t-training">'+esc(m.team_label)+' team</span>';
-      if(m.received_on) h+='<span class="when">received '+esc(m.received_on)+'</span>';
-      h+='</div><div class="cols">';
-      h+='<div class="langbox"><div class="lang">Hrvatski — original</div>'+esc(m.original_hr)+'</div>';
-      h+='<div class="langbox en"><div class="lang">English</div>'+esc(m.english)+'</div>';
+      h+= mco ? '<span class="who coachLink" data-coach="'+esc(mco.id)+'" role="button" tabindex="0">'+esc(m.coach_name)+'</span>' : '<span class="who">'+esc(m.coach_name)+'</span>';
+      h+='<span class="chip t-training">'+esc(m.team_label)+' '+tr('team')+'</span>';
+      if(m.received_on) h+='<span class="when">'+tr('received')+' '+esc(m.received_on)+'</span>';
+      if(kind) h+='<span class="chip clubc">'+kind.icon+' '+esc(kind.label)+'</span>';
       h+='</div>';
-      if(m.notes) h+='<div class="note">⚠ '+esc(m.notes)+'</div>';
-      h+='</div>';
+      h+=msgSummary(m);
+      var qs=String(m.notes||'').split('\n').filter(function(l){ return /^Q:\s*/.test(l); }).map(function(l){ return l.replace(/^Q:\s*/,''); });
+      if(qs.length) h+='<div class="note">❓ '+tr('Questions')+': '+qs.map(esc).join(' · ')+'</div>';
+      h+='<div class="btnrow" style="margin-top:10px">';
+      if(rows.length) h+='<a class="gcal msgOrig" href="#" data-msg="'+esc(m.id)+'">'+(kind?kind.icon+' ':'')+tr('View original')+'</a>';
+      else if(state.mode==='family' && state.role!=='child') h+='<span class="meta">'+tr('Original not on file for this message.')+'</span>';
+      h+='<a class="srcTgl" href="#" data-tg="raw-'+esc(m.id)+'" data-alt="'+esc(tr('Hide transcription & translation'))+'" style="margin-top:0;align-self:center">'+tr('Show transcription & translation')+'</a></div>';
+      h+='<div id="raw-'+esc(m.id)+'" hidden style="margin-top:10px"><div class="cols">';
+      h+='<div class="langbox"><div class="lang">'+tr('Hrvatski — original')+'</div>'+esc(m.original_hr)+'</div>';
+      h+='<div class="langbox en"><div class="lang">'+tr('English')+'</div>'+esc(m.english)+'</div></div>';
+      var notes=String(m.notes||'').split('\n').filter(function(l){ return !/^Q:\s*/.test(l) && l.trim(); }).join('\n');
+      if(notes) h+='<div class="note">⚠ '+esc(notes)+'</div>';
+      h+='</div></div>';
     });
     $('msgsBody').innerHTML=h;
-    $('msgsBody').querySelectorAll('[data-coach]').forEach(function(a){
-      a.addEventListener('click', function(){ openCoach(coachById(a.dataset.coach)); });
+    $('msgsBody').querySelectorAll('[data-coach]').forEach(function(a){ a.addEventListener('click', function(){ openCoach(coachById(a.dataset.coach)); }); });
+    $('msgsBody').querySelectorAll('.srcTgl').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var el=document.getElementById(a.dataset.tg); if(!el) return; el.hidden=!el.hidden; var t=a.textContent; a.textContent=a.dataset.alt; a.dataset.alt=t; }); });
+    $('msgsBody').querySelectorAll('.msgJump').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); location.hash='#tab=sched&date='+a.dataset.date; }); });
+    $('msgsBody').querySelectorAll('.msgOrig').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); openOriginal(a.dataset.msg); }); });
+  }
+  /* the original: every inbox row behind the message — images inline, PDFs in a frame + open link, email/text as-is */
+  function openOriginal(msgId){
+    var rows=(state.inboxMeta||[]).filter(function(r){ return r.coach_message_id===msgId; }); if(!rows.length) return;
+    var m=null; state.msgs.forEach(function(x){ if(x.id===msgId) m=x; });
+    $('orTitle').textContent=tr('Original message')+(m?' — '+m.coach_name:'');
+    $('orBody').innerHTML='<div class="meta">'+tr('Loading the original…')+'</div>';
+    mOpen('origModal');
+    sb.from('inbox_raw').select('id, subject, sender, received_at, source, body, attachments').in('id', rows.map(function(r){ return r.id; })).then(function(r){
+      if(r.error||!r.data){ $('orBody').innerHTML='<div class="err">'+tr('Could not load the original.')+'</div>'; return; }
+      var h='';
+      r.data.sort(function(a,b){ return String(a.received_at).localeCompare(String(b.received_at)); }).forEach(function(x){
+        var when=x.received_at?new Date(x.received_at).toLocaleString(LANG==='hr'?'hr-HR':'en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'';
+        h+='<div class="meta" style="margin:8px 0 6px">'+(x.subject?'<b style="color:var(--txt)">'+esc(x.subject)+'</b><br>':'')+tr('Forwarded by')+' '+esc(x.sender||'')+(when?' · '+esc(when):'')+(x.source?' · '+esc(x.source):'')+'</div>';
+        var atts=Array.isArray(x.attachments)?x.attachments:[];
+        atts.forEach(function(a,i){
+          if(!a||!a.data_b64) return;
+          var url='data:'+(a.mime||'application/octet-stream')+';base64,'+a.data_b64;
+          if((a.mime||'').indexOf('image/')===0) h+='<a href="'+url+'" target="_blank" rel="noopener"><img class="orImg" src="'+url+'" alt="'+esc(a.name||'')+'"></a>';
+          else if(a.mime==='application/pdf') h+='<div class="orPdf"><iframe src="'+url+'" title="'+esc(a.name||'PDF')+'"></iframe></div><div class="btnrow"><a class="gcal orPdfOpen" href="#" data-i="'+i+'" data-row="'+esc(x.id)+'">📄 '+tr('Open PDF')+' · '+esc(a.name||'')+'</a></div>';
+        });
+        var body=String(x.body||'').replace(/^\[attached:[^\]]*\]\s*/,'').trim();
+        if(body) h+='<pre class="orText">'+esc(body)+'</pre>';
+      });
+      $('orBody').innerHTML=h||'<div class="meta">—</div>';
+      var data=r.data;
+      $('orBody').querySelectorAll('.orPdfOpen').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var row=data.filter(function(x){ return x.id===a.dataset.row; })[0]; var att=row&&row.attachments&&row.attachments[+a.dataset.i]; if(!att) return; try{ var bin=atob(att.data_b64), u8=new Uint8Array(bin.length); for(var k=0;k<bin.length;k++) u8[k]=bin.charCodeAt(k); var blob=new Blob([u8],{type:'application/pdf'}); window.open(URL.createObjectURL(blob),'_blank'); }catch(err){} }); });
     });
   }
+  $('orClose').addEventListener('click', function(){ mClose('origModal'); });
+  $('origModal').addEventListener('click', function(e){ if(e.target===$('origModal')) mClose('origModal'); });
 
   /* ---------- calendar feed ---------- */
   function feedURL(){ return state.feedToken ? (SUPABASE_URL+'/functions/v1/calendar-feed?token='+state.feedToken) : null; }
