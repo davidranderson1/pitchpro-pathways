@@ -308,7 +308,7 @@
   .radioRow input{width:18px;height:18px;accent-color:var(--green)}
   .msgSum{margin-top:6px}.msgLine{font-size:13.5px;margin:4px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.msgLine a{color:var(--blue);text-decoration:underline dotted;text-underline-offset:3px}
   .orImg{max-width:100%;border-radius:10px;display:block;margin:6px 0;border:1px solid var(--line)}
-  .orPdf iframe{width:100%;height:60vh;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .orPdf{margin:6px 0}.orPdf canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;margin:0 0 8px}.orPdf .meta{padding:6px 2px}
   .orText{white-space:pre-wrap;font:13.5px/1.5 Inter,sans-serif;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;color:var(--txt)}
   .plList{border:1px solid var(--line);border-radius:10px;margin-top:6px;overflow:hidden;background:var(--card2)}
   .plItem{display:block;width:100%;text-align:left;padding:8px 10px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--txt);font:13.5px/1.35 Inter,sans-serif;cursor:pointer}.plItem:last-child{border-bottom:0}.plItem:hover,.plItem:focus{background:var(--card)}
@@ -3538,15 +3538,36 @@
           if(!a||!a.data_b64) return;
           var url='data:'+(a.mime||'application/octet-stream')+';base64,'+a.data_b64;
           if((a.mime||'').indexOf('image/')===0) h+='<a href="'+url+'" target="_blank" rel="noopener"><img class="orImg" src="'+url+'" alt="'+esc(a.name||'')+'"></a>';
-          else if(a.mime==='application/pdf') h+='<div class="orPdf"><iframe src="'+url+'" title="'+esc(a.name||'PDF')+'"></iframe></div><div class="btnrow"><a class="gcal orPdfOpen" href="#" data-i="'+i+'" data-row="'+esc(x.id)+'">📄 '+tr('Open PDF')+' · '+esc(a.name||'')+'</a></div>';
+          else if(a.mime==='application/pdf') h+='<div class="orPdf" data-i="'+i+'" data-row="'+esc(x.id)+'"><div class="meta">'+tr('Rendering the PDF…')+'</div></div><div class="btnrow"><a class="gcal orPdfOpen" href="#" data-i="'+i+'" data-row="'+esc(x.id)+'">📄 '+tr('Open PDF')+' · '+esc(a.name||'')+'</a></div>';
         });
         var body=String(x.body||'').replace(/^\[attached:[^\]]*\]\s*/,'').trim();
         if(body) h+='<pre class="orText">'+esc(body)+'</pre>';
       });
       $('orBody').innerHTML=h||'<div class="meta">—</div>';
       var data=r.data;
+      $('orBody').querySelectorAll('.orPdf').forEach(function(box){ var row=data.filter(function(x){ return x.id===box.dataset.row; })[0]; var att=row&&row.attachments&&row.attachments[+box.dataset.i]; if(att&&att.data_b64) renderPdfPages(box, att.data_b64); });
       $('orBody').querySelectorAll('.orPdfOpen').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var row=data.filter(function(x){ return x.id===a.dataset.row; })[0]; var att=row&&row.attachments&&row.attachments[+a.dataset.i]; if(!att) return; try{ var bin=atob(att.data_b64), u8=new Uint8Array(bin.length); for(var k=0;k<bin.length;k++) u8[k]=bin.charCodeAt(k); var blob=new Blob([u8],{type:'application/pdf'}); window.open(URL.createObjectURL(blob),'_blank'); }catch(err){} }); });
     });
+  }
+  /* build 28: draw PDF pages in the app — Android/iOS browsers do not render PDFs inside an iframe */
+  HR['Rendering the PDF…']='Iscrtavam PDF…'; HR['The PDF could not be drawn here — use Open PDF.']='PDF nije bilo moguće iscrtati ovdje — koristi Otvori PDF.'; HR['page']='stranica';
+  var PDFJS_URL='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/', pdfjsLib=null;
+  function loadPdfjs(){ if(pdfjsLib) return Promise.resolve(pdfjsLib); return import(PDFJS_URL+'pdf.min.mjs').then(function(m){ m.GlobalWorkerOptions.workerSrc=PDFJS_URL+'pdf.worker.min.mjs'; pdfjsLib=m; return m; }); }
+  function renderPdfPages(box, b64){
+    loadPdfjs().then(function(lib){
+      var bin=atob(b64), u8=new Uint8Array(bin.length); for(var k=0;k<bin.length;k++) u8[k]=bin.charCodeAt(k);
+      return lib.getDocument({data:u8}).promise.then(function(doc){
+        box.innerHTML=''; var width=Math.max(280, box.clientWidth||320), ratio=Math.min(window.devicePixelRatio||1, 2), n=Math.min(doc.numPages, 12);
+        var chain=Promise.resolve();
+        for(var p=1;p<=n;p++)(function(p){ chain=chain.then(function(){ return doc.getPage(p).then(function(page){
+          var v0=page.getViewport({scale:1}), scale=width/v0.width, vp=page.getViewport({scale:scale*ratio});
+          var c=document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height); c.setAttribute('aria-label',tr('page')+' '+p); box.appendChild(c);
+          return page.render({canvasContext:c.getContext('2d'), viewport:vp}).promise;
+        }); }); })(p);
+        if(doc.numPages>n) chain=chain.then(function(){ var m=document.createElement('div'); m.className='meta'; m.textContent='+'+(doc.numPages-n); box.appendChild(m); });
+        return chain;
+      });
+    }).catch(function(){ box.innerHTML='<div class="meta">'+tr('The PDF could not be drawn here — use Open PDF.')+'</div>'; });
   }
   $('orClose').addEventListener('click', function(){ mClose('origModal'); });
   $('origModal').addEventListener('click', function(e){ if(e.target===$('origModal')) mClose('origModal'); });
