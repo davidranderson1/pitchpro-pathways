@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://egkiovxdijgwkbwkvkgn.supabase.co wss://egkiovxdijgwkbwkvkgn.supabase.co https://fonts.gstatic.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — PitchPro Pathways</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -386,7 +388,7 @@
       state.clubs=list; var canEdit=['owner','admin'].indexOf(state.role)>=0;
       $('clubNew').style.display = canEdit ? '' : 'none';
       $('clubTable').querySelector('tbody').innerHTML = list.map(function(c){
-        return '<tr><td>'+(c.logo_set?'<img class="logo" src="'+c.logo_url+'" alt="">':'<span class="pill a">no logo</span>')+'</td><td><b>'+esc(c.name)+'</b><div class="small muted">'+esc(c.address||'')+'</div></td><td>'+esc(c.town||'—')+'</td><td class="n">'+c.players+'</td><td>'+esc(c.badge||'—')+'</td><td>'+(canEdit?'<button class="ghost" data-edit="'+esc(c.name)+'" type="button">Edit</button>':'')+'</td></tr>';
+        return '<tr><td>'+(c.logo_set?'<img class="logo" src="'+esc(c.logo_url)+'" alt="">':'<span class="pill a">no logo</span>')+'</td><td><b>'+esc(c.name)+'</b><div class="small muted">'+esc(c.address||'')+'</div></td><td>'+esc(c.town||'—')+'</td><td class="n">'+c.players+'</td><td>'+esc(c.badge||'—')+'</td><td>'+(canEdit?'<button class="ghost" data-edit="'+esc(c.name)+'" type="button">Edit</button>':'')+'</td></tr>';
       }).join('');
       $('clubTable').querySelectorAll('[data-edit]').forEach(function(b){ b.addEventListener('click', function(){ editClub(b.dataset.edit); }); });
     }).catch(fail);
