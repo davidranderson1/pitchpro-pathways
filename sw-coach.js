@@ -1,8 +1,8 @@
 /* PitchPro Coach — service worker (design preview).
    Keeps the app shell on the phone so it opens at the pitch without signal; nothing personal is cached
-   (the preview carries sample data only). Network first for the page, cache first for the assets. */
-var CACHE = 'ppcoach-v1';
-var SHELL = ['./coach.html', './site-nav.js', './icon-192.png', './icon-512.png', './coach-manifest.json'];
+   (the page itself carries sample data only — a private setup is fetched after sign-in and never cached here). Network first for the page, cache first for the assets. */
+var CACHE = 'ppcoach-v2';
+var SHELL = ['./coach.html', './supabase.js', './site-nav.js', './icon-192.png', './icon-512.png', './coach-manifest.json'];
 self.addEventListener('install', function (e) {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(function (c) {
