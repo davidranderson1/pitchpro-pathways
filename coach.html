@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>PitchPro Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a120d">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+  :root{
+    --bg:#0a120d; --card:#101a14; --card2:#15211a; --card3:#1b2a21; --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+    --green:#2ee08a; --green-dim:rgba(46,224,138,.35); --green-bg:rgba(46,224,138,.12); --blue:#5fb4ff; --blue-bg:rgba(95,180,255,.14);
+    --amber:#ffc857; --amber-bg:rgba(255,200,87,.12); --red:#ff7a6e; --red-bg:rgba(255,122,110,.14); --purple:#b79bff;
+    --txt:#f2f7f4; --muted:#9db3a6; --ink:#06130c;
+    --nav-h:64px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  [hidden]{display:none !important}
+  a{color:var(--blue)}
+  button{font-family:inherit}
+  button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .sr{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .demo{position:sticky;top:0;z-index:60;background:var(--amber);color:#231602;font:800 11px/1.3 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:6px 10px}
+  .demo b{font-weight:900}
+  /* shell */
+  .shell{display:grid;grid-template-columns:1fr;min-height:100vh}
+  .rail{display:none}
+  main{min-width:0}
+  .wrap{max-width:820px;margin:0 auto;padding:14px 16px calc(var(--nav-h) + 28px)}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0 14px;flex-wrap:wrap}
+  .brand{font:900 15px/1.2 Archivo,Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green);white-space:nowrap}
+  .brand span{color:var(--txt)}
+  .hright{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .pill{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 12px;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .pill:hover{color:var(--txt);border-color:var(--line2)}
+  .pill.team{color:var(--txt)}
+  .pill.team b{color:var(--green)}
+  .pill.lang span{opacity:.45}
+  .pill.lang span.on{opacity:1;color:var(--green)}
+  .avatarBtn{width:36px;height:36px;border-radius:50%;background:var(--card2);border:1px solid var(--line2);color:var(--txt);font:800 12px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;overflow:hidden}
+  /* bottom nav (phone) */
+  nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(10,18,13,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  nav.bottom button{flex:1 1 0;background:none;border:0;color:var(--muted);font:800 9.5px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 2px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;border-radius:10px}
+  nav.bottom button .ic{font-size:19px;line-height:1}
+  nav.bottom button[aria-current="page"]{color:var(--green)}
+  nav.bottom button .n,.rail button .n{position:absolute;top:0;right:12%;background:var(--amber);color:var(--ink);border-radius:999px;padding:2px 6px;font-size:9.5px;font-weight:900}
+  /* desktop rail */
+  @media (min-width:960px){
+    .shell{grid-template-columns:220px 1fr}
+    .rail{display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;background:var(--card);border-right:1px solid var(--line);padding:22px 12px}
+    .rail .rbrand{font:900 14px/1.2 Archivo,Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green);padding:6px 10px 18px}
+    .rail .rbrand span{color:var(--txt)}
+    .rail button{background:none;border:0;color:var(--muted);font:700 14px Inter,sans-serif;text-align:left;padding:11px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:12px;position:relative}
+    .rail button .ic{width:22px;text-align:center;font-size:17px}
+    .rail button:hover{color:var(--txt);background:var(--card2)}
+    .rail button[aria-current="page"]{color:var(--green);background:rgba(46,224,138,.08)}
+    .rail button .n{position:static;margin-left:auto}
+    .rail .rfoot{margin-top:auto;font-size:12px;color:var(--muted);padding:10px 12px;line-height:1.5}
+    nav.bottom{display:none}
+    header.top .brand{display:none}
+    .wrap{padding-bottom:40px;max-width:900px}
+  }
+  /* generic */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+  .card.tight{padding:12px 14px}
+  .card.accent{border-color:var(--green-dim)}
+  .card.warn{border-color:rgba(255,200,87,.45)}
+  h2.scr{font:900 18px/1.3 Archivo,Inter,sans-serif;margin:4px 0 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  h2.scr:focus{outline:none}
+  h2.scr small{font:600 12.5px/1.4 Inter,sans-serif;color:var(--muted);letter-spacing:0;text-transform:none}
+  h3.sec{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  h3.sec a,h3.sec button.link{font:700 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:none;color:var(--blue);background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .sub{font-size:13px;color:var(--muted)}
+  .muted{color:var(--muted)}
+  .chip{display:inline-block;font:800 10px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:5px 9px;white-space:nowrap;vertical-align:middle}
+  .chip.t-training{background:var(--green-bg);color:var(--green)}
+  .chip.t-match{background:var(--blue-bg);color:var(--blue)}
+  .chip.t-tournament{background:var(--blue-bg);color:var(--blue)}
+  .chip.t-duty{background:var(--amber-bg);color:var(--amber)}
+  .chip.t-no_session,.chip.grey{background:rgba(255,255,255,.06);color:var(--muted)}
+  .chip.amber{background:var(--amber-bg);color:var(--amber)}
+  .chip.red{background:var(--red-bg);color:var(--red)}
+  .chip.green{background:var(--green-bg);color:var(--green)}
+  .chip.blue{background:var(--blue-bg);color:var(--blue)}
+  .chip.purple{background:rgba(183,155,255,.14);color:var(--purple)}
+  .chip.teamc{background:rgba(255,255,255,.06);color:var(--txt)}
+  .btn{background:var(--card2);border:1px solid var(--line2);color:var(--txt);border-radius:10px;padding:9px 13px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .btn:hover{border-color:var(--green-dim)}
+  .btn.primary{background:var(--green);color:var(--ink);border-color:var(--green)}
+  .btn.primary:hover{background:#4ff0a0}
+  .btn.blue{color:var(--blue);border-color:rgba(95,180,255,.35)}
+  .btn.danger{color:var(--red);border-color:rgba(255,122,110,.35)}
+  .btn.amber{color:var(--amber);border-color:rgba(255,200,87,.4)}
+  .btn.sm{padding:7px 10px;font-size:10px}
+  .btn.full{width:100%;justify-content:center;padding:13px}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.link{background:none;border:0;color:var(--blue);text-transform:none;letter-spacing:0;font-weight:700;padding:4px 0;text-decoration:underline;text-underline-offset:2px}
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .row.between{justify-content:space-between}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px}
+  .tile{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;color:var(--txt);cursor:pointer;min-height:64px;display:flex;flex-direction:column;justify-content:center;gap:3px}
+  .tile:hover{border-color:var(--green-dim)}
+  .tile .big{font:900 22px/1.1 Archivo,Inter,sans-serif}
+  .tile .lbl{font:800 10px/1.3 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .tile.amber .big{color:var(--amber)}
+  .tile.green .big{color:var(--green)}
+  .tile.blue .big{color:var(--blue)}
+  .tile.red .big{color:var(--red)}
+  .stack>*+*{margin-top:8px}
+  /* forms */
+  label{display:block;font:800 10.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+  label.inline{display:flex;align-items:center;gap:8px;margin:8px 0;font:700 13.5px Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--txt)}
+  input,select,textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:11px 12px;font:15px Inter,sans-serif}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green-dim)}
+  input[type=checkbox],input[type=radio]{width:18px;height:18px;accent-color:var(--green);padding:0}
+  textarea{min-height:80px;resize:vertical}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  @media (max-width:420px){.frow3{grid-template-columns:1fr 1fr} .hright{gap:6px} .pill{padding:7px 10px;font-size:10px} header.top{padding-bottom:10px}}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .ok{color:var(--green);font-size:13px;margin-top:8px;min-height:18px}
+  .err{color:var(--red);font-size:13px;margin-top:8px;min-height:18px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .fchip{background:var(--card);border:1px solid var(--line2);color:var(--muted);border-radius:999px;padding:7px 12px;font:800 11px/1 Inter,sans-serif;letter-spacing:.06em;cursor:pointer;white-space:nowrap}
+  .fchip.on{color:var(--ink);background:var(--green);border-color:var(--green)}
+  .fchip.on.blue{background:var(--blue);border-color:var(--blue)}
+  .fchip.on.amber{background:var(--amber);border-color:var(--amber)}
+  .fchip.on.red{background:var(--red);border-color:var(--red)}
+  .fchip:disabled{opacity:.45;cursor:default}
+  .seg{display:inline-flex;flex-wrap:wrap;max-width:100%;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .seg button{background:var(--card);border:0;color:var(--muted);padding:9px 14px;font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--card2);color:var(--green)}
+  .toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font:700 13.5px Inter,sans-serif}
+  .toggle .sw{width:40px;height:22px;border-radius:999px;background:rgba(255,255,255,.14);position:relative;transition:background .15s;flex:0 0 auto}
+  .toggle .sw:after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+  .toggle[aria-pressed="true"] .sw{background:var(--green)}
+  .toggle[aria-pressed="true"] .sw:after{left:21px}
+  .toggle{background:none;border:0;color:var(--txt);padding:6px 0;text-align:left}
+  /* events */
+  .day{margin-bottom:14px}
+  .dayhead{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 2px;display:flex;justify-content:space-between;gap:8px}
+  .dayhead b{color:var(--txt)}
+  .ev{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;position:relative}
+  .ev.cancelled{opacity:.7;border-style:dashed}
+  .ev.cancelled h4{text-decoration:line-through;color:var(--muted)}
+  .ev.today{border-color:var(--green-dim)}
+  .ev h4{font:700 15px/1.35 Inter,sans-serif;margin:7px 0 2px}
+  .ev .times{font:800 14px/1.4 Inter,sans-serif;margin-top:2px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .ev .times .rep{color:var(--amber)}
+  .ev .times .rep small,.ev .times .st small{font:700 10px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+  .ev .meta{font-size:13px;color:var(--muted);margin-top:4px}
+  .ev .meta a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+  .ev .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .ev .acts .btn{padding:8px 10px;font-size:10px}
+  .attbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+  .attbar .a{font:800 11.5px/1 Inter,sans-serif;border-radius:999px;padding:6px 9px;background:rgba(255,255,255,.05);color:var(--muted);cursor:pointer;border:1px solid transparent}
+  .attbar .a.g{color:var(--green)}.attbar .a.m{color:var(--amber)}.attbar .a.n{color:var(--red)}.attbar .a.q{color:var(--txt)}
+  .attbar .a:hover{border-color:var(--line2)}
+  .receipt{font-size:12px;color:var(--muted);margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .receipt b{color:var(--txt)}
+  .names{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.6}
+  .names b{color:var(--txt);font-weight:700}
+  .names .g{color:var(--green)}.names .m{color:var(--amber)}.names .n{color:var(--red)}
+  /* players */
+  .plist{display:flex;flex-direction:column;gap:6px}
+  .prow{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;cursor:pointer;text-align:left;color:var(--txt);width:100%}
+  .prow:hover{border-color:var(--green-dim)}
+  .av{width:38px;height:38px;border-radius:50%;background:var(--card3);border:1px solid var(--line2);display:inline-flex;align-items:center;justify-content:center;font:800 12px Inter,sans-serif;color:var(--txt);flex:0 0 auto;position:relative}
+  .av.sm{width:30px;height:30px;font-size:10.5px}
+  .av .sh{position:absolute;right:-5px;bottom:-4px;background:var(--green);color:var(--ink);border-radius:999px;font:900 9.5px/1 Inter,sans-serif;padding:3px 5px;min-width:18px;text-align:center}
+  .prow .pn{flex:1 1 auto;min-width:0}
+  .prow .pn b{display:block;font-size:14.5px}
+  .prow .pn small{display:block;font-size:12px;color:var(--muted)}
+  .prow .pr{text-align:right;font-size:12px;color:var(--muted);white-space:nowrap}
+  .prow .pr b{display:block;color:var(--txt);font-size:14px}
+  .regrow{flex-wrap:wrap}
+  .regrow .seg{flex:1 1 100%;display:flex}
+  .regrow .seg button{flex:1;text-align:center}
+  @media (min-width:560px){.regrow .seg{flex:0 0 auto}.regrow .seg button{flex:0 0 auto}}
+  .bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;background:var(--green);border-radius:999px}
+  /* lineup pitch */
+  .luPitch{position:relative;width:100%;aspect-ratio:68/96;max-height:520px;margin:10px 0;border-radius:12px;background:linear-gradient(180deg,#1f7f47,#1a6b3d);border:2px solid rgba(255,255,255,.35);overflow:hidden}
+  .luPitch:before{content:'';position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.35)}
+  .luPitch:after{content:'';position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.35);border-radius:50%}
+  .luBox{position:absolute;left:50%;transform:translateX(-50%);width:44%;height:12%;border:2px solid rgba(255,255,255,.35);border-top:0}
+  .luBox.top{top:-2px;border-top:0;border-bottom:2px solid rgba(255,255,255,.35)}
+  .luBox.bot{bottom:-2px;border-bottom:0;border-top:2px solid rgba(255,255,255,.35)}
+  .luSlot{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:pointer;width:66px;z-index:2;background:none;border:0;color:#fff;padding:0}
+  .luDot{width:36px;height:36px;border-radius:50%;margin:0 auto;background:rgba(6,19,12,.55);border:2px dashed rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;font:900 13px Inter,sans-serif;color:#fff}
+  .luSlot.filled .luDot{background:#fff;color:var(--ink);border:2px solid #fff}
+  .luSlot.sel .luDot{box-shadow:0 0 0 3px var(--amber)}
+  .luSlot.warn .luDot{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,122,110,.6)}
+  .luName{font:700 10.5px/1.15 Inter,sans-serif;margin-top:3px;text-shadow:0 1px 2px rgba(0,0,0,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bench{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .bench button{background:var(--card2);border:1px solid var(--line2);color:var(--txt);border-radius:999px;padding:7px 11px;font:700 12px Inter,sans-serif;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+  .bench button.g{border-color:var(--green-dim)}.bench button.n{opacity:.55;border-color:rgba(255,122,110,.4)}.bench button.m{border-color:rgba(255,200,87,.4)}
+  .bench button.used{opacity:.35}
+  .bench button.sel{background:var(--green);color:var(--ink);border-color:var(--green)}
+  /* posts */
+  .post{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px}
+  .post .ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+  .post .ph b{color:var(--txt);font-size:13.5px}
+  .post .body{margin-top:8px;font-size:14.5px;white-space:pre-line}
+  .post.pinned{border-color:var(--green-dim)}
+  .poll{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+  .poll .opt{position:relative;border:1px solid var(--line);border-radius:10px;padding:9px 12px;overflow:hidden;font-size:13.5px;display:flex;justify-content:space-between;gap:8px}
+  .poll .opt i{position:absolute;left:0;top:0;bottom:0;background:var(--green-bg);z-index:0}
+  .poll .opt span{position:relative;z-index:1}
+  .replies{margin-top:10px;border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px}
+  .reply{font-size:13px;padding:7px 10px;border-left:3px solid var(--blue);background:var(--card2);border-radius:0 8px 8px 0}
+  .reply b{font-weight:700}
+  .reply small{color:var(--muted);margin-left:6px}
+  .reply.me{border-left-color:var(--green)}
+  .thread{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;width:100%;text-align:left;color:var(--txt)}
+  .thread:hover{border-color:var(--green-dim)}
+  .thread .tn{flex:1;min-width:0}
+  .thread .tn b{display:block;font-size:14px}
+  .thread .tn small{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .thread .dot{width:10px;height:10px;border-radius:50%;background:var(--amber);flex:0 0 auto}
+  .msgs{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;padding:4px 2px}
+  .bub{max-width:86%;padding:9px 12px;border-radius:14px;font-size:14px;background:var(--card2);border:1px solid var(--line)}
+  .bub.me{align-self:flex-end;background:rgba(46,224,138,.14);border-color:var(--green-dim)}
+  .bub small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+  /* needs list */
+  .need{display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px}
+  .need .ic{font-size:18px;line-height:1.2;flex:0 0 auto}
+  .need .nt{flex:1;min-width:0;font-size:13.5px}
+  .need .nt b{display:block}
+  .need .nt small{color:var(--muted)}
+  .need .btn{flex:0 0 auto}
+  /* week strip */
+  .strip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:6px 0 10px}
+  .strip button{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 2px 6px;color:var(--muted);cursor:pointer;font:700 11px/1.2 Inter,sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .strip button b{color:var(--txt);font-size:14px}
+  .strip button.today{border-color:var(--green-dim);color:var(--green)}
+  .strip .dots{display:flex;gap:2px;height:6px}
+  .strip .dots i{width:6px;height:6px;border-radius:50%;background:var(--green)}
+  .strip .dots i.m{background:var(--blue)}.strip .dots i.c{background:var(--red)}
+  /* tables */
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{font:800 10px/1.2 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 8px;border-bottom:1px solid var(--line)}
+  td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+  td.num,th.num{text-align:right}
+  /* modal */
+  .modal{position:fixed;inset:0;z-index:80;display:none;align-items:flex-start;justify-content:center;padding:18px 12px;background:rgba(6,10,8,.9);overflow-y:auto}
+  .modal.on{display:flex}
+  .mbox{background:var(--card);border:1px solid var(--green-dim);border-radius:16px;padding:18px;max-width:520px;width:100%;margin:auto 0}
+  .mbox.wide{max-width:680px}
+  .mbox h3{font:900 16px/1.35 Archivo,Inter,sans-serif;margin-bottom:2px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .mbox h3.sec{font:800 11px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+  .mbox h3 button.x{background:none;border:0;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:2px 6px}
+  .mbox .msub{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .mbtns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+  .sheet{max-width:560px}
+  /* place picker */
+  .pp{position:relative}
+  .pp .sug{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--card3);border:1px solid var(--line2);border-radius:10px;z-index:5;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+  .pp .sug button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--txt);padding:9px 12px;font:14px Inter,sans-serif;cursor:pointer}
+  .pp .sug button:hover{background:var(--card2)}
+  .pp .sug button small{display:block;color:var(--muted);font-size:12px}
+  .pp .picked{margin-top:6px;font-size:13px;color:var(--green)}
+  .pp .picked a{color:var(--blue);margin-left:6px}
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 14px);transform:translateX(-50%);background:var(--txt);color:var(--ink);padding:10px 16px;border-radius:999px;font:700 13px Inter,sans-serif;box-shadow:0 8px 26px rgba(0,0,0,.4);opacity:0;transition:opacity .2s;pointer-events:none;z-index:90;max-width:92vw;text-align:center}
+  .toast.on{opacity:1}
+  @media (min-width:960px){.toast{bottom:24px}}
+  /* misc */
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px}
+  .kv dt{color:var(--muted);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+  .kv dd{margin:0}
+  .note{border:1px dashed rgba(255,200,87,.5);background:rgba(255,200,87,.07);color:var(--amber);border-radius:12px;padding:10px 13px;font-size:13px;margin:10px 0}
+  .note.green{border-color:var(--green-dim);background:rgba(46,224,138,.06);color:var(--green)}
+  .note.blue{border-color:rgba(95,180,255,.4);background:rgba(95,180,255,.06);color:var(--blue)}
+  .split{display:grid;grid-template-columns:1fr;gap:12px}
+  @media (min-width:700px){.split{grid-template-columns:1fr 1fr}}
+  .code{font:900 22px/1.2 Archivo,Inter,sans-serif;letter-spacing:.12em;background:var(--card2);border:1px dashed var(--green-dim);border-radius:12px;padding:12px;text-align:center;color:var(--green)}
+  .empty{color:var(--muted);font-size:13.5px;padding:14px 4px}
+  .stat{font:900 26px/1 Archivo,Inter,sans-serif}
+  .fixt{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .fixt:last-child{border-bottom:0}
+  .fixt .sc{font:900 15px Inter,sans-serif;text-align:right;white-space:nowrap}
+  .doc{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;margin-top:6px}
+  .doc .ic{font-size:18px}
+  .doc .dn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .doc small{color:var(--muted)}
+  .kit{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:4px;border:1px solid rgba(255,255,255,.3)}
+  .scorerow{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .scorerow .av{flex:0 0 auto}
+  .scorerow input[type=number]{width:60px;text-align:center;padding:7px 6px}
+  .scorerow .who{flex:1 1 auto;min-width:120px;font-weight:700;font-size:13.5px}
+  .scoreBig{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0}
+  .scoreBig input{width:72px;text-align:center;font:900 26px Inter,sans-serif;padding:8px}
+  .scoreBig .vs{font:800 12px Inter,sans-serif;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+  .scoreBig .side{font:800 10.5px/1.3 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:80px;text-align:center}
+  @media (prefers-reduced-motion:reduce){.toast,.toggle .sw,.toggle .sw:after{transition:none}}
+  @media print{nav.bottom,.rail,.demo{display:none !important}}
+</style>
+</head>
+<body>
+<div class="demo" id="demoBanner"><b>Design preview</b> · sample data only · nothing is sent to anyone</div>
+<div class="shell">
+  <aside class="rail" id="rail" aria-label="Sections">
+    <div class="rbrand">PitchPro <span>Coach</span></div>
+    <button type="button" data-go="today"><span class="ic">☀️</span><span data-t>Today</span></button>
+    <button type="button" data-go="schedule"><span class="ic">📅</span><span data-t>Schedule</span></button>
+    <button type="button" data-go="team"><span class="ic">👥</span><span data-t>Team</span></button>
+    <button type="button" data-go="matches"><span class="ic">🏆</span><span data-t>Matches</span></button>
+    <button type="button" data-go="messages"><span class="ic">💬</span><span data-t>Messages</span><span class="n" id="railMsgN" hidden></span></button>
+    <button type="button" data-go="account"><span class="ic">🪪</span><span data-t>Coach card</span></button>
+    <div class="rfoot" id="railFoot"></div>
+  </aside>
+  <main>
+    <div class="wrap">
+      <header class="top">
+        <div class="brand">PitchPro <span>Coach</span></div>
+        <div class="hright">
+          <button type="button" class="pill team" id="teamPill" aria-haspopup="dialog"></button>
+          <button type="button" class="pill lang" id="langPill" aria-label="Language"><span id="langHr">HR</span>|<span id="langEn">EN</span></button>
+          <button type="button" class="pill" id="notesBtn" title="Design notes">ⓘ</button>
+          <button type="button" class="pill" id="ppNavOpen">◈ Apps</button>
+          <button type="button" class="avatarBtn" id="meBtn" aria-label="Coach card" data-go="account">AŠ</button>
+        </div>
+      </header>
+      <section class="screen" id="s-today" aria-labelledby="h-today"></section>
+      <section class="screen" id="s-schedule" hidden></section>
+      <section class="screen" id="s-team" hidden></section>
+      <section class="screen" id="s-matches" hidden></section>
+      <section class="screen" id="s-messages" hidden></section>
+      <section class="screen" id="s-account" hidden></section>
+    </div>
+  </main>
+</div>
+<nav class="bottom" aria-label="Sections">
+  <button type="button" data-go="today"><span class="ic">☀️</span><span data-t>Today</span></button>
+  <button type="button" data-go="schedule"><span class="ic">📅</span><span data-t>Schedule</span></button>
+  <button type="button" data-go="team"><span class="ic">👥</span><span data-t>Team</span></button>
+  <button type="button" data-go="matches"><span class="ic">🏆</span><span data-t>Matches</span></button>
+  <button type="button" data-go="messages"><span class="ic">💬</span><span data-t>Messages</span><span class="n" id="navMsgN" hidden></span></button>
+</nav>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="mbox" id="mbox"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+/* PitchPro Coach — design preview. Sample data only; every name, club and venue below is invented.
+   Screens are rendered from JS so the whole page switches language in one pass. */
+(function(){
+'use strict';
+/* ---------- utilities ---------- */
+var $=function(id){ return document.getElementById(id); };
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pad2(n){ return (n<10?'0':'')+n; }
+var TODAY=new Date(); TODAY.setHours(0,0,0,0);
+function isoOf(d){ return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+function dISO(off){ var d=new Date(TODAY); d.setDate(d.getDate()+off); return isoOf(d); }
+function dateOf(iso){ return new Date(iso+'T12:00:00'); }
+function dow(iso){ return (dateOf(iso).getDay()+6)%7; } /* 0=Mon */
+function offOf(iso){ return Math.round((dateOf(iso)-new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate(),12))/86400000); }
+function nextDow(d){ var o=(d-dow(dISO(0))+7)%7; return dISO(o); }
+function addMin(hm,m){ if(!hm) return ''; var p=hm.split(':'), t=(+p[0])*60+(+p[1])+m; t=((t%1440)+1440)%1440; return pad2(Math.floor(t/60))+':'+pad2(t%60); }
+function seed(n){ var a=n>>>0; return function(){ a+=0x6D2B79F5; var t=a; t=Math.imul(t^t>>>15,t|1); t^=t+Math.imul(t^t>>>7,t|61); return ((t^t>>>14)>>>0)/4294967296; }; }
+var rnd=seed(2026);
+function pick(arr){ return arr[Math.floor(rnd()*arr.length)]; }
+var LOCALE={en:'en-GB',hr:'hr-HR'};
+var HR={};
+var S={ lang:'en', scope:'t16', screen:'today', view:'upcoming', weekOff:0, lastLook:new Date(Date.now()-26*3600000) };
+function t(s){ return (S.lang==='hr' && HR[s]) ? HR[s] : s; }
+function fmtDay(iso,opt){ var o=opt||{weekday:'short',day:'numeric',month:'short'}; return dateOf(iso).toLocaleDateString(LOCALE[S.lang],o); }
+function fmtLong(iso){ return dateOf(iso).toLocaleDateString(LOCALE[S.lang],{weekday:'long',day:'numeric',month:'long'}); }
+function fmtRel(iso){ var o=offOf(iso); if(o===0) return t('Today'); if(o===1) return t('Tomorrow'); if(o===-1) return t('Yesterday'); if(o>1&&o<7) return t('in {n} days').replace('{n}',o); return fmtDay(iso); }
+function fmtAgo(d){ var m=Math.round((Date.now()-d.getTime())/60000); if(m<60) return t('{n} min ago').replace('{n}',m); var h=Math.round(m/60); if(h<24) return t('{n} h ago').replace('{n}',h); var dd=Math.round(h/24); return t('{n} d ago').replace('{n}',dd); }
+function initials(f,l){ return (f||'').charAt(0)+(l||'').charAt(0); }
+function toast(msg){ var el=$('toast'); el.textContent=msg; el.classList.add('on'); clearTimeout(toast.h); toast.h=setTimeout(function(){ el.classList.remove('on'); },2600); }
+function uid(){ uid.n=(uid.n||100)+1; return 'x'+uid.n; }
+
+/* ---------- sample data (invented) ---------- */
+var CLUB={ name:'NK Bura', town:'Sample town', pitch:'Igralište Bura', addr:'Ulica primjera 1, Sample town', field:'2', kitHome:'#1f5fbf', kitAway:'#ffffff', badge:'🌬️' };
+var OPP=['NK Jugo','NK Maestral','NK Tramontana','NK Levant','NK Oštro','NK Lebić'];
+var VENUES=[
+  {n:'Igralište Bura', a:'Ulica primjera 1, Sample town', tag:'home'},
+  {n:'Gradski stadion', a:'Stadionska 1, Sample town'},
+  {n:'Igralište NK Jugo', a:'Jugo bb, Sample town'},
+  {n:'Sportski centar Maestral', a:'Obala 12, Sample town'},
+  {n:'Sportska dvorana', a:'Dvoranska 3, Sample town'}
+];
+var TEAMS=[
+  {id:'t16', label:'2016', name:'U-11 · 2016', gen:'2016', size:7, days:[0,2,4], time:'19:15', arrTrain:15, arrMatch:30, venue:'Igralište Bura', field:'2', lineupVis:'2h', autoNudge:true, nudgeWhen:'day-before-18', propose:true},
+  {id:'t17', label:'2017', name:'U-10 · 2017', gen:'2017', size:5, days:[1,3], time:'18:00', arrTrain:10, arrMatch:30, venue:'Igralište Bura', field:'1', lineupVis:'now', autoNudge:true, nudgeWhen:'morning-08', propose:true}
+];
+var COACH={ first:'Ante', last:'Šegvić', role:'Coach', club:'NK Bura', teams:['t16','t17'], licence:'UEFA C', claim:'claimed', lang:'hr', push:true, email:true, sms:false, phone:'+385 9x xxx xxxx',
+  career:[{club:'NK Bura', role:'Coach U-10 / U-11', period:'2024 – now'},{club:'NK Maestral', role:'Assistant coach U-13', period:'2021 – 2024'},{club:'NK Bura', role:'Player (senior)', period:'2009 – 2019'}] };
+function mkPlayers(team, list){
+  return list.map(function(p,i){
+    var s=p.split('|');
+    return { id:team+'p'+(i+1), team:team, first:s[0], last:s[1], shirt:+s[2], pos:s[3], family:s[4], parents:s[5]?s[5].split(','):[], phoneShared:s[6]==='y',
+      att30:[92,85,100,78,64,88,95,71,50,83,90,76,68,100,60][i]||80, apps:[6,5,6,4,3,6,6,4,2,5,6,4,3,6,2][i]||4, goals:[4,0,2,1,0,7,0,3,0,1,5,0,2,1,0][i]||0, assists:[1,0,3,0,0,2,0,1,0,2,1,0,0,0,0][i]||0, note:'' };
+  });
+}
+var PLAYERS=[].concat(
+  mkPlayers('t16',['Nora|Kovač|10|MID|app|Marta,Dino|y','Luka|Jurić|8|DEF|app|Ivana|y','Petar|Radić|4|GK|invited|Ana|n','Ivano|Grgić|7|FWD|app|Josipa,Mario|n','Šimun|Vuković|5|DEF|app|Tea|n','Roko|Bašić|9|FWD|app|Nikolina|y','Toma|Perić|6|MID|app|Marina|n','Frane|Matić|11|FWD|app|Jelena|n','Mate|Šarić|3|DEF|none||n','Jakov|Knežević|2|DEF|app|Katarina|n','Lovre|Pavić|14|MID|app|Sandra|y','Karlo|Marić|12|GK|app|Ivan|n','Niko|Bulat|13|MID|app|Petra|n','Bruno|Rogošić|15|FWD|app|Iva|n']),
+  mkPlayers('t17',['Milo|Kovač|8|MID|app|Marta,Dino|y','Matej|Jurić|4|DEF|app|Ivana|y','Dujam|Lučić|1|GK|app|Vesna|n','Josip|Tomić|9|FWD|app|Maja|n','Ante|Vidović|5|DEF|app|Kristina|n','Toma|Šarić|7|MID|invited|Lana|n','Leon|Bilić|11|FWD|app|Ivona|y','Filip|Kuzmić|3|DEF|app|Dijana|n','Gabrijel|Ivić|6|MID|app|Anita|n','Vito|Radman|10|FWD|none||n','Noa|Delić|2|DEF|app|Mirela|n','Jure|Bakić|12|GK|app|Antonia|n'])
+);
+function pl(id){ for(var i=0;i<PLAYERS.length;i++) if(PLAYERS[i].id===id) return PLAYERS[i]; return null; }
+function teamOf(id){ for(var i=0;i<TEAMS.length;i++) if(TEAMS[i].id===id) return TEAMS[i]; return null; }
+function teamPlayers(tid){ return PLAYERS.filter(function(p){ return p.team===tid; }).sort(function(a,b){ return a.shirt-b.shirt; }); }
+function famCount(tid){ var n=0, seen={}; teamPlayers(tid).forEach(function(p){ if(p.family==='app'){ var k=p.last+'|'+p.parents.join(','); if(!seen[k]){ seen[k]=1; n++; } } }); return n; }
+
+var EVENTS=[], TOURN=[], POSTS=[], THREADS=[], INVITES=[], PROPOSALS=[];
+function ev(o){ o.id=o.id||uid(); o.status=o.status||'posted'; o.rsvp=o.rsvp||{}; o.register=o.register||null; o.lineup=o.lineup||{}; o.receipt=o.receipt||null; o.source=o.source||'coach'; EVENTS.push(o); return o; }
+function rsvpFill(e, g, m, n){ var ps=teamPlayers(e.team).filter(function(p){ return p.family==='app'; }); ps.forEach(function(p,i){ if(i<g) e.rsvp[p.id]='g'; else if(i<g+m) e.rsvp[p.id]='m'; else if(i<g+m+n) e.rsvp[p.id]='n'; }); }
+function regFill(e){ e.register={}; teamPlayers(e.team).forEach(function(p,i){ e.register[p.id]= (i%6===5)?'a':(i%9===4?'l':'p'); }); }
+(function build(){
+  var tr16={team:'t16',type:'training',title:'Training',venue:CLUB.pitch,field:'2',start:'19:15',arrive:'19:00',ends:'20:30'};
+  var tr17={team:'t17',type:'training',title:'Training',venue:CLUB.pitch,field:'1',start:'18:00',arrive:'17:50',ends:'19:15'};
+  for(var o=-21;o<=28;o++){
+    var iso=dISO(o), d=dow(iso);
+    if(d===0||d===2||d===4){ var e=ev(Object.assign({},tr16,{date:iso})); if(o<0) regFill(e); if(o===-5){ e.status='cancelled'; e.cancelReason='Heavy rain — pitch closed'; e.register=null; e.receipt={sent:famCount('t16'),seen:famCount('t16')}; } if(o===2){ e.start='18:30'; e.arrive='18:15'; e.ends='19:45'; e.changed=true; e.receipt={sent:famCount('t16'),seen:famCount('t16')-1,replied:0}; } if(o===11){ e.type='no_session'; e.title='No training — tournament weekend'; e.start=''; e.arrive=''; e.ends=''; } if(o>=0) e.receipt=e.receipt||{sent:famCount('t16'),seen:famCount('t16')-1,replied:famCount('t16')-3}; }
+    if(d===1||d===3){ var e2=ev(Object.assign({},tr17,{date:iso})); if(o<0) regFill(e2); if(o>=0) e2.receipt={sent:famCount('t17'),seen:famCount('t17')-1,replied:famCount('t17')-2}; }
+  }
+  /* matches 2016 — Saturdays 10:00 */
+  var sat=(5-dow(dISO(0))+7)%7; /* offset of next Saturday (0..6) */
+  function match16(off, opp, home, res){ var e=ev({team:'t16',type:'match',title:'Match v '+opp,opp:opp,home:home,date:dISO(off),start:'10:00',arrive:'09:30',ends:'11:15',venue:home?CLUB.pitch:('Igralište '+opp),field:home?'2':'',venueMap:true}); if(res){ e.result=res; regFill(e); } return e; }
+  match16(sat-21,'NK Tramontana',false,{us:0,them:2,scorers:{},assists:{},notes:''});
+  match16(sat-14,'NK Jugo',true,{us:3,them:1,scorers:{t16p1:2,t16p6:1},assists:{t16p3:1,t16p11:1},notes:'Great second half.'});
+  var yday=match16(sat-7,'NK Maestral',false,null); yday.needsResult=true; regFill(yday);
+  var nxt=match16(sat,'NK Levant',true,null); nxt.lineup={1:{size:7,formation:'3-1-2',slots:['t16p3','t16p2','t16p5','t16p10','t16p1','t16p6',null]},2:{size:7,formation:'2-3-1',slots:[null,null,null,null,null,null,null]}}; nxt.receipt={sent:famCount('t16'),seen:famCount('t16'),replied:famCount('t16')-1};
+  match16(sat+14,'NK Oštro',false,null).receipt={sent:famCount('t16'),seen:6,replied:3};
+  /* duty */
+  ev({team:'t16',type:'duty',title:'Ball crew — senior match',date:dISO(sat+1),start:'16:30',arrive:'16:00',ends:'18:30',venue:CLUB.pitch,field:'1',details:'Six players needed. Club tracksuit.'}).receipt={sent:famCount('t16'),seen:9,replied:5};
+  /* matches 2017 — Sundays 11:00 */
+  var sun=(6-dow(dISO(0))+7)%7;
+  function match17(off, opp, home, res){ var e=ev({team:'t17',type:'match',title:'Match v '+opp,opp:opp,home:home,date:dISO(off),start:'11:00',arrive:'10:30',ends:'12:00',venue:home?CLUB.pitch:('Igralište '+opp),field:home?'1':'',venueMap:true}); if(res){ e.result=res; regFill(e); } return e; }
+  match17(sun-14,'NK Lebić',true,{us:4,them:0,scorers:{t17p4:2,t17p7:1,t17p1:1},assists:{t17p1:2},notes:''});
+  var y17=match17(sun-7,'NK Oštro',false,{us:2,them:2,scorers:{t17p7:1,t17p10:1},assists:{},notes:'Two late goals conceded.'});
+  var n17=match17(sun,'NK Jugo',true,null); n17.receipt={sent:famCount('t17'),seen:famCount('t17'),replied:famCount('t17')-1}; n17.lineup={1:{size:5,formation:'1-2-1',slots:['t17p3','t17p2','t17p1','t17p6','t17p4']}};
+  match17(sun+14,'NK Maestral',false,null).receipt={sent:famCount('t17'),seen:3,replied:2};
+  /* tournament 2016 */
+  var tsat=sat+7;
+  var tour={ id:'tour1', team:'t16', name:'Turnir Maestral 2026', dates:[dISO(tsat),dISO(tsat+1)], venue:'Sportski centar Maestral', addr:'Obala 12, Sample town', venueMap:true, arriveMin:45,
+    groups:{A:['NK Bura','NK Maestral','NK Levant','NK Jugo']},
+    fixtures:[{date:dISO(tsat),time:'09:00',pitch:'1',home:'NK Bura',away:'NK Maestral'},{date:dISO(tsat),time:'10:20',pitch:'2',home:'NK Levant',away:'NK Bura'},{date:dISO(tsat),time:'12:00',pitch:'1',home:'NK Bura',away:'NK Jugo'},{date:dISO(tsat+1),time:'',pitch:'',home:'Knockout',away:'TBC'}],
+    links:[{label:'Official tournament page',url:'https://example.org/turnir-maestral'},{label:'Results (rezultati.info)',url:'https://example.org/rezultati'}],
+    docs:[{name:'Tournament guide.pdf',size:'2.4 MB',kind:'pdf'},{name:'Pitch map.jpg',size:'640 KB',kind:'img'}],
+    notes:'Check-in at the desk 08:15. No parking at the venue — use the public car park 5 min away. Bring both kits.' };
+  TOURN.push(tour);
+  ev({team:'t16',type:'tournament',title:'Turnir Maestral 2026 — day 1',date:dISO(tsat),start:'09:00',arrive:'08:15',ends:'13:00',venue:tour.venue,venueMap:true,tournamentId:'tour1',details:'3 group games · arrive 45 min before the first game'}).receipt={sent:famCount('t16'),seen:10,replied:7};
+  ev({team:'t16',type:'tournament',title:'Turnir Maestral 2026 — day 2 (knockout)',date:dISO(tsat+1),start:'',arrive:'',ends:'',venue:tour.venue,venueMap:true,tournamentId:'tour1',details:'Times follow Saturday\'s results'}).receipt={sent:famCount('t16'),seen:10,replied:7};
+  /* RSVPs on upcoming */
+  EVENTS.forEach(function(e){ var o=offOf(e.date); if(o<0||e.status==='cancelled'||e.type==='no_session') return; if(e.team==='t16'){ if(o<=2) rsvpFill(e,8,2,1); else if(o<=7) rsvpFill(e,9,1,1); else if(o<=14) rsvpFill(e,6,1,0); else rsvpFill(e,3,0,0); } else { if(o<=3) rsvpFill(e,7,1,1); else if(o<=7) rsvpFill(e,6,1,1); else rsvpFill(e,2,0,0); } });
+  /* posts */
+  POSTS.push({id:'po1',team:'t16',kind:'announce',at:new Date(Date.now()-2*86400000-3*3600000),pinned:true,needsReply:false,
+    text:'Turnir Maestral, '+fmtDay(dISO(tsat))+' – '+fmtDay(dISO(tsat+1))+': the bus leaves at 07:00 from the club car park. Bring water, both kits and shin pads. Parents are welcome on the bus while seats last.',
+    replies:[{who:'Marta (Nora)',text:'Nora is in. Can Milo come along to watch?',at:new Date(Date.now()-2*86400000)},{who:'Ivana (Luka)',text:'Luka will come by car with us, we will be there by 08:15.',at:new Date(Date.now()-40*3600000)}],receipt:{sent:famCount('t16'),seen:famCount('t16'),replied:2}});
+  POSTS.push({id:'po2',team:'t16',kind:'poll',at:new Date(Date.now()-22*3600000),pinned:false,needsReply:true,
+    text:'Turnir Maestral — can your player travel?',poll:{opts:[{t:'Both days',v:['t16p1','t16p2','t16p4','t16p6','t16p7','t16p8','t16p11']},{t:'Saturday only',v:['t16p5','t16p13']},{t:'Cannot come',v:['t16p10']}],closes:dISO(2)+' 18:00'},
+    replies:[],receipt:{sent:famCount('t16'),seen:famCount('t16'),replied:10}});
+  POSTS.push({id:'po3',team:'t16',kind:'announce',at:new Date(Date.now()-27*3600000),pinned:false,needsReply:false,text:'Wednesday training moved to 18:30 — the pitch is booked at 19:15. Same field.',replies:[],receipt:{sent:famCount('t16'),seen:famCount('t16'),replied:0}});
+  POSTS.push({id:'po4',team:'t17',kind:'announce',at:new Date(Date.now()-3*86400000),pinned:false,needsReply:false,text:'Sunday match kick-off 11:00, arrive 10:30. Home kit (blue).',replies:[{who:'Vesna (Dujam)',text:'Noted, thank you!',at:new Date(Date.now()-3*86400000+3600000)}],receipt:{sent:famCount('t17'),seen:famCount('t17'),replied:1}});
+  /* threads */
+  THREADS.push({id:'th1',team:'t16',family:'Kovač',players:['t16p1'],parents:['Marta','Dino'],unread:1,msgs:[{me:false,text:'Nora has a dentist appointment on Friday — she will miss the second half of training. Is that OK?',at:new Date(Date.now()-3*3600000)}]});
+  THREADS.push({id:'th2',team:'t16',family:'Jurić',players:['t16p2'],parents:['Ivana'],unread:0,msgs:[{me:false,text:'Which kit for Saturday?',at:new Date(Date.now()-5*86400000)},{me:true,text:'Home kit (blue), and bring the white one just in case.',at:new Date(Date.now()-5*86400000+1200000)},{me:false,text:'Thanks!',at:new Date(Date.now()-5*86400000+1500000)}]});
+  THREADS.push({id:'th3',team:'t17',family:'Kovač',players:['t17p1'],parents:['Marta','Dino'],unread:1,msgs:[{me:false,text:'Is the Sunday match still on if it rains?',at:new Date(Date.now()-90*60000)}]});
+  /* invites */
+  INVITES.push({code:'K7Q2M-3HD8P',forName:'Family of Petar Radić',team:'t16',player:'t16p3',expires:dISO(12),status:'open'});
+  INVITES.push({code:'P4XN8-Q2WR7',forName:'Family of Toma Šarić',team:'t17',player:'t17p6',expires:dISO(9),status:'open'});
+  /* proposal from a parent */
+  PROPOSALS.push({id:'pr1',team:'t16',by:'Marta (Nora)',type:'match',title:'Friendly v NK Jugo',date:dISO(sat+7),start:'10:00',venue:CLUB.pitch,note:'Their coach offered a friendly before the tournament.',at:new Date(Date.now()-20*3600000)});
+})();
+
+/* ---------- Croatian dictionary (UI chrome; sample content stays as written) ---------- */
+Object.assign(HR,{
+'2 h before kick-off':'2 h prije početka',
+'A photo of the paper schedule or a screenshot — the app reads it the same way as pasted text; you check before posting.':'Fotografija rasporeda na papiru ili snimka zaslona — aplikacija je čita kao i zalijepljeni tekst; ti provjeriš prije objave.',
+'A poll needs at least two options.':'Anketa treba barem dvije opcije.',
+'About':'O događaju',
+'Absent':'Odsutan',
+'Accept and post to families':'Prihvati i objavi obiteljima',
+'Add':'Dodaj',
+'Add document':'Dodaj dokument',
+'Add event':'Dodaj događaj',
+'Add link':'Dodaj poveznicu',
+'Add option':'Dodaj opciju',
+'Add player':'Dodaj igrača',
+'Add the score':'Upiši rezultat',
+'Add tournament':'Dodaj turnir',
+'Added and posted to {n} families':'Dodano i objavljeno {n} obiteljima',
+'Added by a parent':'Dodao roditelj',
+'Added to the roster':'Dodano u popis momčadi',
+'Adds the player to the roster; invite the family so the schedule reaches them.':'Dodaje igrača u popis momčadi; pozovi obitelj da raspored stigne do njih.',
+'All teams':'Sve momčadi',
+'Already live in the family app':'Već radi u obiteljskoj aplikaciji',
+'Announcement':'Obavijest',
+'Announcement or poll':'Obavijest ili anketa',
+'App language':'Jezik aplikacije',
+'Apps':'Aplikacije',
+'Arrive':'Dolazak',
+'Arrive (min before)':'Dolazak (min prije)',
+'Arrive before a match':'Dolazak prije utakmice',
+'Arrive before training':'Dolazak prije treninga',
+'As soon as saved':'Čim se spremi',
+'Ask for Going / Maybe / Not going':'Traži Dolazim / Možda / Ne dolazim',
+'Ask for a reply':'Traži odgovor',
+'Assists':'Asistencije',
+'Attachments open the phone’s picker in the real app':'Privici u pravoj aplikaciji otvaraju birač na telefonu',
+'Attendance':'Dolaznost',
+'Attendance reminders':'Podsjetnici za dolazak',
+'Attendance, 30 days':'Dolaznost, 30 dana',
+'Automatic':'Automatski',
+'Automatic reminder':'Automatski podsjetnik',
+'Automatic reminder for this team':'Automatski podsjetnik za ovu momčad',
+'Automatic reminder to families who have not answered':'Automatski podsjetnik obiteljima koje nisu odgovorile',
+'Away':'Gostujuća',
+'Bench':'Klupa',
+'Birth year is the team’s generation — no date of birth is stored here.':'Godina rođenja je generacija momčadi — datum rođenja se ovdje ne sprema.',
+'Cancel':'Odustani',
+'Cancel session':'Otkaži termin',
+'Cancel and notify {n} families':'Otkaži i obavijesti {n} obitelji',
+'Cancel code':'Poništi kod',
+'Cancel this invite code?':'Poništiti ovaj pozivni kod?',
+'Cancelled':'Otkazano',
+'Cancelled — {n} families notified':'Otkazano — obaviješteno {n} obitelji',
+'Cannot propose events':'Ne mogu predlagati događaje',
+'Card claimed':'Kartica preuzeta',
+'Career':'Karijera',
+'Career updated on your coach card':'Karijera ažurirana na tvojoj trenerskoj kartici',
+'Change sent to {n} families':'Promjena poslana {n} obiteljima',
+'Changed':'Promijenjeno',
+'Clashes with':'Preklapa se s',
+'Clear':'Očisti',
+'Close':'Zatvori',
+'Closes':'Zatvara se',
+'Club · role · years':'Klub · uloga · godine',
+'Coach':'Trener',
+'Coach card':'Trenerska kartica',
+'Coach code used':'Trenerski kod iskorišten',
+'Coach unavailable':'Trener spriječen',
+'Coach’s note':'Trenerova bilješka',
+'Code cancelled':'Kod poništen',
+'Copied ✓':'Kopirano ✓',
+'Copy as text':'Kopiraj kao tekst',
+'Copy failed on this device.':'Kopiranje nije uspjelo na ovom uređaju.',
+'Copy invitation text':'Kopiraj tekst pozivnice',
+'Create the family’s invite code now':'Odmah napravi pozivni kod za obitelj',
+'DEF':'OBR',
+'Date':'Datum',
+'Day':'Dan',
+'Day before, 18:00':'Dan prije, 18:00',
+'Decline':'Odbij',
+'Declined — your note went to':'Odbijeno — tvoja bilješka poslana je:',
+'Default venue':'Zadano mjesto',
+'Defaults every new event starts from — the parser, the app and the families all inherit them.':'Zadane postavke od kojih kreće svaki novi događaj — nasljeđuju ih čitač poruka, aplikacija i obitelji.',
+'Delete':'Obriši',
+'Delete this post for every family?':'Obrisati ovu objavu za sve obitelji?',
+'Deleted':'Obrisano',
+'Design notes':'Bilješke o dizajnu',
+'Design preview':'Pregled dizajna',
+'Details for the families':'Pojedinosti za obitelji',
+'Document added (design preview)':'Dokument dodan (pregled dizajna)',
+'Documents':'Dokumenti',
+'Drawn':'Neriješeno',
+'Duty':'Dužnost',
+'Edit':'Uredi',
+'Edit event':'Uredi događaj',
+'Edit register':'Uredi evidenciju',
+'Edit score':'Uredi rezultat',
+'Email summaries (replies, attendance, questions)':'Sažeci e-mailom (odgovori, dolaznost, pitanja)',
+'Ends':'Završava',
+'Enter both scores.':'Upiši oba rezultata.',
+'Every family gets the days, the arrival rule, the venue pin and the documents on its Tournaments tab.':'Svaka obitelj dobiva dane, pravilo dolaska, lokaciju i dokumente na svojoj kartici Turniri.',
+'Every line has a day, a time and a team.':'Svaki redak ima dan, vrijeme i momčad.',
+'Everything here goes to parents, never to a child’s login, and stays on the record — parents and PitchPro can review it. Parents read your posts in their own language.':'Sve ovdje ide roditeljima, nikad na dječju prijavu, i ostaje zabilježeno — roditelji i PitchPro to mogu pregledati. Roditelji čitaju tvoje objave na svom jeziku.',
+'Everything on this card is what each family sees on its Tournaments tab: dates, arrival time, the venue pin, links and documents.':'Sve na ovoj kartici vidi svaka obitelj na svojoj kartici Turniri: datumi, vrijeme dolaska, lokacija, poveznice i dokumenti.',
+'FWD':'NAP',
+'Families choose their own language — what you post is shown to each family in theirs.':'Obitelji biraju svoj jezik — ono što objaviš svaka obitelj vidi na svome.',
+'Families in the app':'Obitelji u aplikaciji',
+'Families never see it':'Obitelji je ne vide',
+'Families see it 2 hours before kick-off':'Obitelji je vide 2 sata prije početka',
+'Families see it as soon as it is saved':'Obitelji je vide čim se spremi',
+'Families see the lineup':'Obitelji vide postavu',
+'Families see this lineup':'Obitelji vide ovu postavu',
+'Family':'Obitelj',
+'Family conversations':'Razgovori s obiteljima',
+'Family in app':'Obitelj u aplikaciji',
+'Family of':'Obitelj igrača',
+'Field':'Teren',
+'First game':'Prva utakmica',
+'First name':'Ime',
+'First name and surname, please.':'Ime i prezime, molim.',
+'First names':'Imena',
+'Fixture score saved':'Rezultat utakmice spremljen',
+'Fixtures':'Utakmice',
+'From':'Od',
+'GK':'GK',
+'Give the tournament a name.':'Daj turniru ime.',
+'Goals':'Golovi',
+'Goals and assists':'Golovi i asistencije',
+'Goals for : against':'Golovi dani : primljeni',
+'Goes to the parents of every player in the team — push, email or text per family. Never to a child’s login.':'Ide roditeljima svakog igrača u momčadi — push, e-mail ili SMS prema izboru obitelji. Nikad na dječju prijavu.',
+'Going':'Dolazim',
+'Heavy rain — pitch closed':'Jaka kiša — teren zatvoren',
+'Here':'Tu',
+'Home':'Domaća',
+'Home pitch':'Domaći teren',
+'If you change phones, sign in with the same email — nothing to re-enter. A second coach for this team gets their own code from the club’s parent admin or from PitchPro.':'Ako promijeniš telefon, prijavi se istim e-mailom — ništa se ne unosi ponovno. Drugi trener ove momčadi dobiva svoj kod od roditelja-administratora kluba ili od PitchProa.',
+'In the design preview any image opens the same checked preview as “Paste a message”.':'U pregledu dizajna svaka slika otvara isti provjereni pregled kao „Zalijepi poruku”.',
+'Initials':'Inicijali',
+'Invitation text copied — paste it into a message.':'Tekst pozivnice kopiran — zalijepi ga u poruku.',
+'Invite':'Pozovi',
+'Invite sent':'Pozivnica poslana',
+'Invite the family':'Pozovi obitelj',
+'Invites are one-time codes you pass on yourself — the app never emails anyone. A parent enters the code in the Family Schedule app; the player card links to this roster and the family starts seeing the team schedule.':'Pozivnice su jednokratni kodovi koje sam predaješ — aplikacija nikome ne šalje e-mail. Roditelj unese kod u aplikaciju Obiteljski raspored; kartica igrača povezuje se s ovim popisom i obitelj počinje vidjeti raspored momčadi.',
+'Join {team} on PitchPro Family Schedule: {url} — your one-time code: {code}':'Pridruži se {team} na PitchPro Obiteljskom rasporedu: {url} — tvoj jednokratni kod: {code}',
+'Keep it':'Zadrži',
+'Kick-off':'Početak',
+'Kit':'Dresovi',
+'Language':'Jezik',
+'Late':'Kasni',
+'Lineup':'Postava',
+'Lineup saved':'Postava spremljena',
+'Link (address)':'Poveznica (adresa)',
+'Link added — families see it now':'Poveznica dodana — obitelji je sada vide',
+'Links':'Poveznice',
+'Lost':'Izgubljeno',
+'MID':'VEZ',
+'Match':'Utakmica',
+'Match v':'Utakmica protiv',
+'Match v …':'Utakmica protiv …',
+'Matches':'Utakmice',
+'May propose events (you approve)':'Mogu predlagati događaje (ti odobravaš)',
+'Maybe':'Možda',
+'Message':'Poruka',
+'Message families':'Poruka obiteljima',
+'Message from the {f} family':'Poruka obitelji {f}',
+'Message the family':'Pošalji poruku obitelji',
+'Messages':'Poruke',
+'Name':'Naziv',
+'Needs you':'Čeka tebe',
+'Never':'Nikad',
+'New in this design':'Novo u ovom dizajnu',
+'New post or poll':'Nova objava ili anketa',
+'Next up':'Sljedeće',
+'No':'Ne',
+'No family yet':'Još nema obitelji',
+'No open codes. Tap a player without a family to create one.':'Nema otvorenih kodova. Dodirni igrača bez obitelji da napraviš kod.',
+'No reply yet':'Još bez odgovora',
+'No session':'Nema termina',
+'No tournament yet — add one and every family gets the days, the arrival time and the documents.':'Još nema turnira — dodaj ga i svaka obitelj dobiva dane, vrijeme dolaska i dokumente.',
+'No training':'Nema treninga',
+'Not answered':'Bez odgovora',
+'Not going':'Ne dolazim',
+'Not now':'Ne sada',
+'Note':'Bilješka',
+'Note for the families':'Bilješka za obitelji',
+'Note to the parent':'Bilješka roditelju',
+'Notes':'Bilješke',
+'Nothing here yet.':'Ovdje još nema ničega.',
+'Nothing leaves this page until you share it yourself. Pick how names appear first.':'Ništa ne napušta ovu stranicu dok sam ne podijeliš. Najprije odaberi kako se prikazuju imena.',
+'Nothing new.':'Ništa novo.',
+'Nothing recognised yet — each line needs a day and a time.':'Još ništa nije prepoznato — svaki redak treba dan i vrijeme.',
+'Nothing scheduled — post the week from the Schedule tab.':'Ništa nije zakazano — objavi tjedan s kartice Raspored.',
+'Nothing waiting on you.':'Ništa ne čeka na tebe.',
+'Notifications & language':'Obavijesti i jezik',
+'Notify families now (push, email or text — each family’s own choice)':'Obavijesti obitelji odmah (push, e-mail ili SMS — izbor svake obitelji)',
+'Off — only when you tap Remind':'Isključeno — samo kad dodirneš Podsjeti',
+'One-time code':'Jednokratni kod',
+'One-time code · expires':'Jednokratni kod · vrijedi do',
+'Open in Google Maps':'Otvori u Google kartama',
+'Open invite codes':'Otvoreni pozivni kodovi',
+'Opens the phone’s picker in the real app — the photo shows on every family’s squad card':'U pravoj aplikaciji otvara birač na telefonu — fotografija se prikazuje na kartici momčadi svake obitelji',
+'Opens the phone’s picker in the real app — the photo shows on your coach card':'U pravoj aplikaciji otvara birač na telefonu — fotografija se prikazuje na tvojoj trenerskoj kartici',
+'Opponent':'Protivnik',
+'Option':'Opcija',
+'Options':'Opcije',
+'Other':'Drugo',
+'Our goals':'Naši golovi',
+'Parents':'Roditelji',
+'Parents may propose events — you approve before anything is posted':'Roditelji mogu predlagati događaje — ti odobravaš prije objave',
+'Parents only — never a child’s login. On the record for the family and for PitchPro safeguarding review.':'Samo roditelji — nikad dječja prijava. Zabilježeno za obitelj i za PitchPro pregled zaštite djece.',
+'Past':'Prošlo',
+'Paste':'Zalijepi',
+'Paste a message':'Zalijepi poruku',
+'Phone not shared — message the family through the app.':'Broj nije podijeljen — pošalji obitelji poruku kroz aplikaciju.',
+'Phone shared by the parent':'Broj koji je roditelj podijelio',
+'Photo':'Fotografija',
+'Photo of the schedule':'Fotografija rasporeda',
+'Pick a date.':'Odaberi datum.',
+'Pick at least one team.':'Odaberi barem jednu momčad.',
+'Pin':'Prikvači',
+'Pin to the top for the families':'Prikvači na vrh za obitelji',
+'Pinned':'Prikvačeno',
+'Pinned for the families':'Prikvačeno za obitelji',
+'Pinned place from your link':'Lokacija iz tvoje poveznice',
+'Pitch':'Teren',
+'Pitch unavailable':'Teren nedostupan',
+'Player':'Igrač',
+'Player stats':'Statistika igrača',
+'Players':'Igrači',
+'Poll':'Anketa',
+'Poll closes':'Anketa se zatvara',
+'Position':'Pozicija',
+'Post to families':'Objavi obiteljima',
+'Posted to':'Objavljeno',
+'Posted {m} event(s) to {n} families — they confirm attendance in their app':'Objavljeno {m} događaj(a) {n} obiteljima — dolazak potvrđuju u svojoj aplikaciji',
+'Posts to every family in the team at once — parents confirm attendance in their app.':'Objavljuje se svim obiteljima u momčadi odjednom — roditelji potvrđuju dolazak u svojoj aplikaciji.',
+'Proposed by':'Predlaže',
+'Public holiday':'Praznik',
+'Push on this phone':'Push na ovom telefonu',
+'Read the message':'Pročitaj poruku',
+'Reading the photo…':'Čitam fotografiju…',
+'Reason':'Razlog',
+'Recap':'Sažetak',
+'Register':'Evidencija',
+'Register saved — attendance updated on every player card':'Evidencija spremljena — dolaznost ažurirana na svakoj kartici igrača',
+'Remind':'Podsjeti',
+'Remind now':'Podsjeti sada',
+'Reminder sent to {n} families':'Podsjetnik poslan {n} obiteljima',
+'Reminders':'Podsjetnici',
+'Remove from team':'Ukloni iz momčadi',
+'Remove {name} from the team? The family keeps its own history.':'Ukloniti {name} iz momčadi? Obitelj zadržava svoju povijest.',
+'Removed':'Uklonjeno',
+'Repeat every week':'Ponavljaj svaki tjedan',
+'Reply':'Odgovori',
+'Reply needed':'Treba odgovor',
+'Reply sent to {n} families':'Odgovor poslan {n} obiteljima',
+'Reply to all':'Odgovori svima',
+'Reply to all families on this post':'Odgovori svim obiteljima na ovu objavu',
+'Reply…':'Odgovori…',
+'Restore':'Vrati',
+'Restored — families notified':'Vraćeno — obitelji obaviještene',
+'Results':'Rezultati',
+'Review':'Pregledaj',
+'Rule learned from real messages: a bare team label (“2016”) that follows a block belongs to the block above it.':'Pravilo naučeno iz pravih poruka: sama oznaka momčadi („2016”) koja slijedi iza bloka pripada bloku iznad.',
+'Rules that never bend':'Pravila koja se ne mijenjaju',
+'Same morning, 08:00':'Isto jutro, 08:00',
+'Save':'Spremi',
+'Save lineup':'Spremi postavu',
+'Save register':'Spremi evidenciju',
+'Save score':'Spremi rezultat',
+'Save venue and field as the team default':'Spremi mjesto i teren kao zadane za momčad',
+'Saved':'Spremljeno',
+'Saved venues come first, then places from the map. You can also paste a Google Maps link.':'Prvo spremljena mjesta, zatim mjesta s karte. Možeš zalijepiti i poveznicu Google karata.',
+'Saved — the shirt number updates on every family’s roster':'Spremljeno — broj dresa ažurira se na popisu svake obitelji',
+'Schedule':'Raspored',
+'Score':'Rezultat',
+'Score missing':'Nedostaje rezultat',
+'Score saved — families see it on their Stats tab':'Rezultat spremljen — obitelji ga vide na kartici Statistika',
+'Search a stadium, pitch or address…':'Pretraži stadion, igralište ili adresu…',
+'Season':'Sezona',
+'Select the code and copy it.':'Označi kod i kopiraj ga.',
+'Send':'Pošalji',
+'Send families a recap card they can share':'Pošalji obiteljima sažetak koji mogu podijeliti',
+'Send reminder to {n} families':'Pošalji podsjetnik {n} obiteljima',
+'Send the change':'Pošalji promjenu',
+'Send the code and the app link yourself — WhatsApp, text or in person.':'Sam pošalji kod i poveznicu aplikacije — WhatsApp, SMS ili uživo.',
+'Sent to the parents':'Poslano roditeljima',
+'Sent to {n} families':'Poslano {n} obiteljima',
+'Session note':'Bilješka s treninga',
+'Set lineup':'Postavi postavu',
+'Share':'Podijeli',
+'Share the note with the families':'Podijeli bilješku s obiteljima',
+'Share…':'Podijeli…',
+'Shirt':'Dres',
+'Shirt numbers':'Brojevi dresova',
+'Show the code':'Prikaži kod',
+'Showing the next 3 weeks. Posted events reach every family in the team at once; parents confirm attendance in their Family Schedule app.':'Prikazana su sljedeća 3 tjedna. Objavljeni događaji stižu svim obiteljima u momčadi odjednom; roditelji potvrđuju dolazak u aplikaciji Obiteljski raspored.',
+'Sign out':'Odjava',
+'Signs out everywhere in the real app':'U pravoj aplikaciji odjavljuje svugdje',
+'Since you last looked':'Od zadnjeg pregleda',
+'Some lines have no team or day — pick them before posting. The app never guesses.':'Neki redci nemaju momčad ili dan — odaberi ih prije objave. Aplikacija nikad ne nagađa.',
+'Sort by name':'Poredaj po imenu',
+'Sort by shirt':'Poredaj po dresu',
+'Sorted by shirt number on purpose — no leaderboard of children. Each family sees only its own player’s numbers; the coach sees the team.':'Namjerno poredano po broju dresa — bez ljestvice djece. Svaka obitelj vidi samo brojke svog igrača; trener vidi momčad.',
+'Start':'Početak',
+'Start fills Arrive and Ends until you change them.':'Početak ispunjava Dolazak i Završava dok ih ne promijeniš.',
+'Surname':'Prezime',
+'Take register':'Upiši evidenciju',
+'Tap to change photo':'Dodirni za promjenu fotografije',
+'Team':'Momčad',
+'Team photo':'Fotografija momčadi',
+'Team posts':'Objave momčadi',
+'Team settings':'Postavke momčadi',
+'Team settings saved':'Postavke momčadi spremljene',
+'Text message for same-day changes':'SMS za promjene istog dana',
+'The app never emails or texts anyone on your behalf. You pass the code on; nothing is sent until the parent acts.':'Aplikacija u tvoje ime nikome ne šalje e-mail ni SMS. Kod predaješ sam; ništa se ne šalje dok roditelj ne reagira.',
+'The change goes to every family that has this event.':'Promjena ide svakoj obitelji koja ima ovaj događaj.',
+'The coach’s side of the PitchPro Family Schedule: the coach posts once, every family in the team gets it, parents confirm attendance in their own app. Sample data only — every name, club and venue is invented; nothing is sent anywhere.':'Trenerska strana PitchPro Obiteljskog rasporeda: trener objavi jednom, svaka obitelj u momčadi to dobije, roditelji potvrđuju dolazak u svojoj aplikaciji. Samo ogledni podaci — svako ime, klub i mjesto je izmišljeno; ništa se nikamo ne šalje.',
+'The message you would have sent on WhatsApp — the app reads it, you check it, then it is posted. Nothing is guessed: where the team is unclear you pick it.':'Poruka koju bi poslao na WhatsAppu — aplikacija je pročita, ti provjeriš, zatim se objavi. Ništa se ne nagađa: gdje momčad nije jasna, ti je odabereš.',
+'The parent opens the Family Schedule app, creates an account and enters the code.':'Roditelj otvori aplikaciju Obiteljski raspored, napravi račun i unese kod.',
+'The whole app follows this choice — schedule, roster, matches and messages.':'Cijela aplikacija prati ovaj izbor — raspored, popis, utakmice i poruke.',
+'Their goals':'Njihovi golovi',
+'Their player card links to this roster; they see the team schedule and can answer Going / Not going.':'Njihova kartica igrača povezuje se s ovim popisom; vide raspored momčadi i mogu odgovoriti Dolazim / Ne dolazim.',
+'Them':'Oni',
+'Time':'Vrijeme',
+'Title':'Naslov',
+'To':'Do',
+'Today':'Danas',
+'Today’s sessions, the register and the roster are kept on this phone — they open without signal at the pitch; changes send when you are back online.':'Današnji termini, evidencija i popis čuvaju se na ovom telefonu — otvaraju se i bez signala na igralištu; promjene se šalju kad si opet online.',
+'Tomorrow':'Sutra',
+'Tournament':'Turnir',
+'Tournament info':'Informacije o turniru',
+'Tournament posted to {n} families':'Turnir objavljen {n} obiteljima',
+'Tournaments':'Turniri',
+'Training':'Trening',
+'Try a sample message':'Isprobaj oglednu poruku',
+'Unpin':'Otkvači',
+'Unpinned':'Otkvačeno',
+'Until':'Do',
+'Upcoming':'Nadolazeći',
+'Upcoming matches':'Nadolazeće utakmice',
+'Usual':'Uobičajeno',
+'Usual time':'Uobičajeno vrijeme',
+'Usual training days':'Uobičajeni dani treninga',
+'Venue':'Mjesto',
+'Venue to confirm':'Mjesto za potvrdu',
+'Week':'Tjedan',
+'What':'Što',
+'What it is.':'Što je ovo.',
+'What the app read':'Što je aplikacija pročitala',
+'What this preview is, and the rules it is built on.':'Što je ovaj pregled i na kojim je pravilima izgrađen.',
+'What you worked on — e.g. first touch, 3v1, shooting':'Na čemu ste radili — npr. prvi dodir, 3 na 1, udarci',
+'When':'Kada',
+'Where':'Gdje',
+'Which day?':'Koji dan?',
+'Which team?':'Koja momčad?',
+'Who answered what':'Tko je što odgovorio',
+'Won':'Pobjede',
+'Write it the way you would on WhatsApp — short and clear.':'Napiši kao na WhatsAppu — kratko i jasno.',
+'Write the message first.':'Najprije napiši poruku.',
+'Yes':'Da',
+'Yesterday':'Jučer',
+'You':'Ti',
+'Your card is what families see on the Coach line of their app: photo, role, teams and career. Tap the photo or a career line to change it.':'Tvoju karticu obitelji vide u retku Trener u svojoj aplikaciji: fotografija, uloga, momčadi i karijera. Dodirni fotografiju ili redak karijere za promjenu.',
+'Your coach code':'Tvoj trenerski kod',
+'a home screen that says what needs you, edit and cancel that reach every family, pitchside register, one-tap reminders, roster and shirt numbers owned by the coach, family invites by code, announcements and polls with replies, per-family conversations, scores and recaps, tournaments, offline for today, Croatian first.':'početni zaslon koji kaže što čeka tebe, uređivanje i otkazivanje koji stižu svim obiteljima, evidencija uz teren, podsjetnik jednim dodirom, popis i brojevi dresova u rukama trenera, pozivnice obiteljima kodom, obavijesti i ankete s odgovorima, razgovori s pojedinom obitelji, rezultati i sažeci, turniri, rad bez signala za današnji dan, hrvatski na prvom mjestu.',
+'absent':'odsutnih',
+'accepting adds it anyway; declining sends your note to the parent.':'prihvaćanje ga ipak dodaje; odbijanje šalje tvoju bilješku roditelju.',
+'added by you':'dodao ti',
+'answered':'odgovorilo',
+'answers on the poll':'odgovora na anketu',
+'arrive':'dolazak',
+'attendance':'dolaznost',
+'before a match':'prije utakmice',
+'before the first game':'prije prve utakmice',
+'before training':'prije treninga',
+'change':'promijeni',
+'check-in, parking, kits…':'prijava, parking, dresovi…',
+'closes':'zatvara se',
+'coach accounts by one-time code, read-only team view, attendance (Going / Maybe / Not going), lineups with formation presets, coach-posted events reaching every family, team default venue and field, tournament info with links and documents.':'trenerski računi jednokratnim kodom, pregled momčadi samo za čitanje, dolaznost (Dolazim / Možda / Ne dolazim), postave s predlošcima formacija, događaji koje objavi trener stižu svim obiteljima, zadano mjesto i teren momčadi, informacije o turniru s poveznicama i dokumentima.',
+'day':'dan',
+'e.g. bring both kits; parents welcome':'npr. ponesite oba dresa; roditelji dobrodošli',
+'e.g. great second half':'npr. odlično drugo poluvrijeme',
+'e.g. works hard, needs the left foot':'npr. radi puno, treba lijevu nogu',
+'each family’s own notification settings; the reminder deep-links to this event.':'postavke obavijesti svake obitelji; podsjetnik vodi izravno na ovaj događaj.',
+'email':'e-mail',
+'event proposed by a parent':'događaj koji predlaže roditelj',
+'every family gets the cancellation at once':'svaka obitelj odmah dobiva otkazivanje',
+'everything together, team chips on every card':'sve zajedno, oznaka momčadi na svakoj kartici',
+'expires':'vrijedi do',
+'families':'obitelji',
+'families can see it now':'obitelji je sada vide',
+'families have not answered':'obitelji nije odgovorilo',
+'families see it 2 h before kick-off':'obitelji je vide 2 h prije početka',
+'families see the result on their Stats tab once you add it':'obitelji vide rezultat na kartici Statistika čim ga upišeš',
+'goes to every family’s Stats tab; each family sees its own player’s goals':'ide na karticu Statistika svake obitelji; svaka obitelj vidi golove svog igrača',
+'home pitch':'domaći teren',
+'in 30 days':'u 30 dana',
+'in {n} days':'za {n} dana',
+'invite the family with a one-time code':'pozovi obitelj jednokratnim kodom',
+'invite(s) waiting to be used':'pozivnica čeka na unos',
+'kept to yourself':'ostaje samo tebi',
+'last 8 sessions':'zadnjih 8 termina',
+'late':'zakasnilo',
+'map result':'rezultat s karte',
+'new attendance replies this week':'novih odgovora o dolasku ovaj tjedan',
+'new replies on your posts':'novih odgovora na tvoje objave',
+'no parent linked':'nema povezanog roditelja',
+'no private channel to a child anywhere; the coach sees names, shirts and attendance — family data stays with the family; everything on the record; the app never emails or texts on the coach’s behalf during the beta; no dates of birth; ambiguous messages are asked about, never guessed.':'nigdje nema privatnog kanala prema djetetu; trener vidi imena, dresove i dolaznost — obiteljski podaci ostaju obitelji; sve je zabilježeno; aplikacija tijekom bete u trenerovo ime ne šalje e-mail ni SMS; bez datuma rođenja; o nejasnim porukama se pita, nikad se ne nagađa.',
+'no reply':'bez odgovora',
+'no reply for':'bez odgovora za',
+'not answered':'bez odgovora',
+'off':'isključeno',
+'only you see it':'vidiš samo ti',
+'opens inside the family app':'otvara se u obiteljskoj aplikaciji',
+'optional':'neobavezno',
+'optional — e.g. we will add a session on Thursday':'neobavezno — npr. dodat ćemo termin u četvrtak',
+'player(s) have no family in the app yet':'igrač(a) još nema obitelj u aplikaciji',
+'player(s) without a family in the app':'igrač(a) bez obitelji u aplikaciji',
+'players':'igrača',
+'posts to':'objavljuje se',
+'prefilled from Going / Not going — tap to correct':'unaprijed ispunjeno iz Dolazim / Ne dolazim — dodirni za ispravak',
+'present':'prisutnih',
+'push':'push',
+'reminded':'podsjetnik poslan',
+'replied':'odgovorilo',
+'replies':'odgovora',
+'said Going':'javio Dolazim',
+'said Maybe':'javio Možda',
+'said Not going':'javio Ne dolazim',
+'sample data only · nothing is sent to anyone':'samo ogledni podaci · nikome se ništa ne šalje',
+'seen':'vidjelo',
+'sorted by who is going':'poredano po tome tko dolazi',
+'tap a player to invite the family.':'dodirni igrača da pozoveš obitelj.',
+'tap a spot on the pitch, then a player':'dodirni mjesto na terenu, zatim igrača',
+'text message':'SMS',
+'the player is on the roster; nobody sees the schedule for them yet':'igrač je na popisu; nitko još ne vidi raspored za njega',
+'this season':'ova sezona',
+'to':'za',
+'unread':'nepročitano',
+'unread family messages':'nepročitanih obiteljskih poruka',
+'usual':'uobičajeno',
+'waiting for the parent to enter the code':'čeka se da roditelj unese kod',
+'{f} family':'Obitelj {f}',
+'{n} d ago':'prije {n} d',
+'{n} h ago':'prije {n} h',
+'{n} min ago':'prije {n} min',
+'{n}-a-side':'{n} igrača',
+'{who} proposed: {what}':'{who} predlaže: {what}',
+'the day before at 18:00':'dan prije u 18:00',
+'the morning at 08:00':'ujutro u 08:00',
+'Which team?':'Koja momčad?'
+});
+
+/* ---------- derived helpers ---------- */
+function scopeTeams(){ return S.scope==='all' ? TEAMS.map(function(x){return x.id;}) : [S.scope]; }
+function inScope(tid){ return scopeTeams().indexOf(tid)>=0; }
+function scopeEvents(){ return EVENTS.filter(function(e){ return inScope(e.team); }).sort(function(a,b){ return (a.date+(a.start||'00:00')) < (b.date+(b.start||'00:00')) ? -1 : 1; }); }
+function eventById(id){ for(var i=0;i<EVENTS.length;i++) if(EVENTS[i].id===id) return EVENTS[i]; return null; }
+function tourById(id){ for(var i=0;i<TOURN.length;i++) if(TOURN[i].id===id) return TOURN[i]; return null; }
+function postById(id){ for(var i=0;i<POSTS.length;i++) if(POSTS[i].id===id) return POSTS[i]; return null; }
+function threadById(id){ for(var i=0;i<THREADS.length;i++) if(THREADS[i].id===id) return THREADS[i]; return null; }
+function TYPE(type){ return {training:t('Training'),match:t('Match'),tournament:t('Tournament'),duty:t('Duty'),no_session:t('No session')}[type]||type; }
+function typeChip(e){ return '<span class="chip t-'+e.type+'">'+TYPE(e.type)+'</span>'; }
+function teamChip(tid){ var tm=teamOf(tid); return tm?'<span class="chip teamc">'+esc(tm.label)+'</span>':''; }
+function mapsUrl(q){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q); }
+function venueHtml(e){ if(!e.venue) return ''; var q=e.venue+(e.venue===CLUB.pitch?', '+CLUB.addr:''); return '📍 <a href="'+mapsUrl(q)+'" target="_blank" rel="noopener" title="'+t('Open in Google Maps')+'">'+esc(e.venue)+'</a>'+(e.field?' · '+t('Field')+' '+esc(e.field):''); }
+function rsvpSum(e){
+  var r={g:[],m:[],n:[],q:[]}; teamPlayers(e.team).forEach(function(p){ if(p.family!=='app') return; var v=e.rsvp[p.id]; if(v==='g') r.g.push(p); else if(v==='m') r.m.push(p); else if(v==='n') r.n.push(p); else r.q.push(p); });
+  return r;
+}
+function regSum(e){ var r={p:0,l:0,a:0}; if(!e.register) return null; Object.keys(e.register).forEach(function(k){ r[e.register[k]]=(r[e.register[k]]||0)+1; }); return r; }
+function nameList(arr){ return arr.map(function(p){ return '<b>'+esc(p.first)+'</b>'; }).join(', '); }
+function attBar(e){
+  if(e.status==='cancelled'||e.type==='no_session'||offOf(e.date)<0) return '';
+  var r=rsvpSum(e);
+  return '<div class="attbar" data-ev="'+e.id+'"><button type="button" class="a g" data-att="g">✅ '+r.g.length+'</button><button type="button" class="a m" data-att="m">❔ '+r.m.length+'</button><button type="button" class="a n" data-att="n">❌ '+r.n.length+'</button><button type="button" class="a q" data-att="q">💤 '+r.q.length+' '+t('no reply')+'</button></div>'
+    +'<div class="names" id="names-'+e.id+'" hidden></div>';
+}
+function attNames(e, key){ var r=rsvpSum(e); var lab={g:t('Going'),m:t('Maybe'),n:t('Not going'),q:t('No reply yet')}[key]; var arr=r[key]; return '<span class="'+key+'">'+lab+':</span> '+(arr.length?nameList(arr):'—'); }
+function receiptHtml(e){
+  if(!e.receipt) return '';
+  var h='<div class="receipt"><span>📤 '+t('Posted to')+' <b>'+e.receipt.sent+'</b> '+t('families')+'</span>';
+  if(e.receipt.seen!=null) h+='<span>👀 <b>'+e.receipt.seen+'</b> '+t('seen')+'</span>';
+  if(e.receipt.replied!=null&&e.type!=='no_session'&&e.status!=='cancelled') h+='<span>✋ <b>'+e.receipt.replied+'</b> '+t('replied')+'</span>';
+  if(e.nudgedAt) h+='<span>🔔 '+t('reminded')+' '+fmtAgo(e.nudgedAt)+'</span>';
+  return h+'</div>';
+}
+function evCard(e, opts){
+  opts=opts||{};
+  var o=offOf(e.date), past=o<0, cls='ev'+(e.status==='cancelled'?' cancelled':'')+(o===0?' today':'');
+  var h='<article class="'+cls+'" id="ev-'+e.id+'"><div class="row">'+typeChip(e)+(S.scope==='all'?teamChip(e.team):'')+(e.changed?'<span class="chip amber">'+t('Changed')+'</span>':'')+(e.status==='cancelled'?'<span class="chip red">'+t('Cancelled')+'</span>':'')+(e.source==='parent'?'<span class="chip purple">'+t('Added by a parent')+'</span>':'')+(e.home===false?'<span class="chip grey">'+t('Away')+'</span>':'')+(e.result?'<span class="chip '+(e.result.us>e.result.them?'green':(e.result.us===e.result.them?'amber':'red'))+'">'+e.result.us+' – '+e.result.them+'</span>':'')+'</div>';
+  h+='<h4>'+esc(e.title)+(opts.showDate?' <span class="muted" style="font-weight:600">· '+fmtDay(e.date)+'</span>':'')+'</h4>';
+  if(e.start||e.arrive) h+='<div class="times">'+(e.arrive?'<span class="rep"><small>'+t('Arrive')+'</small>'+esc(e.arrive)+'</span>':'')+(e.start?'<span class="st"><small>'+(e.type==='match'||e.type==='tournament'?t('Kick-off'):t('Start'))+'</small>'+esc(e.start)+(e.ends?' – '+esc(e.ends):'')+'</span>':'')+'</div>';
+  var meta=[venueHtml(e)]; if(e.details) meta.push(esc(e.details)); if(e.cancelReason) meta.push('🚫 '+esc(e.cancelReason)); if(e.sessionNote) meta.push('📝 '+esc(e.sessionNote));
+  h+='<div class="meta">'+meta.filter(Boolean).join('<br>')+'</div>';
+  if(past&&e.register){ var rs=regSum(e); h+='<div class="receipt"><span>📋 '+t('Register')+': <b>'+(rs.p||0)+'</b> '+t('present')+' · <b>'+(rs.l||0)+'</b> '+t('late')+' · <b>'+(rs.a||0)+'</b> '+t('absent')+'</span></div>'; }
+  h+=attBar(e);
+  if(!opts.noReceipt) h+=receiptHtml(e);
+  if(!opts.noActs){
+    var a='';
+    if(e.status!=='cancelled'&&e.type!=='no_session'){
+      if(!past){ var q=rsvpSum(e).q.length; if(q) a+='<button type="button" class="btn amber" data-act="nudge" data-id="'+e.id+'">🔔 '+t('Remind')+' '+q+'</button>'; }
+      if(o===0||(past&&!e.register)) a+='<button type="button" class="btn blue" data-act="register" data-id="'+e.id+'">📋 '+(e.register?t('Edit register'):t('Take register'))+'</button>';
+      if((e.type==='match'||e.type==='tournament')&&!past) a+='<button type="button" class="btn blue" data-act="lineup" data-id="'+e.id+'">🧩 '+t('Lineup')+(e.lineup&&e.lineup[1]&&e.lineup[1].slots.some(Boolean)?' ✓':'')+'</button>';
+      if(e.type==='match'&&past) a+='<button type="button" class="btn '+(e.result?'':'primary')+'" data-act="result" data-id="'+e.id+'">'+(e.result?'✎ '+t('Edit score'):'⚽ '+t('Add the score'))+'</button>';
+      if(e.tournamentId) a+='<button type="button" class="btn" data-act="tourinfo" data-id="'+e.tournamentId+'">ⓘ '+t('Tournament info')+'</button>';
+      if(!past){ a+='<button type="button" class="btn" data-act="msgev" data-id="'+e.id+'">📣 '+t('Message families')+'</button>'; a+='<button type="button" class="btn" data-act="edit" data-id="'+e.id+'">✎ '+t('Edit')+'</button>'; a+='<button type="button" class="btn danger" data-act="cancel" data-id="'+e.id+'">🚫 '+t('Cancel session')+'</button>'; }
+      else if(past&&e.register) a+='<button type="button" class="btn sm" data-act="register" data-id="'+e.id+'">📋 '+t('Edit register')+'</button>';
+    } else if(e.status==='cancelled'&&!past){ a+='<button type="button" class="btn" data-act="restore" data-id="'+e.id+'">↩ '+t('Restore')+'</button>'; }
+    if(a) h+='<div class="acts">'+a+'</div>';
+  }
+  return h+'</article>';
+}
+function nextEvent(){ var evs=scopeEvents().filter(function(e){ return e.status!=='cancelled'&&e.type!=='no_session'&&offOf(e.date)>=0; }); var now=new Date(); var hm=pad2(now.getHours())+':'+pad2(now.getMinutes()); for(var i=0;i<evs.length;i++){ var e=evs[i]; if(offOf(e.date)>0||!e.ends||e.ends>hm) return e; } return evs[0]||null; }
+function unreadThreads(){ return THREADS.filter(function(th){ return inScope(th.team)&&th.unread>0; }); }
+function needsList(){
+  var out=[];
+  unreadThreads().forEach(function(th){ out.push({ic:'💬',title:t('Message from the {f} family').replace('{f}',th.family),sub:th.msgs[th.msgs.length-1].text,act:'thread',id:th.id,btn:t('Reply')}); });
+  PROPOSALS.forEach(function(pr){ if(!inScope(pr.team)) return; var clash=EVENTS.filter(function(e){ return e.team===pr.team&&e.date===pr.date&&e.status!=='cancelled'&&e.type!=='no_session'; }); out.push({ic:'📥',title:t('{who} proposed: {what}').replace('{who}',pr.by).replace('{what}',pr.title+' · '+fmtDay(pr.date)+' '+pr.start),sub:(clash.length?'⚠ '+t('Clashes with')+' '+clash[0].title+' · ':'')+pr.note,act:'proposal',id:pr.id,btn:t('Review')}); });
+  scopeEvents().forEach(function(e){ if(e.type==='match'&&offOf(e.date)<0&&!e.result&&e.status!=='cancelled') out.push({ic:'⚽',title:t('Score missing')+': '+e.title,sub:fmtDay(e.date)+' · '+t('families see the result on their Stats tab once you add it'),act:'result',id:e.id,btn:t('Add')}); });
+  POSTS.forEach(function(p){ if(p.kind==='poll'&&inScope(p.team)){ var answered=0; p.poll.opts.forEach(function(o){ answered+=o.v.length; }); var total=teamPlayers(p.team).filter(function(x){return x.family==='app';}).length; if(answered<total) out.push({ic:'📊',title:t('Poll closes')+' '+fmtCloses(p.poll.closes)+' · '+(total-answered)+' '+t('not answered'),sub:p.text,act:'pollnudge',id:p.id,btn:t('Remind')}); } });
+  var ne=nextEvent(); if(ne){ var q=rsvpSum(ne).q.length; if(q>=3) out.push({ic:'💤',title:q+' '+t('no reply for')+' '+ne.title+' · '+fmtRel(ne.date),sub:t('Automatic reminder')+': '+t(teamOf(ne.team).nudgeWhen==='day-before-18'?'the day before at 18:00':'the morning at 08:00'),act:'nudge',id:ne.id,btn:t('Remind now')}); }
+  scopeTeams().forEach(function(tid){ var np=teamPlayers(tid).filter(function(p){return p.family==='none';}); if(np.length) out.push({ic:'👨‍👩‍👧',title:np.length+' '+t('player(s) without a family in the app')+' · '+teamOf(tid).label,sub:np.map(function(p){return p.first+' '+p.last;}).join(', ')+' — '+t('invite the family with a one-time code'),act:'team',id:tid,btn:t('Invite')}); });
+  return out;
+}
+function digest(){
+  var items=[];
+  var newRsvp=0; scopeEvents().forEach(function(e){ if(offOf(e.date)>=0&&offOf(e.date)<=7){ newRsvp+=Math.min(3,rsvpSum(e).g.length); } });
+  if(newRsvp) items.push('✅ '+Math.min(newRsvp,7)+' '+t('new attendance replies this week'));
+  var polls=POSTS.filter(function(p){return p.kind==='poll'&&inScope(p.team)&&p.at>S.lastLook;}); polls.forEach(function(p){ var n=0; p.poll.opts.forEach(function(o){n+=o.v.length;}); items.push('📊 '+n+' '+t('answers on the poll')+' “'+p.text+'”'); });
+  var reps=0; POSTS.forEach(function(p){ if(inScope(p.team)) p.replies.forEach(function(r){ if(r.at>S.lastLook) reps++; }); }); if(reps) items.push('↩ '+reps+' '+t('new replies on your posts'));
+  var un=unreadThreads().length; if(un) items.push('💬 '+un+' '+t('unread family messages'));
+  var pr=PROPOSALS.filter(function(p){return inScope(p.team)&&p.at>S.lastLook;}).length; if(pr) items.push('📥 '+pr+' '+t('event proposed by a parent'));
+  return items;
+}
+
+/* ---------- screens ---------- */
+function renderToday(){
+  var ne=nextEvent(), h='';
+  h+='<h2 class="scr" id="h-today">'+t('Today')+' <small>'+fmtLong(dISO(0))+'</small></h2>';
+  h+='<div class="strip" id="strip">'; for(var i=0;i<7;i++){ var iso=dISO(i), evs=scopeEvents().filter(function(e){return e.date===iso;}); h+='<button type="button" data-day="'+iso+'" class="'+(i===0?'today':'')+'"><span>'+fmtDay(iso,{weekday:'short'})+'</span><b>'+dateOf(iso).getDate()+'</b><span class="dots">'+evs.map(function(e){ return '<i class="'+(e.status==='cancelled'?'c':(e.type==='match'||e.type==='tournament'?'m':''))+'"></i>'; }).join('')+'</span></button>'; } h+='</div>';
+  if(ne){
+    var r=rsvpSum(ne), o=offOf(ne.date);
+    h+='<div class="card accent"><h3 class="sec" style="margin-top:0">'+t('Next up')+' · '+fmtRel(ne.date)+(S.scope==='all'?' · '+teamOf(ne.team).label:'')+'</h3>'+evCard(ne,{noActs:true,noReceipt:true});
+    h+='<div class="actions">';
+    if(o===0) h+='<button type="button" class="btn primary" data-act="register" data-id="'+ne.id+'">📋 '+(ne.register?t('Edit register'):t('Take register'))+'</button>';
+    if(ne.type==='match'||ne.type==='tournament') h+='<button type="button" class="btn blue" data-act="lineup" data-id="'+ne.id+'">🧩 '+t('Set lineup')+'</button>';
+    if(r.q.length) h+='<button type="button" class="btn amber" data-act="nudge" data-id="'+ne.id+'">🔔 '+t('Remind')+' '+r.q.length+'</button>';
+    h+='<button type="button" class="btn" data-act="msgev" data-id="'+ne.id+'">📣 '+t('Message families')+'</button><button type="button" class="btn" data-act="edit" data-id="'+ne.id+'">✎ '+t('Edit')+'</button><button type="button" class="btn danger" data-act="cancel" data-id="'+ne.id+'">🚫 '+t('Cancel session')+'</button></div>'+receiptHtml(ne)+'</div>';
+  } else h+='<div class="card"><p class="empty">'+t('Nothing scheduled — post the week from the Schedule tab.')+'</p></div>';
+  h+='<div class="grid2" style="margin-bottom:12px"><button type="button" class="tile" data-act="add" data-type="training"><span class="big">＋</span><span class="lbl">'+t('Training')+'</span></button><button type="button" class="tile" data-act="add" data-type="match"><span class="big">＋</span><span class="lbl">'+t('Match')+'</span></button><button type="button" class="tile" data-act="compose"><span class="big">📣</span><span class="lbl">'+t('Announcement or poll')+'</span></button><button type="button" class="tile" data-act="paste"><span class="big">📋</span><span class="lbl">'+t('Paste a message')+'</span></button></div>';
+  var needs=needsList();
+  h+='<h3 class="sec">'+t('Needs you')+' · '+needs.length+'</h3>';
+  if(!needs.length) h+='<p class="empty">'+t('Nothing waiting on you.')+'</p>';
+  needs.forEach(function(n){ h+='<div class="need"><span class="ic">'+n.ic+'</span><div class="nt"><b>'+esc(n.title)+'</b><small>'+esc(n.sub)+'</small></div><button type="button" class="btn sm" data-act="'+n.act+'" data-id="'+n.id+'">'+esc(n.btn)+'</button></div>'; });
+  var dg=digest();
+  h+='<h3 class="sec">'+t('Since you last looked')+' <span class="muted" style="font-weight:600;letter-spacing:0;text-transform:none">'+fmtAgo(S.lastLook)+'</span></h3>';
+  h+='<div class="card tight">'+(dg.length?dg.map(function(x){return '<div style="font-size:13.5px;padding:3px 0">'+esc(x)+'</div>';}).join(''):'<span class="empty">'+t('Nothing new.')+'</span>')+'</div>';
+  h+='<p class="hint">📶 '+t('Today’s sessions, the register and the roster are kept on this phone — they open without signal at the pitch; changes send when you are back online.')+'</p>';
+  $('s-today').innerHTML=h;
+}
+function renderSchedule(){
+  var h='<h2 class="scr">'+t('Schedule')+' <span class="row"><button type="button" class="btn sm" data-act="paste">📋 '+t('Paste')+'</button><button type="button" class="btn sm" data-act="photo">📷 '+t('Photo')+'</button><button type="button" class="btn primary sm" data-act="add">＋ '+t('Add event')+'</button></span></h2>';
+  h+='<div class="row between" style="margin-bottom:12px"><div class="seg" role="group">'+['upcoming','week','past'].map(function(v){ return '<button type="button" data-view="'+v+'" aria-pressed="'+(S.view===v)+'">'+t({upcoming:'Upcoming',week:'Week',past:'Past'}[v])+'</button>'; }).join('')+'</div>';
+  if(S.view==='week') h+='<div class="row"><button type="button" class="btn sm" data-week="-1">‹</button><b style="font-size:13px">'+fmtDay(weekStart(S.weekOff))+' – '+fmtDay(dISO(offOf(weekStart(S.weekOff))+6))+'</b><button type="button" class="btn sm" data-week="1">›</button></div>';
+  h+='</div>';
+  var evs=scopeEvents(), list;
+  if(S.view==='upcoming') list=evs.filter(function(e){ return offOf(e.date)>=0&&offOf(e.date)<=21; });
+  else if(S.view==='past') list=evs.filter(function(e){ return offOf(e.date)<0; }).reverse();
+  else { var ws=offOf(weekStart(S.weekOff)); list=evs.filter(function(e){ var o=offOf(e.date); return o>=ws&&o<ws+7; }); }
+  if(!list.length) h+='<p class="empty">'+t('Nothing here yet.')+'</p>';
+  var day=null; list.forEach(function(e){ if(e.date!==day){ if(day) h+='</div>'; day=e.date; var o=offOf(e.date); h+='<div class="day"><div class="dayhead"><span>'+(o===0?'<b>'+t('Today')+' · </b>':'')+fmtLong(e.date)+'</span></div>'; } h+=evCard(e); }); if(day) h+='</div>';
+  if(S.view==='upcoming') h+='<p class="hint">'+t('Showing the next 3 weeks. Posted events reach every family in the team at once; parents confirm attendance in their Family Schedule app.')+'</p>';
+  $('s-schedule').innerHTML=h;
+}
+function weekStart(off){ return dISO(-dow(dISO(0))+7*off); }
+function renderTeam(){
+  var h='<h2 class="scr">'+t('Team')+' <span class="row"><button type="button" class="btn sm" data-act="settings">⚙ '+t('Team settings')+'</button><button type="button" class="btn primary sm" data-act="addplayer">＋ '+t('Add player')+'</button></span></h2>';
+  scopeTeams().forEach(function(tid){
+    var tm=teamOf(tid), ps=teamPlayers(tid), inApp=ps.filter(function(p){return p.family==='app';}).length, pend=ps.filter(function(p){return p.family==='invited';}).length, none=ps.filter(function(p){return p.family==='none';}).length;
+    var avg=Math.round(ps.reduce(function(a,p){return a+p.att30;},0)/ps.length);
+    h+='<div class="card"><div class="row between"><div class="row"><span style="font-size:28px">'+CLUB.badge+'</span><div><b style="font-size:16px">'+esc(CLUB.name)+' · '+esc(tm.name)+'</b><div class="sub">'+t('Coach')+' '+esc(COACH.first+' '+COACH.last)+' · '+t('{n}-a-side').replace('{n}',tm.size)+' · '+t('Season')+' 2026/27</div></div></div><button type="button" class="btn sm" data-act="teamphoto">📷 '+t('Team photo')+'</button></div>';
+    h+='<div class="grid3" style="margin-top:12px"><div class="tile green"><span class="big">'+ps.length+'</span><span class="lbl">'+t('Players')+'</span></div><div class="tile blue"><span class="big">'+famCount(tid)+'</span><span class="lbl">'+t('Families in the app')+'</span></div><div class="tile '+(avg>=80?'green':'amber')+'"><span class="big">'+avg+'%</span><span class="lbl">'+t('Attendance, 30 days')+'</span></div></div>';
+    h+='<div class="kv" style="margin-top:12px"><dt>'+t('Home pitch')+'</dt><dd>📍 <a href="'+mapsUrl(tm.venue+', '+CLUB.addr)+'" target="_blank" rel="noopener">'+esc(tm.venue)+'</a> · '+t('Field')+' '+esc(tm.field)+'</dd><dt>'+t('Usual')+'</dt><dd>'+tm.days.map(function(d){ return fmtDay(dISO((d-dow(dISO(0))+7)%7),{weekday:'short'}); }).join(', ')+' '+tm.time+' · '+t('arrive')+' '+tm.arrTrain+' min '+t('before training')+', '+tm.arrMatch+' min '+t('before a match')+'</dd><dt>'+t('Kit')+'</dt><dd><span class="kit" style="background:'+CLUB.kitHome+'"></span>'+t('Home')+' · <span class="kit" style="background:'+CLUB.kitAway+'"></span>'+t('Away')+'</dd></div>';
+    if(pend||none) h+='<div class="note">'+(none?none+' '+t('player(s) have no family in the app yet'):'')+(none&&pend?' · ':'')+(pend?pend+' '+t('invite(s) waiting to be used'):'')+' — '+t('tap a player to invite the family.')+'</div>';
+    h+='</div>';
+    h+='<h3 class="sec">'+t('Players')+' · '+esc(tm.label)+' <button type="button" class="link" data-act="sortplayers">'+t('Sort by shirt')+'</button></h3><div class="plist">';
+    ps.forEach(function(p){
+      var fam=p.family==='app'?'<span class="chip green">'+t('Family in app')+'</span>':(p.family==='invited'?'<span class="chip amber">'+t('Invite sent')+'</span>':'<span class="chip red">'+t('No family yet')+'</span>');
+      h+='<button type="button" class="prow" data-act="player" data-id="'+p.id+'"><span class="av">'+esc(initials(p.first,p.last))+'<span class="sh">'+p.shirt+'</span></span><span class="pn"><b>'+esc(p.first+' '+p.last)+'</b><small>'+t(p.pos)+' · '+(p.parents.length?t('Parents')+': '+esc(p.parents.join(', ')):t('no parent linked'))+'</small><span class="bar"><i style="width:'+p.att30+'%"></i></span></span><span class="pr">'+fam+'<b>'+p.att30+'%</b>'+t('attendance')+'</span></button>';
+    });
+    h+='</div>';
+  });
+  var inv=INVITES.filter(function(i){ return inScope(i.team)&&i.status==='open'; });
+  h+='<h3 class="sec">'+t('Open invite codes')+' · '+inv.length+'</h3>';
+  if(!inv.length) h+='<p class="empty">'+t('No open codes. Tap a player without a family to create one.')+'</p>';
+  inv.forEach(function(i){ h+='<div class="card tight row between"><div><b>'+esc(i.forName)+'</b> <span class="chip teamc">'+teamOf(i.team).label+'</span><div class="sub">'+t('One-time code')+' <b style="color:var(--green)">'+i.code+'</b> · '+t('expires')+' '+fmtDay(i.expires)+'</div></div><div class="row"><button type="button" class="btn sm" data-act="showinvite" data-code="'+i.code+'">↗ '+t('Share')+'</button><button type="button" class="btn sm danger" data-act="revoke" data-code="'+i.code+'">'+t('Cancel code')+'</button></div></div>'; });
+  h+='<p class="hint">'+t('Invites are one-time codes you pass on yourself — the app never emails anyone. A parent enters the code in the Family Schedule app; the player card links to this roster and the family starts seeing the team schedule.')+'</p>';
+  $('s-team').innerHTML=h;
+}
+function renderMatches(){
+  var h='<h2 class="scr">'+t('Matches')+' <span class="row"><button type="button" class="btn sm" data-act="addtour">🏆 '+t('Add tournament')+'</button><button type="button" class="btn primary sm" data-act="add" data-type="match">＋ '+t('Match')+'</button></span></h2>';
+  var ms=scopeEvents().filter(function(e){ return e.type==='match'&&e.status!=='cancelled'; });
+  var up=ms.filter(function(e){ return offOf(e.date)>=0; }), past=ms.filter(function(e){ return offOf(e.date)<0; }).reverse();
+  var w=0,d=0,l=0,gf=0,ga=0; past.forEach(function(e){ if(!e.result) return; gf+=e.result.us; ga+=e.result.them; if(e.result.us>e.result.them) w++; else if(e.result.us===e.result.them) d++; else l++; });
+  h+='<div class="grid3"><div class="tile green"><span class="big">'+w+'</span><span class="lbl">'+t('Won')+'</span></div><div class="tile amber"><span class="big">'+d+'</span><span class="lbl">'+t('Drawn')+'</span></div><div class="tile red"><span class="big">'+l+'</span><span class="lbl">'+t('Lost')+'</span></div><div class="tile"><span class="big">'+gf+' : '+ga+'</span><span class="lbl">'+t('Goals for : against')+'</span></div></div>';
+  var missing=past.filter(function(e){return !e.result;});
+  if(missing.length){ h+='<h3 class="sec">'+t('Score missing')+' · '+missing.length+'</h3>'; missing.forEach(function(e){ h+=evCard(e,{showDate:true}); }); }
+  h+='<h3 class="sec">'+t('Upcoming matches')+' · '+up.length+'</h3>'; if(!up.length) h+='<p class="empty">'+t('Nothing here yet.')+'</p>'; up.forEach(function(e){ h+=evCard(e,{showDate:true}); });
+  h+='<h3 class="sec">'+t('Tournaments')+'</h3>';
+  var ts=TOURN.filter(function(x){return inScope(x.team);}); if(!ts.length) h+='<p class="empty">'+t('No tournament yet — add one and every family gets the days, the arrival time and the documents.')+'</p>';
+  ts.forEach(function(tr){ h+='<div class="card"><div class="row between"><div><b style="font-size:16px">🏆 '+esc(tr.name)+'</b> <span class="chip teamc">'+teamOf(tr.team).label+'</span><div class="sub">'+fmtDay(tr.dates[0])+' – '+fmtDay(tr.dates[1])+' · 📍 <a href="'+mapsUrl(tr.venue+', '+tr.addr)+'" target="_blank" rel="noopener">'+esc(tr.venue)+'</a> · '+t('arrive')+' '+tr.arriveMin+' min '+t('before the first game')+'</div></div><button type="button" class="btn sm" data-act="tourinfo" data-id="'+tr.id+'">ⓘ '+t('Tournament info')+'</button></div>';
+    h+='<div style="margin-top:10px">'; tr.fixtures.forEach(function(f){ var us=f.home===CLUB.name||f.away===CLUB.name; h+='<div class="fixt"><span class="muted">'+fmtDay(f.date,{weekday:'short'})+(f.time?' '+f.time:'')+(f.pitch?' · '+t('Pitch')+' '+f.pitch:'')+'</span><span'+(us?' style="font-weight:700"':'')+'>'+esc(f.home)+' – '+esc(f.away)+'</span><span class="sc">'+(f.us!=null?f.us+' : '+f.them:'<button type="button" class="btn sm" data-act="fixscore" data-tour="'+tr.id+'" data-fx="'+tr.fixtures.indexOf(f)+'">'+t('Score')+'</button>')+'</span></div>'; }); h+='</div></div>'; });
+  h+='<h3 class="sec">'+t('Results')+' · '+t('this season')+'</h3>';
+  var res=past.filter(function(e){return e.result;}); if(!res.length) h+='<p class="empty">'+t('Nothing here yet.')+'</p>';
+  res.forEach(function(e){ var r=e.result, cls=r.us>r.them?'green':(r.us===r.them?'amber':'red'); var sc=Object.keys(r.scorers).map(function(pid){ var p=pl(pid); return p?p.first+(r.scorers[pid]>1?' ×'+r.scorers[pid]:''):''; }).filter(Boolean).join(', '); h+='<div class="card tight row between"><div><span class="chip '+cls+'">'+r.us+' – '+r.them+'</span> <b>'+esc(e.title)+'</b>'+(S.scope==='all'?' '+teamChip(e.team):'')+'<div class="sub">'+fmtDay(e.date)+(e.home===false?' · '+t('Away'):'')+(sc?' · ⚽ '+esc(sc):'')+'</div></div><div class="row"><button type="button" class="btn sm" data-act="recap" data-id="'+e.id+'">↗ '+t('Recap')+'</button><button type="button" class="btn sm" data-act="result" data-id="'+e.id+'">✎</button></div></div>'; });
+  h+='<h3 class="sec">'+t('Player stats')+' · '+t('this season')+'</h3><div class="card tight tw"><table><thead><tr><th>#</th><th>'+t('Player')+'</th><th class="num">'+t('Apps')+'</th><th class="num">'+t('Goals')+'</th><th class="num">'+t('Assists')+'</th><th class="num">'+t('Attendance')+'</th></tr></thead><tbody>';
+  scopeTeams().forEach(function(tid){ teamPlayers(tid).forEach(function(p){ h+='<tr><td>'+p.shirt+'</td><td>'+esc(p.first+' '+p.last)+(S.scope==='all'?' <span class="muted">'+teamOf(tid).label+'</span>':'')+'</td><td class="num">'+p.apps+'</td><td class="num">'+p.goals+'</td><td class="num">'+p.assists+'</td><td class="num">'+p.att30+'%</td></tr>'; }); });
+  h+='</tbody></table></div><p class="hint">'+t('Sorted by shirt number on purpose — no leaderboard of children. Each family sees only its own player’s numbers; the coach sees the team.')+'</p>';
+  $('s-matches').innerHTML=h;
+}
+function fmtCloses(str){ var m=String(str||'').match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2})/); return m?fmtRel(m[1])+' '+m[2]:str; }
+function pollHtml(p){
+  var total=0; p.poll.opts.forEach(function(o){ total+=o.v.length; }); var fam=teamPlayers(p.team).filter(function(x){return x.family==='app';}).length;
+  var h='<div class="poll">'; p.poll.opts.forEach(function(o,i){ var pct=total?Math.round(o.v.length*100/total):0; h+='<div class="opt"><i style="width:'+pct+'%"></i><span>'+esc(o.t)+'</span><span><b>'+o.v.length+'</b> · '+pct+'%</span></div>'; });
+  h+='</div><div class="receipt"><span>'+total+' / '+fam+' '+t('answered')+'</span><span>⏳ '+t('closes')+' '+esc(fmtCloses(p.poll.closes))+'</span><button type="button" class="btn link" data-act="pollwho" data-id="'+p.id+'">'+t('Who answered what')+'</button></div>';
+  return h;
+}
+function renderMessages(){
+  var h='<h2 class="scr">'+t('Messages')+' <button type="button" class="btn primary sm" data-act="compose">📣 '+t('New post or poll')+'</button></h2>';
+  h+='<p class="note blue" style="margin-top:0">🔒 '+t('Everything here goes to parents, never to a child’s login, and stays on the record — parents and PitchPro can review it. Parents read your posts in their own language.')+'</p>';
+  var ths=THREADS.filter(function(x){return inScope(x.team);}).sort(function(a,b){ return b.unread-a.unread; });
+  h+='<h3 class="sec">'+t('Family conversations')+' · '+ths.length+'</h3><div class="plist">';
+  ths.forEach(function(th){ var last=th.msgs[th.msgs.length-1]; h+='<button type="button" class="thread" data-act="thread" data-id="'+th.id+'"><span class="av sm">'+esc(th.family.charAt(0))+'</span><span class="tn"><b>'+t('{f} family').replace('{f}',th.family)+' · '+th.players.map(function(id){var p=pl(id);return p?p.first:'';}).join(', ')+(S.scope==='all'?' <span class="muted">'+teamOf(th.team).label+'</span>':'')+'</b><small>'+(last.me?t('You')+': ':'')+esc(last.text)+'</small></span>'+(th.unread?'<span class="dot" aria-label="'+t('unread')+'"></span>':'')+'<span class="muted" style="font-size:11px">'+fmtAgo(last.at)+'</span></button>'; });
+  h+='</div>';
+  var ps=POSTS.filter(function(p){return inScope(p.team);}).sort(function(a,b){ return (b.pinned-a.pinned)||(b.at-a.at); });
+  h+='<h3 class="sec">'+t('Team posts')+' · '+ps.length+'</h3>';
+  ps.forEach(function(p){
+    h+='<article class="post'+(p.pinned?' pinned':'')+'"><div class="ph">'+(p.pinned?'<span class="chip green">📌 '+t('Pinned')+'</span>':'')+(p.kind==='poll'?'<span class="chip blue">📊 '+t('Poll')+'</span>':'<span class="chip grey">📣 '+t('Announcement')+'</span>')+(S.scope==='all'?teamChip(p.team):'')+'<b>'+esc(COACH.first+' '+COACH.last)+'</b><span>'+fmtAgo(p.at)+'</span>'+(p.needsReply?'<span class="chip amber">'+t('Reply needed')+'</span>':'')+'</div>';
+    h+='<div class="body">'+esc(p.text)+'</div>';
+    if(p.kind==='poll') h+=pollHtml(p);
+    if(p.receipt) h+='<div class="receipt"><span>📤 <b>'+p.receipt.sent+'</b> '+t('families')+'</span><span>👀 <b>'+p.receipt.seen+'</b> '+t('seen')+'</span>'+(p.kind!=='poll'?'<span>↩ <b>'+p.replies.length+'</b> '+t('replies')+'</span>':'')+'</div>';
+    if(p.replies.length){ h+='<div class="replies">'; p.replies.forEach(function(r){ h+='<div class="reply'+(r.me?' me':'')+'"><b>'+esc(r.who)+'</b><small>'+fmtAgo(r.at)+'</small><div>'+esc(r.text)+'</div></div>'; }); h+='</div>'; }
+    h+='<div class="acts" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn sm" data-act="replypost" data-id="'+p.id+'">↩ '+t('Reply to all')+'</button><button type="button" class="btn sm" data-act="pin" data-id="'+p.id+'">📌 '+(p.pinned?t('Unpin'):t('Pin'))+'</button><button type="button" class="btn sm danger" data-act="delpost" data-id="'+p.id+'">🗑 '+t('Delete')+'</button></div></article>';
+  });
+  $('s-messages').innerHTML=h;
+}
+function renderAccount(){
+  var h='<h2 class="scr">'+t('Coach card')+'</h2>';
+  h+='<div class="card"><div class="row" style="gap:14px"><button type="button" class="av" style="width:72px;height:72px;font-size:24px" data-act="coachphoto" title="'+t('Tap to change photo')+'">'+esc(initials(COACH.first,COACH.last))+'</button><div><b style="font-size:18px">'+esc(COACH.first+' '+COACH.last)+'</b><div class="sub">'+t('Coach')+' · '+esc(COACH.club)+' · '+COACH.teams.map(function(id){return teamOf(id).label;}).join(' + ')+' · '+esc(COACH.licence)+'</div><div style="margin-top:6px"><span class="chip green">'+t('Card claimed')+'</span> <span class="chip grey">'+t('Coach code used')+'</span></div></div></div>';
+  h+='<p class="hint">'+t('Your card is what families see on the Coach line of their app: photo, role, teams and career. Tap the photo or a career line to change it.')+'</p>';
+  h+='<h3 class="sec">'+t('Career')+' <button type="button" class="link" data-act="addcareer">＋ '+t('Add')+'</button></h3>';
+  COACH.career.forEach(function(c,i){ h+='<div class="row between" style="padding:6px 0;border-bottom:1px solid var(--line)"><div><b>'+esc(c.club)+'</b> · '+esc(c.role)+'</div><span class="muted" style="font-size:12.5px">'+esc(c.period)+'</span></div>'; });
+  h+='</div>';
+  h+='<div class="card"><h3 class="sec" style="margin-top:0">'+t('Notifications & language')+'</h3><div class="stack">'
+    +'<button type="button" class="toggle" data-pref="push" aria-pressed="'+COACH.push+'"><span class="sw"></span>'+t('Push on this phone')+'</button>'
+    +'<button type="button" class="toggle" data-pref="email" aria-pressed="'+COACH.email+'"><span class="sw"></span>'+t('Email summaries (replies, attendance, questions)')+'</button>'
+    +'<button type="button" class="toggle" data-pref="sms" aria-pressed="'+COACH.sms+'"><span class="sw"></span>'+t('Text message for same-day changes')+'</button>'
+    +'</div><label>'+t('App language')+'</label><div class="seg"><button type="button" data-lang="hr" aria-pressed="'+(S.lang==='hr')+'">Hrvatski</button><button type="button" data-lang="en" aria-pressed="'+(S.lang==='en')+'">English</button></div><p class="hint">'+t('Families choose their own language — what you post is shown to each family in theirs.')+'</p></div>';
+  TEAMS.forEach(function(tm){ if(!inScope(tm.id)) return; h+='<div class="card"><h3 class="sec" style="margin-top:0">'+t('Team settings')+' · '+esc(tm.name)+' <button type="button" class="link" data-act="settings" data-team="'+tm.id+'">'+t('Edit')+'</button></h3><dl class="kv"><dt>'+t('Default venue')+'</dt><dd>📍 <a href="'+mapsUrl(tm.venue+', '+CLUB.addr)+'" target="_blank" rel="noopener">'+esc(tm.venue)+'</a> · '+t('Field')+' '+esc(tm.field)+'</dd><dt>'+t('Usual')+'</dt><dd>'+tm.days.map(function(d){ return fmtDay(dISO((d-dow(dISO(0))+7)%7),{weekday:'short'}); }).join(', ')+' '+tm.time+'</dd><dt>'+t('Arrive')+'</dt><dd>'+tm.arrTrain+' min '+t('before training')+' · '+tm.arrMatch+' min '+t('before a match')+'</dd><dt>'+t('Lineup')+'</dt><dd>'+t({'2h':'Families see it 2 hours before kick-off','now':'Families see it as soon as it is saved','never':'Families never see it'}[tm.lineupVis])+'</dd><dt>'+t('Reminders')+'</dt><dd>'+(tm.autoNudge?t('Automatic')+' · '+t(tm.nudgeWhen==='day-before-18'?'the day before at 18:00':'the morning at 08:00'):t('Off — only when you tap Remind'))+'</dd><dt>'+t('Parents')+'</dt><dd>'+(tm.propose?t('May propose events (you approve)'):t('Cannot propose events'))+'</dd></dl></div>'; });
+  h+='<div class="card"><h3 class="sec" style="margin-top:0">'+t('Your coach code')+'</h3><p class="sub">'+t('If you change phones, sign in with the same email — nothing to re-enter. A second coach for this team gets their own code from the club’s parent admin or from PitchPro.')+'</p><div class="actions"><button type="button" class="btn" data-act="signout">⏻ '+t('Sign out')+'</button><button type="button" class="btn" id="notesBtn2">ⓘ '+t('Design notes')+'</button></div></div>';
+  $('s-account').innerHTML=h;
+}
+function renderHeader(){
+  var lab=S.scope==='all'?t('All teams'):teamOf(S.scope).name;
+  $('teamPill').innerHTML='<b>'+esc(CLUB.name)+'</b> '+esc(lab)+' ▾';
+  $('langHr').classList.toggle('on',S.lang==='hr'); $('langEn').classList.toggle('on',S.lang==='en');
+  var un=unreadThreads().length+PROPOSALS.filter(function(p){return inScope(p.team);}).length;
+  ['navMsgN','railMsgN'].forEach(function(id){ var el=$(id); if(un){ el.textContent=un; el.hidden=false; } else el.hidden=true; });
+  $('meBtn').textContent=initials(COACH.first,COACH.last);
+  $('railFoot').innerHTML=esc(COACH.first+' '+COACH.last)+'<br>'+esc(CLUB.name)+' · '+COACH.teams.map(function(id){return teamOf(id).label;}).join(' + ');
+  document.querySelectorAll('[data-t]').forEach(function(el){ if(!el.dataset.en) el.dataset.en=el.textContent; el.textContent=t(el.dataset.en); });
+  document.querySelectorAll('[data-go]').forEach(function(b){ if(b.id==='meBtn') return; if(b.dataset.go===S.screen) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
+  $('demoBanner').innerHTML='<b>'+t('Design preview')+'</b> · '+t('sample data only · nothing is sent to anyone');
+  document.documentElement.lang=S.lang;
+}
+function renderAll(){ renderHeader(); renderToday(); renderSchedule(); renderTeam(); renderMatches(); renderMessages(); renderAccount(); }
+function go(screen, opt){
+  S.screen=screen;
+  ['today','schedule','team','matches','messages','account'].forEach(function(s){ $('s-'+s).hidden=(s!==screen); });
+  renderHeader();
+  try{ history.replaceState(null,'','#s='+screen); }catch(e){}
+  if(!(opt&&opt.keepScroll)){ var h2=document.querySelector('#s-'+screen+' h2'); window.scrollTo(0,0); if(h2){ h2.setAttribute('tabindex','-1'); h2.focus({preventScroll:true}); } }
+}
+
+/* ---------- modal framework ---------- */
+function openModal(html, wide){ var box=$('mbox'); box.className='mbox'+(wide?' wide':''); box.innerHTML=html; $('modal').classList.add('on'); var f=box.querySelector('input:not([type=hidden]):not([type=checkbox]),textarea,select,button:not(.x)'); if(f){ try{ f.focus({preventScroll:true}); }catch(e){} } }
+function closeModal(){ $('modal').classList.remove('on'); $('mbox').innerHTML=''; }
+function mh(title, sub){ return '<h3><span>'+title+'</span><button type="button" class="x" data-close aria-label="'+t('Close')+'">×</button></h3>'+(sub?'<p class="msub">'+sub+'</p>':''); }
+function teamOpts(sel){ return TEAMS.map(function(tm){ return '<option value="'+tm.id+'"'+(tm.id===sel?' selected':'')+'>'+esc(tm.name)+'</option>'; }).join(''); }
+function famN(tids){ var n=0; tids.forEach(function(id){ n+=famCount(id); }); return n; }
+function chanIcons(p){ var h=p.id.charCodeAt(3)+p.shirt; var a=['📱']; if(h%2) a.push('✉️'); if(h%5===0) a.push('💬'); return a.join(' '); }
+
+/* ---------- place picker (design: saved venues first, then map results) ---------- */
+function placePicker(container, initial){
+  var h='<div class="pp"><input type="text" class="ppIn" placeholder="'+t('Search a stadium, pitch or address…')+'" value="'+esc(initial||'')+'" autocomplete="off"><input type="hidden" class="ppVal" value="'+esc(initial||'')+'"><div class="sug" hidden></div><div class="picked"'+(initial?'':' hidden')+'>✓ <span class="pn">'+esc(initial||'')+'</span><a href="'+mapsUrl(initial||'')+'" target="_blank" rel="noopener">'+t('Open in Google Maps')+' ↗</a></div><p class="hint">'+t('Saved venues come first, then places from the map. You can also paste a Google Maps link.')+'</p></div>';
+  container.innerHTML=h;
+  var inp=container.querySelector('.ppIn'), val=container.querySelector('.ppVal'), sug=container.querySelector('.sug'), picked=container.querySelector('.picked');
+  function choose(v){ val.value=v.n; inp.value=v.n; picked.hidden=false; picked.querySelector('.pn').textContent=v.n+(v.a?' · '+v.a:''); picked.querySelector('a').href=mapsUrl(v.n+(v.a?', '+v.a:'')); sug.hidden=true; }
+  inp.addEventListener('input',function(){ var q=inp.value.trim().toLowerCase(); val.value=inp.value.trim(); picked.hidden=true; if(q.length<2){ sug.hidden=true; return; }
+    if(/maps\.app\.goo\.gl|google\.[a-z.]+\/maps|goo\.gl\/maps/.test(q)){ choose({n:t('Pinned place from your link'),a:''}); return; }
+    var saved=VENUES.filter(function(v){ return v.n.toLowerCase().indexOf(q)>=0; });
+    var map=[{n:inp.value.trim().replace(/^\w/,function(c){return c.toUpperCase();})+' — '+t('map result'),a:'Sample town'},{n:inp.value.trim().replace(/^\w/,function(c){return c.toUpperCase();})+' Arena',a:'Sample town'}];
+    sug.innerHTML=saved.map(function(v){ return '<button type="button" data-n="'+esc(v.n)+'" data-a="'+esc(v.a)+'">📌 '+esc(v.n)+'<small>'+esc(v.a)+(v.tag==='home'?' · '+t('home pitch'):'')+'</small></button>'; }).join('')+map.map(function(v){ return '<button type="button" data-n="'+esc(v.n)+'" data-a="'+esc(v.a)+'">🌍 '+esc(v.n)+'<small>'+esc(v.a)+'</small></button>'; }).join('');
+    sug.hidden=false; });
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); var b=sug.querySelector('button'); if(b&&!sug.hidden) b.click(); } });
+  sug.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; choose({n:b.dataset.n,a:b.dataset.a}); });
+  return function(){ return val.value.trim(); };
+}
+
+/* ---------- add / edit event ---------- */
+function openEvent(e, presetType){
+  var isEdit=!!e, tm=teamOf(e?e.team:(S.scope==='all'?'t16':S.scope));
+  var type=e?e.type:(presetType||'training');
+  var h=mh(isEdit?t('Edit event'):t('Add event'), isEdit?t('The change goes to every family that has this event.'):t('Posts to every family in the team at once — parents confirm attendance in their app.'));
+  h+='<div class="seg" id="evType" role="group">'+['training','match','tournament','duty','no_session'].map(function(k){ return '<button type="button" data-k="'+k+'" aria-pressed="'+(k===type)+'">'+TYPE(k)+'</button>'; }).join('')+'</div>';
+  h+='<label>'+t('Team')+'</label><div class="chips" id="evTeams">'+TEAMS.map(function(x){ var on=e?x.id===e.team:(S.scope==='all'||S.scope===x.id); return '<button type="button" class="fchip'+(on?' on':'')+'" data-team="'+x.id+'" aria-pressed="'+on+'">'+esc(x.label)+' · '+famCount(x.id)+' '+t('families')+'</button>'; }).join('')+'</div>';
+  h+='<label>'+t('Title')+'</label><input type="text" id="evTitle" list="evTitles" value="'+esc(e?e.title:'')+'" placeholder="'+t('Match v …')+'"><datalist id="evTitles"><option value="Training"><option value="Goalkeeper session"><option value="Friendly v NK Jugo"><option value="Match v NK Maestral"></datalist>';
+  h+='<label>'+t('Date')+'</label><input type="date" id="evDate" value="'+(e?e.date:dISO(0))+'"><div class="chips">'+[['Today',dISO(0)],['Tomorrow',dISO(1)]].map(function(c){ return '<button type="button" class="fchip" data-date="'+c[1]+'">'+t(c[0])+'</button>'; }).join('')+tm.days.map(function(d){ var iso=nextDow(d); return '<button type="button" class="fchip" data-date="'+iso+'">'+fmtDay(iso,{weekday:'short',day:'numeric'})+' · '+t('usual')+'</button>'; }).join('')+'</div>';
+  if(!isEdit) h+='<button type="button" class="toggle" id="evRepeat" aria-pressed="false"><span class="sw"></span>'+t('Repeat every week')+'</button><div id="evUntilWrap" hidden><label>'+t('Until')+'</label><input type="date" id="evUntil" value="'+dISO(28)+'"></div>';
+  h+='<div class="frow3"><div><label>'+t('Start')+'</label><input type="time" id="evStart" value="'+esc(e?e.start:tm.time)+'"></div><div><label>'+t('Arrive')+'</label><input type="time" id="evArrive" value="'+esc(e?e.arrive:addMin(tm.time,-tm.arrTrain))+'"></div><div><label>'+t('Ends')+'</label><input type="time" id="evEnds" value="'+esc(e?e.ends:addMin(tm.time,75))+'"></div></div><div class="chips"><button type="button" class="fchip" id="evUsual">'+t('Usual time')+' '+tm.time+'</button><span class="hint" style="align-self:center">'+t('Start fills Arrive and Ends until you change them.')+'</span></div>';
+  h+='<div id="evMatchWrap"'+(type==='match'?'':' hidden')+'><label>'+t('Opponent')+'</label><input type="text" id="evOpp" list="evOpps" value="'+esc(e&&e.opp?e.opp:'')+'"><datalist id="evOpps">'+OPP.map(function(o){return '<option value="'+esc(o)+'">';}).join('')+'</datalist><div class="seg" id="evHome" style="margin-top:8px"><button type="button" data-home="1" aria-pressed="'+(!e||e.home!==false)+'">'+t('Home')+'</button><button type="button" data-home="0" aria-pressed="'+(!!e&&e.home===false)+'">'+t('Away')+'</button></div></div>';
+  h+='<label>'+t('Venue')+'</label><div id="evVenue"></div><label>'+t('Field')+'</label><input type="text" id="evField" value="'+esc(e?e.field||'':tm.field)+'" placeholder="2">';
+  h+='<label>'+t('Details for the families')+'</label><textarea id="evDetails" placeholder="'+t('e.g. bring both kits; parents welcome')+'">'+esc(e?e.details||'':'')+'</textarea>';
+  h+='<div class="stack" style="margin-top:10px"><button type="button" class="toggle" id="evNotify" aria-pressed="true"><span class="sw"></span>'+t('Notify families now (push, email or text — each family’s own choice)')+'</button><button type="button" class="toggle" id="evAsk" aria-pressed="true"><span class="sw"></span>'+t('Ask for Going / Maybe / Not going')+'</button>'+(isEdit?'':'<button type="button" class="toggle" id="evDefault" aria-pressed="false"><span class="sw"></span>'+t('Save venue and field as the team default')+'</button>')+'</div>';
+  h+='<div class="mbtns"><span class="hint" id="evSummary" style="margin-right:auto;align-self:center"></span><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="evSave">'+(isEdit?t('Send the change'):t('Post to families'))+'</button></div>';
+  openModal(h, true);
+  var getVenue=placePicker($('evVenue'), e?e.venue:tm.venue);
+  var touched={arrive:false,ends:false,title:!!e};
+  function curType(){ return $('evType').querySelector('[aria-pressed="true"]').dataset.k; }
+  function curTeams(){ return Array.prototype.map.call($('evTeams').querySelectorAll('.fchip.on'),function(b){return b.dataset.team;}); }
+  function summary(){ var n=famN(curTeams()); var rep=$('evRepeat')&&$('evRepeat').getAttribute('aria-pressed')==='true'; var cnt=1; if(rep){ var a=dateOf($('evDate').value), b=dateOf($('evUntil').value); cnt=Math.max(1,Math.min(12,Math.floor((b-a)/604800000)+1)); } $('evSummary').textContent=(rep?cnt+' × ':'')+t('posts to')+' '+n+' '+t('families'); }
+  function autoTitle(){ if(touched.title) return; var k=curType(); var v={training:t('Training'),match:t('Match v')+' '+($('evOpp').value||'…'),tournament:t('Tournament'),duty:t('Duty'),no_session:t('No training')}[k]; $('evTitle').value=v; }
+  function autoTimes(){ var k=curType(), st=$('evStart').value; if(!st) return; var tmx=teamOf(curTeams()[0]||tm.id)||tm; if(!touched.arrive) $('evArrive').value=addMin(st,-(k==='match'||k==='tournament'?tmx.arrMatch:tmx.arrTrain)); if(!touched.ends) $('evEnds').value=addMin(st,k==='training'?75:(k==='match'?75:120)); }
+  $('evType').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; $('evType').querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); $('evMatchWrap').hidden=b.dataset.k!=='match'; var ns=b.dataset.k==='no_session'; ['evStart','evArrive','evEnds'].forEach(function(id){ $(id).disabled=ns; }); autoTitle(); autoTimes(); });
+  $('evTeams').addEventListener('click',function(ev){ var b=ev.target.closest('.fchip'); if(!b) return; b.classList.toggle('on'); b.setAttribute('aria-pressed',b.classList.contains('on')); summary(); });
+  $('mbox').addEventListener('click',function(ev){ var b=ev.target.closest('[data-date]'); if(b){ $('evDate').value=b.dataset.date; summary(); } });
+  $('evTitle').addEventListener('input',function(){ touched.title=true; });
+  $('evOpp').addEventListener('input',autoTitle);
+  $('evStart').addEventListener('input',autoTimes); $('evArrive').addEventListener('input',function(){ touched.arrive=true; }); $('evEnds').addEventListener('input',function(){ touched.ends=true; });
+  $('evUsual').addEventListener('click',function(){ $('evStart').value=tm.time; autoTimes(); });
+  $('evHome').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; $('evHome').querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true'); if(b.dataset.home==='0'&&$('evOpp').value){ $('evVenue').querySelector('.ppIn').value='Igralište '+$('evOpp').value; $('evVenue').querySelector('.ppVal').value='Igralište '+$('evOpp').value; } });
+  if($('evRepeat')) $('evRepeat').addEventListener('click',function(){ var on=this.getAttribute('aria-pressed')!=='true'; this.setAttribute('aria-pressed',on); $('evUntilWrap').hidden=!on; summary(); });
+  ['evNotify','evAsk','evDefault'].forEach(function(id){ var el=$(id); if(el) el.addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true'); }); });
+  $('evDate').addEventListener('input',summary); if($('evUntil')) $('evUntil').addEventListener('input',summary);
+  autoTitle(); summary();
+  $('evSave').addEventListener('click',function(){
+    var teams=curTeams(); if(!teams.length){ toast(t('Pick at least one team.')); return; }
+    var k=curType(), title=$('evTitle').value.trim()||TYPE(k), date=$('evDate').value; if(!date){ toast(t('Pick a date.')); return; }
+    var n=famN(teams), made=0;
+    var dates=[date]; if($('evRepeat')&&$('evRepeat').getAttribute('aria-pressed')==='true'){ var d=dateOf(date), until=dateOf($('evUntil').value||date); while(true){ d.setDate(d.getDate()+7); if(d>until||dates.length>=12) break; dates.push(isoOf(d)); } }
+    dates.forEach(function(ds){ teams.forEach(function(tid){
+      if(isEdit){ e.type=k; e.title=title; e.date=ds; e.start=k==='no_session'?'':$('evStart').value; e.arrive=k==='no_session'?'':$('evArrive').value; e.ends=k==='no_session'?'':$('evEnds').value; e.venue=getVenue(); e.field=$('evField').value.trim(); e.details=$('evDetails').value.trim(); e.opp=$('evOpp').value.trim()||null; e.home=$('evHome').querySelector('[aria-pressed="true"]').dataset.home==='1'; e.changed=true; e.receipt={sent:famCount(e.team),seen:0,replied:0}; }
+      else { ev({team:tid,type:k,title:title,date:ds,start:k==='no_session'?'':$('evStart').value,arrive:k==='no_session'?'':$('evArrive').value,ends:k==='no_session'?'':$('evEnds').value,venue:getVenue(),field:$('evField').value.trim(),details:$('evDetails').value.trim(),opp:$('evOpp').value.trim()||null,home:$('evHome').querySelector('[aria-pressed="true"]').dataset.home==='1',receipt:{sent:famCount(tid),seen:0,replied:0}}); made++; }
+    }); });
+    if(!isEdit&&$('evDefault').getAttribute('aria-pressed')==='true') teams.forEach(function(tid){ var x=teamOf(tid); x.venue=getVenue()||x.venue; x.field=$('evField').value.trim()||x.field; });
+    closeModal(); renderAll();
+    toast(isEdit?t('Change sent to {n} families').replace('{n}',n):t('Posted {m} event(s) to {n} families — they confirm attendance in their app').replace('{m}',made).replace('{n}',n));
+    S.view='upcoming'; renderSchedule(); go('schedule'); var el=$('ev-'+(isEdit?e.id:EVENTS[EVENTS.length-1].id)); if(el) el.scrollIntoView({block:'center'});
+  });
+}
+/* ---------- cancel / restore ---------- */
+function openCancel(e){
+  var n=famCount(e.team);
+  var h=mh(t('Cancel session')+': '+esc(e.title), fmtLong(e.date)+(e.start?' · '+e.start:'')+' · '+t('every family gets the cancellation at once'));
+  h+='<label>'+t('Reason')+'</label><div class="chips" id="cxReason">'+['Heavy rain — pitch closed','Pitch unavailable','Coach unavailable','Public holiday','Other'].map(function(r,i){ return '<button type="button" class="fchip'+(i===0?' on':'')+'" data-r="'+esc(r)+'">'+t(r)+'</button>'; }).join('')+'</div>';
+  h+='<label>'+t('Note for the families')+'</label><textarea id="cxNote" placeholder="'+t('optional — e.g. we will add a session on Thursday')+'"></textarea>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Keep it')+'</button><button type="button" class="btn danger" id="cxGo">🚫 '+t('Cancel and notify {n} families').replace('{n}',n)+'</button></div>';
+  openModal(h);
+  $('cxReason').addEventListener('click',function(ev){ var b=ev.target.closest('.fchip'); if(!b) return; $('cxReason').querySelectorAll('.fchip').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); });
+  $('cxGo').addEventListener('click',function(){ var r=$('cxReason').querySelector('.on').dataset.r; e.status='cancelled'; e.cancelReason=t(r)+($('cxNote').value.trim()?' — '+$('cxNote').value.trim():''); e.receipt={sent:n,seen:0}; closeModal(); renderAll(); toast(t('Cancelled — {n} families notified').replace('{n}',n)); });
+}
+/* ---------- nudge ---------- */
+function openNudge(e){
+  var r=rsvpSum(e), n=r.q.length;
+  var h=mh('🔔 '+t('Remind')+' · '+esc(e.title), fmtRel(e.date)+(e.start?' · '+e.start:'')+' · '+n+' '+t('families have not answered'));
+  h+='<div class="plist">'+r.q.map(function(p){ return '<div class="prow" style="cursor:default"><span class="av sm">'+esc(initials(p.first,p.last))+'</span><span class="pn"><b>'+esc(p.first+' '+p.last)+'</b><small>'+t('Parents')+': '+esc(p.parents.join(', '))+'</small></span><span class="pr">'+chanIcons(p)+'</span></div>'; }).join('')+'</div>';
+  h+='<p class="hint">📱 '+t('push')+' · ✉️ '+t('email')+' · 💬 '+t('text message')+' — '+t('each family’s own notification settings; the reminder deep-links to this event.')+'</p>';
+  h+='<div class="note">'+t('Automatic reminder for this team')+': '+(teamOf(e.team).autoNudge?t(teamOf(e.team).nudgeWhen==='day-before-18'?'the day before at 18:00':'the morning at 08:00'):t('off'))+' · <button type="button" class="btn link" data-act="settings" data-team="'+e.team+'">'+t('change')+'</button></div>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Not now')+'</button><button type="button" class="btn primary" id="ngGo">'+t('Send reminder to {n} families').replace('{n}',n)+'</button></div>';
+  openModal(h);
+  $('ngGo').addEventListener('click',function(){ e.nudgedAt=new Date(); closeModal(); renderAll(); toast(t('Reminder sent to {n} families').replace('{n}',n)); });
+}
+/* ---------- register ---------- */
+function openRegister(e){
+  var ps=teamPlayers(e.team), reg=e.register?Object.assign({},e.register):{};
+  if(!e.register) ps.forEach(function(p){ var v=e.rsvp[p.id]; reg[p.id]= v==='n'?'a':'p'; });
+  var h=mh('📋 '+t('Register')+' · '+esc(e.title), fmtLong(e.date)+(e.start?' · '+e.start:'')+' · '+t('prefilled from Going / Not going — tap to correct'));
+  h+='<div class="plist" id="regList">'+ps.map(function(p){ var v=e.rsvp[p.id]; return '<div class="prow regrow" style="cursor:default"><span class="av sm">'+esc(initials(p.first,p.last))+'<span class="sh">'+p.shirt+'</span></span><span class="pn"><b>'+esc(p.first+' '+p.last)+'</b><small>'+(v==='g'?'✅ '+t('said Going'):(v==='n'?'❌ '+t('said Not going'):(v==='m'?'❔ '+t('said Maybe'):'💤 '+t('no reply'))))+'</small></span><span class="seg" data-pid="'+p.id+'"><button type="button" data-v="p" aria-pressed="'+(reg[p.id]==='p')+'">'+t('Here')+'</button><button type="button" data-v="l" aria-pressed="'+(reg[p.id]==='l')+'">'+t('Late')+'</button><button type="button" data-v="a" aria-pressed="'+(reg[p.id]==='a')+'">'+t('Absent')+'</button></span></div>'; }).join('')+'</div>';
+  h+='<label>'+t('Session note')+'</label><textarea id="regNote" placeholder="'+t('What you worked on — e.g. first touch, 3v1, shooting')+'">'+esc(e.sessionNote||'')+'</textarea><button type="button" class="toggle" id="regShare" aria-pressed="'+(!!e.sessionNote)+'"><span class="sw"></span>'+t('Share the note with the families')+'</button>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="regSave">'+t('Save register')+'</button></div>';
+  openModal(h, true);
+  $('regList').addEventListener('click',function(ev){ var b=ev.target.closest('button[data-v]'); if(!b) return; var seg=b.parentNode; seg.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); reg[seg.dataset.pid]=b.dataset.v; });
+  $('regShare').addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true'); });
+  $('regSave').addEventListener('click',function(){ e.register=reg; var note=$('regNote').value.trim(); e.sessionNote=($('regShare').getAttribute('aria-pressed')==='true'&&note)?note:''; e.privateNote=note; closeModal(); renderAll(); toast(t('Register saved — attendance updated on every player card')); });
+}
+/* ---------- lineup ---------- */
+var FORMS={5:['1-2-1','2-2','1-1-2'],7:['2-3-1','3-2-1','3-1-2','2-2-2','3-3'],9:['3-3-2','3-2-3','2-4-2','4-3-1'],11:['4-3-3','4-4-2','4-2-3-1','3-5-2','3-4-3']};
+function slotCoords(formation){ var rows=formation.split('-').map(Number), out=[{x:50,y:89,pos:'GK'}]; rows.forEach(function(n,i){ var y=rows.length>1? 70-i*(52/(rows.length-1)) : 44; for(var j=0;j<n;j++) out.push({x:(j+1)*100/(n+1),y:y,pos:i===0?'DEF':(i===rows.length-1?'FWD':'MID')}); }); return out; }
+function openLineup(e){
+  var tm=teamOf(e.team), st={v:1,sel:null,selP:null,vis:tm.lineupVis};
+  e.lineup=e.lineup||{}; [1,2].forEach(function(v){ if(!e.lineup[v]) e.lineup[v]={size:tm.size,formation:FORMS[tm.size][0],slots:[]}; var L=e.lineup[v]; L.slots=L.slots||[]; while(L.slots.length<L.size) L.slots.push(null); });
+  function draw(){
+    var L=e.lineup[st.v], coords=slotCoords(L.formation), r=rsvpSum(e), order=r.g.concat(r.m,r.q,r.n), used={}; L.slots.forEach(function(s){ if(s) used[s]=1; });
+    var h=mh('🧩 '+t('Lineup')+' · '+esc(e.title), fmtRel(e.date)+(e.start?' · '+e.start:'')+' · '+t('tap a spot on the pitch, then a player'));
+    h+='<div class="row between"><div class="seg">'+[1,2].map(function(v){ return '<button type="button" data-v="'+v+'" aria-pressed="'+(st.v===v)+'">'+t('Lineup')+' '+v+'</button>'; }).join('')+'</div><div class="chips" style="margin:0">'+[5,7,9,11].map(function(n){ return '<button type="button" class="fchip'+(L.size===n?' on':'')+'" data-size="'+n+'">'+n+'</button>'; }).join('')+'</div></div>';
+    h+='<div class="chips">'+FORMS[L.size].map(function(f){ return '<button type="button" class="fchip'+(L.formation===f?' on blue':'')+'" data-form="'+f+'">'+f+'</button>'; }).join('')+'</div>';
+    h+='<div class="luPitch"><div class="luBox top"></div><div class="luBox bot"></div>'+coords.map(function(c,i){ var pid=L.slots[i], p=pid?pl(pid):null, warn=p&&e.rsvp[p.id]==='n'; return '<button type="button" class="luSlot'+(p?' filled':'')+(st.sel===i?' sel':'')+(warn?' warn':'')+'" style="left:'+c.x+'%;top:'+c.y+'%" data-slot="'+i+'"><span class="luDot">'+(p?p.shirt:c.pos)+'</span><span class="luName">'+(p?esc(p.first):'')+'</span></button>'; }).join('')+'</div>';
+    h+='<h3 class="sec" style="margin-top:4px">'+t('Bench')+' · '+t('sorted by who is going')+'</h3><div class="bench">'+order.map(function(p){ var v=e.rsvp[p.id]||'q'; return '<button type="button" class="'+(v==='g'?'g':(v==='m'?'m':(v==='n'?'n':'')))+(used[p.id]?' used':'')+(st.selP===p.id?' sel':'')+'" data-pl="'+p.id+'">'+p.shirt+' '+esc(p.first)+(v==='g'?' ✅':(v==='m'?' ❔':(v==='n'?' ❌':' 💤')))+'</button>'; }).join('')+'</div>';
+    h+='<label>'+t('Families see this lineup')+'</label><div class="seg" id="luVis">'+[['2h','2 h before kick-off'],['now','As soon as saved'],['never','Never']].map(function(o){ return '<button type="button" data-vis="'+o[0]+'" aria-pressed="'+(st.vis===o[0])+'">'+t(o[1])+'</button>'; }).join('')+'</div>';
+    h+='<div class="mbtns"><button type="button" class="btn" id="luClear">'+t('Clear')+'</button><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="luSave">'+t('Save lineup')+'</button></div>';
+    var box=$('mbox'); box.className='mbox wide'; box.innerHTML=h; $('modal').classList.add('on');
+    box.onclick=function(ev){
+      var b=ev.target.closest('button'); if(!b) return;
+      if(b.dataset.v){ st.v=+b.dataset.v; st.sel=null; st.selP=null; draw(); return; }
+      if(b.dataset.size){ L.size=+b.dataset.size; L.formation=FORMS[L.size][0]; L.slots=L.slots.slice(0,L.size); while(L.slots.length<L.size) L.slots.push(null); st.sel=null; draw(); return; }
+      if(b.dataset.form){ L.formation=b.dataset.form; draw(); return; }
+      if(b.dataset.slot!=null){ var i=+b.dataset.slot; if(st.selP){ L.slots=L.slots.map(function(s){ return s===st.selP?null:s; }); L.slots[i]=st.selP; st.selP=null; st.sel=null; } else if(L.slots[i]&&st.sel===i){ L.slots[i]=null; st.sel=null; } else st.sel=i; draw(); return; }
+      if(b.dataset.pl){ var pid=b.dataset.pl; if(st.sel!=null){ L.slots=L.slots.map(function(s){ return s===pid?null:s; }); L.slots[st.sel]=pid; st.sel=null; } else st.selP=(st.selP===pid?null:pid); draw(); return; }
+      if(b.dataset.vis){ st.vis=b.dataset.vis; draw(); return; }
+      if(b.id==='luClear'){ L.slots=L.slots.map(function(){return null;}); st.sel=null; draw(); return; }
+      if(b.id==='luSave'){ tm.lineupVis=st.vis; box.onclick=null; closeModal(); renderAll(); toast(t('Lineup saved')+' · '+t({'2h':'families see it 2 h before kick-off','now':'families can see it now','never':'kept to yourself'}[st.vis])); return; }
+      if(b.hasAttribute('data-close')){ box.onclick=null; closeModal(); }
+    };
+  }
+  draw();
+}
+/* ---------- result ---------- */
+function openResult(e){
+  var ps=teamPlayers(e.team), r=e.result||{us:'',them:'',scorers:{},assists:{},notes:''};
+  var h=mh('⚽ '+t('Score')+' · '+esc(e.title), fmtLong(e.date)+' · '+t('goes to every family’s Stats tab; each family sees its own player’s goals'));
+  h+='<div class="scoreBig"><span class="side">'+esc(CLUB.name)+'</span><input type="number" id="rsUs" min="0" value="'+esc(r.us)+'"><span class="vs">:</span><input type="number" id="rsThem" min="0" value="'+esc(r.them)+'"><span class="side">'+esc(e.opp||t('Them'))+'</span></div>';
+  h+='<h3 class="sec">'+t('Goals and assists')+' <span class="muted" style="font-weight:600;letter-spacing:0;text-transform:none">'+t('optional')+'</span></h3><div id="rsRows">'+ps.map(function(p){ var reg=e.register&&e.register[p.id]; if(reg==='a') return ''; return '<div class="scorerow"><span class="av sm">'+esc(initials(p.first,p.last))+'<span class="sh">'+p.shirt+'</span></span><span class="who">'+esc(p.first+' '+p.last)+'</span><label class="inline" style="margin:0">⚽ <input type="number" min="0" data-g="'+p.id+'" value="'+(r.scorers[p.id]||'')+'" placeholder="0"></label><label class="inline" style="margin:0">🅰 <input type="number" min="0" data-a="'+p.id+'" value="'+(r.assists[p.id]||'')+'" placeholder="0"></label></div>'; }).join('')+'</div>';
+  h+='<label>'+t('Notes')+'</label><textarea id="rsNotes" placeholder="'+t('e.g. great second half')+'">'+esc(r.notes||'')+'</textarea>';
+  h+='<button type="button" class="toggle" id="rsRecap" aria-pressed="true"><span class="sw"></span>'+t('Send families a recap card they can share')+'</button>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="rsSave">'+t('Save score')+'</button></div>';
+  openModal(h, true);
+  $('rsRecap').addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true'); });
+  $('rsSave').addEventListener('click',function(){ var us=$('rsUs').value, th=$('rsThem').value; if(us===''||th===''){ toast(t('Enter both scores.')); return; } var sc={},as={}; $('rsRows').querySelectorAll('[data-g]').forEach(function(i){ if(+i.value>0) sc[i.dataset.g]=+i.value; }); $('rsRows').querySelectorAll('[data-a]').forEach(function(i){ if(+i.value>0) as[i.dataset.a]=+i.value; }); e.result={us:+us,them:+th,scorers:sc,assists:as,notes:$('rsNotes').value.trim()}; e.needsResult=false; closeModal(); renderAll(); toast(t('Score saved — families see it on their Stats tab')); });
+}
+/* ---------- tournament ---------- */
+function openTourInfo(tr){
+  var h=mh('🏆 '+esc(tr.name), fmtDay(tr.dates[0])+' – '+fmtDay(tr.dates[1])+' · '+teamOf(tr.team).name);
+  h+='<dl class="kv"><dt>'+t('Venue')+'</dt><dd>📍 <a href="'+mapsUrl(tr.venue+', '+tr.addr)+'" target="_blank" rel="noopener">'+esc(tr.venue)+'</a><br><span class="muted">'+esc(tr.addr)+'</span></dd><dt>'+t('Arrive')+'</dt><dd>'+tr.arriveMin+' min '+t('before the first game')+' → '+(tr.fixtures[0]&&tr.fixtures[0].time?addMin(tr.fixtures[0].time,-tr.arriveMin):'—')+' '+fmtDay(tr.dates[0],{weekday:'short'})+'</dd><dt>'+t('Notes')+'</dt><dd>'+esc(tr.notes)+'</dd></dl>';
+  h+='<h3 class="sec">🔗 '+t('Links')+' <button type="button" class="link" id="tiAddLink">＋ '+t('Add link')+'</button></h3>'+tr.links.map(function(l){ return '<div class="doc"><span class="ic">🔗</span><span class="dn"><a href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+'</a><br><small>'+esc(l.url.replace(/^https?:\/\//,'').split('/')[0])+' · '+t('added by you')+'</small></span></div>'; }).join('');
+  h+='<h3 class="sec">📄 '+t('Documents')+' <button type="button" class="link" id="tiAddDoc">📎 '+t('Add document')+'</button></h3>'+tr.docs.map(function(d){ return '<div class="doc"><span class="ic">'+(d.kind==='pdf'?'📄':'📷')+'</span><span class="dn">'+esc(d.name)+'<br><small>'+esc(d.size)+' · '+t('opens inside the family app')+'</small></span></div>'; }).join('');
+  h+='<h3 class="sec">'+t('Fixtures')+'</h3>'+tr.fixtures.map(function(f,i){ return '<div class="fixt"><span class="muted">'+fmtDay(f.date,{weekday:'short'})+(f.time?' '+f.time:'')+(f.pitch?' · '+t('Pitch')+' '+f.pitch:'')+'</span><span>'+esc(f.home)+' – '+esc(f.away)+'</span><span class="sc">'+(f.us!=null?f.us+' : '+f.them:'—')+'</span></div>'; }).join('');
+  h+='<p class="hint">'+t('Everything on this card is what each family sees on its Tournaments tab: dates, arrival time, the venue pin, links and documents.')+'</p>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Close')+'</button></div>';
+  openModal(h, true);
+  $('tiAddLink').addEventListener('click',function(){ var u=prompt(t('Link (address)')); if(!u) return; if(!/^https?:/.test(u)) u='https://'+u; tr.links.push({label:u.replace(/^https?:\/\//,'').split('/')[0],url:u}); openTourInfo(tr); toast(t('Link added — families see it now')); });
+  $('tiAddDoc').addEventListener('click',function(){ tr.docs.push({name:'Group tables.pdf',size:'310 KB',kind:'pdf'}); openTourInfo(tr); toast(t('Document added (design preview)')); });
+}
+function openAddTour(){
+  var tid=S.scope==='all'?'t16':S.scope;
+  var h=mh('🏆 '+t('Add tournament'), t('Every family gets the days, the arrival rule, the venue pin and the documents on its Tournaments tab.'));
+  h+='<label>'+t('Name')+'</label><input type="text" id="toName" placeholder="Turnir …"><label>'+t('Team')+'</label><select id="toTeam">'+teamOpts(tid)+'</select>';
+  h+='<div class="frow"><div><label>'+t('From')+'</label><input type="date" id="toFrom" value="'+dISO(19)+'"></div><div><label>'+t('To')+'</label><input type="date" id="toTo" value="'+dISO(20)+'"></div></div>';
+  h+='<label>'+t('Venue')+'</label><div id="toVenue"></div>';
+  h+='<div class="frow"><div><label>'+t('First game')+'</label><input type="time" id="toFirst" value="09:00"></div><div><label>'+t('Arrive (min before)')+'</label><input type="number" id="toArr" value="45"></div></div>';
+  h+='<label>'+t('Links')+'</label><input type="text" id="toLink" placeholder="https://…"><label>'+t('Notes')+'</label><textarea id="toNotes" placeholder="'+t('check-in, parking, kits…')+'"></textarea>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="toSave">'+t('Post to families')+'</button></div>';
+  openModal(h, true);
+  var getV=placePicker($('toVenue'),'');
+  $('toSave').addEventListener('click',function(){ var name=$('toName').value.trim(); if(!name){ toast(t('Give the tournament a name.')); return; } var team=$('toTeam').value, from=$('toFrom').value, to=$('toTo').value||from, first=$('toFirst').value, arr=+$('toArr').value||45, link=$('toLink').value.trim();
+    var tr={id:uid(),team:team,name:name,dates:[from,to],venue:getV()||t('Venue to confirm'),addr:'',arriveMin:arr,groups:{},fixtures:[{date:from,time:first,pitch:'',home:CLUB.name,away:'TBC'}],links:link?[{label:link.replace(/^https?:\/\//,'').split('/')[0],url:/^https?:/.test(link)?link:'https://'+link}]:[],docs:[],notes:$('toNotes').value.trim()};
+    TOURN.push(tr); var d=dateOf(from), n=0; while(isoOf(d)<=to&&n<4){ ev({team:team,type:'tournament',title:name+(to!==from?' — '+t('day')+' '+(n+1):''),date:isoOf(d),start:n===0?first:'',arrive:n===0?addMin(first,-arr):'',ends:'',venue:tr.venue,venueMap:true,tournamentId:tr.id,receipt:{sent:famCount(team),seen:0,replied:0}}); d.setDate(d.getDate()+1); n++; }
+    closeModal(); renderAll(); go('matches'); toast(t('Tournament posted to {n} families').replace('{n}',famCount(team))); });
+}
+function openFixScore(tr, i){ var f=tr.fixtures[i]; var us=prompt(t('Our goals')+' — '+f.home+' – '+f.away,'0'); if(us==null) return; var th=prompt(t('Their goals'),'0'); if(th==null) return; f.us=+us; f.them=+th; renderAll(); toast(t('Fixture score saved')); }
+/* ---------- posts, polls, threads ---------- */
+function openCompose(preset){
+  var tid=S.scope==='all'?'t16':S.scope, kind=(preset&&preset.kind)||'announce';
+  var h=mh('📣 '+t('New post or poll'), t('Goes to the parents of every player in the team — push, email or text per family. Never to a child’s login.'));
+  h+='<div class="seg" id="cpKind"><button type="button" data-k="announce" aria-pressed="'+(kind==='announce')+'">📣 '+t('Announcement')+'</button><button type="button" data-k="poll" aria-pressed="'+(kind==='poll')+'">📊 '+t('Poll')+'</button></div>';
+  h+='<label>'+t('Team')+'</label><select id="cpTeam">'+teamOpts(tid)+'</select>';
+  h+='<label>'+t('Message')+'</label><textarea id="cpText" placeholder="'+t('Write it the way you would on WhatsApp — short and clear.')+'">'+esc((preset&&preset.text)||'')+'</textarea>';
+  h+='<div id="cpPoll"'+(kind==='poll'?'':' hidden')+'><label>'+t('Options')+'</label><div class="stack" id="cpOpts"><input type="text" placeholder="'+t('Option')+' 1" value="'+t('Yes')+'"><input type="text" placeholder="'+t('Option')+' 2" value="'+t('No')+'"><input type="text" placeholder="'+t('Option')+' 3"></div><button type="button" class="btn link" id="cpAddOpt">＋ '+t('Add option')+'</button><label>'+t('Closes')+'</label><input type="datetime-local" id="cpCloses" value="'+dISO(2)+'T18:00"></div>';
+  h+='<div class="chips" style="margin-top:10px"><button type="button" class="fchip" id="cpPhoto">📎 '+t('Photo')+'</button><button type="button" class="fchip" id="cpPdf">📎 PDF</button></div>';
+  h+='<div class="stack" style="margin-top:8px"><button type="button" class="toggle" id="cpReply" aria-pressed="'+(kind==='poll')+'"><span class="sw"></span>'+t('Ask for a reply')+'</button><button type="button" class="toggle" id="cpPin" aria-pressed="false"><span class="sw"></span>'+t('Pin to the top for the families')+'</button></div>';
+  h+='<div class="mbtns"><span class="hint" id="cpSum" style="margin-right:auto;align-self:center"></span><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="cpSend">'+t('Send')+'</button></div>';
+  openModal(h, true);
+  function sum(){ $('cpSum').textContent=t('to')+' '+famCount($('cpTeam').value)+' '+t('families'); } sum();
+  $('cpTeam').addEventListener('change',sum);
+  $('cpKind').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; $('cpKind').querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); $('cpPoll').hidden=b.dataset.k!=='poll'; if(b.dataset.k==='poll') $('cpReply').setAttribute('aria-pressed','true'); });
+  $('cpAddOpt').addEventListener('click',function(){ var i=document.createElement('input'); i.type='text'; i.placeholder=t('Option')+' '+($('cpOpts').children.length+1); $('cpOpts').appendChild(i); i.focus(); });
+  ['cpReply','cpPin'].forEach(function(id){ $(id).addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true'); }); });
+  $('cpPhoto').addEventListener('click',function(){ toast(t('Attachments open the phone’s picker in the real app')); }); $('cpPdf').addEventListener('click',function(){ toast(t('Attachments open the phone’s picker in the real app')); });
+  $('cpSend').addEventListener('click',function(){ var text=$('cpText').value.trim(); if(!text){ toast(t('Write the message first.')); return; } var k=$('cpKind').querySelector('[aria-pressed="true"]').dataset.k, team=$('cpTeam').value;
+    var p={id:uid(),team:team,kind:k,at:new Date(),pinned:$('cpPin').getAttribute('aria-pressed')==='true',needsReply:$('cpReply').getAttribute('aria-pressed')==='true',text:text,replies:[],receipt:{sent:famCount(team),seen:0,replied:0}};
+    if(k==='poll'){ var opts=Array.prototype.map.call($('cpOpts').querySelectorAll('input'),function(i){return i.value.trim();}).filter(Boolean); if(opts.length<2){ toast(t('A poll needs at least two options.')); return; } p.poll={opts:opts.map(function(o){return {t:o,v:[]};}),closes:$('cpCloses').value.replace('T',' ')}; }
+    POSTS.unshift(p); closeModal(); renderAll(); go('messages'); toast(t('Sent to {n} families').replace('{n}',famCount(team))); });
+}
+function openPollWho(p){
+  var fam=teamPlayers(p.team).filter(function(x){return x.family==='app';}), answered={}; p.poll.opts.forEach(function(o){ o.v.forEach(function(id){ answered[id]=o.t; }); });
+  var h=mh('📊 '+esc(p.text), t('closes')+' '+esc(fmtCloses(p.poll.closes)));
+  p.poll.opts.forEach(function(o){ h+='<h3 class="sec">'+esc(o.t)+' · '+o.v.length+'</h3><div class="names">'+(o.v.length?nameList(o.v.map(pl).filter(Boolean)):'—')+'</div>'; });
+  var na=fam.filter(function(x){return !answered[x.id];});
+  h+='<h3 class="sec">💤 '+t('Not answered')+' · '+na.length+'</h3><div class="names">'+(na.length?nameList(na):'—')+'</div>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Close')+'</button>'+(na.length?'<button type="button" class="btn primary" data-act="pollnudge" data-id="'+p.id+'" data-close>🔔 '+t('Remind')+' '+na.length+'</button>':'')+'</div>';
+  openModal(h);
+}
+function openThread(th){
+  th.unread=0; renderHeader();
+  var h=mh('💬 '+t('{f} family').replace('{f}',th.family), th.players.map(function(id){var p=pl(id);return p?p.first+' '+p.last+' #'+p.shirt:'';}).join(', ')+' · '+t('Parents')+': '+esc(th.parents.join(', ')));
+  h+='<div class="msgs" id="thMsgs">'+th.msgs.map(function(m){ return '<div class="bub'+(m.me?' me':'')+'">'+esc(m.text)+'<small>'+(m.me?t('You'):esc(th.parents[0]))+' · '+fmtAgo(m.at)+'</small></div>'; }).join('')+'</div>';
+  h+='<div class="row" style="margin-top:10px;flex-wrap:nowrap"><input type="text" id="thIn" placeholder="'+t('Reply…')+'"><button type="button" class="btn primary" id="thSend">'+t('Send')+'</button></div>';
+  h+='<p class="hint">🔒 '+t('Parents only — never a child’s login. On the record for the family and for PitchPro safeguarding review.')+'</p>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Close')+'</button></div>';
+  openModal(h);
+  var box=$('thMsgs'); box.scrollTop=box.scrollHeight;
+  function send(){ var v=$('thIn').value.trim(); if(!v) return; th.msgs.push({me:true,text:v,at:new Date()}); openThread(th); toast(t('Sent to the parents')); }
+  $('thSend').addEventListener('click',send); $('thIn').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); send(); } });
+  renderMessages(); renderToday();
+}
+function openReplyPost(p){ var v=prompt(t('Reply to all families on this post')); if(!v) return; p.replies.push({who:COACH.first+' '+COACH.last,text:v,at:new Date(),me:true}); renderAll(); toast(t('Reply sent to {n} families').replace('{n}',p.receipt.sent)); }
+function openProposal(pr){
+  var clash=EVENTS.filter(function(e){ return e.team===pr.team&&e.date===pr.date&&e.status!=='cancelled'&&e.type!=='no_session'; });
+  var h=mh('📥 '+t('Proposed by')+' '+esc(pr.by), fmtAgo(pr.at)+' · '+teamOf(pr.team).name);
+  h+='<dl class="kv"><dt>'+t('What')+'</dt><dd>'+esc(pr.title)+'</dd><dt>'+t('When')+'</dt><dd>'+fmtLong(pr.date)+' · '+pr.start+'</dd><dt>'+t('Where')+'</dt><dd>📍 <a href="'+mapsUrl(pr.venue+', '+CLUB.addr)+'" target="_blank" rel="noopener">'+esc(pr.venue)+'</a></dd><dt>'+t('Note')+'</dt><dd>'+esc(pr.note)+'</dd></dl>';
+  if(clash.length) h+='<div class="note">⚠ '+t('Clashes with')+' <b>'+esc(clash[0].title)+'</b> '+(clash[0].start?clash[0].start:'')+' — '+t('accepting adds it anyway; declining sends your note to the parent.')+'</div>';
+  h+='<label>'+t('Note to the parent')+'</label><textarea id="prNote" placeholder="'+t('optional')+'"></textarea>';
+  h+='<div class="mbtns"><button type="button" class="btn danger" id="prNo">'+t('Decline')+'</button><button type="button" class="btn primary" id="prYes">'+t('Accept and post to families')+'</button></div>';
+  openModal(h);
+  function drop(){ PROPOSALS.splice(PROPOSALS.indexOf(pr),1); closeModal(); renderAll(); }
+  $('prYes').addEventListener('click',function(){ ev({team:pr.team,type:pr.type,title:pr.title,date:pr.date,start:pr.start,arrive:addMin(pr.start,-teamOf(pr.team).arrMatch),ends:addMin(pr.start,75),venue:pr.venue,field:teamOf(pr.team).field,details:pr.note,source:'parent',receipt:{sent:famCount(pr.team),seen:0,replied:0}}); drop(); toast(t('Added and posted to {n} families').replace('{n}',famCount(pr.team))); });
+  $('prNo').addEventListener('click',function(){ drop(); toast(t('Declined — your note went to')+' '+pr.by.split(' ')[0]); });
+}
+/* ---------- roster ---------- */
+function openPlayer(p){
+  var past=EVENTS.filter(function(e){ return e.team===p.team&&e.register&&offOf(e.date)<0; }).sort(function(a,b){ return a.date<b.date?1:-1; }).slice(0,8).reverse();
+  var th=THREADS.filter(function(x){ return x.players.indexOf(p.id)>=0; })[0];
+  var h=mh('<span class="av" style="vertical-align:middle;margin-right:8px">'+esc(initials(p.first,p.last))+'<span class="sh">'+p.shirt+'</span></span>'+esc(p.first+' '+p.last), teamOf(p.team).name+' · '+t(p.pos));
+  h+='<div class="frow"><div><label>'+t('Shirt')+'</label><input type="number" id="plShirt" value="'+p.shirt+'" min="1" max="99"></div><div><label>'+t('Position')+'</label><select id="plPos">'+['GK','DEF','MID','FWD'].map(function(x){return '<option value="'+x+'"'+(p.pos===x?' selected':'')+'>'+t(x)+'</option>';}).join('')+'</select></div></div>';
+  h+='<h3 class="sec">'+t('Family')+'</h3>';
+  if(p.family==='app') h+='<div class="row"><span class="chip green">'+t('Family in app')+'</span><span>'+t('Parents')+': <b>'+esc(p.parents.join(', '))+'</b></span></div><p class="hint">'+(p.phoneShared?'📞 '+t('Phone shared by the parent')+': +385 9x xxx xxx':t('Phone not shared — message the family through the app.'))+'</p>';
+  else if(p.family==='invited') h+='<div class="row"><span class="chip amber">'+t('Invite sent')+'</span><span class="muted">'+t('waiting for the parent to enter the code')+'</span></div>';
+  else h+='<div class="row"><span class="chip red">'+t('No family yet')+'</span><span class="muted">'+t('the player is on the roster; nobody sees the schedule for them yet')+'</span></div>';
+  h+='<div class="actions">'+(p.family==='app'?'<button type="button" class="btn blue" id="plMsg">💬 '+t('Message the family')+'</button>':'<button type="button" class="btn primary" id="plInvite">🎟 '+(p.family==='invited'?t('Show the code'):t('Invite the family'))+'</button>')+'</div>';
+  h+='<h3 class="sec">'+t('Attendance')+' · '+t('last 8 sessions')+'</h3><div class="row">'+past.map(function(e){ var v=e.register[p.id]; return '<span title="'+fmtDay(e.date)+'" class="chip '+(v==='p'?'green':(v==='l'?'amber':'red'))+'">'+(v==='p'?'✓':(v==='l'?'L':'✗'))+'</span>'; }).join('')+'<span class="muted" style="font-size:12.5px">· '+p.att30+'% '+t('in 30 days')+'</span></div>';
+  h+='<div class="grid3" style="margin-top:10px"><div class="tile"><span class="big">'+p.apps+'</span><span class="lbl">'+t('Apps')+'</span></div><div class="tile"><span class="big">'+p.goals+'</span><span class="lbl">'+t('Goals')+'</span></div><div class="tile"><span class="big">'+p.assists+'</span><span class="lbl">'+t('Assists')+'</span></div></div>';
+  h+='<label>'+t('Coach’s note')+' <span style="text-transform:none;letter-spacing:0">('+t('only you see it')+')</span></label><textarea id="plNote" placeholder="'+t('e.g. works hard, needs the left foot')+'">'+esc(p.note||'')+'</textarea>';
+  h+='<div class="mbtns"><button type="button" class="btn danger" id="plRemove">'+t('Remove from team')+'</button><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="plSave">'+t('Save')+'</button></div>';
+  openModal(h, true);
+  if($('plMsg')) $('plMsg').addEventListener('click',function(){ if(!th){ th={id:uid(),team:p.team,family:p.last,players:[p.id],parents:p.parents,unread:0,msgs:[]}; THREADS.push(th); } openThread(th); });
+  if($('plInvite')) $('plInvite').addEventListener('click',function(){ var inv=INVITES.filter(function(i){return i.player===p.id&&i.status==='open';})[0]; if(!inv){ inv={code:mkCode(),forName:t('Family of')+' '+p.first+' '+p.last,team:p.team,player:p.id,expires:dISO(14),status:'open'}; INVITES.push(inv); p.family='invited'; } openInvite(inv); renderTeam(); });
+  $('plSave').addEventListener('click',function(){ p.shirt=+$('plShirt').value||p.shirt; p.pos=$('plPos').value; p.note=$('plNote').value.trim(); closeModal(); renderAll(); toast(t('Saved — the shirt number updates on every family’s roster')); });
+  $('plRemove').addEventListener('click',function(){ if(!confirm(t('Remove {name} from the team? The family keeps its own history.').replace('{name}',p.first))) return; PLAYERS.splice(PLAYERS.indexOf(p),1); closeModal(); renderAll(); toast(t('Removed')); });
+}
+function mkCode(){ var a='ABCDEFGHJKMNPQRSTUVWXYZ23456789', s=''; for(var i=0;i<10;i++){ s+=a.charAt(Math.floor(Math.random()*a.length)); if(i===4) s+='-'; } return s; }
+function openInvite(inv){
+  var h=mh('🎟 '+t('Invite the family'), esc(inv.forName)+' · '+teamOf(inv.team).label);
+  h+='<div class="code">'+inv.code+'</div><p class="hint" style="text-align:center">'+t('One-time code · expires')+' '+fmtDay(inv.expires)+'</p>';
+  h+='<ol style="font-size:13.5px;padding-left:20px;margin:10px 0;line-height:1.7"><li>'+t('Send the code and the app link yourself — WhatsApp, text or in person.')+'</li><li>'+t('The parent opens the Family Schedule app, creates an account and enters the code.')+'</li><li>'+t('Their player card links to this roster; they see the team schedule and can answer Going / Not going.')+'</li></ol>';
+  h+='<div class="note green">🔒 '+t('The app never emails or texts anyone on your behalf. You pass the code on; nothing is sent until the parent acts.')+'</div>';
+  h+='<div class="mbtns"><button type="button" class="btn" id="ivCopy">'+t('Copy invitation text')+'</button>'+(navigator.share?'<button type="button" class="btn primary" id="ivShare">↗ '+t('Share…')+'</button>':'')+'<button type="button" class="btn" data-close>'+t('Close')+'</button></div>';
+  openModal(h);
+  var text=t('Join {team} on PitchPro Family Schedule: {url} — your one-time code: {code}').replace('{team}',CLUB.name+' '+teamOf(inv.team).label).replace('{url}','https://pitchpropathways.com/schedule.html').replace('{code}',inv.code);
+  $('ivCopy').addEventListener('click',function(){ try{ navigator.clipboard.writeText(text).then(function(){ toast(t('Invitation text copied — paste it into a message.')); }); }catch(e){ toast(t('Select the code and copy it.')); } });
+  if($('ivShare')) $('ivShare').addEventListener('click',function(){ navigator.share({text:text}).catch(function(){}); });
+}
+function openAddPlayer(){
+  var tid=S.scope==='all'?'t16':S.scope;
+  var h=mh('＋ '+t('Add player'), t('Adds the player to the roster; invite the family so the schedule reaches them.'));
+  h+='<div class="frow"><div><label>'+t('First name')+'</label><input type="text" id="apFirst"></div><div><label>'+t('Surname')+'</label><input type="text" id="apLast"></div></div>';
+  h+='<div class="frow3"><div><label>'+t('Team')+'</label><select id="apTeam">'+teamOpts(tid)+'</select></div><div><label>'+t('Shirt')+'</label><input type="number" id="apShirt" min="1" max="99"></div><div><label>'+t('Position')+'</label><select id="apPos">'+['GK','DEF','MID','FWD'].map(function(x){return '<option value="'+x+'">'+t(x)+'</option>';}).join('')+'</select></div></div>';
+  h+='<p class="hint">'+t('Birth year is the team’s generation — no date of birth is stored here.')+'</p>';
+  h+='<button type="button" class="toggle" id="apInvite" aria-pressed="true"><span class="sw"></span>'+t('Create the family’s invite code now')+'</button>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="apSave">'+t('Add')+'</button></div>';
+  openModal(h);
+  $('apInvite').addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true'); });
+  $('apSave').addEventListener('click',function(){ var f=$('apFirst').value.trim(), l=$('apLast').value.trim(); if(!f||!l){ toast(t('First name and surname, please.')); return; } var team=$('apTeam').value; var p={id:uid(),team:team,first:f,last:l,shirt:+$('apShirt').value||(teamPlayers(team).length+1),pos:$('apPos').value,family:'none',parents:[],phoneShared:false,att30:0,apps:0,goals:0,assists:0,note:''}; PLAYERS.push(p); closeModal();
+    if($('apInvite').getAttribute('aria-pressed')==='true'){ var inv={code:mkCode(),forName:t('Family of')+' '+f+' '+l,team:team,player:p.id,expires:dISO(14),status:'open'}; INVITES.push(inv); p.family='invited'; renderAll(); openInvite(inv); } else { renderAll(); toast(t('Added to the roster')); } });
+}
+function openSettings(tid){
+  var tm=teamOf(tid||(S.scope==='all'?'t16':S.scope));
+  var h=mh('⚙ '+t('Team settings')+' · '+esc(tm.name), t('Defaults every new event starts from — the parser, the app and the families all inherit them.'));
+  h+='<label>'+t('Default venue')+'</label><div id="stVenue"></div><label>'+t('Field')+'</label><input type="text" id="stField" value="'+esc(tm.field)+'">';
+  h+='<label>'+t('Usual training days')+'</label><div class="chips" id="stDays">'+[0,1,2,3,4,5,6].map(function(d){ var iso=dISO((d-dow(dISO(0))+7)%7); return '<button type="button" class="fchip'+(tm.days.indexOf(d)>=0?' on':'')+'" data-d="'+d+'">'+fmtDay(iso,{weekday:'short'})+'</button>'; }).join('')+'</div>';
+  h+='<div class="frow3"><div><label>'+t('Usual time')+'</label><input type="time" id="stTime" value="'+tm.time+'"></div><div><label>'+t('Arrive before training')+'</label><input type="number" id="stArrT" value="'+tm.arrTrain+'"></div><div><label>'+t('Arrive before a match')+'</label><input type="number" id="stArrM" value="'+tm.arrMatch+'"></div></div>';
+  h+='<label>'+t('Families see the lineup')+'</label><div class="seg" id="stVis">'+[['2h','2 h before kick-off'],['now','As soon as saved'],['never','Never']].map(function(o){ return '<button type="button" data-vis="'+o[0]+'" aria-pressed="'+(tm.lineupVis===o[0])+'">'+t(o[1])+'</button>'; }).join('')+'</div>';
+  h+='<label>'+t('Attendance reminders')+'</label><button type="button" class="toggle" id="stAuto" aria-pressed="'+tm.autoNudge+'"><span class="sw"></span>'+t('Automatic reminder to families who have not answered')+'</button><div class="seg" id="stWhen"><button type="button" data-w="day-before-18" aria-pressed="'+(tm.nudgeWhen==='day-before-18')+'">'+t('Day before, 18:00')+'</button><button type="button" data-w="morning-08" aria-pressed="'+(tm.nudgeWhen==='morning-08')+'">'+t('Same morning, 08:00')+'</button></div>';
+  h+='<label>'+t('Parents')+'</label><button type="button" class="toggle" id="stPropose" aria-pressed="'+tm.propose+'"><span class="sw"></span>'+t('Parents may propose events — you approve before anything is posted')+'</button>';
+  h+='<label>'+t('Kit')+'</label><div class="row"><label class="inline" style="margin:0"><input type="color" id="stKitH" value="'+CLUB.kitHome+'" style="width:44px;padding:2px"> '+t('Home')+'</label><label class="inline" style="margin:0"><input type="color" id="stKitA" value="'+CLUB.kitAway+'" style="width:44px;padding:2px"> '+t('Away')+'</label></div>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn primary" id="stSave">'+t('Save')+'</button></div>';
+  openModal(h, true);
+  var getV=placePicker($('stVenue'), tm.venue);
+  $('stDays').addEventListener('click',function(ev){ var b=ev.target.closest('.fchip'); if(b) b.classList.toggle('on'); });
+  ['stVis','stWhen'].forEach(function(id){ $(id).addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; $(id).querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); }); });
+  ['stAuto','stPropose'].forEach(function(id){ $(id).addEventListener('click',function(){ this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true'); }); });
+  $('stSave').addEventListener('click',function(){ tm.venue=getV()||tm.venue; tm.field=$('stField').value.trim(); tm.days=Array.prototype.map.call($('stDays').querySelectorAll('.on'),function(b){return +b.dataset.d;}); tm.time=$('stTime').value||tm.time; tm.arrTrain=+$('stArrT').value||tm.arrTrain; tm.arrMatch=+$('stArrM').value||tm.arrMatch; tm.lineupVis=$('stVis').querySelector('[aria-pressed="true"]').dataset.vis; tm.autoNudge=$('stAuto').getAttribute('aria-pressed')==='true'; tm.nudgeWhen=$('stWhen').querySelector('[aria-pressed="true"]').dataset.w; tm.propose=$('stPropose').getAttribute('aria-pressed')==='true'; CLUB.kitHome=$('stKitH').value; CLUB.kitAway=$('stKitA').value; closeModal(); renderAll(); toast(t('Team settings saved')); });
+}
+/* ---------- recap ---------- */
+function openRecap(e){
+  var r=e.result, mode='first';
+  function names(){ return Object.keys(r.scorers).map(function(pid){ var p=pl(pid); if(!p) return ''; var n=mode==='first'?p.first:(mode==='init'?p.first.charAt(0)+'.':'#'+p.shirt); return n+(r.scorers[pid]>1?' ×'+r.scorers[pid]:''); }).filter(Boolean).join(', '); }
+  function text(){ return (e.home===false?e.opp+' '+r.them+' – '+r.us+' '+CLUB.name:CLUB.name+' '+r.us+' – '+r.them+' '+e.opp)+' · '+fmtDay(e.date)+(Object.keys(r.scorers).length?'\n⚽ '+names():'')+(r.notes?'\n'+r.notes:'')+'\n— '+teamOf(e.team).name; }
+  function draw(){ var h=mh('↗ '+t('Recap'), t('Nothing leaves this page until you share it yourself. Pick how names appear first.')); h+='<div class="seg" id="rcMode">'+[['first','First names'],['init','Initials'],['shirt','Shirt numbers']].map(function(o){ return '<button type="button" data-m="'+o[0]+'" aria-pressed="'+(mode===o[0])+'">'+t(o[1])+'</button>'; }).join('')+'</div><pre style="white-space:pre-wrap;font:600 14px/1.6 Inter,sans-serif;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px">'+esc(text())+'</pre><div class="mbtns"><button type="button" class="btn" id="rcCopy">'+t('Copy as text')+'</button>'+(navigator.share?'<button type="button" class="btn primary" id="rcShare">↗ '+t('Share…')+'</button>':'')+'<button type="button" class="btn" data-close>'+t('Close')+'</button></div>'; openModal(h);
+    $('rcMode').addEventListener('click',function(ev){ var b=ev.target.closest('button'); if(!b) return; mode=b.dataset.m; draw(); });
+    $('rcCopy').addEventListener('click',function(){ try{ navigator.clipboard.writeText(text()).then(function(){ toast(t('Copied ✓')); }); }catch(x){ toast(t('Copy failed on this device.')); } });
+    if($('rcShare')) $('rcShare').addEventListener('click',function(){ navigator.share({text:text()}).catch(function(){}); }); }
+  draw();
+}
+/* ---------- paste / photo → parsed preview (the bridge from WhatsApp) ---------- */
+var DAYS_HR=['ponedjeljak','utorak','srijeda','četvrtak','petak','subota','nedjelja'], DAYS_HR3=['pon','uto','sri','čet','pet','sub','ned'], DAYS_EN=['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+function parseMessage(text){
+  var lines=text.split(/\n+/).map(function(l){return l.trim();}).filter(Boolean), rows=[], block=[];
+  function flush(label){ block.forEach(function(r){ if(label&&!r.team) r.team=label; rows.push(r); }); block=[]; }
+  lines.forEach(function(line){
+    var low=line.toLowerCase();
+    var lab=low.match(/^(?:u-?)?(20\d\d|1[0-9])\b\s*(?:[a-zšđčćž]+)?$/); if(lab&&low.length<=14){ flush(lab[1].length===2?'20'+lab[1]:lab[1]); return; }
+    var days=[]; DAYS_HR.forEach(function(n,i){ if(new RegExp('(^|[^a-zšđčćž])'+n.slice(0,-1)).test(low)) days.push(i); }); if(!days.length) DAYS_HR3.forEach(function(n,i){ if(new RegExp('(^|[^a-zšđčćž])'+n+'([^a-zšđčćž]|$)').test(low)) days.push(i); }); if(!days.length) DAYS_EN.forEach(function(n,i){ if(low.indexOf(n)>=0||new RegExp('\\b'+n.slice(0,3)+'\\b').test(low)) days.push(i); });
+    var tm=low.match(/(\d{1,2})[:.h](\d{2})/), time=tm?pad2(+tm[1])+':'+tm[2]:'';
+    var type=/nema treninga|no training|otkazan|cancel/.test(low)?'no_session':(/turnir|tournament/.test(low)?'tournament':(/utakmic|match|game|prijateljsk|friendly/.test(low)?'match':(/trening|training/.test(low)?'training':null)));
+    if(!days.length&&!time&&!type) return;
+    var opp=line.match(/(?:\bvs\.?|\bv\.?|protiv|against)\s+([A-ZČĆŠĐŽ][\w\s\.]{2,30})/); var oppN=opp?opp[1].trim().replace(/[.,;]$/,''):'';
+    var inline=low.match(/\b(2016|2017|2015|2018)\b/);
+    if(!days.length) days=[-1];
+    days.forEach(function(d){ block.push({date:d>=0?nextDow(d):'',time:time,type:type||'training',opp:oppN,team:inline?inline[1]:null,src:line}); });
+  });
+  flush(null);
+  rows.forEach(function(r){ r.title=r.type==='match'?t('Match v')+' '+(r.opp||'…'):(r.type==='no_session'?t('No training'):TYPE(r.type)); });
+  return rows;
+}
+function openPaste(prefill){
+  var sample='Pozdrav roditelji, raspored za ovaj tjedan:\nponedjeljak 19:15 trening\nsrijeda 19:15 trening\npetak 19:15 trening\nsubota 10:00 utakmica protiv NK Levant, dolazak 9:30\n2016\nutorak i četvrtak 18:00 trening\nnedjelja 11:00 utakmica vs NK Jugo\n2017';
+  var h=mh('📋 '+t('Paste a message'), t('The message you would have sent on WhatsApp — the app reads it, you check it, then it is posted. Nothing is guessed: where the team is unclear you pick it.'));
+  h+='<textarea id="psText" style="min-height:150px" placeholder="'+esc(sample.split('\n').slice(0,3).join('\n'))+'">'+esc(prefill||'')+'</textarea><div class="chips"><button type="button" class="fchip" id="psSample">'+t('Try a sample message')+'</button></div>';
+  h+='<div id="psPreview"></div>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button><button type="button" class="btn blue" id="psRead">'+t('Read the message')+'</button><button type="button" class="btn primary" id="psPost" disabled>'+t('Post to families')+'</button></div>';
+  openModal(h, true);
+  var rows=[];
+  function preview(){ var wrap=$('psPreview'); if(!rows.length){ wrap.innerHTML='<p class="empty">'+t('Nothing recognised yet — each line needs a day and a time.')+'</p>'; $('psPost').disabled=true; return; }
+    var need=rows.some(function(r){ return !r.team||!r.date; });
+    wrap.innerHTML='<h3 class="sec">'+t('What the app read')+' · '+rows.length+'</h3><div class="plist">'+rows.map(function(r,i){ return '<div class="prow" style="cursor:default;flex-wrap:wrap"><span class="pn" style="flex:1 1 180px"><b>'+(r.date?fmtDay(r.date):'<span class="chip red">'+t('Which day?')+'</span>')+' · '+(r.time||'—')+'</b><small>'+typeChip({type:r.type})+' '+esc(r.title)+'</small></span><select data-row="'+i+'" style="padding:7px 8px;width:auto;flex:0 0 auto" aria-label="'+t('Team')+'">'+'<option value="">'+t('Which team?')+'</option>'+TEAMS.map(function(x){ return '<option value="'+x.id+'"'+((r.team===x.label||r.team===x.id)?' selected':'')+'>'+x.label+'</option>'; }).join('')+'</select></div>'; }).join('')+'</div>'+(need?'<div class="note">⚠ '+t('Some lines have no team or day — pick them before posting. The app never guesses.')+'</div>':'<div class="note green">✓ '+t('Every line has a day, a time and a team.')+'</div>')+'<p class="hint">'+t('Rule learned from real messages: a bare team label (“2016”) that follows a block belongs to the block above it.')+'</p>';
+    $('psPost').disabled=need;
+    wrap.querySelectorAll('select[data-row]').forEach(function(s){ s.addEventListener('change',function(){ rows[+s.dataset.row].team=s.value||null; preview(); }); }); }
+  $('psSample').addEventListener('click',function(){ $('psText').value=sample; });
+  $('psRead').addEventListener('click',function(){ rows=parseMessage($('psText').value); rows.forEach(function(r){ if(r.team&&!teamOf(r.team)){ var tm=TEAMS.filter(function(x){return x.label===r.team;})[0]; r.team=tm?tm.id:null; } if(!r.team&&S.scope!=='all'&&TEAMS.length>1) r.team=null; }); preview(); });
+  $('psPost').addEventListener('click',function(){ var n=0, fams={}; rows.forEach(function(r){ var tm=teamOf(r.team); if(!tm) return; var arr=r.time?addMin(r.time,-(r.type==='match'?tm.arrMatch:tm.arrTrain)):''; ev({team:tm.id,type:r.type,title:r.title,date:r.date,start:r.type==='no_session'?'':r.time,arrive:r.type==='no_session'?'':arr,ends:r.time?addMin(r.time,r.type==='training'?75:75):'',venue:tm.venue,field:tm.field,opp:r.opp||null,home:true,source:'paste',details:'',receipt:{sent:famCount(tm.id),seen:0,replied:0}}); n++; fams[tm.id]=1; }); closeModal(); renderAll(); S.view='upcoming'; renderSchedule(); go('schedule'); toast(t('Posted {m} event(s) to {n} families — they confirm attendance in their app').replace('{m}',n).replace('{n}',famN(Object.keys(fams)))); });
+}
+function openPhoto(){
+  var h=mh('📷 '+t('Photo of the schedule'), t('A photo of the paper schedule or a screenshot — the app reads it the same way as pasted text; you check before posting.'));
+  h+='<input type="file" accept="image/*" id="phFile"><p class="hint" style="margin-top:8px">'+t('In the design preview any image opens the same checked preview as “Paste a message”.')+'</p>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Cancel')+'</button></div>';
+  openModal(h);
+  $('phFile').addEventListener('change',function(){ toast(t('Reading the photo…')); setTimeout(function(){ openPaste('ponedjeljak 19:15 trening\nsrijeda 19:15 trening\nsubota 10:00 utakmica protiv NK Levant\n2016'); $('psRead').click(); },900); });
+}
+/* ---------- team chooser, design notes ---------- */
+function openTeamChooser(){
+  var h=mh(t('Which team?'), t('The whole app follows this choice — schedule, roster, matches and messages.'));
+  h+='<div class="plist">'+TEAMS.map(function(tm){ return '<button type="button" class="prow" data-scope="'+tm.id+'"><span class="av">'+tm.label.slice(2)+'</span><span class="pn"><b>'+esc(CLUB.name)+' · '+esc(tm.name)+'</b><small>'+teamPlayers(tm.id).length+' '+t('players')+' · '+famCount(tm.id)+' '+t('families')+'</small></span>'+(S.scope===tm.id?'<span class="chip green">✓</span>':'')+'</button>'; }).join('')+'<button type="button" class="prow" data-scope="all"><span class="av">∑</span><span class="pn"><b>'+t('All teams')+'</b><small>'+t('everything together, team chips on every card')+'</small></span>'+(S.scope==='all'?'<span class="chip green">✓</span>':'')+'</button></div>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Close')+'</button></div>';
+  openModal(h);
+  $('mbox').querySelectorAll('[data-scope]').forEach(function(b){ b.addEventListener('click',function(){ S.scope=b.dataset.scope; closeModal(); renderAll(); }); });
+}
+function openNotes(){
+  var h=mh('ⓘ '+t('Design notes'), t('What this preview is, and the rules it is built on.'));
+  h+='<div style="font-size:13.5px;line-height:1.6"><p><b>'+t('What it is.')+'</b> '+t('The coach’s side of the PitchPro Family Schedule: the coach posts once, every family in the team gets it, parents confirm attendance in their own app. Sample data only — every name, club and venue is invented; nothing is sent anywhere.')+'</p>'
+  +'<p><b>'+t('Already live in the family app')+'</b> — '+t('coach accounts by one-time code, read-only team view, attendance (Going / Maybe / Not going), lineups with formation presets, coach-posted events reaching every family, team default venue and field, tournament info with links and documents.')+'</p>'
+  +'<p><b>'+t('New in this design')+'</b> — '+t('a home screen that says what needs you, edit and cancel that reach every family, pitchside register, one-tap reminders, roster and shirt numbers owned by the coach, family invites by code, announcements and polls with replies, per-family conversations, scores and recaps, tournaments, offline for today, Croatian first.')+'</p>'
+  +'<p><b>'+t('Rules that never bend')+'</b> — '+t('no private channel to a child anywhere; the coach sees names, shirts and attendance — family data stays with the family; everything on the record; the app never emails or texts on the coach’s behalf during the beta; no dates of birth; ambiguous messages are asked about, never guessed.')+'</p></div>';
+  h+='<div class="mbtns"><button type="button" class="btn" data-close>'+t('Close')+'</button></div>';
+  openModal(h);
+}
+
+/* ---------- events: one delegated handler ---------- */
+function toggleNames(id, key){ var e=eventById(id), box=$('names-'+id); if(!e||!box) return; if(!box.hidden&&box.dataset.key===key){ box.hidden=true; return; } box.dataset.key=key; box.innerHTML=attNames(e,key); box.hidden=false; }
+function act(name, b){
+  var id=b.dataset.id, e=id?eventById(id):null;
+  switch(name){
+    case 'add': openEvent(null, b.dataset.type||null); break;
+    case 'edit': if(e) openEvent(e); break;
+    case 'cancel': if(e) openCancel(e); break;
+    case 'restore': if(e){ e.status='posted'; e.cancelReason=''; e.receipt={sent:famCount(e.team),seen:0,replied:0}; renderAll(); toast(t('Restored — families notified')); } break;
+    case 'nudge': if(e) openNudge(e); break;
+    case 'register': if(e) openRegister(e); break;
+    case 'lineup': if(e) openLineup(e); break;
+    case 'result': if(e) openResult(e); break;
+    case 'recap': if(e&&e.result) openRecap(e); break;
+    case 'msgev': if(e) openCompose({text:t('About')+' '+e.title+' ('+fmtDay(e.date)+(e.start?' '+e.start:'')+'): '}); break;
+    case 'tourinfo': var tr=tourById(id); if(tr) openTourInfo(tr); break;
+    case 'addtour': openAddTour(); break;
+    case 'fixscore': var tr2=tourById(b.dataset.tour); if(tr2) openFixScore(tr2,+b.dataset.fx); break;
+    case 'compose': openCompose(); break;
+    case 'paste': openPaste(); break;
+    case 'photo': openPhoto(); break;
+    case 'thread': var th=threadById(id); if(th) openThread(th); break;
+    case 'proposal': var pr=PROPOSALS.filter(function(x){return x.id===id;})[0]; if(pr) openProposal(pr); break;
+    case 'pollwho': var pw=postById(id); if(pw) openPollWho(pw); break;
+    case 'pollnudge': var pn=postById(id); if(pn){ pn.nudgedAt=new Date(); var n=0; var ans={}; pn.poll.opts.forEach(function(o){ o.v.forEach(function(x){ans[x]=1;}); }); teamPlayers(pn.team).forEach(function(p){ if(p.family==='app'&&!ans[p.id]) n++; }); toast(t('Reminder sent to {n} families').replace('{n}',n)); } break;
+    case 'replypost': var rp=postById(id); if(rp) openReplyPost(rp); break;
+    case 'pin': var pp=postById(id); if(pp){ pp.pinned=!pp.pinned; renderMessages(); toast(pp.pinned?t('Pinned for the families'):t('Unpinned')); } break;
+    case 'delpost': var dp=postById(id); if(dp&&confirm(t('Delete this post for every family?'))){ POSTS.splice(POSTS.indexOf(dp),1); renderAll(); toast(t('Deleted')); } break;
+    case 'team': S.scope=id||S.scope; renderAll(); go('team'); break;
+    case 'settings': openSettings(b.dataset.team||null); break;
+    case 'addplayer': openAddPlayer(); break;
+    case 'player': var p=pl(id); if(p) openPlayer(p); break;
+    case 'showinvite': var iv=INVITES.filter(function(x){return x.code===b.dataset.code;})[0]; if(iv) openInvite(iv); break;
+    case 'revoke': var rv=INVITES.filter(function(x){return x.code===b.dataset.code;})[0]; if(rv&&confirm(t('Cancel this invite code?'))){ rv.status='revoked'; var rp2=pl(rv.player); if(rp2&&rp2.family==='invited') rp2.family='none'; renderAll(); toast(t('Code cancelled')); } break;
+    case 'teamphoto': toast(t('Opens the phone’s picker in the real app — the photo shows on every family’s squad card')); break;
+    case 'coachphoto': toast(t('Opens the phone’s picker in the real app — the photo shows on your coach card')); break;
+    case 'sortplayers': S.sortName=!S.sortName; PLAYERS.sort(S.sortName?function(a,b2){ return a.last.localeCompare(b2.last); }:function(a,b2){ return a.shirt-b2.shirt; }); renderTeam(); b.textContent=S.sortName?t('Sort by shirt'):t('Sort by name'); break;
+    case 'addcareer': var c=prompt(t('Club · role · years'),'NK … · Coach U-9 · 2020 – 2021'); if(c){ var s=c.split('·').map(function(x){return x.trim();}); COACH.career.unshift({club:s[0]||c,role:s[1]||'',period:s[2]||''}); renderAccount(); toast(t('Career updated on your coach card')); } break;
+    case 'signout': toast(t('Signs out everywhere in the real app')); break;
+  }
+}
+function setLang(l){ S.lang=l; try{ localStorage.setItem('ppc-lang',l); }catch(e){} renderAll(); go(S.screen,{keepScroll:true}); }
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest('button,a,[data-go],[data-act]'); if(!b) return;
+  if(b.id==='teamPill'){ openTeamChooser(); return; }
+  if(b.id==='langPill'){ setLang(S.lang==='hr'?'en':'hr'); return; }
+  if(b.id==='notesBtn'||b.id==='notesBtn2'){ openNotes(); return; }
+  if(b.dataset.lang){ setLang(b.dataset.lang); return; }
+  if(b.dataset.pref){ COACH[b.dataset.pref]=!COACH[b.dataset.pref]; renderAccount(); toast(t('Saved')); return; }
+  if(b.dataset.go){ go(b.dataset.go); return; }
+  if(b.dataset.att){ var wrap=b.closest('.attbar'); toggleNames(wrap.dataset.ev,b.dataset.att); return; }
+  if(b.dataset.view){ S.view=b.dataset.view; renderSchedule(); return; }
+  if(b.dataset.week){ S.weekOff+= +b.dataset.week; renderSchedule(); return; }
+  if(b.dataset.day){ var off=offOf(b.dataset.day); S.view='week'; S.weekOff=Math.floor((off+dow(dISO(0)))/7); renderSchedule(); go('schedule'); return; }
+  if(b.dataset.act){ act(b.dataset.act,b); if(b.hasAttribute('data-close')) closeModal(); return; }
+  if(b.hasAttribute('data-close')){ closeModal(); return; }
+});
+$('modal').addEventListener('click',function(ev){ if(ev.target===$('modal')) closeModal(); });
+document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'&&$('modal').classList.contains('on')) closeModal(); });
+/* ---------- boot ---------- */
+(function boot(){
+  try{ var l=localStorage.getItem('ppc-lang'); if(l==='hr'||l==='en') S.lang=l; }catch(e){}
+  var m=location.hash.match(/s=(today|schedule|team|matches|messages|account)/); if(m) S.screen=m[1];
+  renderAll(); go(S.screen);
+  setTimeout(function(){ if(!window.ppNav) $('ppNavOpen').hidden=true; },1200);
+  window.ppCoach={S:S,EVENTS:EVENTS,PLAYERS:PLAYERS,POSTS:POSTS,THREADS:THREADS,TOURN:TOURN,HR:HR,t:t,parseMessage:parseMessage};
+})();
+})();
+</script>
+<script src="site-nav.js" defer></script>
+</body>
+</html>

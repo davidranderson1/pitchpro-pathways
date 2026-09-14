@@ -10,7 +10,8 @@
 (function(){
   var PAGES = [
     {g:'Family app — live', items:[
-      {f:'schedule.html', t:'Family Schedule', tag:'LIVE', d:'Sign in required. Training, tournaments, stats, coach messages, notifications. All family data is in a private database, not in this repository.'}
+      {f:'schedule.html', t:'Family Schedule', tag:'LIVE', d:'Sign in required. Training, tournaments, stats, coach messages, notifications. All family data is in a private database, not in this repository.'},
+      {f:'coach.html', t:'Coach app', tag:'MOCKUP', d:'Design preview of the coach\u2019s side: post once to every family, attendance and register, lineups, roster and invites, messages and polls. Sample data only.'}
     ]},
     {g:'Team App — mockups, sample data only', items:[
       {f:'player-moments-flow.html', t:'Feature map and flow', tag:'MOCKUP', d:'How the Team App fits together — start here'},
