@@ -1,9 +1,13 @@
 // PitchPro Pathways — private preview wall.
 // Everything on the domain asks for a username and password EXCEPT the live
-// Family Schedule app and the files it needs (OPEN list below).
+// Family Schedule app, the admin app, the Coach app design preview (sample data only)
+// and the files they need (OPEN list below).
 const OPEN = [
   /^\/schedule\.html$/,
   /^\/admin\.html$/,
+  /^\/coach\.html$/,
+  /^\/coach-manifest\.json$/,
+  /^\/sw-coach\.js$/,
   /^\/sw\.js$/,
   /^\/sw-test\.js$/,
   /^\/manifest\.json$/,
