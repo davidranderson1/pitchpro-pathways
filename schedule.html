@@ -50,6 +50,17 @@
     padding:9px 15px;font:800 11px/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
   nav.tabs button[aria-selected="true"]{color:var(--green);border-color:var(--green-dim);background:var(--card2)}
   .screen{display:none}.screen.on{display:block}
+  /* bottom ribbon (phone) — mirrors the Coach app */
+  nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(10,18,13,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  nav.bottom button{flex:1 1 0;min-width:0;background:none;border:0;color:var(--muted);font:800 8.5px/1 Inter,sans-serif;letter-spacing:.01em;text-transform:uppercase;padding:6px 0 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;border-radius:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  nav.bottom button .ic{font-size:19px;line-height:1}
+  nav.bottom button[aria-current="page"]{color:var(--green)}
+  nav.bottom button .n{position:absolute;top:0;right:12%;background:var(--amber);color:var(--ink,#0b130e);border-radius:999px;padding:2px 6px;font-size:9.5px;font-weight:900}
+  body.coach nav.bottom button[data-s="stats"],body.coach nav.bottom button[data-s="journey"]{display:none}
+  @media (max-width:959px){ nav.tabs{display:none} .wrap{padding-bottom:110px} }
+  @media (max-width:380px){ nav.bottom button{font-size:7.5px;letter-spacing:0} }
+  @media (min-width:960px){ nav.bottom{display:none} }
+  @media print{ nav.bottom{display:none !important} }
   h2.scr{font:900 17px/1.3 Archivo,Inter,sans-serif;margin:6px 0 14px}
   /* filters */
   .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:2px 0 12px}
@@ -396,6 +407,14 @@
       <button role="tab" aria-selected="false" data-s="journey">Journey</button>
       <button role="tab" aria-selected="false" data-s="msgs">Coach Messages</button>
       <button role="tab" aria-selected="false" data-s="acct">Account</button>
+    </nav>
+    <nav class="bottom" aria-label="Sections">
+      <button type="button" data-s="sched" aria-current="page"><span class="ic">📅</span><span>Schedule</span></button>
+      <button type="button" data-s="tour"><span class="ic">🏆</span><span>Tournaments</span></button>
+      <button type="button" data-s="stats"><span class="ic">📊</span><span>Stats</span></button>
+      <button type="button" data-s="journey"><span class="ic">🧭</span><span>Journey</span></button>
+      <button type="button" data-s="msgs"><span class="ic">💬</span><span>Messages</span><span class="n" id="navMsgN" hidden></span></button>
+      <button type="button" data-s="acct"><span class="ic">👤</span><span>Account</span></button>
     </nav>
 
     <section class="screen on" id="s-sched">
@@ -879,7 +898,7 @@
     'Start a new family (you become its first parent)':'Otvori novu obitelj (postaješ njezin prvi roditelj)','e.g. Kovač family':'npr. obitelj Kovač','Create family':'Otvori obitelj',
     'Signed in as':'Prijava:','Sign out':'Odjava','Sign out of this device':'Odjavi se s ovog uređaja',
     'Schedules, names and venues are stored in a private database and are only visible after sign-in.':'Rasporedi, imena i lokacije čuvaju se u privatnoj bazi i vidljivi su tek nakon prijave.',
-    'Schedule':'Raspored','Tournaments':'Turniri','Stats':'Statistika','Journey':'Putovanje','Coach Messages':'Poruke trenera','Account':'Račun',
+    'Schedule':'Raspored','Tournaments':'Turniri','Stats':'Statistika','Journey':'Putovanje','Coach Messages':'Poruke trenera','Messages':'Poruke','Account':'Račun',
     'Player':'Igrač','Club':'Klub','All':'Svi','Week':'Tjedan','Month':'Mjesec','Previous':'Prethodno','Next':'Sljedeće','Upcoming':'Nadolazeći','Past':'Prošli',
     'Journey — moments and journal':'Putovanje — trenuci i dnevnik','What happened? A goal, a save, a hard training, a lesson learned…':'Što se dogodilo? Gol, obrana, težak trening, naučena lekcija…',
     '📷 Add photo':'📷 Dodaj fotografiju','📷 Change photo':'📷 Promijeni fotografiju','Post':'Objavi','Posting…':'Objavljujem…','Posted.':'Objavljeno.',
@@ -1264,8 +1283,12 @@
       document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('on'); });
       $('s-'+b.dataset.s).classList.add('on');
       var h=$('s-'+b.dataset.s).querySelector('h2'); if(h){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+      document.querySelectorAll('nav.bottom button').forEach(function(x){ if(x.dataset.s===b.dataset.s) x.setAttribute('aria-current','page'); else x.removeAttribute('aria-current'); });
       window.scrollTo(0,0);
     });
+  });
+  document.querySelectorAll('nav.bottom button').forEach(function(nb){
+    nb.addEventListener('click', function(){ var t=document.querySelector('nav.tabs button[data-s="'+nb.dataset.s+'"]'); if(t) t.click(); });
   });
 
   /* ---------- data ---------- */
