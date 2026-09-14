@@ -1,0 +1,16 @@
+{
+  "id": "./coach.html",
+  "name": "PitchPro Coach",
+  "short_name": "Coach",
+  "description": "The coach's side of the PitchPro Family Schedule — post once, every family gets it.",
+  "start_url": "./coach.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a120d",
+  "theme_color": "#0a120d",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

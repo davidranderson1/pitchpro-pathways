@@ -9,6 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#0a120d">
+<link rel="manifest" href="coach-manifest.json" crossorigin="use-credentials">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PitchPro Coach">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <style>
   :root{
@@ -1606,6 +1612,7 @@ document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'&&$('modal
   var m=location.hash.match(/s=(today|schedule|team|matches|messages|account)/); if(m) S.screen=m[1];
   renderAll(); go(S.screen);
   setTimeout(function(){ if(!window.ppNav) $('ppNavOpen').hidden=true; },1200);
+  if('serviceWorker' in navigator && /\/coach\.html$/.test(location.pathname)){ try{ navigator.serviceWorker.register('sw-coach.js').catch(function(){}); }catch(e){} }
   window.ppCoach={S:S,EVENTS:EVENTS,PLAYERS:PLAYERS,POSTS:POSTS,THREADS:THREADS,TOURN:TOURN,HR:HR,t:t,parseMessage:parseMessage};
 })();
 })();
