@@ -321,6 +321,8 @@
   .plHint{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
   .dayChips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}.dayChip{font:800 11px/1 Inter,sans-serif;letter-spacing:.04em;border:1px solid var(--line);background:var(--card2);color:var(--txt);border-radius:999px;padding:7px 11px;cursor:pointer}.dayChip.on{background:var(--green);color:#0b130e;border-color:var(--green)}
   .aeGrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 10px}@media(max-width:480px){.aeGrid3{grid-template-columns:1fr 1fr}}
+  .tcode{display:inline-block;font:800 10px/1 Inter,sans-serif;letter-spacing:.08em;border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--muted);vertical-align:middle;margin-left:4px;background:var(--card2)}
+  .tmP{display:inline-flex;align-items:center;gap:6px;margin:4px 12px 4px 0;font-size:14px}.plItem.on{background:var(--card);outline:2px solid var(--green)}
   .viewbar .addBtn{background:var(--green);color:#06130c;border:0;border-radius:999px;padding:9px 14px;font:800 11px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 </style>
 </head>
@@ -485,6 +487,7 @@
         <h2 class="scr" style="margin-top:0">Family &amp; team</h2>
         <div id="famBody"></div>
       </div>
+      <div class="card" style="margin-top:14px" id="teamsCard" hidden></div>
       <div class="card" style="margin-top:14px" id="teamDefaults" hidden></div>
       <div class="card" style="margin-top:14px" id="notifCard">
         <h2 class="scr" style="margin-top:0">Push notifications</h2>
@@ -735,6 +738,28 @@
   <div class="smBtns"><button class="ghost" id="orClose" type="button">Close</button></div>
 </div></div>
 
+<div id="teamModal" class="pmod"><div class="smBox" style="max-width:440px">
+  <h3>Join or create a team</h3>
+  <label for="tmSearch">Search club or team (e.g. Hajduk 2016)</label>
+  <input id="tmSearch" type="text" autocomplete="off" maxlength="60">
+  <div id="tmResults"></div>
+  <div id="tmCreate">
+    <div class="meta" style="margin-top:10px;font-weight:800;color:var(--txt)">Create a new team</div>
+    <div class="aeGrid">
+      <div><label for="tmClub">Club</label><input id="tmClub" type="text" maxlength="60" autocomplete="off" placeholder="NK Uskok"></div>
+      <div><label for="tmLabel">Team label (as the club calls it, e.g. 2016, Pioniri 2, U-11)</label><input id="tmLabel" type="text" maxlength="40" autocomplete="off" placeholder="2016"></div>
+    </div>
+    <div class="aeGrid3">
+      <div><label for="tmYear">Birth year</label><input id="tmYear" type="number" min="2005" max="2025" placeholder="2016"></div>
+      <div><label for="tmSquad">Squad (only if the club has several, e.g. 2, B)</label><input id="tmSquad" type="text" maxlength="6" autocomplete="off"></div>
+      <div><label for="tmSeason">Season</label><input id="tmSeason" type="text" maxlength="9" value="2026/27"></div>
+    </div>
+  </div>
+  <label>Which of your players?</label>
+  <div id="tmPlayers"></div>
+  <div class="smBtns"><button class="primary" id="tmSave" type="button">Join</button><button class="ghost" id="tmCancel" type="button">Cancel</button></div>
+  <div class="ok" id="tmOk"></div><div class="err" id="tmErr"></div>
+</div></div>
 <div id="tlModal" class="pmod"><div class="smBox" style="max-width:420px">
   <h3>Add link</h3>
   <label for="tlUrl">Link (web page or Google Drive file)</label>
@@ -913,6 +938,7 @@
     'Invite your coach to claim this card':'Pozovi trenera da preuzme ovu karticu','Only a parent of the family can create invites.':'Samo roditelj u obitelji može stvarati pozivnice.','Creating code…':'Stvaram kod…',
     'Found it on Google Maps? Tap Share → Copy link and paste the link here — the pin comes with it.':'Našao/la si je na Google kartama? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.','Look it up on Google Maps ↗':'Potraži na Google kartama ↗','Found it there? Tap Share → Copy link and paste the link here — the pin comes with it.':'Našao/la si je tamo? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.',
     'Add link':'Dodaj poveznicu','Link (web page or Google Drive file)':'Poveznica (web stranica ili datoteka na Google Driveu)','Label':'Naziv','e.g. Official guide, Results, Schedule':'npr. Službeni vodič, Rezultati, Raspored','Save link':'Spremi poveznicu',
+    'Join or create a team':'Pridruži se momčadi ili je stvori','Search club or team (e.g. Hajduk 2016)':'Traži klub ili momčad (npr. Hajduk 2016)','Create a new team':'Stvori novu momčad','Club':'Klub','Team label (as the club calls it, e.g. 2016, Pioniri 2, U-11)':'Naziv momčadi (kako je klub zove, npr. 2016, Pioniri 2, U-11)','Birth year':'Godište','Squad (only if the club has several, e.g. 2, B)':'Ekipa (samo ako ih klub ima više, npr. 2, B)','Season':'Sezona','Which of your players?':'Koji od tvojih igrača?','Join':'Pridruži se',
     'Add venue':'Dodaj lokaciju','add venue':'dodaj lokaciju','Venue name or address':'Naziv lokacije ili adresa','Stadium or address':'Stadion ili adresa','Find it on Google Maps':'Pronađi na Google kartama','Save venue':'Spremi lokaciju',
     'Type the venue first — the Google Maps link helps you find the exact name.':'Najprije upiši lokaciju — poveznica na Google karte pomaže pronaći točan naziv.',
     'Confirm the date':'Potvrdi datum','Confirmed date':'Potvrđeni datum','Pick a date first.':'Najprije odaberi datum.',
@@ -1019,7 +1045,7 @@
   }).observe(document.body, { childList:true, subtree:true, characterData:true });
   function rerenderAll(){
     if(!state.mode || state.mode==='none') return;
-    try{ buildFilters(); renderSchedule(); renderTournaments(); renderMessages(); if(state.mode==='family'){ renderStats(); renderJourney(); } renderFamily(); renderQuestions(); renderTeamDefaults(); if(state.ctx) applyContext(state.ctx, true); }catch(e){}
+    try{ buildFilters(); renderSchedule(); renderTournaments(); renderMessages(); if(state.mode==='family'){ renderStats(); renderJourney(); } renderFamily(); renderQuestions(); renderTeamDefaults(); renderTeamsCard(); if(state.ctx) applyContext(state.ctx, true); }catch(e){}
   }
   HR['Notes (optional)']='Bilješke (neobavezno)'; HR['Team']='Momčad'; HR['Played']='Igrao/la'; HR['Language']='Jezik';
   /* ---------- build 24: email preferences page (?prefs=TOKEN[&a=off|on]) and contact card (?vcf=1) ----------
@@ -2259,7 +2285,7 @@
         +(x.coaches?'<br><span style="opacity:.8">'+tr('Coaches:')+' '+esc(x.coaches)+'</span>':'')
         +(x.period_note?'<br><span style="opacity:.7">'+esc(x.period_note)+'</span>':'')+'</div>';
     });
-    $('ppCareer').innerHTML=ch;
+    $('ppCareer').innerHTML=ch+playerTeamsHtml(p); bindPlayerTeams($('ppCareer'), p);
     mOpen('playerModal');
   }
   $('ppAvatar').addEventListener('click', function(){ if(ppCurrent && state.canEdit) $('ppFile').click(); });
@@ -2948,6 +2974,112 @@
   $('aeUsual').addEventListener('click', function(){ if($('aeUsual').dataset.t){ $('aeStart').value=$('aeUsual').dataset.t; aeAutoTimes(); } });
   $('aeDate').addEventListener('change', aeDayChips);
 
+  /* ---------- build 31: team identity — every team has an id + code (USK-2627-2016); pickers, permissions, Teams card, join/create, player ↔ team memberships ---------- */
+  HR['Teams']='Momčadi'; HR['Add a team']='Dodaj momčad'; HR['Join or create a team']='Pridruži se momčadi ili je stvori'; HR['Search club or team (e.g. Hajduk 2016)']='Traži klub ili momčad (npr. Hajduk 2016)';
+  HR['Nothing found — create it below.']='Ništa nije pronađeno — stvori je ispod.'; HR['Create a new team']='Stvori novu momčad'; HR['Club']='Klub'; HR['Team label (as the club calls it, e.g. 2016, Pioniri 2, U-11)']='Naziv momčadi (kako je klub zove, npr. 2016, Pioniri 2, U-11)';
+  HR['Birth year']='Godište'; HR['Squad (only if the club has several, e.g. 2, B)']='Ekipa (samo ako ih klub ima više, npr. 2, B)'; HR['Season']='Sezona'; HR['Which of your players?']='Koji od tvojih igrača?';
+  HR['Pick at least one player.']='Odaberi bar jednog igrača.'; HR['Type a club and a team label.']='Upiši klub i naziv momčadi.'; HR['Saving…']='Spremam…'; HR['Team added.']='Momčad dodana.'; HR['Join']='Pridruži se';
+  HR['Parent']='Roditelj'; HR['Coach']='Trener'; HR['Assistant']='Pomoćni trener'; HR['Manager']='Voditelj'; HR['Viewer']='Gledatelj'; HR['no coach yet']='još nema trenera'; HR['coach']='trener'; HR['coaches']='treneri'; HR['players']='igrača'; HR['player']='igrač';
+  HR['Every team has a code — the app keeps schedules, lineups and coaches apart by it even when two clubs use the same name.']='Svaka momčad ima kod — po njemu aplikacija razdvaja rasporede, sastave i trenere i kad dva kluba koriste isto ime.';
+  HR['Teams']='Momčadi'; HR['primary']='glavna'; HR['left']='napustio/la'; HR['Leave this team?']='Napustiti ovu momčad?'; HR['Leave']='Napusti'; HR['Add to a team']='Dodaj u momčad'; HR['Team code']='Kod momčadi';
+  HR['Coach code — give it to the coach; the app links them to this team only.']='Kod za trenera — daj ga treneru; aplikacija ga povezuje samo s ovom momčadi.';
+  state.teams=[]; state.playerTeams=[];
+  function teamOf(club, label){ for(var i=0;i<state.teams.length;i++){ var t=state.teams[i]; if(t.club===club && t.label===label) return t; } return null; }
+  function teamById(id){ for(var i=0;i<state.teams.length;i++) if(state.teams[i].id===id) return state.teams[i]; return null; }
+  function codeChip(code){ return code ? '<span class="tcode">'+esc(code)+'</span>' : ''; }
+  function roleLabel(r){ return tr(r==='coach'?'Coach':r==='assistant'?'Assistant':r==='manager'?'Manager':r==='viewer'?'Viewer':'Parent'); }
+  function loadTeams(){
+    var pt = state.mode==='family' ? sb.from('player_teams').select('*').is('left_on', null) : Promise.resolve({data:[]});
+    return Promise.all([ sb.rpc('my_teams'), pt ]).then(function(r){
+      state.teams=(r[0]&&r[0].data)||[]; state.playerTeams=(r[1]&&r[1].data)||[];
+      renderTeamsCard(); if(typeof renderTeamDefaults==='function') renderTeamDefaults();
+    }).catch(function(){});
+  }
+  /* permission by team id (build 31) with the text-pair helper as the fallback for teams not yet in the registry */
+  function canManageTeam(club, label){
+    var t=teamOf(club, label);
+    if(t){
+      if(t.role==='coach'||t.role==='assistant'||t.role==='manager') return Promise.resolve(true);
+      return sb.rpc('can_manage_team',{ p_team:t.id }).then(function(r){ return !!(r&&r.data); }).catch(function(){ return false; });
+    }
+    return sb.rpc('can_manage_lineup',{ p_club:club, p_team:label }).then(function(r){ return !!(r&&r.data); }).catch(function(){ return false; });
+  }
+  function teamTitle(t){ return esc(t.club)+' · '+esc(t.team||t.label)+' '+codeChip(t.code); }
+  /* ----- Account → Teams card ----- */
+  function renderTeamsCard(){
+    var host=$('teamsCard'); if(!host) return;
+    if(state.role==='child' || !(state.teams||[]).length && !state.canEdit){ host.hidden=true; return; }
+    var h='<h2 class="scr" style="margin-top:0">'+tr('Teams')+'</h2><p class="meta" style="margin-bottom:6px">'+tr('Every team has a code — the app keeps schedules, lineups and coaches apart by it even when two clubs use the same name.')+'</p>';
+    (state.teams||[]).forEach(function(t){
+      var pls=(state.playerTeams||[]).filter(function(x){ return x.team_id===t.id; }).map(function(x){ var p=playerById(x.player_id); return p?p.first_name:null; }).filter(Boolean);
+      h+='<div class="famRow" data-teamrow="'+esc(t.id)+'"><div class="famAv" style="font-size:11px;font-weight:800">'+esc((t.club_code||(t.code||'').split('-')[0]||t.club||'?').slice(0,4).toUpperCase())+'</div>'
+        +'<div class="famMain"><div class="famName">'+esc(t.club)+' · '+esc(t.label)+' '+codeChip(t.code)+'</div>'
+        +'<div class="famSub">'+roleLabel(t.role)+' · '+(t.coach_count?t.coach_count+' '+tr(t.coach_count===1?'coach':'coaches'):tr('no coach yet'))+' · '+(t.player_count||0)+' '+tr(t.player_count===1?'player':'players')+(pls.length?' · '+esc(pls.join(', ')):'')+'</div></div></div>';
+    });
+    if(state.canEdit && state.mode==='family') h+='<div class="btnrow"><a class="gcal" href="#" id="teamAddBtn">＋ '+tr('Add a team')+'</a></div>';
+    h+='<div class="ok" id="teamsOk"></div><div class="err" id="teamsErr"></div>';
+    host.innerHTML=h; host.hidden=false;
+    var b=$('teamAddBtn'); if(b) b.addEventListener('click', function(e){ e.preventDefault(); openTeamModal(null); });
+  }
+  /* ----- Join / create modal ----- */
+  var tmPlayer=null, tmPick=null, tmTimer=null;
+  function openTeamModal(playerId){
+    tmPlayer=playerId||null; tmPick=null;
+    $('tmSearch').value=''; $('tmResults').innerHTML=''; $('tmClub').value=''; $('tmLabel').value=''; $('tmYear').value=''; $('tmSquad').value=''; $('tmSeason').value='2026/27'; $('tmErr').textContent=''; $('tmOk').textContent='';
+    $('tmCreate').hidden=false;
+    var pl=state.players||[];
+    $('tmPlayers').innerHTML=pl.map(function(p){ return '<label class="tmP"><input type="checkbox" value="'+esc(p.id)+'"'+((tmPlayer?p.id===tmPlayer:pl.length===1)?' checked':'')+'> '+esc(p.first_name)+'</label>'; }).join('');
+    mOpen('teamModal'); setTimeout(function(){ $('tmSearch').focus(); },50);
+  }
+  function tmRender(rows){
+    var box=$('tmResults');
+    if(!rows.length){ box.innerHTML='<div class="plNote">'+tr('Nothing found — create it below.')+'</div>'; return; }
+    box.innerHTML='<div class="plList">'+rows.map(function(t){ return '<button type="button" class="plItem" data-id="'+esc(t.id)+'"><b>'+esc(t.club)+' · '+esc(t.label)+' '+codeChip(t.code)+'</b><span>'+esc(t.season)+' · '+(t.coach_count?t.coach_count+' '+tr(t.coach_count===1?'coach':'coaches'):tr('no coach yet'))+' · '+(t.player_count||0)+' '+tr(t.player_count===1?'player':'players')+'</span></button>'; }).join('')+'</div>';
+    box.querySelectorAll('.plItem').forEach(function(b){ b.addEventListener('click', function(){ tmPick=rows.filter(function(t){ return t.id===b.dataset.id; })[0]||null; box.querySelectorAll('.plItem').forEach(function(x){ x.classList.toggle('on', x===b); }); $('tmCreate').hidden=true; $('tmErr').textContent=''; }); });
+  }
+  $('tmSearch').addEventListener('input', function(){
+    var q=this.value.trim(); tmPick=null; $('tmCreate').hidden=false; clearTimeout(tmTimer);
+    if(q.length<2){ $('tmResults').innerHTML=''; return; }
+    tmTimer=setTimeout(function(){ sb.rpc('team_search',{ p_q:q }).then(function(r){ tmRender((r&&r.data)||[]); }).catch(function(){ tmRender([]); }); }, 300);
+  });
+  $('tmLabel').addEventListener('input', function(){ var m=this.value.match(/20\d{2}/); if(m && !$('tmYear').value) $('tmYear').placeholder=m[0]; });
+  function tmSelectedPlayers(){ return Array.prototype.map.call($('tmPlayers').querySelectorAll('input:checked'), function(i){ return i.value; }); }
+  function tmLink(team, pids){
+    var rows=pids.map(function(pid){ var p=playerById(pid); return { player_id:pid, team_id:team.id, family_id:(p&&p.family_id)||state.familyId, is_primary:false, joined_on:todayZagreb() }; });
+    var fresh=rows.filter(function(r){ return !(state.playerTeams||[]).some(function(x){ return x.player_id===r.player_id && x.team_id===r.team_id; }); });
+    if(!fresh.length) return Promise.resolve({});
+    return sb.from('player_teams').insert(fresh);
+  }
+  $('tmSave').addEventListener('click', function(){
+    $('tmErr').textContent=''; var pids=tmSelectedPlayers();
+    if(!pids.length){ $('tmErr').textContent=tr('Pick at least one player.'); return; }
+    var done=function(team){ tmLink(team, pids).then(function(r){ if(r&&r.error){ $('tmErr').textContent=r.error.message; return; } $('tmOk').textContent=tr('Team added.'); loadTeams().then(function(){ mClose('teamModal'); if(typeof renderFamily==='function') renderFamily(); var ok=$('teamsOk'); if(ok) ok.textContent=tr('Team added.')+' '+(team.code||''); }); }); };
+    if(tmPick){ done(tmPick); return; }
+    var club=$('tmClub').value.trim(), label=$('tmLabel').value.trim();
+    if(!club || !label){ $('tmErr').textContent=tr('Type a club and a team label.'); return; }
+    $('tmErr').textContent=tr('Saving…');
+    var yr=parseInt($('tmYear').value,10); if(!yr){ var m=label.match(/20\d{2}/); yr=m?+m[0]:null; }
+    sb.rpc('team_create',{ p_club:club, p_label:label, p_season:$('tmSeason').value.trim()||'2026/27', p_birth_year:yr||null, p_squad:$('tmSquad').value.trim()||null }).then(function(r){
+      if(r.error){ $('tmErr').textContent=r.error.message; return; }
+      $('tmErr').textContent=''; done(r.data);
+    }).catch(function(){ $('tmErr').textContent='Network error — try again.'; });
+  });
+  $('tmCancel').addEventListener('click', function(){ mClose('teamModal'); });
+  $('teamModal').addEventListener('click', function(e){ if(e.target===$('teamModal')) mClose('teamModal'); });
+  /* ----- player card: teams the player belongs to ----- */
+  function playerTeamsHtml(p){
+    var rows=(state.playerTeams||[]).filter(function(x){ return x.player_id===p.id; }).map(function(x){ return {pt:x, t:teamById(x.team_id)}; }).filter(function(x){ return x.t; });
+    if(!rows.length) return '';
+    var h='<div class="meta" style="margin-top:12px;font-weight:800;color:var(--txt)">'+tr('Teams')+'</div>';
+    rows.forEach(function(x){ h+='<div class="meta" style="margin-top:4px">▸ <b style="color:var(--txt)">'+esc(x.t.club)+'</b> · '+esc(x.t.label)+' '+codeChip(x.t.code)+(x.pt.is_primary?' · '+tr('primary'):'')+(x.pt.shirt_number?' · #'+esc(String(x.pt.shirt_number)):'')+(state.canEdit&&!x.pt.is_primary?' · <a href="#" class="ptLeave" data-pt="'+esc(x.pt.id)+'" style="color:var(--muted)">'+tr('Leave')+'</a>':'')+'</div>'; });
+    if(state.canEdit && state.mode==='family') h+='<div class="btnrow"><a class="gcal ptAdd" href="#">＋ '+tr('Add to a team')+'</a></div>';
+    return h;
+  }
+  function bindPlayerTeams(root, p){
+    var a=root.querySelector('.ptAdd'); if(a) a.addEventListener('click', function(e){ e.preventDefault(); mClose('playerModal'); openTeamModal(p.id); });
+    root.querySelectorAll('.ptLeave').forEach(function(l){ l.addEventListener('click', function(e){ e.preventDefault(); if(!confirm(tr('Leave this team?'))) return; sb.from('player_teams').update({left_on:todayZagreb()}).eq('id', l.dataset.pt).then(function(r){ if(r.error) return; loadTeams().then(function(){ openPlayer(p); }); }); }); });
+  }
+
   /* ---------- build 30: tournament info — links (official site, guide on Drive) and documents (PDF / photos) on every tournament card ---------- */
   HR['Tournament info']='Informacije o turniru'; HR['Add link']='Dodaj poveznicu'; HR['Add document']='Dodaj dokument'; HR['No links or documents yet.']='Još nema poveznica ni dokumenata.';
   HR['Link (web page or Google Drive file)']='Poveznica (web stranica ili datoteka na Google Driveu)'; HR['Label']='Naziv'; HR['e.g. Official guide, Results, Schedule']='npr. Službeni vodič, Rezultati, Raspored';
@@ -3248,7 +3380,7 @@
     $('luTitle').textContent=tr('Lineup')+' — '+e.title;
     $('luSub').textContent=(e.event_date?fmtDayLong(e.event_date):'')+(e.start_time?' · '+hm(e.start_time):'')+' · '+e.club+' '+team;
     $('luMsg').textContent=''; $('luErr').textContent='';
-    var canP = state.mode==='coach' ? Promise.resolve({data:(state.ctx.coach_teams||[]).some(function(t){ return t.club===e.club && t.team_label===team; })}) : sb.rpc('can_manage_lineup',{ p_club:e.club, p_team:team });
+    var canP = state.mode==='coach' ? Promise.resolve({data:(state.ctx.coach_teams||[]).some(function(t){ return t.club===e.club && t.team_label===team; })}) : canManageTeam(e.club, team).then(function(ok){ return {data:ok}; });
     var rosP = state.rosterCache[e.club+'|'+team] ? Promise.resolve({data:state.rosterCache[e.club+'|'+team]}) : sb.rpc('team_roster_players',{ p_club:e.club, p_team:team });
     Promise.all([canP, rosP]).then(function(r){
       lu.can=!!(r[0]&&r[0].data); state.rosterCache[e.club+'|'+team]=(r[1]&&r[1].data)||[];
@@ -3336,8 +3468,10 @@
   function teamDefaults(club, team){ return state.teamSettings[teamKeyOf(club, team)]||null; }
   function myTeams(){
     var m={};
-    if(state.mode==='coach'){ (state.ctx.coach_teams||[]).forEach(function(t){ m[teamKeyOf(t.club,t.team_label)]={club:t.club,team:t.team_label,players:[]}; }); }
+    (state.teams||[]).forEach(function(t){ m[teamKeyOf(t.club,t.label)]={club:t.club,team:t.label,players:[],id:t.id,code:t.code,role:t.role,coach_count:t.coach_count}; });
+    if(state.mode==='coach'){ (state.ctx.coach_teams||[]).forEach(function(t){ var k=teamKeyOf(t.club,t.team_label); m[k]=m[k]||{club:t.club,team:t.team_label,players:[]}; }); }
     state.players.forEach(function(p){ var k=teamKeyOf(p.club,p.team_label); (m[k]=m[k]||{club:p.club,team:p.team_label,players:[]}).players.push(p); });
+    (state.playerTeams||[]).forEach(function(x){ var t=teamById(x.team_id), p=playerById(x.player_id); if(!t||!p) return; var k=teamKeyOf(t.club,t.label); if(m[k] && m[k].players.indexOf(p)<0) m[k].players.push(p); });
     return Object.keys(m).map(function(k){ return m[k]; });
   }
   function loadExtras(){
@@ -3345,7 +3479,7 @@
     return Promise.all([ sb.from('team_settings').select('*'), qs ]).then(function(r){
       state.teamSettings={}; ((r[0]&&r[0].data)||[]).forEach(function(t){ state.teamSettings[teamKeyOf(t.club,t.team_label)]=t; });
       state.questions=(r[1]&&r[1].data)||[];
-      renderQuestions(); renderTeamDefaults();
+      renderQuestions(); renderTeamDefaults(); loadTeams();
     }).catch(function(){});
   }
 
@@ -3407,7 +3541,7 @@
     var h='<h2 class="scr" style="margin-top:0">'+tr('Team defaults')+'</h2><p class="meta" style="margin-bottom:6px">'+tr('Used for every new training when the coach or the message does not say otherwise.')+'</p>';
     teams.forEach(function(t){
       var d=teamDefaults(t.club,t.team)||{};
-      h+='<div class="tdRow" data-club="'+esc(t.club)+'" data-team="'+esc(t.team)+'"><div class="famName" style="margin:10px 0 4px">'+esc(t.club)+' · '+esc(t.team)+'</div>'
+      h+='<div class="tdRow" data-club="'+esc(t.club)+'" data-team="'+esc(t.team)+'"><div class="famName" style="margin:10px 0 4px">'+esc(t.club)+' · '+esc(t.team)+' '+codeChip(t.code)+'</div>'
         +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start"><div style="flex:2;min-width:160px"><input type="text" class="tdVenue" placeholder="'+tr('Default venue')+'" value="'+esc(d.default_venue||'')+'" style="width:100%" data-map="'+esc(d.default_venue_map||'')+'"></div><input type="text" class="tdField" placeholder="'+tr('Default field')+'" value="'+esc(d.default_field||'')+'" style="flex:1;min-width:90px"><a class="gcal tdSave" href="#" style="margin-top:0;align-self:center">'+tr('Save')+'</a></div></div>';
     });
     h+='<div class="ok" id="tdOk"></div><div class="err" id="tdErr"></div>';
@@ -3427,7 +3561,7 @@
   var aeCan={};
   function openAddEvent(){
     var teams=myTeams(); if(!teams.length) return;
-    var sel=$('aeTeam'); sel.innerHTML=teams.map(function(t){ return '<option value="'+esc(teamKeyOf(t.club,t.team))+'">'+esc(t.club+' · '+t.team)+'</option>'; }).join('');
+    var sel=$('aeTeam'); sel.innerHTML=teams.map(function(t){ return '<option value="'+esc(teamKeyOf(t.club,t.team))+'">'+esc(t.club+' · '+t.team+(t.code?' · '+t.code:''))+'</option>'; }).join('');
     $('aeScopeWrap').style.display = state.mode==='coach' ? 'none' : '';
     $('aeDate').value=state.selDay||todayZagreb(); $('aeTitle').value=''; $('aeReport').value=''; $('aeStart').value=''; $('aeEnd').value=''; $('aeDetails').value=''; $('aeErr').textContent=''; $('aeOk').textContent='';
     $('aeType').value='training'; $('aeDefault').checked=false; $('aeReport').dataset.auto='1'; $('aeEnd').dataset.auto='1'; $('aeTimeHint').textContent='';
@@ -3441,7 +3575,7 @@
     if(state.mode==='coach'){ aeCan[k]=true; hint.textContent=tr('Every family in the team gets the event and a notification; parents confirm attendance here.'); return; }
     var apply=function(ok){ aeCan[k]=ok; $('aeScopeTeam').disabled=!ok; if(!ok && $('aeScopeTeam').checked) $('aeScopeFam').checked=true; hint.textContent = ok ? tr('Every family in the team gets the event and a notification; parents confirm attendance here.') : tr('Only the coach can add for the whole team (a parent can until the coach claims their card).'); };
     if(k in aeCan){ apply(aeCan[k]); return; }
-    sb.rpc('can_manage_lineup',{ p_club:t.club, p_team:t.team }).then(function(r){ apply(!!(r&&r.data)); }).catch(function(){ apply(false); });
+    canManageTeam(t.club, t.team).then(apply);
   }
   $('aeTeam').addEventListener('change', function(){ aeApplyDefaults(); aeCheckScope(); });
   $('aeType').addEventListener('change', function(){ $('aeTitle').placeholder=''; aeApplyDefaults(); });
@@ -3458,7 +3592,8 @@
     var pre = $('aeDefault').checked ? saveTeamDefaults(t.club, t.team, venue, field, null, $('aeErr'), vmap) : Promise.resolve(true);
     Promise.resolve(pre).then(function(){
       if(team) return sb.rpc('team_add_event',{ p_club:t.club, p_team:t.team, p_type:type, p_title:title, p_date:date, p_report:rep, p_start:st, p_end:en, p_venue:venue, p_field:field, p_details:det, p_confirmed:true, p_venue_map:vmap });
-      var rows=state.players.filter(function(p){ return p.club===t.club && p.team_label===t.team; }).map(function(p){ return { player_id:p.id, event_type:type, title:title, event_date:date, date_confirmed:true, report_time:rep, start_time:st, end_time:en, venue:venue, venue_map:vmap, field:field, details:det, club:t.club, family_id:state.familyId, source:'parent' }; });
+      var tm=myTeams().filter(function(x){ return x.club===t.club && x.team===t.team; })[0];
+      var rows=((tm&&tm.players.length)?tm.players:state.players.filter(function(p){ return p.club===t.club && p.team_label===t.team; })).map(function(p){ return { player_id:p.id, event_type:type, title:title, event_date:date, date_confirmed:true, report_time:rep, start_time:st, end_time:en, venue:venue, venue_map:vmap, field:field, details:det, club:t.club, family_id:state.familyId, source:'parent' }; });
       return sb.from('events').insert(rows);
     }).then(function(r){
       $('aeSave').disabled=false;
