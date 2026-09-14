@@ -20,8 +20,7 @@
     --txt:#f2f7f4; --muted:#9db3a6; --red:#ff7a6e;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
-  body>.wrap{flex:1 0 auto;width:100%;min-width:0}
+  body{background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;min-height:100vh}
   .wrap{max-width:900px;margin:0 auto;padding:20px 16px 90px}
   header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 18px}
   .brand{font:900 15px/1.2 Archivo,Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
@@ -52,14 +51,14 @@
   nav.tabs button[aria-selected="true"]{color:var(--green);border-color:var(--green-dim);background:var(--card2)}
   .screen{display:none}.screen.on{display:block}
   /* bottom ribbon (phone) — mirrors the Coach app */
-  nav.bottom{position:-webkit-sticky;position:sticky;bottom:0;left:0;right:0;z-index:50;margin-top:auto;width:100%;background:#0a120d;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));transform:translateZ(0)}
+  nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:50;width:100%;background:#0a120d;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);will-change:transform;-webkit-backface-visibility:hidden}
   nav.bottom[hidden]{display:none}
   nav.bottom button{flex:1 1 0;min-width:0;background:none;border:0;color:var(--muted);font:800 8.5px/1 Inter,sans-serif;letter-spacing:.01em;text-transform:uppercase;padding:6px 0 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;border-radius:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   nav.bottom button .ic{font-size:19px;line-height:1}
   nav.bottom button[aria-current="page"]{color:var(--green)}
   nav.bottom button .n{position:absolute;top:0;right:12%;background:var(--amber);color:var(--ink,#0b130e);border-radius:999px;padding:2px 6px;font-size:9.5px;font-weight:900}
   body.coach nav.bottom button[data-s="stats"],body.coach nav.bottom button[data-s="journey"]{display:none}
-  @media (max-width:959px){ nav.tabs{display:none} .wrap{padding-bottom:28px} }
+  @media (max-width:959px){ nav.tabs{display:none} .wrap{padding-bottom:calc(96px + env(safe-area-inset-bottom))} }
   @media (max-width:380px){ nav.bottom button{font-size:7.5px;letter-spacing:0} }
   @media (min-width:960px){ nav.bottom{display:none} }
   @media print{ nav.bottom{display:none !important} }
@@ -1289,7 +1288,23 @@
       window.scrollTo(0,0);
     });
   });
-  (function(){ var app=$('app'), nb=document.querySelector('nav.bottom'); if(!app||!nb) return; var sync=function(){ nb.hidden = app.style.display!=='block'; }; sync(); new MutationObserver(sync).observe(app,{attributes:true,attributeFilter:['style']}); })();
+  (function(){
+    var app=$('app'), nb=document.querySelector('nav.bottom'); if(!app||!nb) return;
+    var sync=function(){ nb.hidden = app.style.display!=='block'; place(); };
+    var vv=window.visualViewport;
+    function place(){
+      if(nb.hidden) return;
+      var off=0;
+      if(vv){ off=Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop)); }
+      nb.style.bottom = off ? off+'px' : '0px';
+    }
+    sync(); new MutationObserver(sync).observe(app,{attributes:true,attributeFilter:['style']});
+    if(vv){ vv.addEventListener('resize', place); vv.addEventListener('scroll', place); }
+    window.addEventListener('resize', place); window.addEventListener('orientationchange', function(){ setTimeout(place, 300); });
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden) setTimeout(place, 100); });
+    window.addEventListener('pageshow', function(){ setTimeout(place, 50); });
+    requestAnimationFrame(place); setTimeout(place, 400); setTimeout(place, 1500);
+  })();
   document.querySelectorAll('nav.bottom button').forEach(function(nb){
     nb.addEventListener('click', function(){ var t=document.querySelector('nav.tabs button[data-s="'+nb.dataset.s+'"]'); if(t) t.click(); });
   });
