@@ -312,6 +312,7 @@
   .orImg{max-width:100%;border-radius:10px;display:block;margin:6px 0;border:1px solid var(--line)}
   .orPdf{margin:6px 0}.orPdf canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;margin:0 0 8px}.orPdf .meta{padding:6px 2px}
   .orText{white-space:pre-wrap;font:13.5px/1.5 Inter,sans-serif;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;color:var(--txt)}
+  .tinfo{margin:10px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card2)}.tiRow{font-size:13.5px;margin:4px 0;line-height:1.5}.tiRow a{color:var(--blue)}.tiRow .meta{font-size:12px}.tinfo .btnrow{margin-top:8px}
   .plList{border:1px solid var(--line);border-radius:10px;margin-top:6px;overflow:hidden;background:var(--card2)}
   .plItem{display:block;width:100%;text-align:left;padding:8px 10px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--txt);font:13.5px/1.35 Inter,sans-serif;cursor:pointer}.plItem:last-child{border-bottom:0}.plItem:hover,.plItem:focus{background:var(--card)}
   .plItem b{display:block;font-weight:700}.plItem span{font-size:12px;color:var(--muted)}
@@ -670,6 +671,7 @@
   <div class="ok" id="ppLoginMsg"></div>
   <input type="file" id="ppFile" accept="image/*" hidden>
   <input type="file" id="teamPhotoFile" accept="image/*" hidden>
+<input type="file" id="tourDocFile" accept="application/pdf,image/*" hidden>
   <div class="smBtns"><button class="ghost" id="ppClose" type="button">Close</button></div>
 </div></div>
 
@@ -731,6 +733,16 @@
   <h3 id="orTitle"></h3>
   <div id="orBody"></div>
   <div class="smBtns"><button class="ghost" id="orClose" type="button">Close</button></div>
+</div></div>
+
+<div id="tlModal" class="pmod"><div class="smBox" style="max-width:420px">
+  <h3>Add link</h3>
+  <label for="tlUrl">Link (web page or Google Drive file)</label>
+  <input id="tlUrl" type="url" placeholder="https://…" autocomplete="off">
+  <label for="tlLabel">Label</label>
+  <input id="tlLabel" type="text" maxlength="80" placeholder="e.g. Official guide, Results, Schedule" autocomplete="off">
+  <div class="smBtns"><button class="primary" id="tlSave" type="button">Save link</button><button class="ghost" id="tlCancel" type="button">Cancel</button></div>
+  <div class="err" id="tlErr"></div>
 </div></div>
 
 <div id="addEvModal" class="pmod"><div class="smBox" style="max-width:460px">
@@ -900,6 +912,7 @@
     'Coach cards work like player cards — career, photo and updates, kept by the coach once claimed. Claiming gives the coach their own login that sees only their team\'s pages.':'Kartice trenera rade kao kartice igrača — karijera, fotografija i novosti, koje trener sam održava nakon preuzimanja. Preuzimanjem trener dobiva vlastitu prijavu koja vidi samo stranice svoje momčadi.',
     'Invite your coach to claim this card':'Pozovi trenera da preuzme ovu karticu','Only a parent of the family can create invites.':'Samo roditelj u obitelji može stvarati pozivnice.','Creating code…':'Stvaram kod…',
     'Found it on Google Maps? Tap Share → Copy link and paste the link here — the pin comes with it.':'Našao/la si je na Google kartama? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.','Look it up on Google Maps ↗':'Potraži na Google kartama ↗','Found it there? Tap Share → Copy link and paste the link here — the pin comes with it.':'Našao/la si je tamo? Dodirni Podijeli → Kopiraj poveznicu i zalijepi je ovdje — pribadača dolazi s njom.',
+    'Add link':'Dodaj poveznicu','Link (web page or Google Drive file)':'Poveznica (web stranica ili datoteka na Google Driveu)','Label':'Naziv','e.g. Official guide, Results, Schedule':'npr. Službeni vodič, Rezultati, Raspored','Save link':'Spremi poveznicu',
     'Add venue':'Dodaj lokaciju','add venue':'dodaj lokaciju','Venue name or address':'Naziv lokacije ili adresa','Stadium or address':'Stadion ili adresa','Find it on Google Maps':'Pronađi na Google kartama','Save venue':'Spremi lokaciju',
     'Type the venue first — the Google Maps link helps you find the exact name.':'Najprije upiši lokaciju — poveznica na Google karte pomaže pronaći točan naziv.',
     'Confirm the date':'Potvrdi datum','Confirmed date':'Potvrđeni datum','Pick a date first.':'Najprije odaberi datum.',
@@ -1277,7 +1290,7 @@
       state.monthStart = firstOf(state.weekStart);
       buildFilters(); renderFeed(); syncViewSeg();
       renderSchedule(); renderTournaments(); renderMessages(); renderStats(); renderFamily(); renderJourney();
-      applyHash(); loadAttendance(); loadExtras(); loadInboxMeta(); $('addEvBtn').hidden = !(state.canEdit);
+      applyHash(); loadAttendance(); loadExtras(); loadInboxMeta(); loadTourDocs(); $('addEvBtn').hidden = !(state.canEdit);
     }).catch(function(){ showLoadError('network error'); });
   }
   /* Coach mode: team-scoped, read-only. Players come through team_players() (names + shirts only). */
@@ -1623,6 +1636,7 @@
       if(!t.event_date) meta.push('Date, venue and which of our teams plays are not announced yet.');
       h+='<div class="meta">'+meta.join(' · ')+'</div>';
       if(t.format_notes) h+='<a href="#" class="srcTgl" data-tg="tn-'+esc(t.id)+'">ⓘ Details &amp; source</a><div class="meta" id="tn-'+esc(t.id)+'" hidden style="margin-top:6px">'+esc(t.format_notes)+'</div>';
+      h+=tourInfoBlock(t);
       h+='</div>';
       var fx=state.fixtures.filter(function(f){ return f.tournament_id===t.id; });
       if(fx.length){
@@ -1717,7 +1731,7 @@
     $('tourBody').querySelectorAll('.tfx .fchip').forEach(function(b){
       b.addEventListener('click', function(){ state.tourFx[b.closest('.tfx').dataset.tour]=b.dataset.g; renderTournaments(); });
     });
-    bindEvExtras($('tourBody'));
+    bindEvExtras($('tourBody')); bindTourInfo($('tourBody'));
   }
   var teamPhotoTarget=null;
   $('teamPhotoFile').addEventListener('change', function(){
@@ -2933,6 +2947,83 @@
   $('aeEnd').addEventListener('input', function(){ $('aeEnd').dataset.auto='0'; });
   $('aeUsual').addEventListener('click', function(){ if($('aeUsual').dataset.t){ $('aeStart').value=$('aeUsual').dataset.t; aeAutoTimes(); } });
   $('aeDate').addEventListener('change', aeDayChips);
+
+  /* ---------- build 30: tournament info — links (official site, guide on Drive) and documents (PDF / photos) on every tournament card ---------- */
+  HR['Tournament info']='Informacije o turniru'; HR['Add link']='Dodaj poveznicu'; HR['Add document']='Dodaj dokument'; HR['No links or documents yet.']='Još nema poveznica ni dokumenata.';
+  HR['Link (web page or Google Drive file)']='Poveznica (web stranica ili datoteka na Google Driveu)'; HR['Label']='Naziv'; HR['e.g. Official guide, Results, Schedule']='npr. Službeni vodič, Rezultati, Raspored';
+  HR['Paste a link first.']='Najprije zalijepi poveznicu.'; HR['Save link']='Spremi poveznicu'; HR['added by']='dodao/la'; HR['File too large — 6 MB max.']='Datoteka je prevelika — najviše 6 MB.';
+  HR['Only PDF or photos.']='Samo PDF ili fotografije.'; HR['Uploading…']='Učitavam…'; HR['Remove']='Ukloni'; HR['Remove this document?']='Ukloniti ovaj dokument?'; HR['Document']='Dokument'; HR['Open']='Otvori';
+  state.tourDocs=[];
+  function loadTourDocs(){
+    if(state.role==='child') return Promise.resolve();
+    return sb.from('tournament_docs_meta').select('*').order('created_at').then(function(r){ state.tourDocs=(r&&r.data)||[]; if(typeof renderTournaments==='function' && $('tourBody')) renderTournaments(); }).catch(function(){});
+  }
+  function linkHost(u){ try{ var h=new URL(u).hostname.replace(/^www\./,''); if(/drive\.google/.test(h)) return 'Google Drive'; return h; }catch(e){ return u; } }
+  function tourInfoBlock(t){
+    var links=Array.isArray(t.links)?t.links:[], docs=(state.tourDocs||[]).filter(function(d){ return d.tournament_id===t.id; });
+    var h='<div class="tinfo" data-tour="'+esc(t.id)+'"><div class="meta" style="margin-bottom:4px"><b style="color:var(--txt)">ⓘ '+tr('Tournament info')+'</b></div>';
+    if(!links.length && !docs.length) h+='<div class="meta">'+tr('No links or documents yet.')+'</div>';
+    links.forEach(function(l,i){ h+='<div class="tiRow">🔗 <a href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label||linkHost(l.url))+'</a> <span class="meta">'+esc(linkHost(l.url))+(l.added_by_name?' · '+tr('added by')+' '+esc(l.added_by_name):'')+'</span>'+(state.canEdit?' <a href="#" class="tiDelLink meta" data-i="'+i+'" title="'+tr('Remove')+'">✕</a>':'')+'</div>'; });
+    docs.forEach(function(d){ var ic=(d.mime||'').indexOf('image/')===0?'📷':'📄'; h+='<div class="tiRow">'+ic+' <a href="#" class="tiOpen" data-doc="'+esc(d.id)+'">'+esc(d.name||tr('Document'))+'</a> <span class="meta">'+(d.size?Math.round(d.size/1024)+' KB':'')+(d.added_by_name?' · '+tr('added by')+' '+esc(d.added_by_name):'')+'</span>'+(state.canEdit?' <a href="#" class="tiDelDoc meta" data-doc="'+esc(d.id)+'" title="'+tr('Remove')+'">✕</a>':'')+'</div>'; });
+    if(state.canEdit) h+='<div class="btnrow"><a class="gcal tiAddLink" href="#">🔗 '+tr('Add link')+'</a><a class="gcal tiAddDoc" href="#">📎 '+tr('Add document')+'</a></div><div class="err tiErr"></div>';
+    return h+'</div>';
+  }
+  function meName(){ return (state.parents||[]).filter(function(p){ return p.user_id===state.userId; }).map(function(p){ return p.first_name; })[0] || (state.ctx&&state.ctx.coach?state.ctx.coach.first_name:null) || ''; }
+  function tourById(id){ for(var i=0;i<state.tours.length;i++) if(state.tours[i].id===id) return state.tours[i]; return null; }
+  function saveTourLinks(t, links, errEl){
+    return sb.from('tournaments').update({links:links}).eq('id', t.id).then(function(r){ if(r.error){ if(errEl) errEl.textContent=r.error.message; return false; } t.links=links; renderTournaments(); return true; });
+  }
+  var tlTour=null;
+  function openTourLink(t){ tlTour=t; $('tlUrl').value=''; $('tlLabel').value=''; $('tlErr').textContent=''; mOpen('tlModal'); setTimeout(function(){ $('tlUrl').focus(); },50); }
+  $('tlSave').addEventListener('click', function(){
+    var u=$('tlUrl').value.trim(), l=$('tlLabel').value.trim();
+    if(!/^https?:\/\//i.test(u)){ if(/^[\w.-]+\.[a-z]{2,}/i.test(u)) u='https://'+u; else { $('tlErr').textContent=tr('Paste a link first.'); return; } }
+    var links=(Array.isArray(tlTour.links)?tlTour.links:[]).concat([{url:u, label:l||null, added_by_name:meName(), added_at:todayZagreb()}]);
+    saveTourLinks(tlTour, links, $('tlErr')).then(function(ok){ if(ok) mClose('tlModal'); });
+  });
+  $('tlCancel').addEventListener('click', function(){ mClose('tlModal'); });
+  $('tlModal').addEventListener('click', function(e){ if(e.target===$('tlModal')) mClose('tlModal'); });
+  var tdTour=null;
+  $('tourDocFile').addEventListener('change', function(){
+    var f=this.files[0]; this.value=''; if(!f||!tdTour) return;
+    var box=$('tourBody').querySelector('.tinfo[data-tour="'+tdTour.id+'"]'), err=box?box.querySelector('.tiErr'):null;
+    var mime=f.type||''; if(mime==='image/jpg') mime='image/jpeg';
+    if(!(mime==='application/pdf' || mime.indexOf('image/')===0)){ if(err) err.textContent=tr('Only PDF or photos.'); return; }
+    if(f.size>6*1024*1024){ if(err) err.textContent=tr('File too large — 6 MB max.'); return; }
+    if(err) err.textContent=tr('Uploading…');
+    var rd=new FileReader();
+    rd.onload=function(){
+      var b64=String(rd.result).split(',')[1]||'';
+      sb.from('tournament_docs').insert({ tournament_id:tdTour.id, family_id:tdTour.family_id||state.familyId, name:f.name, mime:mime, size:f.size, data_b64:b64, added_by:state.userId, added_by_name:meName() }).then(function(r){
+        if(r.error){ if(err) err.textContent=r.error.message; return; }
+        loadTourDocs();
+      });
+    };
+    rd.readAsDataURL(f);
+  });
+  function openTourDoc(id){
+    var d=(state.tourDocs||[]).filter(function(x){ return x.id===id; })[0]; if(!d) return;
+    $('orTitle').textContent=d.name||tr('Document'); $('orBody').innerHTML='<div class="meta">'+tr('Loading the original…')+'</div>'; mOpen('origModal');
+    sb.from('tournament_docs').select('data_b64, mime, name').eq('id', id).single().then(function(r){
+      if(r.error||!r.data){ $('orBody').innerHTML='<div class="err">'+tr('Could not load the original.')+'</div>'; return; }
+      var a=r.data, url='data:'+a.mime+';base64,'+a.data_b64, h='';
+      if(a.mime.indexOf('image/')===0) h='<a href="'+url+'" target="_blank" rel="noopener"><img class="orImg" src="'+url+'" alt="'+esc(a.name||'')+'"></a>';
+      else h='<div class="orPdf"><div class="meta">'+tr('Rendering the PDF…')+'</div></div><div class="btnrow"><a class="gcal tdOpenPdf" href="#">📄 '+tr('Open PDF')+' · '+esc(a.name||'')+'</a></div>';
+      $('orBody').innerHTML=h;
+      var box=$('orBody').querySelector('.orPdf'); if(box) renderPdfPages(box, a.data_b64);
+      var ob=$('orBody').querySelector('.tdOpenPdf'); if(ob) ob.addEventListener('click', function(e){ e.preventDefault(); try{ var bin=atob(a.data_b64), u8=new Uint8Array(bin.length); for(var k=0;k<bin.length;k++) u8[k]=bin.charCodeAt(k); window.open(URL.createObjectURL(new Blob([u8],{type:'application/pdf'})),'_blank'); }catch(err){} });
+    });
+  }
+  function bindTourInfo(root){
+    root.querySelectorAll('.tinfo').forEach(function(box){
+      var t=tourById(box.dataset.tour); if(!t) return;
+      var al=box.querySelector('.tiAddLink'); if(al) al.addEventListener('click', function(e){ e.preventDefault(); openTourLink(t); });
+      var ad=box.querySelector('.tiAddDoc'); if(ad) ad.addEventListener('click', function(e){ e.preventDefault(); tdTour=t; $('tourDocFile').click(); });
+      box.querySelectorAll('.tiOpen').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); openTourDoc(a.dataset.doc); }); });
+      box.querySelectorAll('.tiDelLink').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); var links=(t.links||[]).slice(); links.splice(+a.dataset.i,1); saveTourLinks(t, links, box.querySelector('.tiErr')); }); });
+      box.querySelectorAll('.tiDelDoc').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); if(!confirm(tr('Remove this document?'))) return; sb.from('tournament_docs').delete().eq('id', a.dataset.doc).then(function(){ loadTourDocs(); }); }); });
+    });
+  }
 
   /* venue add (parent edit, venue column only) */
   var vmEvId=null;
