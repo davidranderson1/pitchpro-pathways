@@ -180,6 +180,7 @@
   .srcTgl{display:inline-block;margin-top:8px;font:800 11px/1 Inter,sans-serif;color:var(--muted);text-decoration:underline dotted;text-underline-offset:3px}
   .confUnc{color:var(--amber);font-weight:800;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
   .addVenue{color:var(--blue);cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+  .vChg{color:var(--muted);text-decoration:none;font-size:12px;margin-left:4px;cursor:pointer}.vChg:hover{color:var(--blue)}
   #clubBadge{cursor:pointer}
   .stTile[data-player]{cursor:pointer}
   .calIco{text-decoration:none;font-size:15px;margin-left:7px;cursor:pointer}
@@ -347,6 +348,8 @@
   .chFoot textarea{flex:1;min-height:40px;max-height:140px;resize:none;background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:9px 12px;font:14.5px/1.35 Inter,sans-serif;margin:0}
   .chFoot button{background:var(--green);color:#0b130e;border:0;border-radius:12px;padding:0 16px;height:40px;font:800 12px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.chFoot button:disabled{opacity:.5}
   @media (max-width:560px){ #chatModal.pmod{padding:0} .chBox{height:100dvh;height:100vh;max-width:none;border-radius:0;border:0} }
+  table.stand{width:100%;min-width:0;border-collapse:collapse;font-size:13px;margin:6px 0 2px}.stand th{font:800 10px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:4px 6px;border-bottom:1px solid var(--line)}.stand th:first-child,.stand td:first-child{text-align:left}.stand td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.stand td:first-child{white-space:normal}.stand tr.ours td{color:var(--green);font-weight:800}.stand td.pts{font-weight:800;color:var(--txt)}
+  .staffRow{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line);font-size:13.5px}.staffRow:last-child{border-bottom:0}.staffRow b{font-weight:700}.staffRow span{color:var(--muted);font-size:12.5px;text-align:right;flex:none}.staffNote{font-size:12px;color:var(--muted);margin-top:2px}
   .viewbar .addBtn{background:var(--green);color:#06130c;border:0;border-radius:999px;padding:9px 14px;font:800 11px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
 </style>
 </head>
@@ -682,6 +685,7 @@
   <p class="meta" id="clubInfo" style="margin-top:12px"></p>
   <div class="meta" id="clubAddr" style="margin-top:10px"></div>
   <div class="meta" id="clubCoaches" style="margin-top:8px"></div>
+  <div id="clubStaff" style="margin-top:12px"></div>
   <div class="smBtns"><button class="ghost" id="clubClose" type="button">Close</button></div>
 </div></div>
 
@@ -986,6 +990,9 @@
     'Add link':'Dodaj poveznicu','Link (web page or Google Drive file)':'Poveznica (web stranica ili datoteka na Google Driveu)','Label':'Naziv','e.g. Official guide, Results, Schedule':'npr. Službeni vodič, Rezultati, Raspored','Save link':'Spremi poveznicu',
     'Join or create a team':'Pridruži se momčadi ili je stvori','Search club or team (e.g. Hajduk 2016)':'Traži klub ili momčad (npr. Hajduk 2016)','Create a new team':'Stvori novu momčad','Club':'Klub','Team label (as the club calls it, e.g. 2016, Pioniri 2, U-11)':'Naziv momčadi (kako je klub zove, npr. 2016, Pioniri 2, U-11)','Birth year':'Godište','Squad (only if the club has several, e.g. 2, B)':'Ekipa (samo ako ih klub ima više, npr. 2, B)','Season':'Sezona','Which of your players?':'Koji od tvojih igrača?','Join':'Pridruži se',
     'New message':'Nova poruka','Write a message…':'Napiši poruku…','Send':'Pošalji','Mute':'Utišaj',
+    'Change venue':'Promijeni lokaciju','Also change these events at the same venue:':'Promijeni i ove događaje na istoj lokaciji:','Also set this venue on the tournament\'s games:':'Postavi ovu lokaciju i na utakmice turnira:',
+    'Standings':'Ljestvica','Goals':'Golovi','standings':'ljestvica','From the results entered so far · 3 points a win, 1 a draw · goal difference, then goals scored':'Prema dosad unesenim rezultatima · 3 boda za pobjedu, 1 za neriješeno · gol-razlika, zatim postignuti golovi',
+    'Staff':'Stručni stožer','First team':'Prva momčad','Academy':'Akademija','Source':'Izvor','Head coach':'Glavni trener','Assistant coach':'Pomoćni trener','Goalkeeper coach':'Trener vratara','Fitness coach':'Kondicijski trener','Rehabilitation coach':'Trener za rehabilitaciju','Team manager':'Voditelj momčadi','Video analyst':'Video analitičar','Kit manager':'Ekonom','Sporting director':'Sportski direktor',
     'Add venue':'Dodaj lokaciju','add venue':'dodaj lokaciju','Venue name or address':'Naziv lokacije ili adresa','Stadium or address':'Stadion ili adresa','Find it on Google Maps':'Pronađi na Google kartama','Save venue':'Spremi lokaciju',
     'Type the venue first — the Google Maps link helps you find the exact name.':'Najprije upiši lokaciju — poveznica na Google karte pomaže pronaći točan naziv.',
     'Confirm the date':'Potvrdi datum','Confirmed date':'Potvrđeni datum','Pick a date first.':'Najprije odaberi datum.',
@@ -1041,6 +1048,7 @@
   var MONF_EN=['January','February','March','April','May','June','July','August','September','October','November','December'], MONF_HR=['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
   var LANG = (function(){ var q=new URLSearchParams(location.search).get('lang'); if(q==='en'||q==='hr') return q; var s=null; try{ s=localStorage.getItem('pp-lang'); }catch(e){} return s==='en'?'en':'hr'; })();
   function tr(s){ return (LANG==='hr' && Object.prototype.hasOwnProperty.call(HR,s)) ? HR[s] : s; }
+  function trTitle(t){ t=String(t||''); if(LANG!=='hr') return t; return t.replace(/^Training\b/,'Trening').replace(/^Match v /,'Utakmica protiv ').replace(/^No training\b/,'Nema treninga').replace(/^Ball boys\b/,'Skupljanje lopti').replace(/^(.+?) tournament\b/,'Turnir $1').replace(/\btournament\b/g,'turnir').replace(/ — v /g,' — protiv ').replace(/^Hajduk training\b/,'Hajduk trening'); }
   /* Croatian plural: 1 / 2–4 / 5+ (11–14 → many). */
   function hrN(n, one, few, many){ var m10=n%10, m100=n%100; return (m10===1&&m100!==11)?one:(m10>=2&&m10<=4&&!(m100>=12&&m100<=14))?few:many; }
   function nWord(n, en1, enN, hr1, hr2, hr5){ return n+' '+(LANG==='hr'?hrN(n,hr1,hr2,hr5):(n===1?en1:enN)); }
@@ -1557,14 +1565,14 @@
     h+='<span class="chip t-'+esc(e.event_type)+'">'+ (TYPE_LABEL[e.event_type]||esc(e.event_type)) +'</span>';
     if(multiClub && e.club) h+='<span class="chip clubc">'+esc(e.club)+'</span>';
     h+='</div>';
-    h+='<h3>'+esc(e.title)+'</h3>';
+    h+='<h3>'+esc(trTitle(e.title))+'</h3>';
     var t='';
     if(e.report_time) t+='<span class="report">'+tr('⏰ Arrive')+' '+hm(e.report_time)+'</span>';
     if(e.start_time)  t+=(t?' · ':'')+'<span class="start">'+(e.report_time?tr('Kick-off')+' ':'')+hm(e.start_time)+'</span>';
     var calIco=(e.event_type!=='no_session' && e.event_date)?' <a class="calAdd calIco" data-ev="'+esc(e.id)+'" href="#" title="Add to calendar" aria-label="Add to calendar">📅</a>':'';
     if(t) h+='<div class="times">'+t+calIco+'</div>';
     var m=[];
-    if(e.venue) m.push('📍 '+mapLink(e.venue, e.venue_map)+(e.field?' · '+tr('Field')+' '+esc(e.field):'')); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">'+tr('add venue')+'</a>'+(e.field?' · '+tr('Field')+' '+esc(e.field):''));
+    if(e.venue) m.push('📍 '+mapLink(e.venue, e.venue_map)+(state.canEdit&&e.event_type!=='no_session'?' <a class="addVenue vChg" data-ev="'+esc(e.id)+'" title="'+tr('Change venue')+'">✎</a>':'')+(e.field?' · '+tr('Field')+' '+esc(e.field):'')); else if(e.event_type!=='no_session') m.push('📍 <a class="addVenue" data-ev="'+esc(e.id)+'">'+tr('add venue')+'</a>'+(e.field?' · '+tr('Field')+' '+esc(e.field):''));
     if(e.details) m.push(esc(e.details));
     if(m.length) h+='<div class="meta">'+m.join(' — ')+(t?'':calIco)+'</div>';
     else if(!t && calIco) h+='<div class="meta">'+calIco+'</div>';
@@ -1695,6 +1703,34 @@
   }
   state.tourFx = state.tourFx || {};
   function fmtDayLong(dIso){ var d=parseISO(dIso); return DOW[(d.getDay()+6)%7]+' · '+fmtShort(d); }
+  function standingsFor(fx, g){
+    var T={}, played=0;
+    fx.forEach(function(f){
+      if(f.stage!=='group' || f.grp!==g || f.home_score==null || f.away_score==null || !f.away || f.away==='—') return;
+      played++;
+      [f.home,f.away].forEach(function(nm){ T[nm]=T[nm]||{team:nm,p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}; });
+      var h=T[f.home], a=T[f.away], hs=+f.home_score, as=+f.away_score;
+      h.p++; a.p++; h.gf+=hs; h.ga+=as; a.gf+=as; a.ga+=hs;
+      if(hs>as){ h.w++; a.l++; h.pts+=3; } else if(hs<as){ a.w++; h.l++; a.pts+=3; } else { h.d++; a.d++; h.pts++; a.pts++; }
+    });
+    if(!played) return null;
+    return Object.keys(T).map(function(k){ return T[k]; }).sort(function(x,y){ return (y.pts-x.pts)||((y.gf-y.ga)-(x.gf-x.ga))||(y.gf-x.gf)||x.team.localeCompare(y.team); });
+  }
+  function standingsHtml(t, fx, gKeys){
+    var ours=t.club||'', out='', any=false;
+    var order=gKeys.slice().sort(function(a,b){ var oa=fx.some(function(f){ return f.grp===a && (f.home+' '+f.away).indexOf(ours)>=0; }), ob=fx.some(function(f){ return f.grp===b && (f.home+' '+f.away).indexOf(ours)>=0; }); return (ob?1:0)-(oa?1:0) || a.localeCompare(b); });
+    order.forEach(function(g, i){
+      var rows=standingsFor(fx, g); if(!rows) return; any=true;
+      var isOurs=ours && rows.some(function(r){ return r.team.indexOf(ours)>=0; });
+      var tbl='<table class="stand"><tr><th>'+tr('Group')+' '+esc(g)+'</th><th>P</th><th>W-D-L</th><th>'+tr('Goals')+'</th><th>Pts</th></tr>';
+      rows.forEach(function(r,k){ tbl+='<tr'+(ours&&r.team.indexOf(ours)>=0?' class="ours"':'')+'><td>'+(k+1)+'. '+esc(r.team)+'</td><td>'+r.p+'</td><td>'+r.w+'-'+r.d+'-'+r.l+'</td><td>'+r.gf+':'+r.ga+' <span style="color:var(--muted)">('+(r.gf-r.ga>0?'+':'')+(r.gf-r.ga)+')</span></td><td class="pts">'+r.pts+'</td></tr>'; });
+      tbl+='</table>';
+      if(isOurs || order.length===1) out+=tbl;
+      else out+='<details style="margin-top:4px"><summary class="meta" style="cursor:pointer">'+tr('Group')+' '+esc(g)+' — '+tr('standings')+'</summary>'+tbl+'</details>';
+    });
+    if(!any) return '';
+    return '<div class="card" style="margin:14px 0"><div class="meta" style="font-weight:800;color:var(--txt);margin-bottom:2px">📊 '+tr('Standings')+'</div><div class="meta" style="margin-bottom:4px">'+tr('From the results entered so far · 3 points a win, 1 a draw · goal difference, then goals scored')+'</div>'+out+'</div>';
+  }
   function renderTournaments(){
     var today=todayZagreb();
     var ts=state.tours.filter(function(t){ return state.fClub==='all' || t.club===state.fClub; });
@@ -1725,7 +1761,7 @@
       h+='</div><h3 style="margin-top:8px">'+esc(t.name)+'</h3>';
       var meta=[];
       if(t.event_date) meta.push('<a class="calAdd calIco2" data-tour="'+esc(t.id)+'" href="#" title="Add games to calendar">📅 '+esc(t.event_date)+'</a>');
-      if(t.venue) meta.push('📍 '+mapLink(t.venue));
+      if(t.venue) meta.push('📍 '+mapLink(t.venue, t.venue_map)+(state.canEdit?' <a class="vChg tvChg" data-tour="'+esc(t.id)+'" href="#" title="'+tr('Change venue')+'">✎</a>':'')); else if(state.canEdit) meta.push('📍 <a class="addVenue tvChg" data-tour="'+esc(t.id)+'" href="#">'+tr('add venue')+'</a>');
       if(t.team_label) meta.push(esc(t.team_label));
       if(!t.event_date) meta.push('Date, venue and which of our teams plays are not announced yet.');
       h+='<div class="meta">'+meta.join(' · ')+'</div>';
@@ -1741,6 +1777,7 @@
           h+='<div class="card" style="margin:14px 0"><div class="meta">';
           gKeys.forEach(function(g,i){ var pk=Object.keys(pitches[g]||{}); h+='<span class="grp'+esc(g)+'"><b>'+tr('Group')+' '+esc(g)+(pk.length?' ('+tr('Pitch')+' '+pk.map(esc).join('/')+')':'')+':</b> '+Object.keys(groups[g]).map(esc).join(', ')+'</span>'+(i<gKeys.length-1?'<br>':''); });
           h+='</div></div>';
+          h+=standingsHtml(t, fx, gKeys);
         }
         /* Fixture filters like the tournament site: all games · our games · one group · knockout (remembered per tournament while the app is open). */
         var isOurs=function(f){ return !!(t.club && ((f.home+' '+f.away).indexOf(t.club)>=0)); };
@@ -2291,6 +2328,23 @@
   $('cfCancel').addEventListener('click', function(){ mClose('confModal'); });
 
   /* club cards */
+  state.clubStaff=null;
+  function loadClubStaff(){ if(state.clubStaff) return Promise.resolve(state.clubStaff); return sb.from('club_staff').select('club,level,name,role,sort_order,notes,source_url,as_of').order('sort_order').then(function(r){ state.clubStaff=(r&&r.data)||[]; return state.clubStaff; }).catch(function(){ state.clubStaff=[]; return []; }); }
+  function renderClubStaff(clubName){
+    var host=$('clubStaff'); if(!host) return; host.innerHTML='';
+    var rows=(state.clubStaff||[]).filter(function(x){ return x.club.toLowerCase()===String(clubName).toLowerCase(); });
+    if(!rows.length) return;
+    var levels={}; rows.forEach(function(x){ (levels[x.level]=levels[x.level]||[]).push(x); });
+    var lvName={first_team:tr('First team'), academy:tr('Academy')};
+    var h='';
+    Object.keys(levels).forEach(function(lv){
+      var src=levels[lv][0];
+      h+='<div class="meta" style="font-weight:800;color:var(--txt);margin-bottom:2px">🧑‍🏫 '+tr('Staff')+' · '+esc(lvName[lv]||lv)+'</div>';
+      levels[lv].forEach(function(x){ h+='<div class="staffRow"><div><b>'+esc(x.name)+'</b>'+(x.notes?'<div class="staffNote">'+esc(x.notes)+'</div>':'')+'</div><span>'+esc(tr(x.role))+'</span></div>'; });
+      if(src.source_url) h+='<div class="meta" style="margin-top:6px"><a class="vmap" href="'+esc(src.source_url)+'" target="_blank" rel="noopener">'+tr('Source')+' ↗</a>'+(src.as_of?' · '+esc(src.as_of):'')+'</div>';
+    });
+    host.innerHTML=h;
+  }
   function openClub(name){
     var c=null; (state.clubs||[]).forEach(function(x){ if(x.name.toLowerCase()===String(name).toLowerCase()) c=x; });
     if(c && c.logo_url){
@@ -2312,6 +2366,7 @@
     $('clubCoaches').querySelectorAll('[data-coach]').forEach(function(a){
       a.addEventListener('click', function(){ mClose('clubModal'); openCoach(coachById(a.dataset.coach)); });
     });
+    renderClubStaff(c?c.name:String(name)); loadClubStaff().then(function(){ renderClubStaff(c?c.name:String(name)); });
     mOpen('clubModal');
   }
   $('clubBadge').addEventListener('click', function(){ if($('clubBadge').textContent) openClub($('clubBadge').textContent); });
@@ -3346,6 +3401,7 @@
     });
   }
   function bindTourInfo(root){
+    root.querySelectorAll('.tvChg').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); openTourVenue(a.dataset.tour); }); });
     root.querySelectorAll('.tinfo').forEach(function(box){
       var t=tourById(box.dataset.tour); if(!t) return;
       var al=box.querySelector('.tiAddLink'); if(al) al.addEventListener('click', function(e){ e.preventDefault(); openTourLink(t); });
@@ -3357,28 +3413,53 @@
   }
 
   /* venue add (parent edit, venue column only) */
-  var vmEvId=null;
+  var vmEvId=null, vmTourId=null;
   function openVenue(evId){
     if(!state.canEdit) return;
     var e=eventById(evId); if(!e) return;
-    vmEvId=evId; $('vmErr').textContent='';
+    vmEvId=evId; vmTourId=null; $('vmErr').textContent='';
     var p=playerById(e.player_id);
     $('vmSub').textContent=(p?p.first_name+' · ':'')+e.title+' · '+(e.event_date||'');
     var d=teamDefaults(e.club, p?p.team_label:null);
-    vmPicker.setValue((d&&d.default_venue)||'', (d&&d.default_venue_map)||'');
-    $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent((e.club||'')+' Croatia');
-    var others=state.events.filter(function(x){ return x.id!==e.id && !x.venue && x.club===e.club && x.event_type===e.event_type && x.event_type!=='no_session' && x.event_date && x.event_date>=todayZagreb(); })
+    if(e.venue) vmPicker.setValue(e.venue, e.venue_map||''); else vmPicker.setValue((d&&d.default_venue)||'', (d&&d.default_venue_map)||'');
+    $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent((e.venue||e.club||'')+' Croatia');
+    var same=(e.venue||'').trim().toLowerCase();
+    var others=state.events.filter(function(x){ return x.id!==e.id && x.event_type!=='no_session' && x.event_date && x.event_date>=todayZagreb() && x.club===e.club && ((!x.venue && x.event_type===e.event_type) || (same && (x.venue||'').trim().toLowerCase()===same)); })
       .sort(function(a,b){ return (a.event_date+(a.start_time||'')).localeCompare(b.event_date+(b.start_time||'')); }).slice(0,30);
-    bulkList('vmBulk', tr('Also set this venue on these events without one:'), others.map(function(x){ return {id:x.id,label:evLabel(x)}; }), true);
+    bulkList('vmBulk', tr(e.venue?'Also change these events at the same venue:':'Also set this venue on these events without one:'), others.map(function(x){ return {id:x.id,label:evLabel(x)+(x.venue?' · '+x.venue:'')}; }), !!e.venue);
     $('vmDefaultWrap').hidden = !(p && (e.event_type==='training'||e.event_type==='match')); $('vmDefault').checked=false;
     mOpen('venueModal');
   }
   $('vmInput').addEventListener('input', function(){
     $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent($('vmInput').value||'Croatia');
   });
+  function openTourVenue(tid){
+    if(!state.canEdit) return;
+    var t=tourById(tid); if(!t) return;
+    vmTourId=tid; vmEvId=null; $('vmErr').textContent='';
+    $('vmSub').textContent=t.name+(t.event_date?' · '+t.event_date:'');
+    vmPicker.setValue(t.venue||'', t.venue_map||'');
+    $('vmMaps').href='https://maps.google.com/?q='+encodeURIComponent((t.venue||t.name||'')+' Croatia');
+    var same=(t.venue||'').trim().toLowerCase(), nm=(t.name||'').trim().toLowerCase();
+    var others=state.events.filter(function(x){ return x.event_type!=='no_session' && x.event_date && x.event_date>=todayZagreb() && ((same && (x.venue||'').trim().toLowerCase()===same) || (nm && (x.title||'').toLowerCase().indexOf(nm)>=0)); })
+      .sort(function(a,b){ return (a.event_date+(a.start_time||'')).localeCompare(b.event_date+(b.start_time||'')); }).slice(0,30);
+    bulkList('vmBulk', tr('Also set this venue on the tournament\'s games:'), others.map(function(x){ return {id:x.id,label:evLabel(x)+(x.venue?' · '+x.venue:'')}; }), true);
+    $('vmDefaultWrap').hidden=true; $('vmDefault').checked=false;
+    mOpen('venueModal');
+  }
   $('vmSave').addEventListener('click', function(){
     var v=$('vmInput').value.trim();
     if(!v){ $('vmErr').textContent='Type the venue first — the Google Maps link helps you find the exact name.'; return; }
+    if(vmTourId){
+      var tvmap=vmPicker.get().map, tid=vmTourId, evIds=bulkIds('vmBulk');
+      sb.from('tournaments').update({venue:v, venue_map:tvmap}).eq('id', tid).then(function(r){
+        if(r.error){ $('vmErr').textContent=r.error.message; return; }
+        var t=tourById(tid); if(t){ t.venue=v; t.venue_map=tvmap; }
+        var done=function(){ mClose('venueModal'); renderTournaments(); renderSchedule(); };
+        if(evIds.length){ sb.from('events').update({venue:v, venue_map:tvmap}).in('id', evIds).then(function(r2){ if(!r2.error) state.events.forEach(function(x){ if(evIds.indexOf(x.id)>=0){ x.venue=v; x.venue_map=tvmap; } }); done(); }); } else done();
+      });
+      return;
+    }
     var ids=[vmEvId].concat(bulkIds('vmBulk')), vmap=vmPicker.get().map;
     sb.from('events').update({venue:v, venue_map:vmap}).in('id', ids).then(function(r){
       if(r.error){ $('vmErr').textContent=r.error.message; return; }
